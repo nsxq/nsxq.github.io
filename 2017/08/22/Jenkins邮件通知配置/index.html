@@ -1,0 +1,682 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="自动化,运维,Jenkins," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Jenkins环境搭建完成了,项目自动化编译打包也调通了，但是我们不能保证每次都是正常的，根据自己的情况(构建失败，构建状态不稳定)配置邮件通知是有必要的；这篇文章我采用腾讯qq邮箱来发送，使用公司邮箱来接收；
+常用的几种方式
+使用内置的邮件插进（使用全局的配置，只能有一个接收方）
+使用邮件扩展插件【Email Extension Plugin】（使用全局的配置，能有多个接收方，但是只能有一个发送">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jenkins邮件通知配置">
+<meta property="og:url" content="http://islocal.cc/2017/08/22/Jenkins邮件通知配置/index.html">
+<meta property="og:site_name" content="南山居">
+<meta property="og:description" content="Jenkins环境搭建完成了,项目自动化编译打包也调通了，但是我们不能保证每次都是正常的，根据自己的情况(构建失败，构建状态不稳定)配置邮件通知是有必要的；这篇文章我采用腾讯qq邮箱来发送，使用公司邮箱来接收；
+常用的几种方式
+使用内置的邮件插进（使用全局的配置，只能有一个接收方）
+使用邮件扩展插件【Email Extension Plugin】（使用全局的配置，能有多个接收方，但是只能有一个发送">
+<meta property="og:image" content="http://islocal.cc/images/2017/0822/03.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0822/00.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0822/01.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0822/02.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0822/04.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0822/05.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0822/06.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0822/07.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0822/08.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0822/09.png">
+<meta property="og:updated_time" content="2017-08-25T08:37:19.580Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Jenkins邮件通知配置">
+<meta name="twitter:description" content="Jenkins环境搭建完成了,项目自动化编译打包也调通了，但是我们不能保证每次都是正常的，根据自己的情况(构建失败，构建状态不稳定)配置邮件通知是有必要的；这篇文章我采用腾讯qq邮箱来发送，使用公司邮箱来接收；
+常用的几种方式
+使用内置的邮件插进（使用全局的配置，只能有一个接收方）
+使用邮件扩展插件【Email Extension Plugin】（使用全局的配置，能有多个接收方，但是只能有一个发送">
+<meta name="twitter:image" content="http://islocal.cc/images/2017/0822/03.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://islocal.cc/2017/08/22/Jenkins邮件通知配置/"/>
+
+  <title> Jenkins邮件通知配置 | 南山居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">南山居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Jenkins邮件通知配置
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-08-22T16:36:52+08:00" content="2017-08-22">
+              2017-08-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/自动化运维/" itemprop="url" rel="index">
+                    <span itemprop="name">自动化运维</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">本文总阅读量
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Jenkins<a href="http://islocal.cc/2017/04/27/jenkins-%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a>完成了,项目自动化编译打包也调通了，但是我们不能保证每次都是正常的，根据自己的情况(构建失败，构建状态不稳定)配置邮件通知是有必要的；这篇文章我采用腾讯qq邮箱来发送，使用公司邮箱来接收；</p>
+<h1 id="常用的几种方式"><a href="#常用的几种方式" class="headerlink" title="常用的几种方式"></a>常用的几种方式</h1><ul>
+<li>使用内置的邮件插进（使用全局的配置，只能有一个接收方）</li>
+<li>使用邮件扩展插件【Email Extension Plugin】（使用全局的配置，能有多个接收方，但是只能有一个发送方）</li>
+<li>使用邮件扩展插件【Email Extension Plugin】+Groovy脚本（实现每个Job对应不同的发送邮件，多个发送方）</li>
+<li>开发邮件转发中间件或者使用Foxmail这些工具来转发（每个Job发送到对应的邮箱，然后中间件负责转发到成员列表的邮箱。对发送插件没什么要求，只要能发送即可）<br><em>(这篇文章只说一下前两种方式)</em><a id="more"></a>
+<h1 id="使用QQ邮箱发送"><a href="#使用QQ邮箱发送" class="headerlink" title="使用QQ邮箱发送"></a>使用QQ邮箱发送</h1>qq授权码设置参考：<a href="http://service.mail.qq.com/cgi-bin/help?subtype=1&amp;&amp;id=28&amp;&amp;no=1001256" target="_blank" rel="external">http://service.mail.qq.com/cgi-bin/help?subtype=1&amp;&amp;id=28&amp;&amp;no=1001256</a><h1 id="使用内置的邮件插件"><a href="#使用内置的邮件插件" class="headerlink" title="使用内置的邮件插件"></a>使用内置的邮件插件</h1><h2 id="配置管理员邮件地址"><a href="#配置管理员邮件地址" class="headerlink" title="配置管理员邮件地址"></a>配置管理员邮件地址</h2>系统管理–&gt;系统设置–&gt;Jenkins Location<br><img src="/images/2017/0822/03.png" alt="jenkins"><h2 id="配置邮件通知"><a href="#配置邮件通知" class="headerlink" title="配置邮件通知"></a>配置邮件通知</h2>系统管理–&gt;系统设置–&gt;邮件通知–&gt;高级，配置如下：<br><strong>这里密码填写我们神的“qq授权码”</strong><br><img src="/images/2017/0822/00.png" alt="jenkins"><h2 id="测试邮件提醒"><a href="#测试邮件提醒" class="headerlink" title="测试邮件提醒"></a>测试邮件提醒</h2>勾选“通过发送测试邮件测试配置”<br><img src="/images/2017/0822/01.png" alt="jenkins"><br>看到“Email was successfully sent”即为成功，去邮箱里看一下<br><img src="/images/2017/0822/02.png" alt="jenkins"><h1 id="使用邮件拓展插件"><a href="#使用邮件拓展插件" class="headerlink" title="使用邮件拓展插件"></a>使用邮件拓展插件</h1>系统管理–&gt;系统设置–&gt;Extended E-mail Notification<br><img src="/images/2017/0822/04.png" alt="jenkins"><br><img src="/images/2017/0822/05.png" alt="jenkins"><h2 id="邮件内容配置"><a href="#邮件内容配置" class="headerlink" title="邮件内容配置"></a>邮件内容配置</h2>以下是参考<a href="http://blog.csdn.net/wangmuming/article/details/22925357" target="_blank" rel="external">网上的配置</a>：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Default Subject: 构建通知:$PROJECT_NAME - Build # $BUILD_NUMBER - $BUILD_STATUS!  Default Content!</div><div class="line">Default Content:</div><div class="line">(本邮件是程序自动下发的，请勿回复！)&lt;br/&gt;&lt;hr/&gt;</div><div class="line"></div><div class="line">项目名称：$PROJECT_NAME&lt;br/&gt;&lt;hr/&gt;</div><div class="line"></div><div class="line">构建编号：$BUILD_NUMBER&lt;br/&gt;&lt;hr/&gt;</div><div class="line"></div><div class="line">svn版本号：$&#123;SVN_REVISION&#125;&lt;br/&gt;&lt;hr/&gt;</div><div class="line"></div><div class="line">构建状态：$BUILD_STATUS&lt;br/&gt;&lt;hr/&gt;</div><div class="line"></div><div class="line">触发原因：$&#123;CAUSE&#125;&lt;br/&gt;&lt;hr/&gt;</div><div class="line"></div><div class="line">构建日志地址：&lt;a href=&quot;$&#123;BUILD_URL&#125;console&quot;&gt;$&#123;BUILD_URL&#125;console&lt;/a&gt;&lt;br/&gt;&lt;hr/&gt;</div><div class="line"></div><div class="line">构建地址：&lt;a href=&quot;$BUILD_URL&quot;&gt;$BUILD_URL&lt;/a&gt;&lt;br/&gt;&lt;hr/&gt;</div><div class="line"></div><div class="line">变更集:$&#123;JELLY_SCRIPT,template=&quot;html&quot;&#125;&lt;br/&gt;&lt;hr/&gt;</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="全局属性详解"><a href="#全局属性详解" class="headerlink" title="全局属性详解"></a>全局属性详解</h2><p><em><br>Default Content Type：指定构建后发送邮件内容的类型，有Text和HTML两种。<br>Use List-ID Email Header：为所有的邮件设置一个List-ID的邮件信头，这样你就可以在邮件客户端使用过滤。<br>Add ‘Precedence: bulk’ Email Header：设置优先级。<br>Default Recipients：自定义默认电子邮件收件人列表。如果没有被项目配置覆盖,该插件会使用这个列表。<br>Reply To List：回复列表<br>Emergency reroute：如果这个字段不为空，所有的电子邮件将被单独发送到该地址（或地址列表）。<br>Excluded Committers：防止邮件被邮件系统认为是垃圾邮件,邮件列表应该没有扩展的账户名(如:@domain.com),并且使用逗号分隔。<br>Default Subject：自定义邮件通知的默认主题名称。该选项能在邮件的主题字段中替换一些参数，这样你就可以在构建中包含指定的输出信息。<br>Maximum Attachment Size：邮件最大附件大小。<br>Default Pre-send Script：默认发送前执行的脚本。<br>Enable Debug Mode：启用插件的调试模式。这将增加额外的日志输出，构建日志以及Jenkins的日志。在调试时是有用的，但不能用于生产。<br>Enable Security：启用时，会禁用发送脚本的能力，直接进入Jenkins实例。如果用户试图访问Jenkins管理对象实例，将抛出一个安全异常。<br>Content Token Reference：邮件中可以使用的变量，所有的变量都是可选的。具体介绍请查看全局邮件变量章节。
+</em></p>
+<h2 id="Job中邮件配置"><a href="#Job中邮件配置" class="headerlink" title="Job中邮件配置"></a>Job中邮件配置</h2><p>在构建后操作——”Add Post-build Actions”选项中勾选”Editable Email Notification”标签<br><img src="/images/2017/0822/06.png" alt="jenkins"><br><em><br>Project Recipient List：这是一个以逗号(或者空格)分隔的收件人邮件的邮箱地址列表。允许您为每封邮件指定单独的列表。Ps：如果你想在默认收件人的基础上添加收件人：$DEFAULT_RECIPIENTS,&lt;新的收件人&gt;<br>Default Subject：允许你配置此项目邮件的主题。<br>Default Content：跟Default Subject的作用一样，但是是替换邮件内容。<br>Attach Build Log：附件构建日志。<br>Compress Build Log before sending：发送前压缩生成日志（zip格式）。
+</em></p>
+<h3 id="添加触发器"><a href="#添加触发器" class="headerlink" title="添加触发器"></a>添加触发器</h3><p><img src="/images/2017/0822/07.png" alt="jenkins"></p>
+<h3 id="查看构建失败日志"><a href="#查看构建失败日志" class="headerlink" title="查看构建失败日志"></a>查看构建失败日志</h3><p><img src="/images/2017/0822/08.png" alt="jenkins"></p>
+<h3 id="查看收件箱"><a href="#查看收件箱" class="headerlink" title="查看收件箱"></a>查看收件箱</h3><p><img src="/images/2017/0822/09.png" alt="jenkins"></p>
+<p>参考链接：<a href="http://www.cnblogs.com/yangxia-test/p/4366172.html" target="_blank" rel="external">http://www.cnblogs.com/yangxia-test/p/4366172.html</a></p>
+<hr>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/01/wechat.jpg" alt="南山小樵 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/自动化/" rel="tag">#自动化</a>
+          
+            <a href="/tags/运维/" rel="tag">#运维</a>
+          
+            <a href="/tags/Jenkins/" rel="tag">#Jenkins</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/17/Jenkins打包不能发现本地仓库包/" rel="next" title="Jenkins打包不能发现本地仓库包">
+                <i class="fa fa-chevron-left"></i> Jenkins打包不能发现本地仓库包
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/08/23/Linux下如何拨VPN/" rel="prev" title="Linux下如何拨VPN">
+                Linux下如何拨VPN <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: document.location.href, 
+    sourceId: "���� page.path ����",
+    productKey: "0df311b624f44726a84b2b6249d64c11",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/01/psir.jpg"
+               alt="南山小樵" />
+          <p class="site-author-name" itemprop="name">南山小樵</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#常用的几种方式"><span class="nav-number">1.</span> <span class="nav-text">常用的几种方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用QQ邮箱发送"><span class="nav-number">2.</span> <span class="nav-text">使用QQ邮箱发送</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用内置的邮件插件"><span class="nav-number">3.</span> <span class="nav-text">使用内置的邮件插件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置管理员邮件地址"><span class="nav-number">3.1.</span> <span class="nav-text">配置管理员邮件地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置邮件通知"><span class="nav-number">3.2.</span> <span class="nav-text">配置邮件通知</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试邮件提醒"><span class="nav-number">3.3.</span> <span class="nav-text">测试邮件提醒</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用邮件拓展插件"><span class="nav-number">4.</span> <span class="nav-text">使用邮件拓展插件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#邮件内容配置"><span class="nav-number">4.1.</span> <span class="nav-text">邮件内容配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#全局属性详解"><span class="nav-number">4.2.</span> <span class="nav-text">全局属性详解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Job中邮件配置"><span class="nav-number">4.3.</span> <span class="nav-text">Job中邮件配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加触发器"><span class="nav-number">4.3.1.</span> <span class="nav-text">添加触发器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看构建失败日志"><span class="nav-number">4.3.2.</span> <span class="nav-text">查看构建失败日志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看收件箱"><span class="nav-number">4.3.3.</span> <span class="nav-text">查看收件箱</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南山小樵</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

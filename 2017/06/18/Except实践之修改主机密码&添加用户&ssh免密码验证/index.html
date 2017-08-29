@@ -1,0 +1,662 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="自动化,运维,expect,脚本," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="最近运维工作中遇到大批量的主机需要添加账户，修改密码，实现无密码验证等工作，由于这种工作完全是重复性的，可以借助脚本（更好的方式是自动化运维工具）来解决，主要是使用到expect工具，该工具主要用来处理自动交互式任务进行通信，不需要人为干预；今天就把用到的脚本在此记录一下，以备后用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Except实践之 修改主机密码&添加用户&ssh免密码验证">
+<meta property="og:url" content="http://islocal.cc/2017/06/18/Except实践之修改主机密码&添加用户&ssh免密码验证/index.html">
+<meta property="og:site_name" content="南山居">
+<meta property="og:description" content="最近运维工作中遇到大批量的主机需要添加账户，修改密码，实现无密码验证等工作，由于这种工作完全是重复性的，可以借助脚本（更好的方式是自动化运维工具）来解决，主要是使用到expect工具，该工具主要用来处理自动交互式任务进行通信，不需要人为干预；今天就把用到的脚本在此记录一下，以备后用。">
+<meta property="og:image" content="http://islocal.cc/images/2017/0618/01.png">
+<meta property="og:updated_time" content="2017-07-04T02:58:12.678Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Except实践之 修改主机密码&添加用户&ssh免密码验证">
+<meta name="twitter:description" content="最近运维工作中遇到大批量的主机需要添加账户，修改密码，实现无密码验证等工作，由于这种工作完全是重复性的，可以借助脚本（更好的方式是自动化运维工具）来解决，主要是使用到expect工具，该工具主要用来处理自动交互式任务进行通信，不需要人为干预；今天就把用到的脚本在此记录一下，以备后用。">
+<meta name="twitter:image" content="http://islocal.cc/images/2017/0618/01.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://islocal.cc/2017/06/18/Except实践之修改主机密码&添加用户&ssh免密码验证/"/>
+
+  <title> Except实践之 修改主机密码&添加用户&ssh免密码验证 | 南山居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">南山居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Except实践之 修改主机密码&添加用户&ssh免密码验证
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-06-18T16:35:04+08:00" content="2017-06-18">
+              2017-06-18
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/自动化运维/" itemprop="url" rel="index">
+                    <span itemprop="name">自动化运维</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">本文总阅读量
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>最近运维工作中遇到大批量的主机需要添加账户，修改密码，实现无密码验证等工作，由于这种工作完全是重复性的，可以借助脚本（更好的方式是自动化运维工具）来解决，主要是使用到expect工具，该工具主要用来处理自动交互式任务进行通信，不需要人为干预；今天就把用到的脚本在此记录一下，以备后用。<br><a id="more"></a></p>
+<h1 id="批量修改主机密码"><a href="#批量修改主机密码" class="headerlink" title="批量修改主机密码"></a>批量修改主机密码</h1><p>脚本内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">[root@vm00 ~]# cat chpasswd.sh </div><div class="line">#!/bin/bash</div><div class="line">file=&quot;iplist.txt&quot;</div><div class="line">for ip in `awk &apos;/^[^#]/&#123;print $1&#125;&apos; $file`; do</div><div class="line">    port=`awk -v I=$ip &apos;&#123;if(I==$1)print $3&#125;&apos; $file`</div><div class="line">    user=`awk -v I=$ip &apos;&#123;if(I==$1)print $2&#125;&apos; $file`</div><div class="line">    pass=`awk -v I=$ip &apos;&#123;if(I==$1)print $4&#125;&apos; $file`</div><div class="line">    newpass=`awk -v I=$ip &apos;&#123;if(I==$1)print $5&#125;&apos; $file`</div><div class="line"></div><div class="line">expect -c &quot;</div><div class="line">    spawn ssh -p$port $user@$ip</div><div class="line">    set timeout 2</div><div class="line">    expect &#123;</div><div class="line">        \&quot;(yes/no)\&quot; &#123;send \&quot;yes\r\&quot;;exp_continue&#125;</div><div class="line">        \&quot;password:\&quot; &#123;send \&quot;$pass\r\&quot;;exp_continue&#125;</div><div class="line">        \&quot;$user@*\&quot; &#123;send \&quot;echo \&apos;$newpass\&apos; |passwd --stdin $user\r exit\r\&quot;;exp_continue&#125;</div><div class="line"></div><div class="line">#\&quot;$user@*\&quot;  &#123;send \&quot;df -h\r exit\r\&quot;;exp_continue&#125;</div><div class="line">    &#125;&quot;</div><div class="line">done</div></pre></td></tr></table></figure></p>
+<p>iplist.txt 格式如下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@vm00 ~]# cat iplist.txt </div><div class="line">#     ip     user    port    passwd    newpasswd</div><div class="line">#------------------------------------------------</div><div class="line">192.168.6.101  root    22    ffffff    gggggg</div><div class="line">192.168.6.102  root    22    ffffff    gggggg</div></pre></td></tr></table></figure></p>
+<h1 id="批量主机ssh免密码验证"><a href="#批量主机ssh免密码验证" class="headerlink" title="批量主机ssh免密码验证"></a>批量主机ssh免密码验证</h1><h2 id="手动操作ssh无密码验证"><a href="#手动操作ssh无密码验证" class="headerlink" title="手动操作ssh无密码验证"></a>手动操作ssh无密码验证</h2><h3 id="设置hosts记录"><a href="#设置hosts记录" class="headerlink" title="设置hosts记录"></a>设置hosts记录</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@vm00 ~]# cat /etc/hosts</div><div class="line">\#127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4 oracle11g</div><div class="line">\#::1         localhost localhost.localdomain localhost6 localhost6.localdomain6</div><div class="line">192.168.6.100 vm00</div><div class="line">192.168.6.101 vm01</div><div class="line">192.168.6.102 vm02</div></pre></td></tr></table></figure>
+<h3 id="新建用户并设置密码（每台机器都执行）"><a href="#新建用户并设置密码（每台机器都执行）" class="headerlink" title="新建用户并设置密码（每台机器都执行）"></a>新建用户并设置密码（每台机器都执行）</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@vm00 ~]# useradd -u 600 airmodel</div><div class="line">[root@vm00 ~]# echo &quot;ffffff&quot; |passwd --stdin airmodel</div><div class="line">Changing password for user airmodel.</div><div class="line">passwd: all authentication tokens updated successfully.</div></pre></td></tr></table></figure>
+<h3 id="配置无密码访问key"><a href="#配置无密码访问key" class="headerlink" title="配置无密码访问key"></a>配置无密码访问key</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">[root@vm00 ~]# su - airmodel</div><div class="line">[airmodel@vm00 ~]$ ssh-keygen </div><div class="line">Generating public/private rsa key pair.</div><div class="line">Enter file in which to save the key (/home/airmodel/.ssh/id_rsa): </div><div class="line">Created directory &apos;/home/airmodel/.ssh&apos;.</div><div class="line">Enter passphrase (empty for no passphrase): </div><div class="line">Enter same passphrase again: </div><div class="line">Your identification has been saved in /home/airmodel/.ssh/id_rsa.</div><div class="line">Your public key has been saved in /home/airmodel/.ssh/id_rsa.pub.</div><div class="line">The key fingerprint is:</div><div class="line">3a:d9:04:80:20:6a:90:8a:cd:c7:ee:fb:2d:d9:03:cd airmodel@vm00</div><div class="line">The key&apos;s randomart image is:</div><div class="line">+--[ RSA 2048]----+</div><div class="line">|+o ..            |</div><div class="line">|= .  .           |</div><div class="line">|++ .  .          |</div><div class="line">|+ o o  .         |</div><div class="line">|   o   oS        |</div><div class="line">|    . .=E        |</div><div class="line">|   .  ++.        |</div><div class="line">|    . ooo        |</div><div class="line">|    .o....       |</div><div class="line">+-----------------+</div></pre></td></tr></table></figure>
+<p><img src="/images/2017/0618/01.png" alt="图片"></p>
+<h3 id="将生成的公钥拷贝到其他主机"><a href="#将生成的公钥拷贝到其他主机" class="headerlink" title="将生成的公钥拷贝到其他主机"></a>将生成的公钥拷贝到其他主机</h3><p>标准命令格式：ssh-copy-id -i ~/.ssh/id_rsa.pub user@server<br>偷懒可以写成下边这种：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[airmodel@vm00 ~]$ ssh-copy-id -i vm02</div><div class="line">airmodel@vm02&apos;s password: </div><div class="line">Now try logging into the machine, with &quot;ssh &apos;vm02&apos;&quot;, and check in:</div><div class="line"></div><div class="line">  .ssh/authorized_keys</div><div class="line"></div><div class="line">to make sure we haven&apos;t added extra keys that you weren&apos;t expecting.</div></pre></td></tr></table></figure></p>
+<h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><p>1.公钥会被拷贝到目标主机的 /home/user/.ssh/authorized_keys 文件中<br>2.[airmodel@vm00 ~]$ ssh vm02 无密码访问</p>
+<h2 id="多主机自动化配置ssh免密脚本"><a href="#多主机自动化配置ssh免密脚本" class="headerlink" title="多主机自动化配置ssh免密脚本"></a>多主机自动化配置ssh免密脚本</h2><h3 id="添加用户脚本"><a href="#添加用户脚本" class="headerlink" title="添加用户脚本"></a>添加用户脚本</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">[root@vm00 ~]# cat padduser.sh </div><div class="line">#!/bin/bash</div><div class="line">file=&quot;iplist2.txt&quot;</div><div class="line">newuser=&quot;airmodel&quot;</div><div class="line">newpass=&quot;ffffff&quot;</div><div class="line">for ip in `awk &apos;/^[^#]/&#123;print $1&#125;&apos; $file`; do</div><div class="line">    port=`awk -v I=$ip &apos;&#123;if(I==$1)print $3&#125;&apos; $file`</div><div class="line">    loginuser=`awk -v I=$ip &apos;&#123;if(I==$1)print $2&#125;&apos; $file`</div><div class="line">    pass=`awk -v I=$ip &apos;&#123;if(I==$1)print $4&#125;&apos; $file`</div><div class="line">expect -c &quot;</div><div class="line">    spawn ssh -p$port $loginuser@$ip</div><div class="line">    set timeout 2</div><div class="line">    expect &#123;</div><div class="line">        \&quot;(yes/no)\&quot; &#123;send \&quot;yes\r\&quot;;exp_continue&#125;</div><div class="line">        \&quot;password:\&quot; &#123;send \&quot;$pass\r\&quot;;exp_continue&#125;</div><div class="line">        \&quot;$user@*\&quot; &#123;send \&quot;useradd -u 600 $newuser &amp;&amp; echo \&apos;$newpass\&apos; |passwd --stdin $newuser\r exit\r\&quot;;exp_continue&#125;</div><div class="line">#\&quot;$user@*\&quot;  &#123;send \&quot;df -h\r exit\r\&quot;;exp_continue&#125;</div><div class="line">    &#125;&quot;</div><div class="line">done</div></pre></td></tr></table></figure>
+<p>iplist2.txt内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#     ip     user    port    passwd    </div><div class="line">#--------------------------------------</div><div class="line">192.168.6.102  root    22    ffffff</div></pre></td></tr></table></figure></p>
+<h3 id="多主机拷贝ssh公钥"><a href="#多主机拷贝ssh公钥" class="headerlink" title="多主机拷贝ssh公钥"></a>多主机拷贝ssh公钥</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">#批量ssh无密码验证</div><div class="line">for p in $(cat /opt/iplist3.txt)</div><div class="line">do</div><div class="line">ip=$(echo &quot;$p&quot;|cut -f1 -d &quot;:&quot;)</div><div class="line">password=$(echo &quot;$p&quot;|cut -f2 -d &quot;:&quot;)</div><div class="line"></div><div class="line">expect -c &quot;   </div><div class="line">spawn ssh-copy-id -i /home/airmodel/.ssh/id_rsa.pub airmodel@$ip  </div><div class="line">        expect &#123;   </div><div class="line">                \&quot;*yes/no*\&quot; &#123;send \&quot;yes\r\&quot;; exp_continue&#125;   </div><div class="line">                \&quot;*password*\&quot; &#123;send \&quot;$password\r\&quot;; exp_continue&#125;   </div><div class="line">                \&quot;*Password*\&quot; &#123;send \&quot;$password\r\&quot;;&#125;   </div><div class="line">        &#125;   </div><div class="line">&quot;   </div><div class="line">done</div></pre></td></tr></table></figure>
+<p>iplist3.txt 格式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">#user:passwd</div><div class="line">#-----------</div><div class="line">vm01:ffffff</div><div class="line">vm02:ffffff</div><div class="line">vm03:ffffff</div><div class="line">vm04:ffffff</div><div class="line">vm05:ffffff</div></pre></td></tr></table></figure></p>
+<p>参考连接：<br><a href="http://zqscm.qiniucdn.com/data/20110709133541/index.html" target="_blank" rel="external">http://zqscm.qiniucdn.com/data/20110709133541/index.html</a><br><a href="https://blog.slogra.com/post-674.html" target="_blank" rel="external">https://blog.slogra.com/post-674.html</a><br><a href="http://blog.csdn.net/fanren224/article/details/63250184" target="_blank" rel="external">http://blog.csdn.net/fanren224/article/details/63250184</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/01/wechat.jpg" alt="南山小樵 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/自动化/" rel="tag">#自动化</a>
+          
+            <a href="/tags/运维/" rel="tag">#运维</a>
+          
+            <a href="/tags/expect/" rel="tag">#expect</a>
+          
+            <a href="/tags/脚本/" rel="tag">#脚本</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/06/16/windows-下使用expdp自动备份多用户oracle脚本/" rel="next" title="windows 下使用expdp自动备份多用户oracle脚本">
+                <i class="fa fa-chevron-left"></i> windows 下使用expdp自动备份多用户oracle脚本
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/06/21/Ansible-入门篇/" rel="prev" title="Ansible 入门篇">
+                Ansible 入门篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: document.location.href, 
+    sourceId: "���� page.path ����",
+    productKey: "0df311b624f44726a84b2b6249d64c11",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/01/psir.jpg"
+               alt="南山小樵" />
+          <p class="site-author-name" itemprop="name">南山小樵</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#批量修改主机密码"><span class="nav-number">1.</span> <span class="nav-text">批量修改主机密码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#批量主机ssh免密码验证"><span class="nav-number">2.</span> <span class="nav-text">批量主机ssh免密码验证</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#手动操作ssh无密码验证"><span class="nav-number">2.1.</span> <span class="nav-text">手动操作ssh无密码验证</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#设置hosts记录"><span class="nav-number">2.1.1.</span> <span class="nav-text">设置hosts记录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#新建用户并设置密码（每台机器都执行）"><span class="nav-number">2.1.2.</span> <span class="nav-text">新建用户并设置密码（每台机器都执行）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置无密码访问key"><span class="nav-number">2.1.3.</span> <span class="nav-text">配置无密码访问key</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#将生成的公钥拷贝到其他主机"><span class="nav-number">2.1.4.</span> <span class="nav-text">将生成的公钥拷贝到其他主机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证"><span class="nav-number">2.1.5.</span> <span class="nav-text">验证</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多主机自动化配置ssh免密脚本"><span class="nav-number">2.2.</span> <span class="nav-text">多主机自动化配置ssh免密脚本</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#添加用户脚本"><span class="nav-number">2.2.1.</span> <span class="nav-text">添加用户脚本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多主机拷贝ssh公钥"><span class="nav-number">2.2.2.</span> <span class="nav-text">多主机拷贝ssh公钥</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南山小樵</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

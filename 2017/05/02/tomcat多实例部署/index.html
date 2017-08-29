@@ -1,0 +1,661 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="tomcat," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="同一个tomcat下部署多个项目，重启会影响到其他项目的正常运行，为了使各项目独立，一般会使用安装多个tomcat，这样很耗费系统资源；创建tomcat多实例，有效的解决这一问题；">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tomcat多实例部署">
+<meta property="og:url" content="http://islocal.cc/2017/05/02/tomcat多实例部署/index.html">
+<meta property="og:site_name" content="南山居">
+<meta property="og:description" content="同一个tomcat下部署多个项目，重启会影响到其他项目的正常运行，为了使各项目独立，一般会使用安装多个tomcat，这样很耗费系统资源；创建tomcat多实例，有效的解决这一问题；">
+<meta property="og:image" content="http://islocal.cc/images/2017/0502/01.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0502/00.png">
+<meta property="og:updated_time" content="2017-05-03T04:35:02.433Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tomcat多实例部署">
+<meta name="twitter:description" content="同一个tomcat下部署多个项目，重启会影响到其他项目的正常运行，为了使各项目独立，一般会使用安装多个tomcat，这样很耗费系统资源；创建tomcat多实例，有效的解决这一问题；">
+<meta name="twitter:image" content="http://islocal.cc/images/2017/0502/01.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://islocal.cc/2017/05/02/tomcat多实例部署/"/>
+
+  <title> tomcat多实例部署 | 南山居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">南山居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                tomcat多实例部署
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-02T13:59:00+08:00" content="2017-05-02">
+              2017-05-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Web集群/" itemprop="url" rel="index">
+                    <span itemprop="name">Web集群</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">本文总阅读量
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>同一个tomcat下部署多个项目，重启会影响到其他项目的正常运行，为了使各项目独立，一般会使用安装多个tomcat，这样很耗费系统资源；创建tomcat多实例，有效的解决这一问题；<br><a id="more"></a></p>
+<h1 id="常见部署方式"><a href="#常见部署方式" class="headerlink" title="常见部署方式"></a>常见部署方式</h1><p><strong>单实例单应用：</strong>比较常用的一种方式，只需要把你打好的 war 包丢在 webapps目录下，执行启动 Tomcat 的脚本就行了。<br><strong>单实例多应用：</strong>有两个不同的 Web 项目 war 包，还是只需要丢在webapps目录下，执行启动 Tomcat 的脚本，访问不同项目加上不同的虚拟目录。这种方式要慎用在生产环境，因为重启或挂掉 Tomcat 后会影响另外一个应用的访问。<br><strong>多实例单应用：</strong>多个 Tomcat 部署同一个项目，端口号不同，可以利用 Nginx 这么做负载均衡，当然意义不大。<br><strong>多实例多应用：</strong>多个 Tomcat 部署多个不同的项目。这种模式在服务器资源有限，或者对服务器要求并不是很高的情况下，可以实现多个不同项目部署在同一台服务器上的需求，来实现资源使用的最大化。</p>
+<h1 id="目录作用"><a href="#目录作用" class="headerlink" title="目录作用"></a>目录作用</h1><p><strong>bin</strong>        主要存放脚本文件，例如比较常用的windows和linux系统中启动和关闭脚本<br><strong>conf</strong>    主要存放配置文件，其中最重要的两个配置文件是server.xml和web.xml<br><strong>lib</strong>        主要存放tomcat运行所依赖的包<br><strong>logs</strong>    主要存放运行时产生的日志文件，例如catalina.{date}.log等<br><strong>temp</strong>    存放tomcat运行时产生的临时文件，例如开启了hibernate缓存的应用程序，会在该目录下生成一些文件<br><strong>webapps</strong>    部署web应用程序的默认目录<br><strong>work</strong>    主要存放由JSP文件生成的servlet（java文件以及最终编译生成的class文件）</p>
+<p>CATALINA_HOME：即指向Tomcat安装路径的系统变量<br>CATALINA_BASE：即指向活跃配置路径的系统变量<br>通过设置这两个变量，就可以将tomcat的安装目录和工作目录分离，从而实现tomcat多实例的部署。</p>
+<p><img src="/images/2017/0502/01.png" alt="tomcat"><br>将tomcat复制为以下目录结构<br><img src="/images/2017/0502/00.png" alt="tomcat"></p>
+<h1 id="修改-CATALINA-HOME-conf-server-xml"><a href="#修改-CATALINA-HOME-conf-server-xml" class="headerlink" title="修改$CATALINA_HOME/conf/server.xml"></a>修改$CATALINA_HOME/conf/server.xml</h1><p>在server.xml中配置了四个监听端口，分别是：<br><strong>Server Port：</strong>    该端口用于监听关闭tomcat的shutdown命令，默认为8005<br><strong>Connector Port：</strong>    该端口用于监听HTTP的请求，默认为8080<br><strong>AJP Port：</strong>        该端口用于监听AJP（ Apache JServ Protocol ）协议上的请求，通常用于整合Apache Server等其他HTTP服务器，默认为8009<br><strong>Redirect Port：</strong>    重定向端口，出现在Connector配置中，如果该Connector仅支持非SSL的普通http请求，那么该端口会把https的请求转发到这个Redirect Port指定的端口，默认为8443</p>
+<p>修改第22行Server Port （三个tomcat依次修改为8005,8006,8007）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;Server port=&quot;8007&quot; shutdown=&quot;SHUTDOWN&quot;&gt;</div></pre></td></tr></table></figure></p>
+<p>修改第71行Connector Port(三个tomcat依次修改为8080,8081,8082)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;Connector port=&quot;8082&quot; protocol=&quot;HTTP/1.1&quot;</div></pre></td></tr></table></figure></p>
+<p>修改第93行AJP Port (三个tomcat依次修改为8009,8019,8029)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;Connector port=&quot;8029&quot; protocol=&quot;AJP/1.3&quot; redirectPort=&quot;8443&quot; /&gt;</div></pre></td></tr></table></figure></p>
+<p>虚拟主机配置<br><strong>name：</strong>        虚拟主机的名称，一台主机表示了完全限定的域名或IP地址，默认为localhost，同时也是唯一的host，进入tomcat的所有http请求都会映射到该主机上<br><strong>appBase：</strong>        web应用程序目录的路径，可以是CATALINA_HOME的相对路径，也可以写成绝对路径，默认情况下为$CATALINA_HOME/webapps<br><strong>unpackWARs：</strong>    表示是否自动解压war包<br><strong>autoDeploy：</strong>    所谓的热部署，即在tomcat正在运行的情况下，如果有新的war加入，则会立即执行部署操作<br><strong>deployOnStartup：</strong>    表示tomcat启动时是否自动部署appBase目录下所有的Web应用程序，默认为true。这个属性和autoDeploy会产生两次部署的“副作用”：一次是tomcat启动时就开始部署，第二次就是autoDeploy引起的热部署。因此最好将autoDeploy置为false</p>
+<p>修改第125-127行虚拟主机配置 (三个tomcat参考以下内容依次修改)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;Host name=&quot;c.com&quot;  appBase=&quot;/data/tomcat/c.com/&quot;</div><div class="line">            unpackWARs=&quot;true&quot; autoDeploy=&quot;false&quot;&gt;</div><div class="line">&lt;Context path=&quot;/hello&quot; docBase=&quot;/data/tomcat/c.com/hello.war&quot; /&gt;</div></pre></td></tr></table></figure></p>
+<h1 id="启动-amp-关闭脚本"><a href="#启动-amp-关闭脚本" class="headerlink" title="启动&amp;关闭脚本"></a>启动&amp;关闭脚本</h1><p>脚本放在CATALINA_BASE(如：/opt/tomcat1/)下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">#!/bin/sh</div><div class="line"># description: 启动tomcat多实例.</div><div class="line">. /etc/init.d/functions</div><div class="line">RETVAL=$?</div><div class="line"># tomcat实例目录</div><div class="line">export CATALINA_BASE=&quot;$PWD&quot;</div><div class="line"># tomcat安装目录</div><div class="line">export CATALINA_HOME=&quot;/opt/&quot;</div><div class="line">case &quot;$1&quot; in</div><div class="line">start)</div><div class="line">if [ -f $CATALINA_HOME/bin/startup.sh ];then</div><div class="line">echo $&quot;Start Tomcat&quot;</div><div class="line">$CATALINA_HOME/bin/startup.sh</div><div class="line">fi</div><div class="line">;;</div><div class="line">stop)</div><div class="line">if [ -f $CATALINA_HOME/bin/shutdown.sh ];then</div><div class="line">echo $&quot;Stop Tomcat&quot;</div><div class="line">$CATALINA_HOME/bin/shutdown.sh</div><div class="line">fi</div><div class="line">;;</div><div class="line">*)</div><div class="line">echo $&quot;Usage: $0 &#123;start|stop&#125;&quot;</div><div class="line">exit 1</div><div class="line">;;</div><div class="line">esac</div><div class="line">exit $RETVAL</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p><strong>因为启动脚本中有获取当前路径的操作，一定需要cd到tomcat.sh的当前目录下执行才可以</strong></p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">cd /opt/tomcat1</div><div class="line">./tomcat.sh start|stop</div><div class="line">cd /opt/tomcat2</div><div class="line">./tomcat.sh start|stop</div><div class="line">cd /opt/tomcat3</div><div class="line">./tomcat.sh start|stop</div></pre></td></tr></table></figure>
+<p>访问8080,8081,8082端口验证</p>
+<p>参考地址：<br><a href="http://www.jianshu.com/p/0b549d00ecc2" target="_blank" rel="external">http://www.jianshu.com/p/0b549d00ecc2</a><br><a href="http://www.ttlsa.com/tomcat/config-multi-tomcat-instance/" target="_blank" rel="external">http://www.ttlsa.com/tomcat/config-multi-tomcat-instance/</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+        <div id="wechat" style="display: inline-block">
+          <img id="wechat_qr" src="/images/01/wechat.jpg" alt="南山小樵 WeChat Pay"/>
+          <p>微信打赏</p>
+        </div>
+      
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/tomcat/" rel="tag">#tomcat</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/27/Jenkins-持续集成环境搭建/" rel="next" title="jenkins 持续集成环境搭建">
+                <i class="fa fa-chevron-left"></i> jenkins 持续集成环境搭建
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/03/Centos 7下KVM 虚拟机搭建/" rel="prev" title="Centos 7下KVM 虚拟机搭建">
+                Centos 7下KVM 虚拟机搭建 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: document.location.href, 
+    sourceId: "���� page.path ����",
+    productKey: "0df311b624f44726a84b2b6249d64c11",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/01/psir.jpg"
+               alt="南山小樵" />
+          <p class="site-author-name" itemprop="name">南山小樵</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">12</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#常见部署方式"><span class="nav-number">1.</span> <span class="nav-text">常见部署方式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#目录作用"><span class="nav-number">2.</span> <span class="nav-text">目录作用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改-CATALINA-HOME-conf-server-xml"><span class="nav-number">3.</span> <span class="nav-text">修改$CATALINA_HOME/conf/server.xml</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动-amp-关闭脚本"><span class="nav-number">4.</span> <span class="nav-text">启动&关闭脚本</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南山小樵</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
