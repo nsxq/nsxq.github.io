@@ -83,7 +83,7 @@
 <meta property="og:url" content="http://islocal.cc/2017/08/16/Lustre文件系统简介/index.html">
 <meta property="og:site_name" content="南山居">
 <meta property="og:description" content="Lustre是一款开源的，基于对象存储的集群并行分布式文件系统，具有很高的扩展性、可用性、易用性、性能等，在高性能计算中应用很广泛，世界十大超级计算中心当中的七个以及超过50%的全球top50超级计算机都在使用Lustre。可以支持上万个节点，数以PB的数量存储系统。从1999年lustre项目起，他的版权所有者就在不断的变换，从lustre项目组到Sun公司到Oracle再到Whamclound">
-<meta property="og:updated_time" content="2017-08-16T07:44:07.714Z">
+<meta property="og:updated_time" content="2017-08-30T08:42:19.707Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Lustre文件系统简介">
 <meta name="twitter:description" content="Lustre是一款开源的，基于对象存储的集群并行分布式文件系统，具有很高的扩展性、可用性、易用性、性能等，在高性能计算中应用很广泛，世界十大超级计算中心当中的七个以及超过50%的全球top50超级计算机都在使用Lustre。可以支持上万个节点，数以PB的数量存储系统。从1999年lustre项目起，他的版权所有者就在不断的变换，从lustre项目组到Sun公司到Oracle再到Whamclound">
@@ -317,7 +317,7 @@
 <h1 id="Lustre文件系统包括三种主要的功能单元"><a href="#Lustre文件系统包括三种主要的功能单元" class="headerlink" title="Lustre文件系统包括三种主要的功能单元"></a>Lustre文件系统包括三种主要的功能单元</h1><h2 id="元数据服务器MDS-Metadata-Server"><a href="#元数据服务器MDS-Metadata-Server" class="headerlink" title="元数据服务器MDS(Metadata Server)"></a>元数据服务器MDS(Metadata Server)</h2><p>元数据服务器（metadata servers，MDSes）。一个Lustre文件系统通常拥有两个元数据服务器（active和standby），一个元数据服务器则拥有若干元数据目标（metadata targets，MDTs）。元数据目标存储名字空间元数据：文件名、目录、访问权限、文件结构等信息。不同于诸如GPFS和PanFS等基于块并由元数据服务器控制所有块分配的分布式文件系统，Lustre元数据服务器仅仅关心路径搜索和权限检查而不会牵涉任何的文件I/O操作。该特性避免元数据服务器成为集群扩展的瓶颈。单个文件系统拥有多个元数据目标是从2.4开始引入的新特性。</p>
 <h2 id="对象存储服务器OSS-Object-Storage-Server"><a href="#对象存储服务器OSS-Object-Storage-Server" class="headerlink" title="对象存储服务器OSS(Object Storage Server)"></a>对象存储服务器OSS(Object Storage Server)</h2><p>对象存储服务器（object storage servers，OSSes）将文件数据存储于一个或多个对象存储目标（object storage targets，OSTs）中。取决于服务器硬件，一个对象存储服务器通常有二到八个对象存储目标，每个对象存储目标管理一个本地文件系统。Lustre文件系统的空间等于所有对象存储目标的容量总和。</p>
 <h2 id="客户端Client"><a href="#客户端Client" class="headerlink" title="客户端Client"></a>客户端Client</h2><p>客户机（Clients）能访问并使用数据。Lustre为所有客户机提供统一的命名空间。<br>Lustre支持多种网络类型，包括Infiniband，Omni-Path，以太网等。如果远程直接内存访问（RDMA）传输可用，Lustre将利用它提高吞吐量降低CPU使用率。</p>
-<p>参考链接：<br><a href="https://zh.wikipedia.org/wiki/Lustre" target="_blank" rel="external">https://zh.wikipedia.org/wiki/Lustre</a><br><a href="https://www.ibm.com/developerworks/cn/linux/l-ofs/index.html" target="_blank" rel="external">https://www.ibm.com/developerworks/cn/linux/l-ofs/index.html</a><br><a href="http://blog.csdn.net/fsdev/article/details/7310975" target="_blank" rel="external">http://blog.csdn.net/fsdev/article/details/7310975</a></p>
+<p>参考链接：<br><a href="https://zh.wikipedia.org/wiki/Lustre" target="_blank" rel="external">https://zh.wikipedia.org/wiki/Lustre</a><br><a href="https://www.ibm.com/developerworks/cn/linux/l-ofs/index.html" target="_blank" rel="external">https://www.ibm.com/developerworks/cn/linux/l-ofs/index.html</a><br><a href="http://blog.csdn.net/fsdev/article/details/7310975" target="_blank" rel="external">http://blog.csdn.net/fsdev/article/details/7310975</a><br><a href="http://mp.weixin.qq.com/s/QvBEU6yebkChMPNmcCZrWQ" target="_blank" rel="external">http://mp.weixin.qq.com/s/QvBEU6yebkChMPNmcCZrWQ</a></p>
 
       
     </div>
@@ -455,7 +455,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">45</span>
+              <span class="site-state-item-count">46</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -463,7 +463,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">10</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -472,7 +472,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">47</span>
+                <span class="site-state-item-count">49</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

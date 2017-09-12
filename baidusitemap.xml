@@ -4,6 +4,80 @@
 
     
   <url>
+    <loc>http://islocal.cc/2017/09/12/WindowsUpdate%E4%B8%8D%E8%83%BD%E6%9B%B4%E6%96%B0%EF%BC%8C%E9%94%99%E8%AF%AF%E6%8F%90%E7%A4%BA8024402F%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/</loc>
+    <lastmod>2017-09-12T07:22:58.587Z</lastmod>
+    <data>
+        <display>
+        <title>WindowsUpdate不能更新，错误提示8024402F解决方法</title>
+        <pubTime>2017-09-12T07:21:00.000Z</pubTime>
+        
+        <tag>Windows</tag>
+         
+        <tag>更新</tag>
+         
+         
+           
+             
+              <breadCrumb title="Troubleshooting" url="http://islocal.cc/categories/Troubleshooting/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://islocal.cc/2017/08/16/Lustre%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2/</loc>
+    <lastmod>2017-08-31T02:35:00.548Z</lastmod>
+    <data>
+        <display>
+        <title>Lustre文件系统部署</title>
+        <pubTime>2017-08-16T07:44:31.000Z</pubTime>
+        
+        <tag>Lustre</tag>
+         
+        <tag>文件系统</tag>
+         
+        <tag>分布式</tag>
+         
+        <tag>集群</tag>
+         
+         
+           
+             
+              <breadCrumb title="HPC" url="http://islocal.cc/categories/HPC/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://islocal.cc/2017/08/16/Lustre%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%AE%80%E4%BB%8B/</loc>
+    <lastmod>2017-08-30T08:42:19.707Z</lastmod>
+    <data>
+        <display>
+        <title>Lustre文件系统简介</title>
+        <pubTime>2017-08-16T01:53:32.000Z</pubTime>
+        
+        <tag>Lustre</tag>
+         
+        <tag>文件系统</tag>
+         
+        <tag>分布式</tag>
+         
+        <tag>集群</tag>
+         
+         
+           
+             
+              <breadCrumb title="HPC" url="http://islocal.cc/categories/HPC/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/2016/08/16/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E9%9B%86%E5%90%88/</loc>
     <lastmod>2017-08-29T08:52:34.037Z</lastmod>
     <data>
@@ -186,32 +260,6 @@
 
     
   <url>
-    <loc>http://islocal.cc/2017/08/16/Lustre%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E9%83%A8%E7%BD%B2/</loc>
-    <lastmod>2017-08-23T08:44:32.523Z</lastmod>
-    <data>
-        <display>
-        <title>Lustre文件系统部署</title>
-        <pubTime>2017-08-16T07:44:31.000Z</pubTime>
-        
-        <tag>Lustre</tag>
-         
-        <tag>文件系统</tag>
-         
-        <tag>分布式</tag>
-         
-        <tag>集群</tag>
-         
-         
-           
-             
-              <breadCrumb title="HPC" url="http://islocal.cc/categories/HPC/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://islocal.cc/2017/08/17/Jenkins%E6%89%93%E5%8C%85%E4%B8%8D%E8%83%BD%E5%8F%91%E7%8E%B0%E6%9C%AC%E5%9C%B0%E4%BB%93%E5%BA%93%E5%8C%85/</loc>
     <lastmod>2017-08-17T09:05:50.311Z</lastmod>
     <data>
@@ -260,11 +308,11 @@
         <title>Xshell 使用技巧</title>
         <pubTime>2016-08-19T06:17:46.000Z</pubTime>
         
-        <tag>xshell</tag>
-         
         <tag>Linux</tag>
          
         <tag>常识</tag>
+         
+        <tag>xshell</tag>
          
          
            
@@ -294,32 +342,6 @@
            
              
               <breadCrumb title="Linux常识" url="http://islocal.cc/categories/Linux%E5%B8%B8%E8%AF%86/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://islocal.cc/2017/08/16/Lustre%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F%E7%AE%80%E4%BB%8B/</loc>
-    <lastmod>2017-08-16T07:44:07.714Z</lastmod>
-    <data>
-        <display>
-        <title>Lustre文件系统简介</title>
-        <pubTime>2017-08-16T01:53:32.000Z</pubTime>
-        
-        <tag>Lustre</tag>
-         
-        <tag>文件系统</tag>
-         
-        <tag>分布式</tag>
-         
-        <tag>集群</tag>
-         
-         
-           
-             
-              <breadCrumb title="HPC" url="http://islocal.cc/categories/HPC/"/>
           
         </display>
     </data>
