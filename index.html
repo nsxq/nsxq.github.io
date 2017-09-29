@@ -248,6 +248,243 @@
             
               
                 
+                <a class="post-title-link" href="/2017/09/29/Zabbix-2-监控客户端安装/" itemprop="url">
+                  Zabbix(2)监控客户端安装
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-09-29T16:28:45+08:00" content="2017-09-29">
+              2017-09-29
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/监控/" itemprop="url" rel="index">
+                    <span itemprop="name">监控</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="linux-客户端安装"><a href="#linux-客户端安装" class="headerlink" title="linux 客户端安装"></a>linux 客户端安装</h1><h2 id="安装客户端软件"><a href="#安装客户端软件" class="headerlink" title="安装客户端软件"></a>安装客户端软件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">rpm -ivh http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-release-3.4-2.el7.noarch.rpm</div><div class="line">yum install zabbix-agent</div></pre></td></tr></table></figure>
+<h2 id="配置连接服务器信息"><a href="#配置连接服务器信息" class="headerlink" title="配置连接服务器信息"></a>配置连接服务器信息</h2><p>vim /etc/zabbix/zabbix_agentd.conf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Server=192.168.6.103</div><div class="line">ServerActive=192.168.6.103</div><div class="line">Hostname=silu1</div></pre></td></tr></table></figure></p>
+<h2 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">systemctl start zabbix-agent</div><div class="line">systemctl enable zabbix-agent</div></pre></td></tr></table></figure>
+<h2 id="添加主机"><a href="#添加主机" class="headerlink" title="添加主机"></a>添加主机</h2><p><em>主机名称一定要和配置文件中的Hostname一致</em><br><img src="/images/2017/0929/11.png" alt="zabbix_install"><br><img src="/images/2017/0929/12.png" alt="zabbix_install"><br><img src="/images/2017/0929/13.png" alt="zabbix_install"></p>
+<h1 id="Windows-客户端安装"><a href="#Windows-客户端安装" class="headerlink" title="Windows 客户端安装"></a>Windows 客户端安装</h1><h2 id="安装windows-客户端"><a href="#安装windows-客户端" class="headerlink" title="安装windows 客户端"></a>安装windows 客户端</h2><p>下载客户端软件 <a href="https://www.zabbix.com/downloads/3.4.0/zabbix_agents_3.4.0.win.zip" target="_blank" rel="external">https://www.zabbix.com/downloads/3.4.0/zabbix_agents_3.4.0.win.zip</a><br>解压到C盘根目录</p>
+<h2 id="配置连接服务器信息-1"><a href="#配置连接服务器信息-1" class="headerlink" title="配置连接服务器信息"></a>配置连接服务器信息</h2><p>C:\zabbix_agents_3.4.0.win\conf\zabbix_agentd.win.conf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">Server=192.168.6.103</div><div class="line">ServerActive=192.168.6.103</div><div class="line">Hostname=silu2</div></pre></td></tr></table></figure></p>
+<h2 id="注册服务"><a href="#注册服务" class="headerlink" title="注册服务"></a>注册服务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">C:\&gt;c:\zabbix_agents_3.4.0.win\bin\win64\zabbix_agentd.exe -i -c c:\zabbix_agents_3.4.0.win\conf\zabbix_agentd.win.conf</div></pre></td></tr></table></figure>
+<h2 id="启动服务-1"><a href="#启动服务-1" class="headerlink" title="启动服务"></a>启动服务</h2><p>使用以下命令启动<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">net start &quot;Zabbix Agent&quot;</div></pre></td></tr></table></figure></p>
+<p>或者在本地服务中启动<br><img src="/images/2017/0929/14.png" alt="zabbix_install"></p>
+<h2 id="添加主机-1"><a href="#添加主机-1" class="headerlink" title="添加主机"></a>添加主机</h2><p>和linux方法以下，选择Windows模板即可</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/09/29/Zabbix-1-监控搭建/" itemprop="url">
+                  Zabbix(1)监控搭建
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-09-29T13:46:28+08:00" content="2017-09-29">
+              2017-09-29
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/监控/" itemprop="url" rel="index">
+                    <span itemprop="name">监控</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Zabbix是一款能够监控各种网络参数以及服务器健康性、完整性的分布式监控软件；<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/09/29/Zabbix-1-监控搭建/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/09/27/JDK环境变量配置/" itemprop="url">
                   JDK环境变量配置
                 </a>
@@ -1136,236 +1373,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/16/Lustre文件系统简介/" itemprop="url">
-                  Lustre文件系统简介
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-08-16T09:53:32+08:00" content="2017-08-16">
-              2017-08-16
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/HPC/" itemprop="url" rel="index">
-                    <span itemprop="name">HPC</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Lustre是一款开源的，基于对象存储的集群并行分布式文件系统，具有很高的扩展性、可用性、易用性、性能等，在高性能计算中应用很广泛，世界十大超级计算中心当中的七个以及超过50%的全球top50超级计算机都在使用Lustre。可以支持上万个节点，数以PB的数量存储系统。从1999年lustre项目起，他的版权所有者就在不断的变换，从lustre项目组到Sun公司到Oracle再到Whamclound，最终被因特尔收购。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/08/16/Lustre文件系统简介/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/07/Mariadb高可用集群搭建/" itemprop="url">
-                  Mariadb(MHA)高可用集群搭建
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-08-07T15:13:34+08:00" content="2017-08-07">
-              2017-08-07
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/数据库/" itemprop="url" rel="index">
-                    <span itemprop="name">数据库</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>MHA（Master High Availability）目前在MySQL高可用方面是一个相对成熟的解决方案，它由日本DeNA公司youshimaton（现就职于Facebook公司）开发，是一套优秀的作为MySQL高可用性环境下故障切换和主从提升的高可用软件。在MySQL故障切换过程中，MHA能做到在0~30秒之内自动完成数据库的故障切换操作，并且在进行故障切换的过程中，MHA能在最大程度上保证数据的一致性，以达到真正意义上的高可用。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/08/07/Mariadb高可用集群搭建/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1410,7 +1417,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">47</span>
+              <span class="site-state-item-count">49</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1427,7 +1434,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">49</span>
+                <span class="site-state-item-count">50</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
