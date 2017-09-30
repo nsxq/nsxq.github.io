@@ -248,6 +248,131 @@
             
               
                 
+                <a class="post-title-link" href="/2017/09/29/Zabbix-3-邮件报警配置/" itemprop="url">
+                  Zabbix(3)邮件报警配置
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-09-29T17:56:22+08:00" content="2017-09-29">
+              2017-09-29
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/监控/" itemprop="url" rel="index">
+                    <span itemprop="name">监控</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="配置邮件发送"><a href="#配置邮件发送" class="headerlink" title="配置邮件发送"></a>配置邮件发送</h1><h2 id="安装mailx"><a href="#安装mailx" class="headerlink" title="安装mailx"></a>安装mailx</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install mailx</div></pre></td></tr></table></figure>
+<p>安装好，自己就有软链接了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@vm03 ~]# ls -l /usr/bin/mail</div><div class="line">lrwxrwxrwx 1 root root 5 May  6 02:07 /usr/bin/mail -&gt; mailx</div></pre></td></tr></table></figure></p>
+<h2 id="配置mailx"><a href="#配置mailx" class="headerlink" title="配置mailx"></a>配置mailx</h2><p>vim /etc/mail.rc<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">set from=user@aliyun.com</div><div class="line">set smtp=smtp.aliyun.com</div><div class="line">set smtp-auth-user=user@aliyun.com</div><div class="line">set smtp-auth-password=&apos;&lt;password&gt;&apos;</div><div class="line">set smtp-auth=login</div></pre></td></tr></table></figure></p>
+<h2 id="发送一封测试邮件"><a href="#发送一封测试邮件" class="headerlink" title="发送一封测试邮件"></a>发送一封测试邮件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">echo &apos;test&apos; |mailx -s &apos;abc&apos; abc@qq.com</div></pre></td></tr></table></figure>
+<h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">vim /etc/zabbix/zabbix_server.conf</div><div class="line">AlertScriptsPath=/usr/lib/zabbix/alertscripts</div></pre></td></tr></table></figure>
+<h2 id="发送邮件脚本"><a href="#发送邮件脚本" class="headerlink" title="发送邮件脚本"></a>发送邮件脚本</h2><p>vim z_sendmail.sh<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">messages=`echo $3 | tr &apos;\r\n&apos; &apos;\n&apos;`</div><div class="line">subject=`echo $2 | tr &apos;\r\n&apos; &apos;\n&apos;`</div><div class="line">echo &quot;$&#123;messages&#125;&quot; | mail -s &quot;$&#123;subject&#125;&quot; $1 &gt;&gt;/tmp/sendmail.log 2&gt;&amp;1</div></pre></td></tr></table></figure></p>
+<h2 id="使用脚本发送一封测试邮件"><a href="#使用脚本发送一封测试邮件" class="headerlink" title="使用脚本发送一封测试邮件"></a>使用脚本发送一封测试邮件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">chmod +x z_sendmail.sh</div><div class="line">touch /tmp/sendmail.log</div><div class="line">chown zabbix.zabbix /tmp/sendmail.log</div><div class="line">./z_sendmail.sh 10887272@qq.com &quot;hello&quot; &quot;abc&quot;</div></pre></td></tr></table></figure>
+<h1 id="添加报警类型"><a href="#添加报警类型" class="headerlink" title="添加报警类型"></a>添加报警类型</h1><h2 id="创建报警类型z-sendmail"><a href="#创建报警类型z-sendmail" class="headerlink" title="创建报警类型z_sendmail"></a>创建报警类型z_sendmail</h2><p>报警-报警媒介类型-创建媒体类型<br><img src="/images/2017/0929/15.png" alt="zabbix_install"><br><img src="/images/2017/0929/16.png" alt="zabbix_install"><br>脚本参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">名称：z_sendmail</div><div class="line">类型：脚本</div><div class="line">脚本名称：z_sendmail.sh</div><div class="line">添加以下3个参数，分别对应z_sendmail.sh脚本需要的3个参数</div><div class="line">收件人地址: &#123;ALERT.SENDTO&#125;</div><div class="line">主题: &#123;ALTER.SUBJECT&#125;</div><div class="line">详细内容: &#123;ALTER.MESSAGE&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="设置用户报警媒介"><a href="#设置用户报警媒介" class="headerlink" title="设置用户报警媒介"></a>设置用户报警媒介</h2><p><img src="/images/2017/0929/17.png" alt="zabbix_install"><br><img src="/images/2017/0929/18.png" alt="zabbix_install"></p>
+<h2 id="配置触发器告警"><a href="#配置触发器告警" class="headerlink" title="配置触发器告警"></a>配置触发器告警</h2><p>修改默认的告警模板，设置为“‘非维护状态’且‘报警值&gt;=警告’”时触发动作<br><img src="/images/2017/0929/20.png" alt="zabbix_install"><br><img src="/images/2017/0929/21.png" alt="zabbix_install"><br>故障操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">默认接收人：故障&#123;TRIGGER.STATUS&#125;:服务器 &#123;HOSTNAME1&#125;:&#123;TRIGGER.NAME&#125;</div><div class="line">默认信息:</div><div class="line">告警主机:&#123;HOSTNAME1&#125;</div><div class="line">告警时间:&#123;EVENT.DATE&#125; &#123;EVENT.TIME&#125;</div><div class="line">告警等级:&#123;TRIGGER.SEVERITY&#125;</div><div class="line">告警信息: &#123;TRIGGER.NAME&#125;</div><div class="line">告警项目:&#123;TRIGGER.KEY1&#125;</div><div class="line">问题详情:&#123;ITEM.NAME&#125;:&#123;ITEM.VALUE&#125;</div><div class="line">当前状态:&#123;TRIGGER.STATUS&#125;:&#123;ITEM.VALUE1&#125;</div><div class="line">事件ID:&#123;EVENT.ID&#125;</div><div class="line">请至Montoring-Events中查看详细情况。</div></pre></td></tr></table></figure></p>
+<p><img src="/images/2017/0929/22.png" alt="zabbix_install"><br>恢复操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">默认接收人：恢复&#123;TRIGGER.STATUS&#125;:服务器&#123;HOSTNAME1&#125;:&#123;TRIGGER.NAME&#125;</div><div class="line">默认信息：告警主机:&#123;HOSTNAME1&#125;</div><div class="line">告警时间:&#123;EVENT.DATE&#125; &#123;EVENT.TIME&#125;</div><div class="line">告警等级:&#123;TRIGGER.SEVERITY&#125;</div><div class="line">告警信息: &#123;TRIGGER.NAME&#125;</div><div class="line">告警项目:&#123;TRIGGER.KEY1&#125;</div><div class="line">问题详情:&#123;ITEM.NAME&#125;:&#123;ITEM.VALUE&#125;</div><div class="line">当前状态:&#123;TRIGGER.STATUS&#125;:&#123;ITEM.VALUE1&#125;</div><div class="line">事件ID:&#123;EVENT.ID&#125;</div><div class="line">报警已恢复，请放松心情。</div></pre></td></tr></table></figure></p>
+<h2 id="测试告警"><a href="#测试告警" class="headerlink" title="测试告警"></a>测试告警</h2><p>关闭zabbix agent，测试邮件</p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><img src="/images/2017/0929/23.png" alt="zabbix_install"></h2><p><em>ps:我用qq邮箱+授权码方式测试邮件，手动发送可以，系统提示发送成功，就是收不到，浪费了一天时间，坑好深！使用阿里云邮箱测试顺利！</em></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/09/29/Zabbix-2-监控客户端安装/" itemprop="url">
                   Zabbix(2)监控客户端安装
                 </a>
@@ -1256,123 +1381,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/16/Lustre文件系统部署/" itemprop="url">
-                  Lustre文件系统部署
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-08-16T15:44:31+08:00" content="2017-08-16">
-              2017-08-16
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/HPC/" itemprop="url" rel="index">
-                    <span itemprop="name">HPC</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>软件下载<br><a href="https://downloads.hpdd.intel.com/public/lustre/" target="_blank" rel="external">https://downloads.hpdd.intel.com/public/lustre/</a><br><a href="https://downloads.hpdd.intel.com/public/e2fsprogs/1.42.7.wc1/" target="_blank" rel="external">https://downloads.hpdd.intel.com/public/e2fsprogs/1.42.7.wc1/</a><br><a href="http://mirror.symnds.com/software/zfsonlinux/repo/epel-testing/6/x86_64/ldiskfsprogs-1.42.7.wc1.3chaos-7.ch5.1.1.x86_64.rpm" target="_blank" rel="external">http://mirror.symnds.com/software/zfsonlinux/repo/epel-testing/6/x86_64/ldiskfsprogs-1.42.7.wc1.3chaos-7.ch5.1.1.x86_64.rpm</a></p>
-<p>查看lustre版本和操作系统对应关系参考：<a href="https://wiki.hpdd.intel.com/display/PUB/Lustre+Support+Matrix" target="_blank" rel="external">https://wiki.hpdd.intel.com/display/PUB/Lustre+Support+Matrix</a></p>
-<p>2.4以后的版本支持多个mds<br>查看lustre版本<br>lctl get_param version</p>
-<p>&lt;未完待续&gt;</p>
-<p>参考文档：<br><a href="http://www.google.com.pg/patents/CN102169448A?cl=zh" target="_blank" rel="external">http://www.google.com.pg/patents/CN102169448A?cl=zh</a><br><a href="http://cdn.opensfs.org/wp-content/uploads/2014/10/6-LUG-Inspur-WWWrevised.pdf" target="_blank" rel="external">http://cdn.opensfs.org/wp-content/uploads/2014/10/6-LUG-Inspur-WWWrevised.pdf</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1417,7 +1425,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">49</span>
+              <span class="site-state-item-count">50</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
