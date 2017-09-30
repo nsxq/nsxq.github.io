@@ -248,6 +248,121 @@
             
               
                 
+                <a class="post-title-link" href="/2017/06/22/Ansible-Playbook入门篇/" itemprop="url">
+                  Ansible Playbook入门篇
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-06-22T09:04:14+08:00" content="2017-06-22">
+              2017-06-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/自动化运维/" itemprop="url" rel="index">
+                    <span itemprop="name">自动化运维</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>playbook 是由一组ansible调用module命令的集合，使用yaml语言编写，执行顺序自上而下；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">命令格式：ansible-playbook test.yml</div></pre></td></tr></table></figure></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/06/22/Ansible-Playbook入门篇/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/06/21/Ansible-模块篇/" itemprop="url">
                   Ansible 模块篇
                 </a>
@@ -1248,233 +1363,11 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/05/12/Oracle入门/" itemprop="url">
-                  Oracle入门
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-05-12T15:51:16+08:00" content="2017-05-12">
-              2017-05-12
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/数据库/" itemprop="url" rel="index">
-                    <span itemprop="name">数据库</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>服务、监听<br>启动oracle服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">su - oracle</div><div class="line">sqlplus /nolog</div><div class="line">sql&gt; conn /as sysdba</div><div class="line">sql&gt; startup</div><div class="line">sql&gt; exit</div></pre></td></tr></table></figure></p>
-<p>启动监听服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lsnrctl start</div></pre></td></tr></table></figure></p>
-<p>配置监听<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">netca</div></pre></td></tr></table></figure></p>
-<p>启动em控制台<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">emctl start dbconsole</div></pre></td></tr></table></figure></p>
-<p>创建数据库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dbca</div></pre></td></tr></table></figure></p>
-<p>连接数据库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sqlplus /nolog</div><div class="line">conn / as sysdba;</div></pre></td></tr></table></figure></p>
-<p>连接数据库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conn system/password;</div></pre></td></tr></table></figure></p>
-<p>断开数据库连接<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">disc[onnect]</div></pre></td></tr></table></figure></p>
-<p>将屏幕上的内容输入到文件中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">spool d:\a.txt</div><div class="line">……</div><div class="line">spool off;</div></pre></td></tr></table></figure></p>
-<p>创建用户</p>
-<p>密码必须以字母开头<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">create user xiaoming identified by m123;</div></pre></td></tr></table></figure></p>
-<p>sys用户：超级管理员，权限最高，dba角色，默认密码：change_on_install<br>system用户：系统管理员，没有create database权限，默认密码：manager<br>普通用户：新建的用户无登录数据库权限<br>查看当前用户<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">show user；</div></pre></td></tr></table></figure></p>
-<p>修改密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">1. passw[ord]</div><div class="line">2. alter user 用户名 identified by 新密码;</div></pre></td></tr></table></figure></p>
-<p>删除用户<br>如果用户已经创建表，删除的时候加一个cascade参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">drop user 用户名 cascade</div></pre></td></tr></table></figure></p>
-<p>授予权限<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">grant select on emp to xiaoming;</div><div class="line">grant all on emp to xiaoming;</div></pre></td></tr></table></figure></p>
-<p>收回权限<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">revoke all on emp to xiaoming;</div></pre></td></tr></table></figure></p>
-<p>收回上级权限，下级权限也相应取消<br>对象权限授权<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">grant select on emp to xiaoming with grant option;</div><div class="line">conn xiaoming/m1234;</div><div class="line">grant select on scott.emp to xiaohong;</div></pre></td></tr></table></figure></p>
-<p>系统权限授权<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">grant connect to xiaoming with admin option;</div><div class="line">conn xiaoming/1234;</div><div class="line">grant connect to xiaohong;</div></pre></td></tr></table></figure></p>
-<p>用户口令管理<br>建立数据库时候，oracle会建立默认的default的profile，当没有给用户指定profile的时候，oracle会将default的profile分配给用户<br>创建profile文件<br>用户输入3次错误密码后被锁定2天<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">create profile lock_account limit failed_login_attempts 3 password_lock_time 2;</div><div class="line">alter user xiaoming profile lock_account;</div></pre></td></tr></table></figure></p>
-<p>用户解锁<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">alter user xiaoming account unlock;</div></pre></td></tr></table></figure></p>
-<p>定期修改密码<br>要求用每隔30天修改登录密码，宽限期为2天，32天后没有修改将不能登录<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">create profile myprofile limit password_life_time 30 password_grace_time 2;</div><div class="line">alter user xiaoming profile myprofile;</div></pre></td></tr></table></figure></p>
-<p>口令历史<br>希望用户修改密码的时候，不能使用之前的密码；使用口令历史，oracle会将之前的密码存在数据字典中，当用户修改密码时，oracle会将新输入的密码和旧密码进行比对，如果一样，会提示重新输入。<br>不能使用10内使用过的密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">create profile password_history limit password_life_time 10 password_grace_time 2 password_reuse_time 10</div><div class="line">alter user xiaoming profile password_history;</div></pre></td></tr></table></figure></p>
-<p>删除profile文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">drop profile password_history [cascade]</div></pre></td></tr></table></figure></p>
-<p>###############Day2############<br>创建表<br>必须以字母开头<br>长度不能超过30个字符<br>不能使用oracle保留字<br>只能使用a-zA-Z0-9$#</p>
-<p>字符型<br>char 2000<br>varchar2 4000<br>clob 4000+<br>数字型<br>number 整数，小数 -(10^38) ~ 10^38<br>日期类型<br>date  包含年月日和时分秒<br>timestamp 时间戳，精度更高<br>图片<br>blob</p>
-<p>创建student表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">create table student(</div><div class="line">xh number(4),</div><div class="line">xm varchar2(20),</div><div class="line">sex char(2),</div><div class="line">birthday date,</div><div class="line">sal num(7,2)</div><div class="line">);</div></pre></td></tr></table></figure></p>
-<p>添加一个字段<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">alter table student add(classID number(2));</div></pre></td></tr></table></figure></p>
-<p>修改字段长度<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">alter table student modify(xm varchar2(30));</div></pre></td></tr></table></figure></p>
-<p>修改字段的类型/或者名字（不能有数据）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">alter table student modify (xm char(30));</div></pre></td></tr></table></figure></p>
-<p>删除一个字段<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">alter table student drop column sal;</div></pre></td></tr></table></figure></p>
-<p>修改表名字<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rename student to stu;</div></pre></td></tr></table></figure></p>
-<p>删除表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">drop table student;</div></pre></td></tr></table></figure></p>
-<p>修改日期默认格式<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">alter session set nls_date_format=&apos;mm-dd-yyyy&apos;</div></pre></td></tr></table></figure></p>
-<p>插入数据<br>插入所有字段<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">insert into student values(1,&apos;小明&apos;,&apos;男&apos;,&apos;03-14-2017&apos;,3200.00)</div></pre></td></tr></table></figure></p>
-<p>插入部分字段<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">insert into student(xh,xm,sex) values(&apos;23&apos;,小张&apos;,&apos;男&apos;)</div></pre></td></tr></table></figure></p>
-<p>插入空值<br>修改数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">update student set sex=&apos;女&apos; where xm=&apos;小明&apos;;</div></pre></td></tr></table></figure></p>
-<p>修改多个字段，用逗号隔开</p>
-<p>将一行数据复制多条<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">insert into users (userid,username,userpass) select * from users;</div></pre></td></tr></table></figure></p>
-<p>查询字段为[非]空<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from student where brithday is [not] null;</div></pre></td></tr></table></figure></p>
-<p>删除数据,不删除表结构，记录在日志中，删除之前建立一个回滚点savepoint aa;可恢复<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">delete from student;</div></pre></td></tr></table></figure></p>
-<p>删除数据后回滚<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rollback to aa;</div></pre></td></tr></table></figure></p>
-<p>删除表的结构和数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">drop table student;</div></pre></td></tr></table></figure></p>
-<p>删除表数据，不删除表结构，不记录在日志中，不可恢复，速度快；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">truncate table student;</div></pre></td></tr></table></figure></p>
-<p>查看表结构<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">desc table_name;</div></pre></td></tr></table></figure></p>
-<p>查询所有列<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from dept;</div></pre></td></tr></table></figure></p>
-<p>查询指定列<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select ename,sal,job,deption from dept;</div></pre></td></tr></table></figure></p>
-<p>取消重复行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select distinct deptno,job from emp;</div></pre></td></tr></table></figure></p>
-<p>打开显示操作时间<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">set timing on;</div></pre></td></tr></table></figure></p>
-<p>nvl处理null值，当字段为null，当0处理<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select sal*13+nvl(comm,0)*13 &quot;年工资&quot;,ename,comm from emp;</div></pre></td></tr></table></figure></p>
-<p>like<br>%表示0到多个字符<br>_表示任意单个字符</p>
-<p>多个值匹配<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from emp where empno in(123,234,500);</div></pre></td></tr></table></figure></p>
-<p>or &amp; and<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from emp where (sal&gt;500 or job=&apos;Manager&apos;) and ename like &apos;J%&apos;;</div></pre></td></tr></table></figure></p>
-<p>默认排序低到高<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">order by [asc/desc]</div><div class="line">select * from emp order by sal;</div><div class="line">`</div></pre></td></tr></table></figure></p>
-<p>按部门编号升序，薪水降序列；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from emp order by depto, sal desc;</div></pre></td></tr></table></figure></p>
-<p>列别名排序<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select ename,(sal+nvl(comm,0))*12 [as] &quot;年薪&quot; from emp order by &quot;年薪&quot;;</div></pre></td></tr></table></figure></p>
-<p>复杂查询<br>max，min，avg，sum，count<br>查询一个最高工资，最低工资<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select max(sal),min(sal) from emp;</div></pre></td></tr></table></figure></p>
-<p>查出最高工资员工<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select ename,sal from emp where sal=(select max(sal) from emp);</div></pre></td></tr></table></figure></p>
-<p>显示工资高于平均工资的员工<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from emp where sal&gt;(select avg(sal) from emp);</div></pre></td></tr></table></figure></p>
-<p>group by<br>按部门分组，查出部门平均工资和最高工资<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select avg(sal),max(sal),deptno from emp group by deptno;</div></pre></td></tr></table></figure></p>
-<p>显示每个部门的每种岗位的平均工资，最高工资<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select avg(sal),max(sal),deptno,job from emp group by deptno,job;</div></pre></td></tr></table></figure></p>
-<p>having</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select avg(sal),max(sal),deptno  from emp group by deptno having avg(sal)&gt;2000;</div></pre></td></tr></table></figure>
-<p>同一条语句出现顺序，优先级group by &gt; having &gt; order by<br>在选择列中，如果有列，表达式和分组函数，那么这些列和表达式中必须有一个出现在group by字句中，否则会报错</p>
-<p>多表查询<br>多表查询的条件是至少不能少于表的个数-1<br>笛卡尔集<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select a1.ename,a1.sal,a2.dname from emp a1, dept a2 where a1.deptno=a2.deptno;</div></pre></td></tr></table></figure></p>
-<p>between 在两者之间<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select a1.ename,a1.sal,a2.grade from emp a1,salgrade a2 where a1.sal between  a2.losal and a2.hisal;</div></pre></td></tr></table></figure></p>
-<p>多表排序<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select a1.ename,a2.dname,a1.sal from emp a1,dept a2 where a1.deptno=a2.deptno order by a1.deptno;</div></pre></td></tr></table></figure></p>
-<p>自连接</p>
-<p>子查询<br>数据库执行sql语句从左到右<br>单行子查询<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from emp where deptno=(select deptno from emp where ename=&apos;SMITH&apos;);</div></pre></td></tr></table></figure></p>
-<p>多行子查询<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from emp where job in(select distinct job from emp where deptno=10);</div></pre></td></tr></table></figure></p>
-<p>all<br>查出工资比部门30的所有员工的工资都高的员工的姓名，工资和部门号<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">select ename,sal,deptno from emp where sal&gt;all(select all from emp where deptno=30);</div><div class="line">select * from emp where sal&gt;(select max(sal) from emp where deptno=30)</div></pre></td></tr></table></figure></p>
-<p>any<br>查出工资比部门30的任意一个员工的工资高的员工的姓名，工资和部门号<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">select ename,sal,dept from emp where sal&gt;any(select all from emp where deptno=30);</div><div class="line">select * from emp where sal&gt;(select min(sal) from emp where deptno=30)</div></pre></td></tr></table></figure></p>
-<p>多列子查询<br>查出与SMITH部门和岗位完全相同的所有职员<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from emp where (deptno,job)=(select deptno,job from emp where ename=&apos;SMITH&apos;);</div></pre></td></tr></table></figure></p>
-<p>查询高于自己部门平均工资的员工的信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select a2.ename,a2.sal,a2.deptno,a1.mysal from emp a2,(select deptno,avg(sal) mysql from emp group by deptno) a1 where a2.deptno=a1.deptno and a2.sal &gt; a1.mysal;</div></pre></td></tr></table></figure></p>
-<p>内嵌视图就是子查询当一个表使用，当在from子句中使用子查询时，必须给子查询指定别名；<br>列加别名可以加as，表加别名不能加as</p>
-<p>分页查询<br>一共有三种方式</p>
-<ol>
-<li><p>rownum 分页</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select * from (select a1.*,rownum rn from (select * from emp) a1 where rownum&lt;=10) where rn&gt;6;</div></pre></td></tr></table></figure>
-</li>
-<li><p>ROWID 分页<br>速度最快</p>
-</li>
-<li><p>按分析函数分页<br>速度最慢</p>
-</li>
-</ol>
-<p>查询结果创建新表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">create table mytable (id,name,sal,job,deptno) as select empno,ename,sal from emp;</div></pre></td></tr></table></figure></p>
-<p>合并查询<br>为了合并多个select语句的结果，可以使用集合操作符号union，union all，intersect，minus.<br>union<br>去多个select查询结果的并集，取消重复行<br>union all<br>和union 类似，不取消重复行，or关系<br>intersect<br>取交集结果<br>minus<br>取差集（一个集合完全包含另一个集合，取没有的部分）</p>
-<p>数据库管理员职责：</p>
-<ol>
-<li>安装和升级oracle数据库</li>
-<li>建库，表空间，表，视图，索引……</li>
-<li>指定并实施备份和恢复计划</li>
-<li>数据库权限管理，调优，故障排除，</li>
-<li>对于高级dba，要求能参与项目开发，会编写sql语句，存储过程，触发器，规则，约束，包</li>
-</ol>
-<p>sys用户：<br>所有oracle的数据字典的基表和动态视图都存在sys用户中；<br>sys拥有dba（数据库管理员角色），sysdba（系统管理员），sysoper（系统操作员） 角色和权限；<br>是oracle最高权限用户，必须以as sysdba或as sysoper形式登录，不能以normal方式登录数据库</p>
-<p>system 用户：<br>存放次级用户内部数据;<br>拥有dba，sysdba角色及权限；</p>
-<p>显示oracle 初始化参数<br>show parameter;</p>
-<p>数据库的逻辑备份和恢复</p>
-<p>导出表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">exp userid=username/passwd@sid tables=(table1,table2,table3) file=/path/x.dmp</div></pre></td></tr></table></figure></p>
-<p>导入表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">imp userid=username/passwd@sid tables=(table1,table2,table3) file=/path/x.dmp</div></pre></td></tr></table></figure></p>
-<p>使用直接导出方式<br>这种方式比默认常规的方式速度要快，当数据量大时，可以考虑这种方法，这时需要数据库的字符集要与客户端的字符集完全一致，否则报错<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">exp userid=username/passwd@sid tables=(table1,table2,table3) file=/path/x.dmp direct=y</div></pre></td></tr></table></figure></p>
-<p>导出表结构<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">exp userid=username/passwd@sid tables=(table1,table2,table3) file=/path/x.dmp rows=n</div></pre></td></tr></table></figure></p>
-<p>导出方案<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">exp username/passwd@sid owner=username file=/path/x.dmp</div></pre></td></tr></table></figure></p>
-<p>导出数据库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">exp userid=system/passwd@sid full=y inctype=complete file=/path/xx.dmp</div><div class="line">imp userid=system/manager full=y file=/path/xx.dmp</div></pre></td></tr></table></figure></p>
-<p>数据字典记录了数据库的系统信息，它是只读表和视图的集合，数据字典的所有者为sys用户，用户只能在数据字典上执行查询操作，而其维护和修改是由系统自动完成的<br>数据字典包括字典基表和数据字典动态视图，其中基表存储数据库的基本信息，普通用户不能直接访问数据字典的基表，数据字典视图是基于数据字典基表所建立的视图，普通用户可以通过查询数据字典的视图取得系统信息<br>数据字典视图主要包括user_xxx,all_xxx,dba_xxx三种类型</p>
-<p>user_tables;<br>用于显示当前用户拥有的所有表，只返回用户所对应方案的所有表；<br>select table_name from user_tables;<br>all_tables;<br>用于显示当前用户可以访问的所有表;<br>select table_name from all_tables;<br>dba_tables;<br>用户显示所有方案拥有的数据库表。但是查询这种数据库字典视图，要求用户必须是dba角色或是有select any table系统权限。<br>select table_name from dba_tables;</p>
-<p>用户名，权限，角色<br>dba_users  可以显示所有数据库用户的详细信息；<br>dba_sys_privs 可以显示用户所具有的系统权限；<br>dba_tab_privs 可以显示用户具有的对象权限;<br>dba_col_privs 可以显示用户具有的列权限；<br>dba_role_privs 可以显示用户所具有的角色。</p>
-<p>查询oracle中所有的系统权限，一般是dba<br>select <em> from system_privilege_map order by name;<br>查询oracle中所有的角色，一般是dba<br>select </em> from dba_roles;<br>查询oracle中所有的对象权限，一般是dba<br>select distinct privilege from dba_tab_privs;<br>查询数据表的表空间<br>select tablespace_name from dba_tablespaces;</p>
-<p>oracle 有多少种角色？<br>select <em> from dba_roles;<br>查询一种角色有多少种权限？<br>a. 一个角色包含的系统权限<br>select </em> from dba_sys_privs where grantee=’CONNECT’;<br>select <em> from role_sys_privs where role=’CONNECT’;<br>b. 一个角色包含的对象权限<br>select </em> from dba_tab_privs where grantee=’CONNECT’;<br>如何查看某个用户具有什么样的角色？<br>select * from dba_role_privs where grantee=’SCOTT’;</p>
-<p>显示当前用户可以访问的所有数据字典视图<br>select <em> from dict where comments like ‘%grant%’<br>显示当前数据库的全称<br>select </em> from global_name;</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1514,7 +1407,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">50</span>
+              <span class="site-state-item-count">51</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

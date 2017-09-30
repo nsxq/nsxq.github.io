@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://islocal.cc/2017/09/30/Zabbix-4-%E9%80%9A%E8%BF%87orabbix%E6%8F%92%E4%BB%B6%E7%9B%91%E6%8E%A7Oracle%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
+    <lastmod>2017-09-30T08:53:29.757Z</lastmod>
+    <data>
+        <display>
+        <title>Zabbix(4)通过orabbix插件监控Oracle数据库</title>
+        <pubTime>2017-09-30T06:14:42.000Z</pubTime>
+        
+        <tag>zabbix</tag>
+         
+        <tag>监控</tag>
+         
+         
+           
+             
+              <breadCrumb title="监控" url="http://islocal.cc/categories/%E7%9B%91%E6%8E%A7/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/2017/09/29/Zabbix-2-%E7%9B%91%E6%8E%A7%E5%AE%A2%E6%88%B7%E7%AB%AF%E5%AE%89%E8%A3%85/</loc>
     <lastmod>2017-09-30T06:12:32.132Z</lastmod>
     <data>
