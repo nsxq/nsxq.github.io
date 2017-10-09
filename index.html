@@ -248,6 +248,133 @@
             
               
                 
+                <a class="post-title-link" href="/2017/10/09/Oracle数据库错误表SYS-AUD-无法通过8192-在表空间SYSTEM中-扩展/" itemprop="url">
+                  Oracle数据库错误表SYS.AUD$无法通过8192(在表空间SYSTEM中)扩展
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-10-09T09:45:23+08:00" content="2017-10-09">
+              2017-10-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/数据库/Troubleshooting/" itemprop="url" rel="index">
+                    <span itemprop="name">Troubleshooting</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>数据库报错信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[Content]</div><div class="line">ORA-00604: 递归 SQL 级别 1 出现错误</div><div class="line">ORA-01653: 表 SYS.AUD$ 无法通过 8192 (在表空间 SYSTEM 中) 扩展</div><div class="line">ORA-02002: 写入审计线索时出错</div><div class="line">ORA-00604: 递归 SQL 级别 1 出现错误</div><div class="line">ORA-01653: 表 SYS.AUD$ 无法通过 8192 (在表空间 SYSTEM 中) 扩展</div></pre></td></tr></table></figure></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/10/09/Oracle数据库错误表SYS-AUD-无法通过8192-在表空间SYSTEM中-扩展/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/09/30/Zabbix-4-通过orabbix插件监控Oracle数据库/" itemprop="url">
                   Zabbix(4)通过orabbix插件监控Oracle数据库
                 </a>
@@ -310,25 +437,12 @@
 
       
         
-          
-            <p>DBforBIX可以支持市面上主流的数据库监控，包括Oracle，Mysql，PostgreSQL，MSSQL，DB2，这篇文章简单的记录一下我监控oracle的过程；<br>软件环境：<br>Jdk 1.8.0_112<br>zabbix 3.4.2<br>orabbix 1.2.3</p>
-<h1 id="安装jdk"><a href="#安装jdk" class="headerlink" title="安装jdk"></a>安装jdk</h1><p>下载jdk：<a href="http://www.oracle.com/technetwork/java/archive-139210.html" target="_blank" rel="external">http://www.oracle.com/technetwork/java/archive-139210.html</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">tar xf jdk-8u112-linux-x64.tar.gz -C /usr/local/</div><div class="line">export JAVA_HOME=/usr/local/jdk1.8.0_112/</div><div class="line">export CLASSPATH=.:$JAVA_HOME/lib/:$JAVA_HOME/jre/lib/</div><div class="line">export PATH=$JAVA_HOME/bin:$PATH</div></pre></td></tr></table></figure></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source /etc/profile</div></pre></td></tr></table></figure>
-<h1 id="oracle中增加监控用户权限"><a href="#oracle中增加监控用户权限" class="headerlink" title="oracle中增加监控用户权限"></a>oracle中增加监控用户权限</h1><h2 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">su - oracle</div><div class="line">$ sqlplus /nolog</div><div class="line">SQL&gt; conn /as sysdba</div><div class="line">SQL&gt; CREATE USER ZABBIX  IDENTIFIED BY &apos;&lt;PASSWORD&gt;&apos; DEFAULT TABLESPACE SYSTEM TEMPORARY TABLESPACE TEMP PROFILE DEFAULT ACCOUNT UNLOCK;</div><div class="line">SQL&gt; CREATE USER ZABBIX  IDENTIFIED BY zabbix DEFAULT TABLESPACE SYSTEM TEMPORARY TABLESPACE TEMP PROFILE DEFAULT ACCOUNT UNLOCK;</div></pre></td></tr></table></figure>
-<h2 id="赋予权限"><a href="#赋予权限" class="headerlink" title="赋予权限"></a>赋予权限</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">GRANT CONNECT TO ZABBIX;</div><div class="line">GRANT RESOURCE TO ZABBIX;</div><div class="line">GRANT CREATE SESSION TO ZABBIX;	</div><div class="line">GRANT SELECT ANY DICTIONARY TO ZABBIX;</div><div class="line">GRANT UNLIMITED TABLESPACE TO ZABBIX;</div><div class="line">GRANT SELECT ANY DICTIONARY TO ZABBIX;</div></pre></td></tr></table></figure>
-<p>如果是oracle11g的话，需执行以下语句<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">SQL&gt; exec dbms_network_acl_admin.create_acl(acl =&gt; ‘resolve.xml’,description =&gt; ‘resolve acl‘, principal =&gt;’ZABBIX’,is_grant =&gt; true, privilege =&gt; ‘resolve’);</div><div class="line">SQL&gt; exec dbms_network_acl_admin.assign_acl(acl =&gt; ‘resolve.xml’, host =&gt;’*&apos;);</div></pre></td></tr></table></figure></p>
-<p>验证语句<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SQL&gt; select utl_inaddr.get_host_name(’127.0.0.1′) from dual;</div></pre></td></tr></table></figure></p>
-<h1 id="安装orabbix"><a href="#安装orabbix" class="headerlink" title="安装orabbix"></a>安装orabbix</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mkdir /usr/local/orabbix</div><div class="line">mv orabbix-1.2.3.zip /usr/local/orabbix/</div><div class="line">unzip orabbix-1.2.3.zip</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cp config.props.sample config.props</div><div class="line">vim config.props</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">ZabbixServerList=ZabbixServer</div><div class="line">ZabbixServer.Address=192.168.6.103</div><div class="line">ZabbixServer.Port=10051</div><div class="line">OrabbixDaemon.Sleep=300</div><div class="line">OrabbixDaemon.MaxThreadNumber=100</div><div class="line">DatabaseList=vm00</div><div class="line">DatabaseList.MaxActive=10</div><div class="line">DatabaseList.MaxWait=100</div><div class="line">DatabaseList.MaxIdle=1</div><div class="line">vm00.Url=jdbc:oracle:thin:@192.168.6.100:1521:ORCL</div><div class="line">vm00.User=ZABBIX</div><div class="line">vm00.Password=ffffff</div><div class="line">vm00.MaxActive=10</div><div class="line">vm00.MaxWait=100</div><div class="line">vm00.MaxIdle=1</div><div class="line">vm00.QueryListFile=./conf/query.props</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cd /usr/local/orabbix</div><div class="line">chmod +x run.sh</div><div class="line">cp init.d/orabbix /etc/init.d/</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">修改orabbix=/opt/orabbix为orabbix=/usr/local/orabbix</div><div class="line">chmod +x /etc/init.d/orabbix</div><div class="line">chkconfig --level 35 --add orabbix </div><div class="line">/etc/init.d/orabbix start</div></pre></td></tr></table></figure>
-<h1 id="导入模板"><a href="#导入模板" class="headerlink" title="导入模板"></a>导入模板</h1><p>将/usr/local/orabbix/template/Orabbix_export_full.xml模板导入<br><img src="/images/2017/0930/01.png" alt="zabbix_install"><br><img src="/images/2017/0930/02.png" alt="zabbix_install"><br>添加主机，关联oracle数据库监控模板<br><img src="/images/2017/0930/03.png" alt="zabbix_install"><br>默认的配置文件无法正常获取到dbfilesize和dbsize，需要手动修改一下配置文件<br>/usr/local/orabbix/conf/query.props<br>在配置文件最后添加<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">dbfilesize.Query=select to_char(sum(bytes/1024/1024/10), &apos;FM99999999999999990&apos;) retvalue from dba_data_files</div><div class="line"> </div><div class="line">dbsize.Query=SELECT to_char(sum(  NVL(a.bytes/1024/1024/10 - NVL(f.bytes/1024/1024/10, 0), 0)), &apos;FM99999999999999990&apos;) retvalue \</div><div class="line">FROM sys.dba_tablespaces d, \</div><div class="line">(select tablespace_name, sum(bytes) bytes from dba_data_files group by tablespace_name) a, \</div><div class="line">(select tablespace_name, sum(bytes) bytes from dba_free_space group by tablespace_name) f \ </div><div class="line">WHERE d.tablespace_name = a.tablespace_name(+) AND d.tablespace_name = f.tablespace_name(+) \</div><div class="line">AND NOT (d.extent_management like &apos;LOCAL&apos; AND d.contents like &apos;TEMPORARY&apos;)</div></pre></td></tr></table></figure></p>
-<p>在QueryList最后添加,dbfilesize,dbsize<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">QueryList=archive,audit,dbblockgets,dbconsistentgets,dbhitratio,dbphysicalread,dbversion,hitratio_body,hitratio_sqlarea,hitratio_table_proc, \</div><div class="line">lio_current_read,locks,maxprocs,maxsession,miss_latch,pga_aggregate_target, pga,phio_datafile_reads,phio_datafile_writes,phio_redo_writes,pinhitratio_body,pinhitratio_sqlarea,pinhitratio_table-proc,pinhitratio_</div><div class="line">trigger, \</div><div class="line">pool_dict_cache,pool_free_mem,pool_lib_cache,pool_misc,pool_sql_area,procnum,session_active,session_inactive,session,session_system,sga_buffer_cache, \</div><div class="line">sga_fixed,sga_java_pool,sga_large_pool,sga_log_buffer,sga_shared_pool,tbl_space,userconn,waits_controfileio,waits_directpath_read, \</div><div class="line">waits_file_io,waits_latch,waits_logwrite,waits_multiblock_read,waits_singleblock_read,hitratio_trigger,lio_block_changes,lio_consistent_read,waits_other,waits_sqlnet,users_locked,uptime,dbfilesize,dbsize</div></pre></td></tr></table></figure></p>
-<p><img src="/images/2017/0930/04.png" alt="zabbix_install"><br>可以在最新数据里看到已经监控到的数据<br><img src="/images/2017/0930/05.png" alt="zabbix_install"></p>
-<p>参考链接：<br><a href="https://www.kancloud.cn/devops-centos/centos-linux-devops/361200" target="_blank" rel="external">https://www.kancloud.cn/devops-centos/centos-linux-devops/361200</a><br><a href="http://fengwan.blog.51cto.com/508652/1722118" target="_blank" rel="external">http://fengwan.blog.51cto.com/508652/1722118</a><br><a href="http://www.smartmarmot.com/wiki/index.php?title=DBforBIX#Install_steps_for_Oracle" target="_blank" rel="external">http://www.smartmarmot.com/wiki/index.php?title=DBforBIX#Install_steps_for_Oracle</a></p>
-
-          
+          <p>DBforBIX可以支持市面上主流的数据库监控，包括Oracle，Mysql，PostgreSQL，MSSQL，DB2，这篇文章简单的记录一下我监控oracle的过程；<br>软件环境：<br>Jdk 1.8.0_112<br>zabbix 3.4.2<br>orabbix 1.2.3<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/09/30/Zabbix-4-通过orabbix插件监控Oracle数据库/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -1283,121 +1397,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/17/Jenkins打包不能发现本地仓库包/" itemprop="url">
-                  Jenkins打包不能发现本地仓库包
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-08-17T15:48:30+08:00" content="2017-08-17">
-              2017-08-17
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/自动化运维/" itemprop="url" rel="index">
-                    <span itemprop="name">自动化运维</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>jenkins里新建了一个maven风格的项目，打包过程中找不到ojdbc的包，然后手动下载，加载到本地仓库中了，jenkins依然提示找不到这个包。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[ERROR] Failed to execute goal on project atmosphere: Could not resolve dependencies for project com.ths:atmosphere:war:0.0.1-SNAPSHOT: Failure to find com.oracle:ojdbc14:jar:10.2.0.4.0 in https://repo.maven.apache.org/maven2 was cached in the local repository, resolution will not be reattempted until the update interval of central has elapsed or updates are forced -&gt; [Help 1]</div><div class="line">org.apache.maven.lifecycle.LifecycleExecutionException: Failed to execute goal on project atmosphere: Could not resolve dependencies for project com.ths:atmosphere:war:0.0.1-SNAPSHOT: Failure to find com.oracle:ojdbc14:jar:10.2.0.4.0 in https://repo.maven.apache.org/maven2 was cached in the local repository, resolution will not be reattempted until the update interval of central has elapsed or updates are forced</div><div class="line">at org.apache.maven.lifecycle.internal.LifecycleDependencyResolver.getDependencies(LifecycleDependencyResolver.java:221)</div></pre></td></tr></table></figure></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/08/17/Jenkins打包不能发现本地仓库包/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1442,7 +1441,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">51</span>
+              <span class="site-state-item-count">52</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1450,7 +1449,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>

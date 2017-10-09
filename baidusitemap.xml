@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://islocal.cc/2017/09/30/Zabbix-4-%E9%80%9A%E8%BF%87orabbix%E6%8F%92%E4%BB%B6%E7%9B%91%E6%8E%A7Oracle%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
-    <lastmod>2017-09-30T08:53:29.757Z</lastmod>
+    <lastmod>2017-10-09T02:45:49.460Z</lastmod>
     <data>
         <display>
         <title>Zabbix(4)通过orabbix插件监控Oracle数据库</title>
@@ -19,6 +19,31 @@
            
              
               <breadCrumb title="监控" url="http://islocal.cc/categories/%E7%9B%91%E6%8E%A7/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://islocal.cc/2017/10/09/Oracle%E6%95%B0%E6%8D%AE%E5%BA%93%E9%94%99%E8%AF%AF%E8%A1%A8SYS-AUD-%E6%97%A0%E6%B3%95%E9%80%9A%E8%BF%878192-%E5%9C%A8%E8%A1%A8%E7%A9%BA%E9%97%B4SYSTEM%E4%B8%AD-%E6%89%A9%E5%B1%95/</loc>
+    <lastmod>2017-10-09T02:45:05.321Z</lastmod>
+    <data>
+        <display>
+        <title>Oracle数据库错误表SYS.AUD$无法通过8192(在表空间SYSTEM中)扩展</title>
+        <pubTime>2017-10-09T01:45:23.000Z</pubTime>
+        
+        <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
+         
+         
+           
+             
+              <breadCrumb title="数据库" url="http://islocal.cc/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+          
+             
+              <breadCrumb title="Troubleshooting" url="http://islocal.cc/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/Troubleshooting/"/>
           
         </display>
     </data>

@@ -77,24 +77,21 @@
 
 
 
-<meta name="description" content="DBforBIX可以支持市面上主流的数据库监控，包括Oracle，Mysql，PostgreSQL，MSSQL，DB2，这篇文章简单的记录一下我监控oracle的过程；软件环境：Jdk 1.8.0_112zabbix 3.4.2orabbix 1.2.3
-安装jdk下载jdk：http://www.oracle.com/technetwork/java/archive-139210.html123">
+<meta name="description" content="DBforBIX可以支持市面上主流的数据库监控，包括Oracle，Mysql，PostgreSQL，MSSQL，DB2，这篇文章简单的记录一下我监控oracle的过程；软件环境：Jdk 1.8.0_112zabbix 3.4.2orabbix 1.2.3">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Zabbix(4)通过orabbix插件监控Oracle数据库">
 <meta property="og:url" content="http://islocal.cc/2017/09/30/Zabbix-4-通过orabbix插件监控Oracle数据库/index.html">
 <meta property="og:site_name" content="南山居">
-<meta property="og:description" content="DBforBIX可以支持市面上主流的数据库监控，包括Oracle，Mysql，PostgreSQL，MSSQL，DB2，这篇文章简单的记录一下我监控oracle的过程；软件环境：Jdk 1.8.0_112zabbix 3.4.2orabbix 1.2.3
-安装jdk下载jdk：http://www.oracle.com/technetwork/java/archive-139210.html123">
+<meta property="og:description" content="DBforBIX可以支持市面上主流的数据库监控，包括Oracle，Mysql，PostgreSQL，MSSQL，DB2，这篇文章简单的记录一下我监控oracle的过程；软件环境：Jdk 1.8.0_112zabbix 3.4.2orabbix 1.2.3">
 <meta property="og:image" content="http://islocal.cc/images/2017/0930/01.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/0930/02.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/0930/03.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/0930/04.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/0930/05.png">
-<meta property="og:updated_time" content="2017-09-30T08:53:29.757Z">
+<meta property="og:updated_time" content="2017-10-09T02:45:49.460Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Zabbix(4)通过orabbix插件监控Oracle数据库">
-<meta name="twitter:description" content="DBforBIX可以支持市面上主流的数据库监控，包括Oracle，Mysql，PostgreSQL，MSSQL，DB2，这篇文章简单的记录一下我监控oracle的过程；软件环境：Jdk 1.8.0_112zabbix 3.4.2orabbix 1.2.3
-安装jdk下载jdk：http://www.oracle.com/technetwork/java/archive-139210.html123">
+<meta name="twitter:description" content="DBforBIX可以支持市面上主流的数据库监控，包括Oracle，Mysql，PostgreSQL，MSSQL，DB2，这篇文章简单的记录一下我监控oracle的过程；软件环境：Jdk 1.8.0_112zabbix 3.4.2orabbix 1.2.3">
 <meta name="twitter:image" content="http://islocal.cc/images/2017/0930/01.png">
 
 
@@ -322,7 +319,7 @@
       
 
       
-        <p>DBforBIX可以支持市面上主流的数据库监控，包括Oracle，Mysql，PostgreSQL，MSSQL，DB2，这篇文章简单的记录一下我监控oracle的过程；<br>软件环境：<br>Jdk 1.8.0_112<br>zabbix 3.4.2<br>orabbix 1.2.3</p>
+        <p>DBforBIX可以支持市面上主流的数据库监控，包括Oracle，Mysql，PostgreSQL，MSSQL，DB2，这篇文章简单的记录一下我监控oracle的过程；<br>软件环境：<br>Jdk 1.8.0_112<br>zabbix 3.4.2<br>orabbix 1.2.3<br><a id="more"></a></p>
 <h1 id="安装jdk"><a href="#安装jdk" class="headerlink" title="安装jdk"></a>安装jdk</h1><p>下载jdk：<a href="http://www.oracle.com/technetwork/java/archive-139210.html" target="_blank" rel="external">http://www.oracle.com/technetwork/java/archive-139210.html</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">tar xf jdk-8u112-linux-x64.tar.gz -C /usr/local/</div><div class="line">export JAVA_HOME=/usr/local/jdk1.8.0_112/</div><div class="line">export CLASSPATH=.:$JAVA_HOME/lib/:$JAVA_HOME/jre/lib/</div><div class="line">export PATH=$JAVA_HOME/bin:$PATH</div></pre></td></tr></table></figure></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">source /etc/profile</div></pre></td></tr></table></figure>
 <h1 id="oracle中增加监控用户权限"><a href="#oracle中增加监控用户权限" class="headerlink" title="oracle中增加监控用户权限"></a>oracle中增加监控用户权限</h1><h2 id="创建用户"><a href="#创建用户" class="headerlink" title="创建用户"></a>创建用户</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">su - oracle</div><div class="line">$ sqlplus /nolog</div><div class="line">SQL&gt; conn /as sysdba</div><div class="line">SQL&gt; CREATE USER ZABBIX  IDENTIFIED BY &apos;&lt;PASSWORD&gt;&apos; DEFAULT TABLESPACE SYSTEM TEMPORARY TABLESPACE TEMP PROFILE DEFAULT ACCOUNT UNLOCK;</div><div class="line">SQL&gt; CREATE USER ZABBIX  IDENTIFIED BY zabbix DEFAULT TABLESPACE SYSTEM TEMPORARY TABLESPACE TEMP PROFILE DEFAULT ACCOUNT UNLOCK;</div></pre></td></tr></table></figure>
@@ -394,6 +391,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/09/Oracle数据库错误表SYS-AUD-无法通过8192-在表空间SYSTEM中-扩展/" rel="prev" title="Oracle数据库错误表SYS.AUD$无法通过8192(在表空间SYSTEM中)扩展">
+                Oracle数据库错误表SYS.AUD$无法通过8192(在表空间SYSTEM中)扩展 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -467,7 +468,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">51</span>
+              <span class="site-state-item-count">52</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -475,7 +476,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-count">11</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
