@@ -61,7 +61,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="数据库,Oracle," />
+  <meta name="keywords" content="数据库,Oracle,Troubleshooting," />
 
 
 
@@ -84,7 +84,7 @@
 <meta property="og:site_name" content="南山居">
 <meta property="og:description" content="数据库报错信息123456[Content]ORA-00604: 递归 SQL 级别 1 出现错误ORA-01653: 表 SYS.AUD$ 无法通过 8192 (在表空间 SYSTEM 中) 扩展ORA-02002: 写入审计线索时出错ORA-00604: 递归 SQL 级别 1 出现错误ORA-01653: 表 SYS.AUD$ 无法通过 8192 (在表空间 SYSTEM 中) 扩展">
 <meta property="og:image" content="http://islocal.cc/images/2017/1009/01.png">
-<meta property="og:updated_time" content="2017-10-09T02:45:05.321Z">
+<meta property="og:updated_time" content="2017-10-09T08:36:20.257Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Oracle数据库错误表SYS.AUD$无法通过8192(在表空间SYSTEM中)扩展">
 <meta name="twitter:description" content="数据库报错信息123456[Content]ORA-00604: 递归 SQL 级别 1 出现错误ORA-01653: 表 SYS.AUD$ 无法通过 8192 (在表空间 SYSTEM 中) 扩展ORA-02002: 写入审计线索时出错ORA-00604: 递归 SQL 级别 1 出现错误ORA-01653: 表 SYS.AUD$ 无法通过 8192 (在表空间 SYSTEM 中) 扩展">
@@ -284,18 +284,6 @@
 
                 
                 
-                  ， 
-                
-
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/数据库/Troubleshooting/" itemprop="url" rel="index">
-                    <span itemprop="name">Troubleshooting</span>
-                  </a>
-                </span>
-
-                
-                
 
               
             </span>
@@ -329,11 +317,12 @@
       
         <p>数据库报错信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[Content]</div><div class="line">ORA-00604: 递归 SQL 级别 1 出现错误</div><div class="line">ORA-01653: 表 SYS.AUD$ 无法通过 8192 (在表空间 SYSTEM 中) 扩展</div><div class="line">ORA-02002: 写入审计线索时出错</div><div class="line">ORA-00604: 递归 SQL 级别 1 出现错误</div><div class="line">ORA-01653: 表 SYS.AUD$ 无法通过 8192 (在表空间 SYSTEM 中) 扩展</div></pre></td></tr></table></figure></p>
 <a id="more"></a>
-<p>该错误原因为表空间无法扩展故障，查找后得知单个表空间文件最大32G，有两个方法扩大表空间<br>（1）创建多个数据文件，都不能超过32g<br>（2）创建大表空间。create bigfile tablespace  他的上限是32t，不过，oracle10及以后版本才能用。<br>这里我们使用第一种方法处理一下此故障。</p>
+<p>该错误原因为表空间无法扩展故障，查找后得知单个表空间文件最大32G，有两个方法扩大表空间<br>（1）创建多个数据文件，都不能超过32g<br>（2）创建大表空间。create bigfile tablespace  他的上限是8EB，不过，oracle10及以后版本才能用。<br>这里我们使用第一种方法处理一下此故障。</p>
 <h1 id="Windows下切换SID"><a href="#Windows下切换SID" class="headerlink" title="Windows下切换SID"></a>Windows下切换SID</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">C:\Users\Administrator&gt;SET ORACLE_SID=sx21</div><div class="line">C:\Users\Administrator&gt;sqlplus /nolog</div><div class="line">SQL&gt; conn /as sysdba</div><div class="line"># 查询当前实例</div><div class="line">SQL&gt; select instance_name from v$instance；</div><div class="line">INSTANCE_NAME</div><div class="line">----------------</div><div class="line">sx21</div></pre></td></tr></table></figure>
 <h1 id="增加一个表空间文件"><a href="#增加一个表空间文件" class="headerlink" title="增加一个表空间文件"></a>增加一个表空间文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 查询表空间路径</div><div class="line">SQL&gt; SELECT FILE_NAME,TABLESPACE_NAME,AUTOEXTENSIBLE FROM dba_data_files WHERE TABLESPACE_NAME=&apos;SYSTEM&apos;;</div><div class="line"># 在同路径目录下添加一个表空间文件</div><div class="line">SQL&gt; ALTER TABLESPACE &quot;SYSTEM&quot; ADD DATAFILE &apos;E:\APP\ADMINISTRATOR\ORADATA\SX21\SYSTEM02.DBF&apos; SIZE 1000M AUTOEXTEND ON NEXT 50M MAXSIZE UNLIMITED;</div></pre></td></tr></table></figure>
 <h1 id="执行完成后重新查看表空间使用情况"><a href="#执行完成后重新查看表空间使用情况" class="headerlink" title="执行完成后重新查看表空间使用情况"></a>执行完成后重新查看表空间使用情况</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SQL&gt; SELECT UPPER(F.TABLESPACE_NAME) &quot;表空间名&quot;, D.TOT_GROOTTE_MB &quot;表空间大小(M)&quot;, D.TOT_GROOTTE_MB - F.TOTAL_BYTES &quot;已使用空间(M)&quot;, TO_CHAR(ROUND((D.TOT_GROOTTE_MB - F.TOTAL_BYTES) / D.TOT_GROOTTE_MB * 100,2),&apos;990.99&apos;) &quot;使用比&quot;, F.TOTAL_BYTES &quot;空闲空间(M)&quot;, F.MAX_BYTES &quot;最大块(M)&quot; FROM (SELECT TABLESPACE_NAME, ROUND(SUM(BYTES) / (1024 * 1024), 2) TOTAL_BYTES, ROUND(MAX(BYTES) / (1024 * 1024), 2) MAX_BYTES FROM SYS.DBA_FREE_SPACE GROUP BY TABLESPACE_NAME) F, (SELECT DD.TABLESPACE_NAME, ROUND(SUM(DD.BYTES) / (1024 * 1024), 2) TOT_GROOTTE_MB FROM SYS.DBA_DATA_FILES DD GROUP BY DD.TABLESPACE_NAME) D WHERE D.TABLESPACE_NAME = F.TABLESPACE_NAME ORDER BY 4 DESC;</div></pre></td></tr></table></figure>
 <p><img src="/images/2017/1009/01.png" alt="oracle"></p>
+<p>参考链接：<a href="http://www.jydba.net/oracle数据文件大小的限制/" target="_blank" rel="external">http://www.jydba.net/oracle数据文件大小的限制/</a></p>
 
       
     </div>
@@ -375,6 +364,8 @@
             <a href="/tags/数据库/" rel="tag">#数据库</a>
           
             <a href="/tags/Oracle/" rel="tag">#Oracle</a>
+          
+            <a href="/tags/Troubleshooting/" rel="tag">#Troubleshooting</a>
           
         </div>
       
@@ -480,7 +471,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">50</span>
+                <span class="site-state-item-count">51</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
