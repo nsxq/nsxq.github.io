@@ -61,7 +61,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Linux,常识,下载,axel," />
+  <meta name="keywords" content="数据库,Oracle,Troubleshooting," />
 
 
 
@@ -77,16 +77,19 @@
 
 
 
-<meta name="description" content="Linux 平台下默认的下载工具是wget，可在慢速或不稳定的网络连接下保持健壮性，如果由于网络问题下载失败，它将继续重试，直到整个文件下载完成；但是wget不支持多线程下载，这里推荐一个axel，可实现对同一个文件建立多个连接，每个连接下载单独的文件片段以更快地完成下载，支持HTTP,HTTPS,FTP,FTPS协议；">
+<meta name="description" content="oracle导入数据之前，删除用户时候报错“ORA-01940: cannot drop a user that is currently connected”，原因是因为用户正在连接使用。12345SQL&amp;gt; drop user air_forecast cascade;drop user air_forecast cascade*ERROR at line 1:ORA-01940: can">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux下多线程下载工具Axel">
-<meta property="og:url" content="http://islocal.cc/2017/07/25/Linux下多线程下载工具Axel/index.html">
+<meta property="og:title" content="Oracle删除用户报错ORA-01940: cannot drop a user that is currently connected">
+<meta property="og:url" content="http://islocal.cc/2017/10/10/Oracle删除用户报错ORA-01940-cannot-drop-a-user-that-is-currently-connected/index.html">
 <meta property="og:site_name" content="南山居">
-<meta property="og:description" content="Linux 平台下默认的下载工具是wget，可在慢速或不稳定的网络连接下保持健壮性，如果由于网络问题下载失败，它将继续重试，直到整个文件下载完成；但是wget不支持多线程下载，这里推荐一个axel，可实现对同一个文件建立多个连接，每个连接下载单独的文件片段以更快地完成下载，支持HTTP,HTTPS,FTP,FTPS协议；">
-<meta property="og:updated_time" content="2017-07-25T08:00:49.534Z">
+<meta property="og:description" content="oracle导入数据之前，删除用户时候报错“ORA-01940: cannot drop a user that is currently connected”，原因是因为用户正在连接使用。12345SQL&amp;gt; drop user air_forecast cascade;drop user air_forecast cascade*ERROR at line 1:ORA-01940: can">
+<meta property="og:image" content="http://islocal.cc/images/2017/1010/01.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/1010/02.png">
+<meta property="og:updated_time" content="2017-10-10T06:32:31.804Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux下多线程下载工具Axel">
-<meta name="twitter:description" content="Linux 平台下默认的下载工具是wget，可在慢速或不稳定的网络连接下保持健壮性，如果由于网络问题下载失败，它将继续重试，直到整个文件下载完成；但是wget不支持多线程下载，这里推荐一个axel，可实现对同一个文件建立多个连接，每个连接下载单独的文件片段以更快地完成下载，支持HTTP,HTTPS,FTP,FTPS协议；">
+<meta name="twitter:title" content="Oracle删除用户报错ORA-01940: cannot drop a user that is currently connected">
+<meta name="twitter:description" content="oracle导入数据之前，删除用户时候报错“ORA-01940: cannot drop a user that is currently connected”，原因是因为用户正在连接使用。12345SQL&amp;gt; drop user air_forecast cascade;drop user air_forecast cascade*ERROR at line 1:ORA-01940: can">
+<meta name="twitter:image" content="http://islocal.cc/images/2017/1010/01.png">
 
 
 
@@ -107,9 +110,9 @@
 
 
 
-  <link rel="canonical" href="http://islocal.cc/2017/07/25/Linux下多线程下载工具Axel/"/>
+  <link rel="canonical" href="http://islocal.cc/2017/10/10/Oracle删除用户报错ORA-01940-cannot-drop-a-user-that-is-currently-connected/"/>
 
-  <title> Linux下多线程下载工具Axel | 南山居 </title>
+  <title> Oracle删除用户报错ORA-01940: cannot drop a user that is currently connected | 南山居 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -249,7 +252,7 @@
             
             
               
-                Linux下多线程下载工具Axel
+                Oracle删除用户报错ORA-01940: cannot drop a user that is currently connected
               
             
           </h1>
@@ -261,8 +264,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-07-25T15:34:17+08:00" content="2017-07-25">
-              2017-07-25
+            <time itemprop="dateCreated" datetime="2017-10-10T11:58:34+08:00" content="2017-10-10">
+              2017-10-10
             </time>
           </span>
 
@@ -275,8 +278,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Linux常识/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux常识</span>
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
                   </a>
                 </span>
 
@@ -313,14 +316,15 @@
       
 
       
-        <p>Linux 平台下默认的下载工具是wget，可在慢速或不稳定的网络连接下保持健壮性，如果由于网络问题下载失败，它将继续重试，直到整个文件下载完成；但是wget不支持多线程下载，这里推荐一个axel，可实现对同一个文件建立多个连接，每个连接下载单独的文件片段以更快地完成下载，支持HTTP,HTTPS,FTP,FTPS协议；<br><a id="more"></a></p>
-<h1 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h1><h2 id="源码安装"><a href="#源码安装" class="headerlink" title="源码安装"></a>源码安装</h2><p>下载地址<a href="https://sourceforge.net/projects/axel2/files/" target="_blank" rel="external">https://sourceforge.net/projects/axel2/files/</a></p>
-<h2 id="包管理器安装"><a href="#包管理器安装" class="headerlink" title="包管理器安装"></a>包管理器安装</h2><p>看教程说epel源中带有这个工具，但是我Centos 6.8 没发现；于是自已下载一个rpm包安装，推荐下载地址 <a href="http://pkgs.org/" target="_blank" rel="external">http://pkgs.org/</a></p>
-<h1 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h1><h2 id="基本用法如下："><a href="#基本用法如下：" class="headerlink" title="基本用法如下："></a>基本用法如下：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">alex [选项][下载目录][下载地址]</div></pre></td></tr></table></figure>
-<h2 id="参数如下："><a href="#参数如下：" class="headerlink" title="参数如下："></a>参数如下：</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">-s 指定每秒下载最大的比特数（如限速为512KB/s，设置为 -s 512000）</div><div class="line">-n 指定同时打开的下载线程数 (如指定10个线程，设置为 -n 10)</div><div class="line">-o 指定下载路径（如下载到/tmp目录，设置为 -o /tmp；也可以指定下载后的文件名，如下载后文件名为test.tgz,设置为 -o /tmp/test.tgz）</div><div class="line">-S 搜索镜像，并下载</div><div class="line">-v 打印更多状态信息</div><div class="line">-a 打印简洁的进度信息</div><div class="line">-q 不显示下载进度</div></pre></td></tr></table></figure>
-<h1 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">axel -n 10 -a -o /tmp ftp://ftpprd.ncep.noaa.gov/pub/data/nccf/com/gfs/prod/enkf.20170724/12/gdas.t12z.atmf009s.mem011.nemsio</div></pre></td></tr></table></figure>
-<h1 id="断点续传"><a href="#断点续传" class="headerlink" title="断点续传"></a>断点续传</h1><p><strong>如果下载过程中下载中断可以再执行下载命令即可恢复上次的下载进度</strong>。axel 默认具有恢复未完成的下载的行为。Axel 在下载文件时定期更新状态文件（扩展名为 .st）。由于某些原因，下载中途停止了？不用担心，只要使用相同的 axel 命令，它将会检查 file 和 file.st，如果找到，它会从停止处恢复下载。</p>
-<p>参考：<a href="http://man.linuxde.net/axel" target="_blank" rel="external">http://man.linuxde.net/axel</a></p>
+        <p>oracle导入数据之前，删除用户时候报错“ORA-01940: cannot drop a user that is currently connected”，原因是因为用户正在连接使用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">SQL&gt; drop user air_forecast cascade;</div><div class="line">drop user air_forecast cascade</div><div class="line">*</div><div class="line">ERROR at line 1:</div><div class="line">ORA-01940: cannot drop a user that is currently connected</div></pre></td></tr></table></figure></p>
+<a id="more"></a>
+<h1 id="查询一下当前用户连接"><a href="#查询一下当前用户连接" class="headerlink" title="查询一下当前用户连接"></a>查询一下当前用户连接</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">SQL&gt; select sid,serial# from v$session where username=&apos;AIR_FORECAST&apos;;</div><div class="line">       SID    SERIAL#</div><div class="line">---------- ----------</div><div class="line">       237	 2083</div><div class="line">       252	 3564</div></pre></td></tr></table></figure>
+<p><img src="/images/2017/1010/01.png" alt="oracle"></p>
+<h1 id="杀掉占用进程"><a href="#杀掉占用进程" class="headerlink" title="杀掉占用进程"></a>杀掉占用进程</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">SQL&gt; alter system kill session &apos;237,2083&apos;;</div><div class="line"></div><div class="line">System altered.</div><div class="line"></div><div class="line">SQL&gt; alter system kill session &apos;252,3564&apos;;</div><div class="line"></div><div class="line">System altered.</div></pre></td></tr></table></figure>
+<h1 id="删除用户"><a href="#删除用户" class="headerlink" title="删除用户"></a>删除用户</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">SQL&gt; drop user air_forecast cascade;</div><div class="line"></div><div class="line"></div><div class="line">User dropped.</div></pre></td></tr></table></figure>
+<p><img src="/images/2017/1010/02.png" alt="oracle"></p>
+<p>PS：上述语句中没有状态列，所以看到删除的进程还在，其实是已经标记为KILLED状态了(status 为要删除用户的session状态，如果还为inactive，说明没有被kill掉，如果状态为killed，说明已kill)，删除进程后使用如下语句查询.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">select saddr,sid,serial#,paddr,username,status from v$session where username is not null;</div></pre></td></tr></table></figure></p>
+<h1 id="导入用户数据"><a href="#导入用户数据" class="headerlink" title="导入用户数据"></a>导入用户数据</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">SQL&gt; select * from dba_directories;	#查询存储文件目录，将备份文件拷贝到此目录下</div><div class="line">shell&gt; impdp userid=&quot;&apos;sys/password@sx21 as sysdba&apos;&quot; schemas=air_forecast directory=DATA_PUMP_DIR dumpfile=AIR_FORECAST.DMP</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -359,13 +363,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Linux/" rel="tag">#Linux</a>
+            <a href="/tags/数据库/" rel="tag">#数据库</a>
           
-            <a href="/tags/常识/" rel="tag">#常识</a>
+            <a href="/tags/Oracle/" rel="tag">#Oracle</a>
           
-            <a href="/tags/下载/" rel="tag">#下载</a>
-          
-            <a href="/tags/axel/" rel="tag">#axel</a>
+            <a href="/tags/Troubleshooting/" rel="tag">#Troubleshooting</a>
           
         </div>
       
@@ -374,17 +376,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/12/Intel编译器-parallel-studio-xe-安装/" rel="next" title="Intel编译器(parallel_studio_xe)安装">
-                <i class="fa fa-chevron-left"></i> Intel编译器(parallel_studio_xe)安装
+              <a href="/2017/10/09/Oracle数据库错误表SYS-AUD-无法通过8192-在表空间SYSTEM中-扩展/" rel="next" title="Oracle数据库错误表SYS.AUD$无法通过8192(在表空间SYSTEM中)扩展">
+                <i class="fa fa-chevron-left"></i> Oracle数据库错误表SYS.AUD$无法通过8192(在表空间SYSTEM中)扩展
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/07/26/Mariadb主从复制集群/" rel="prev" title="Mariadb主从复制集群">
-                Mariadb主从复制集群 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -504,7 +502,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装"><span class="nav-number">1.</span> <span class="nav-text">安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#源码安装"><span class="nav-number">1.1.</span> <span class="nav-text">源码安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包管理器安装"><span class="nav-number">1.2.</span> <span class="nav-text">包管理器安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用"><span class="nav-number">2.</span> <span class="nav-text">使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本用法如下："><span class="nav-number">2.1.</span> <span class="nav-text">基本用法如下：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参数如下："><span class="nav-number">2.2.</span> <span class="nav-text">参数如下：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实例"><span class="nav-number">3.</span> <span class="nav-text">实例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#断点续传"><span class="nav-number">4.</span> <span class="nav-text">断点续传</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#查询一下当前用户连接"><span class="nav-number">1.</span> <span class="nav-text">查询一下当前用户连接</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#杀掉占用进程"><span class="nav-number">2.</span> <span class="nav-text">杀掉占用进程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除用户"><span class="nav-number">3.</span> <span class="nav-text">删除用户</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#导入用户数据"><span class="nav-number">4.</span> <span class="nav-text">导入用户数据</span></a></li></ol></div>
             
           </div>
         </section>
