@@ -85,7 +85,7 @@
 <meta property="og:description" content="由于公司的svn和maven仓库地址都在内网，使用Centos系统搭建持续集成的时候，没有办法访问服务器，又不想换Windows环境；于是想办法在linux下拨通vpn！">
 <meta property="og:image" content="http://islocal.cc/images/2017/0823/00.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/0823/01.png">
-<meta property="og:updated_time" content="2017-08-25T02:30:24.119Z">
+<meta property="og:updated_time" content="2017-10-13T01:27:21.198Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux下如何拨VPN">
 <meta name="twitter:description" content="由于公司的svn和maven仓库地址都在内网，使用Centos系统搭建持续集成的时候，没有办法访问服务器，又不想换Windows环境；于是想办法在linux下拨通vpn！">
@@ -327,7 +327,7 @@
 <p><em><br>pon vpnname 开启vpn<br>poff vpnname 断开vpn
 </em></p>
 <h1 id="尝试拨vpn"><a href="#尝试拨vpn" class="headerlink" title="尝试拨vpn"></a>尝试拨vpn</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pon pptpd</div></pre></td></tr></table></figure>
-<h1 id="查看连接情况"><a href="#查看连接情况" class="headerlink" title="查看连接情况"></a>查看连接情况</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ifconfig</div></pre></td></tr></table></figure>
+<h1 id="查看连接情况"><a href="#查看连接情况" class="headerlink" title="查看连接情况"></a>查看连接情况</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ip a</div></pre></td></tr></table></figure>
 <p><img src="/images/2017/0823/00.png" alt="vpn"><br>如果有异常的话，可以跟踪系统日志排查<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tailf /var/log/messages</div></pre></td></tr></table></figure></p>
 <h1 id="设置路由"><a href="#设置路由" class="headerlink" title="设置路由"></a>设置路由</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">route add -net 192.168.0.0/24 dev ppp0</div></pre></td></tr></table></figure>
 <p><img src="/images/2017/0823/01.png" alt="vpn"></p>
