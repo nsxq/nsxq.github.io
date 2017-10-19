@@ -61,7 +61,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="自动化,运维,Ansible," />
+  <meta name="keywords" content="zabbix,监控,oracle," />
 
 
 
@@ -77,18 +77,19 @@
 
 
 
-<meta name="description" content="playbook 是由一组ansible调用module命令的集合，使用yaml语言编写，执行顺序自上而下；1命令格式：ansible-playbook test.yml">
+<meta name="description" content="监控SQL Server相对来说比较简单，首先我们下载一个MS SQL的模板文件下载地址：https://share.zabbix.com/databases/microsoft-sql-server/template-ms-sql-2012">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Ansible Playbook入门篇">
-<meta property="og:url" content="http://islocal.cc/2017/06/22/Ansible-Playbook入门篇/index.html">
+<meta property="og:title" content="Zabbix(6)监控SQL Server数据库">
+<meta property="og:url" content="http://islocal.cc/2017/10/19/Zabbix-6-监控SQL-Server数据库/index.html">
 <meta property="og:site_name" content="南山居">
-<meta property="og:description" content="playbook 是由一组ansible调用module命令的集合，使用yaml语言编写，执行顺序自上而下；1命令格式：ansible-playbook test.yml">
-<meta property="og:image" content="http://islocal.cc/images/2017/0622/00.png">
-<meta property="og:updated_time" content="2017-06-23T02:24:21.379Z">
+<meta property="og:description" content="监控SQL Server相对来说比较简单，首先我们下载一个MS SQL的模板文件下载地址：https://share.zabbix.com/databases/microsoft-sql-server/template-ms-sql-2012">
+<meta property="og:image" content="http://islocal.cc/images/2017/1019/00.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/1019/01.png">
+<meta property="og:updated_time" content="2017-10-19T07:35:51.744Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ansible Playbook入门篇">
-<meta name="twitter:description" content="playbook 是由一组ansible调用module命令的集合，使用yaml语言编写，执行顺序自上而下；1命令格式：ansible-playbook test.yml">
-<meta name="twitter:image" content="http://islocal.cc/images/2017/0622/00.png">
+<meta name="twitter:title" content="Zabbix(6)监控SQL Server数据库">
+<meta name="twitter:description" content="监控SQL Server相对来说比较简单，首先我们下载一个MS SQL的模板文件下载地址：https://share.zabbix.com/databases/microsoft-sql-server/template-ms-sql-2012">
+<meta name="twitter:image" content="http://islocal.cc/images/2017/1019/00.png">
 
 
 
@@ -109,9 +110,9 @@
 
 
 
-  <link rel="canonical" href="http://islocal.cc/2017/06/22/Ansible-Playbook入门篇/"/>
+  <link rel="canonical" href="http://islocal.cc/2017/10/19/Zabbix-6-监控SQL-Server数据库/"/>
 
-  <title> Ansible Playbook入门篇 | 南山居 </title>
+  <title> Zabbix(6)监控SQL Server数据库 | 南山居 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -251,7 +252,7 @@
             
             
               
-                Ansible Playbook入门篇
+                Zabbix(6)监控SQL Server数据库
               
             
           </h1>
@@ -263,8 +264,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-06-22T09:04:14+08:00" content="2017-06-22">
-              2017-06-22
+            <time itemprop="dateCreated" datetime="2017-10-19T15:25:24+08:00" content="2017-10-19">
+              2017-10-19
             </time>
           </span>
 
@@ -277,8 +278,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/自动化运维/" itemprop="url" rel="index">
-                    <span itemprop="name">自动化运维</span>
+                  <a href="/categories/监控/" itemprop="url" rel="index">
+                    <span itemprop="name">监控</span>
                   </a>
                 </span>
 
@@ -315,44 +316,13 @@
       
 
       
-        <p>playbook 是由一组ansible调用module命令的集合，使用yaml语言编写，执行顺序自上而下；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">命令格式：ansible-playbook test.yml</div></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<h1 id="Playbook-组成"><a href="#Playbook-组成" class="headerlink" title="Playbook 组成"></a>Playbook 组成</h1><p><strong>Target section: 定义将要执行playbook的远程主机组</strong>  </p>
-<ul>
-<li>name：执行过程中会打印出来变量的值</li>
-<li>hosts：定义远程的主机组</li>
-<li>user：执行该任务组的用户</li>
-<li>remote_user: 与user一样，任选其一</li>
-<li>sudo：如果设置为yes，执行该任务组的用户在执行任务的时候获取root权限</li>
-<li>sudo_user：如果sudo设置为yes，user设置为user1，sudo_user设置为user2，那么user1会获取user2权限</li>
-<li>connection：通过什么方式连接到远程主机，默认是ssh</li>
-<li>gather_facts：除非明确定义不需要在远程主机上执行setup模块，否则会默认自动执行；不需要执行setup模块，需False该选项。  </li>
-</ul>
-<p><strong>Variable section：定义playbook运行时需要使用的变量</strong>  </p>
-<ul>
-<li>vars：格式为“变量名称:变量值”</li>
-<li>vars_files：将变量名称和变量值定义在一个文件中，调用该文件，文件格式为每行一个“变量名称:变量值”</li>
-<li>vars_prompt：定义一个变量，通过交互方式让用户输入变量值  </li>
-</ul>
-<p><strong>Task section：定义将要在远程主机上执行的任务列表</strong>  </p>
-<ul>
-<li>tasks： #三种写法如下  </li>
-</ul>
-<ol>
-<li>调用模块<br>name: 定义名称<br>action：模块名称 模块参数调用</li>
-<li>直接使用模块<br>name: 定义名称<br>模块名称：调用方法</li>
-<li>模块使用<br>name：定义名称<br>模块名称：<br>模块参数调用  </li>
-</ol>
-<p><strong>Handler section：定义task执行完成以后需要调用的任务</strong><br>满足一下两点才能达到触发的效果，否则会不生效。</p>
-<ol>
-<li>必须在tasks中使用notify调用</li>
-<li>在notify中定义内容一定要和tasks中定义的 - name 内容一样  </li>
-</ol>
-<h1 id="新建用户的示例"><a href="#新建用户的示例" class="headerlink" title="新建用户的示例"></a>新建用户的示例</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[root@vm00 ~]# cat test.yaml </div><div class="line">- name: &quot;新建用户&quot;</div><div class="line">  hosts: test</div><div class="line">  user: root</div><div class="line">  vars:</div><div class="line">    user: &quot;user3&quot;</div><div class="line">    password: &quot;$1$01a9gEpb$nlv.OmSa1c4jDaGgeoDKi0&quot;   #加密后的密码，可以参考上篇文章中user模块使用</div><div class="line">    uid: &quot;700&quot;</div><div class="line">  tasks:</div><div class="line">    - name: &quot;新建用户&quot;</div><div class="line">      user: name=&quot;&#123;&#123;user&#125;&#125;&quot; password=&quot;&#123;&#123;password&#125;&#125;&quot; uid=&quot;&#123;&#123;uid&#125;&#125;&quot;</div><div class="line">#      user: name=&quot;&#123;&#123;user&#125;&#125;&quot; state=absent remove=yes    #删除用户的话就使用这行</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@vm00 ~]# ansible-playbook test.yaml</div></pre></td></tr></table></figure>
-<p><img src="/images/2017/0622/00.png" alt="playbook"></p>
-<h1 id="修改selinux，安装epel扩展包"><a href="#修改selinux，安装epel扩展包" class="headerlink" title="修改selinux，安装epel扩展包"></a>修改selinux，安装epel扩展包</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">[root@vm00 ~]# cat test2.yml</div><div class="line">- hosts: test</div><div class="line">  vars:</div><div class="line">    packages: &quot;epel-release&quot;</div><div class="line">  tasks:</div><div class="line">    - name: &quot;永久关闭selinux&quot;</div><div class="line">      command: sed -i s/SELINUX=enforcing/SELINUX=disabled/g /etc/selinux/config</div><div class="line">    - name: &quot;安装epel扩展包&quot;</div><div class="line">      yum: name=&#123;&#123;packages&#125;&#125; state=present</div><div class="line">      notify:</div><div class="line">      - reboot system</div><div class="line">  handlers:</div><div class="line">    - name: reboot system</div><div class="line">      command: reboot</div></pre></td></tr></table></figure>
-<p>参考链接：<a href="http://breezey.blog.51cto.com/2400275/1757624" target="_blank" rel="external">http://breezey.blog.51cto.com/2400275/1757624</a></p>
+        <p>监控SQL Server相对来说比较简单，首先我们下载一个MS SQL的模板文件<br>下载地址：<a href="https://share.zabbix.com/databases/microsoft-sql-server/template-ms-sql-2012" target="_blank" rel="external">https://share.zabbix.com/databases/microsoft-sql-server/template-ms-sql-2012</a><br><a id="more"></a></p>
+<h1 id="修改zabbix-agent-conf文件"><a href="#修改zabbix-agent-conf文件" class="headerlink" title="修改zabbix_agent.conf文件"></a>修改zabbix_agent.conf文件</h1><p>添加下边这行到配置文件最后<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">UserParameter=sqldatabasename.discovery,powershell -NoProfile -ExecutionPolicy Bypass -File C:\zabbix\scripts\SQLBaseName_To_Zabbix.ps1</div></pre></td></tr></table></figure></p>
+<h1 id="将powershell脚本放在目录下"><a href="#将powershell脚本放在目录下" class="headerlink" title="将powershell脚本放在目录下"></a>将powershell脚本放在目录下</h1><p>将SQLBaseName_To_Zabbix.ps1脚本放在C:\zabbix\scripts\目录下</p>
+<h1 id="重启zabbix-agent"><a href="#重启zabbix-agent" class="headerlink" title="重启zabbix agent"></a>重启zabbix agent</h1><p>重启客户端zabbix agent服务</p>
+<h1 id="导入模板文件"><a href="#导入模板文件" class="headerlink" title="导入模板文件"></a>导入模板文件</h1><p>导入模板MS SQL 2012.xml</p>
+<h1 id="关联模板"><a href="#关联模板" class="headerlink" title="关联模板"></a>关联模板</h1><p><img src="/images/2017/1019/00.png" alt="zabbix_mssql"></p>
+<h1 id="查看最新数据"><a href="#查看最新数据" class="headerlink" title="查看最新数据"></a>查看最新数据</h1><p><img src="/images/2017/1019/01.png" alt="zabbix_mssql"></p>
 
       
     </div>
@@ -391,11 +361,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/自动化/" rel="tag">#自动化</a>
+            <a href="/tags/zabbix/" rel="tag">#zabbix</a>
           
-            <a href="/tags/运维/" rel="tag">#运维</a>
+            <a href="/tags/监控/" rel="tag">#监控</a>
           
-            <a href="/tags/Ansible/" rel="tag">#Ansible</a>
+            <a href="/tags/oracle/" rel="tag">#oracle</a>
           
         </div>
       
@@ -404,17 +374,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/21/Ansible-模块篇/" rel="next" title="Ansible 模块篇">
-                <i class="fa fa-chevron-left"></i> Ansible 模块篇
+              <a href="/2017/10/10/Zabbix-5-通过JMX监控Tomcat/" rel="next" title="Zabbix(5)通过JMX监控Tomcat">
+                <i class="fa fa-chevron-left"></i> Zabbix(5)通过JMX监控Tomcat
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/06/27/Aansible-palybook-创建lvm并自动挂载/" rel="prev" title="Aansible palybook 创建lvm并自动挂载">
-                Aansible palybook 创建lvm并自动挂载 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -534,7 +500,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Playbook-组成"><span class="nav-number">1.</span> <span class="nav-text">Playbook 组成</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#新建用户的示例"><span class="nav-number">2.</span> <span class="nav-text">新建用户的示例</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改selinux，安装epel扩展包"><span class="nav-number">3.</span> <span class="nav-text">修改selinux，安装epel扩展包</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#修改zabbix-agent-conf文件"><span class="nav-number">1.</span> <span class="nav-text">修改zabbix_agent.conf文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#将powershell脚本放在目录下"><span class="nav-number">2.</span> <span class="nav-text">将powershell脚本放在目录下</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重启zabbix-agent"><span class="nav-number">3.</span> <span class="nav-text">重启zabbix agent</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#导入模板文件"><span class="nav-number">4.</span> <span class="nav-text">导入模板文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#关联模板"><span class="nav-number">5.</span> <span class="nav-text">关联模板</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看最新数据"><span class="nav-number">6.</span> <span class="nav-text">查看最新数据</span></a></li></ol></div>
             
           </div>
         </section>
