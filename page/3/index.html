@@ -248,6 +248,121 @@
             
               
                 
+                <a class="post-title-link" href="/2017/08/01/Mariadb读写分离集群搭建/" itemprop="url">
+                  Mariadb 读写分离集群搭建
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-08-01T17:24:42+08:00" content="2017-08-01">
+              2017-08-01
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="基础环境配置"><a href="#基础环境配置" class="headerlink" title="基础环境配置"></a>基础环境配置</h1><p>iptables: disabled<br>selinux:  disabled<br>|系统        |主机名        |IP地址            |角色          |<br>|CentOS 7.2 x64    |mysql_a    |192.168.6.126    |Atlas代理服务 |<br>|CentOS 7.2 x64    |mysql_b    |192.168.6.127    |Mysql主服务器 |<br>|CentOS 7.2 x64    |mysql_c    |192.168.6.128    |Mysql 从服务器|<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/08/01/Mariadb读写分离集群搭建/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/07/26/Mariadb主从复制集群/" itemprop="url">
                   Mariadb主从复制集群
                 </a>
@@ -1283,120 +1398,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/06/16/windows-下使用expdp自动备份多用户oracle脚本/" itemprop="url">
-                  windows 下使用expdp自动备份多用户oracle脚本
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-06-16T18:56:32+08:00" content="2017-06-16">
-              2017-06-16
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/数据库/" itemprop="url" rel="index">
-                    <span itemprop="name">数据库</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Windows下多Oracle实例，根据用户自动备份<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">@echo off   </div><div class="line">echo ================================================   </div><div class="line">echo  Windows环境下Oracle数据库的自动备份脚本  </div><div class="line">echo  1. 使用当前日期命名备份文件。  </div><div class="line">echo  2. 自动删除30天前的备份。  </div><div class="line">echo ================================================  </div><div class="line">::以“YYYYMMDD”格式取出当前时间。  </div><div class="line">set BACKUPDATE=%date:~0,4%%date:~5,2%%date:~8,2%  </div><div class="line">set DATADIR=E:\database_backup\%BACKUPDATE%</div><div class="line">echo 本次备份目录是%DATADIR%</div><div class="line">echo ================================================ </div><div class="line">echo 开始备份数据库</div><div class="line">for %%u in (AIR_FORECAST,ALK,AIR_FZ,TSUBJECT,TMAIN,TCODE,AIR_YBYJ,AIR_FXPT,INVENTORY,TENV,NEWMBGL) do expdp userid=&apos;sys/密码@实例 as sysdba&apos; schemas=%%u directory=DATA_PUMP_DIR dumpfile=%%u.dmp</div><div class="line">echo 移动文件到数据库备份目录</div><div class="line">if not exist &quot;E:\database_backup\%BACKUPDATE%&quot; mkdir E:\database_backup\%BACKUPDATE%  </div><div class="line">MOVE /Y E:\app\Administrator\admin\SX21\dpdump\* E:\database_backup\%BACKUPDATE%</div><div class="line">::删除30天前的备份</div><div class="line">forfiles /p &quot;%DATADIR%&quot; /s /m *.* /d -30 /c &quot;cmd /c del @path&quot; </div><div class="line">exit</div></pre></td></tr></table></figure></p>
-<p>参考：<a href="http://www.cnblogs.com/peterpanzsy/p/3442784.html" target="_blank" rel="external">http://www.cnblogs.com/peterpanzsy/p/3442784.html</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1441,7 +1442,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">56</span>
+              <span class="site-state-item-count">57</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

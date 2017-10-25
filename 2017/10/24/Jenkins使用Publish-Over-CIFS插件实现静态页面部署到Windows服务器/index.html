@@ -88,7 +88,7 @@
 <meta property="og:image" content="http://islocal.cc/images/2017/1024/03.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1024/04.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1024/05.png">
-<meta property="og:updated_time" content="2017-10-24T06:21:00.303Z">
+<meta property="og:updated_time" content="2017-10-24T06:26:34.049Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jenkins使用Publish Over CIFS插件实现静态页面部署到Windows服务器">
 <meta name="twitter:description" content="发布静态内容操作很简单，一般分两步；一、获取svn内容。二、拷贝到服务器发布目录；以前静态内容都是在Linux环境下使用Nginx发布，持续集成发布的时候Hudson SCP publisher plugin,调用linux下Scp命令，通过SSH协议拷贝到发布目录就可以了；最近遇到一个问题，需要发布静态页面到Windows服务器下。不论是IIS，还是Nginx，也都存在一个拷贝内容到发布目录的问">
@@ -324,9 +324,8 @@
 <h1 id="Nginx-配置文件修改"><a href="#Nginx-配置文件修改" class="headerlink" title="Nginx 配置文件修改"></a>Nginx 配置文件修改</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">……</div><div class="line"> server &#123;</div><div class="line">        listen       80;</div><div class="line">        server_name  localhost;</div><div class="line">        location / &#123;</div><div class="line">	    root   html;</div><div class="line">            index  index.html index.htm;</div><div class="line">        &#125;</div><div class="line">	location /mypic &#123;</div><div class="line">	    proxy_pass   http://127.0.0.1:8888/mypic;</div><div class="line">	&#125;</div><div class="line">	location /JzAir &#123;</div><div class="line">	    proxy_pass   http://127.0.0.1:9999/JzAir;</div><div class="line">	&#125;</div><div class="line">        location /Jzapp &#123;</div><div class="line">	    proxy_pass   http://127.0.0.1:8080/Jzapp;</div><div class="line">	&#125;</div><div class="line">	location /jzhome &#123;</div><div class="line">	    root   F:\\deploy\\nginx-1.12.1\\;</div><div class="line">	    index  index.html index.htm;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line">……</div></pre></td></tr></table></figure>
 <h1 id="安装Jenkins插件"><a href="#安装Jenkins插件" class="headerlink" title="安装Jenkins插件"></a>安装Jenkins插件</h1><p>安装<a href="https://plugins.jenkins.io/publish-over-cifs" target="_blank" rel="external">Publish Over CIFS</a>插件，安装完成后重启Jenkins</p>
 <h1 id="配置CIFS"><a href="#配置CIFS" class="headerlink" title="配置CIFS"></a>配置CIFS</h1><p>Jenkins-系统管理-系统配置-Publish over CIFS<br><img src="/images/2017/1024/02.png" alt="jenkins"></p>
-<h1 id="配置Job"><a href="#配置Job" class="headerlink" title="配置Job"></a>配置Job</h1><p>Job-构建后步骤<br><img src="/images/2017/1024/03.png" alt="jenkins"><br><em>PS:这里有点比较难懂一点，Source files要一个能包含所有发布内容的父级目录，所以当发布内容为abc/html/xxx,我们在获取svn代码的时候，获取到abc这一层，这里Source files填写html/**,Remove prefix填写html,Remote directory为空，就可以将html目录下的所有内容发布到共享服务器上</em><br><img src="/images/2017/1024/04.png" alt="jenkins"><br><img src="/images/2017/1024/05.png" alt="jenkins"></p>
-<hr>
-
+<h1 id="配置Job"><a href="#配置Job" class="headerlink" title="配置Job"></a>配置Job</h1><p>Job-构建后步骤<br><img src="/images/2017/1024/03.png" alt="jenkins"><br><em>PS:这里有点比较难懂一点，Source files要一个能包含所有发布内容的父级目录，所以当发布内容为abc/html/xxx,我们在获取svn代码的时候，获取到abc这一层，这里Source files填写html/**,Remove prefix填写html,Remote directory为空，就可以将html目录下的所有内容发布到共享服务器上</em><br><img src="/images/2017/1024/04.png" alt="jenkins"></p>
+<h2 id=""><a href="#" class="headerlink" title=""></a><img src="/images/2017/1024/05.png" alt="jenkins"></h2>
       
     </div>
 
@@ -384,6 +383,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/25/Win10无法正常连接sslvpn/" rel="prev" title="Win10无法正常连接sslvpn">
+                Win10无法正常连接sslvpn <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -457,7 +460,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">56</span>
+              <span class="site-state-item-count">57</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -503,7 +506,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#共享发布目录"><span class="nav-number">1.</span> <span class="nav-text">共享发布目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx-配置文件修改"><span class="nav-number">2.</span> <span class="nav-text">Nginx 配置文件修改</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装Jenkins插件"><span class="nav-number">3.</span> <span class="nav-text">安装Jenkins插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置CIFS"><span class="nav-number">4.</span> <span class="nav-text">配置CIFS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置Job"><span class="nav-number">5.</span> <span class="nav-text">配置Job</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#共享发布目录"><span class="nav-number">1.</span> <span class="nav-text">共享发布目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Nginx-配置文件修改"><span class="nav-number">2.</span> <span class="nav-text">Nginx 配置文件修改</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装Jenkins插件"><span class="nav-number">3.</span> <span class="nav-text">安装Jenkins插件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置CIFS"><span class="nav-number">4.</span> <span class="nav-text">配置CIFS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置Job"><span class="nav-number">5.</span> <span class="nav-text">配置Job</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#"><span class="nav-number">5.1.</span> <span class="nav-text"></span></a></li></ol></li></ol></div>
             
           </div>
         </section>

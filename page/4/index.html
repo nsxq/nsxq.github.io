@@ -248,6 +248,120 @@
             
               
                 
+                <a class="post-title-link" href="/2017/06/16/windows-下使用expdp自动备份多用户oracle脚本/" itemprop="url">
+                  windows 下使用expdp自动备份多用户oracle脚本
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-06-16T18:56:32+08:00" content="2017-06-16">
+              2017-06-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>Windows下多Oracle实例，根据用户自动备份<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">@echo off   </div><div class="line">echo ================================================   </div><div class="line">echo  Windows环境下Oracle数据库的自动备份脚本  </div><div class="line">echo  1. 使用当前日期命名备份文件。  </div><div class="line">echo  2. 自动删除30天前的备份。  </div><div class="line">echo ================================================  </div><div class="line">::以“YYYYMMDD”格式取出当前时间。  </div><div class="line">set BACKUPDATE=%date:~0,4%%date:~5,2%%date:~8,2%  </div><div class="line">set DATADIR=E:\database_backup\%BACKUPDATE%</div><div class="line">echo 本次备份目录是%DATADIR%</div><div class="line">echo ================================================ </div><div class="line">echo 开始备份数据库</div><div class="line">for %%u in (AIR_FORECAST,ALK,AIR_FZ,TSUBJECT,TMAIN,TCODE,AIR_YBYJ,AIR_FXPT,INVENTORY,TENV,NEWMBGL) do expdp userid=&apos;sys/密码@实例 as sysdba&apos; schemas=%%u directory=DATA_PUMP_DIR dumpfile=%%u.dmp</div><div class="line">echo 移动文件到数据库备份目录</div><div class="line">if not exist &quot;E:\database_backup\%BACKUPDATE%&quot; mkdir E:\database_backup\%BACKUPDATE%  </div><div class="line">MOVE /Y E:\app\Administrator\admin\SX21\dpdump\* E:\database_backup\%BACKUPDATE%</div><div class="line">::删除30天前的备份</div><div class="line">forfiles /p &quot;%DATADIR%&quot; /s /m *.* /d -30 /c &quot;cmd /c del @path&quot; </div><div class="line">exit</div></pre></td></tr></table></figure></p>
+<p>参考：<a href="http://www.cnblogs.com/peterpanzsy/p/3442784.html" target="_blank" rel="external">http://www.cnblogs.com/peterpanzsy/p/3442784.html</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/06/14/NIS-服务器搭建记录/" itemprop="url">
                   NIS 服务器搭建记录
                 </a>
@@ -1344,141 +1458,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/04/27/Jenkins-持续集成环境搭建/" itemprop="url">
-                  jenkins 持续集成环境搭建
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-04-27T14:04:11+08:00" content="2017-04-27">
-              2017-04-27
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/自动化运维/" itemprop="url" rel="index">
-                    <span itemprop="name">自动化运维</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="持续集成"><a href="#持续集成" class="headerlink" title="持续集成"></a>持续集成</h1><blockquote>
-<p> 持续集成（CI）是一种软件工程流程，将所有工程师对于软件的工作复本，每天集成数次到共用主线（mainline）上。</p>
-</blockquote>
-<h2 id="依赖以下原则达到目标"><a href="#依赖以下原则达到目标" class="headerlink" title="依赖以下原则达到目标"></a>依赖以下原则达到目标</h2><ul>
-<li>维护一个代码库</li>
-<li>自动建置</li>
-<li>让建置时会自我测试</li>
-<li>所有人每天至少提交一次</li>
-<li>应该要建置每一个提交</li>
-<li>让建置维持快速</li>
-<li>用在线环境的复本测试</li>
-<li>让获取最新发布版本更容易</li>
-<li>任何人都可以查看最后建置的结果</li>
-<li>自动部署</li>
-</ul>
-<h2 id="产生的效益"><a href="#产生的效益" class="headerlink" title="产生的效益"></a>产生的效益</h2><ul>
-<li>及早发现集成错误且由于修订的内容较小所以易于追踪，这可以节省项目的时间与成本。</li>
-<li>避免发布日期的前一分钟发生混乱，当每个人都会尝试为他们所造成的那一点点不兼容的版本做检查。</li>
-<li>当单元测试失败或发生错误，若开发人员需要在不除错的情况下还原代码库到一个没有问题的状态，只需要放弃一小部分的更改 (因为集成的次数频繁)。</li>
-<li>让 “最新” 的程序可保持可用的状态供测试、展示或发布用。</li>
-<li>频繁的提交代码会促使开发人员创建模块化，低复杂性的代码。
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/04/27/Jenkins-持续集成环境搭建/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1523,7 +1502,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">56</span>
+              <span class="site-state-item-count">57</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

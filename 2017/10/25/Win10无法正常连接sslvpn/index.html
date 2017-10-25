@@ -61,7 +61,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Linux,常识,vpn," />
+  <meta name="keywords" content="vpn,Windows," />
 
 
 
@@ -77,19 +77,22 @@
 
 
 
-<meta name="description" content="由于公司的svn和maven仓库地址都在内网，使用Centos系统搭建持续集成的时候，没有办法访问服务器，又不想换Windows环境；于是想办法在linux下拨通vpn！">
+<meta name="description" content="环境Dell燃7000Win 10 64bitHangzhou DPtech Co.,Ltd. SSL VPN
+现象1、无法创建虚拟网卡2、使用vpn自带的修复工具后驱动不对，“Windows 无法验证此设备所需的驱动程序的数字签名。该值受安全引导策略保护，无法进行修改或删除”
+解决方法1、重新笔记本2、进入BIOS-Secure Boot，取消Windows UEFI模式3、删除Secure K">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux下如何拨VPN">
-<meta property="og:url" content="http://islocal.cc/2017/08/23/Linux下如何拨VPN/index.html">
+<meta property="og:title" content="Win10无法正常连接sslvpn">
+<meta property="og:url" content="http://islocal.cc/2017/10/25/Win10无法正常连接sslvpn/index.html">
 <meta property="og:site_name" content="南山居">
-<meta property="og:description" content="由于公司的svn和maven仓库地址都在内网，使用Centos系统搭建持续集成的时候，没有办法访问服务器，又不想换Windows环境；于是想办法在linux下拨通vpn！">
-<meta property="og:image" content="http://islocal.cc/images/2017/0823/00.png">
-<meta property="og:image" content="http://islocal.cc/images/2017/0823/01.png">
-<meta property="og:updated_time" content="2017-10-13T01:27:21.198Z">
+<meta property="og:description" content="环境Dell燃7000Win 10 64bitHangzhou DPtech Co.,Ltd. SSL VPN
+现象1、无法创建虚拟网卡2、使用vpn自带的修复工具后驱动不对，“Windows 无法验证此设备所需的驱动程序的数字签名。该值受安全引导策略保护，无法进行修改或删除”
+解决方法1、重新笔记本2、进入BIOS-Secure Boot，取消Windows UEFI模式3、删除Secure K">
+<meta property="og:updated_time" content="2017-10-25T02:44:07.349Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux下如何拨VPN">
-<meta name="twitter:description" content="由于公司的svn和maven仓库地址都在内网，使用Centos系统搭建持续集成的时候，没有办法访问服务器，又不想换Windows环境；于是想办法在linux下拨通vpn！">
-<meta name="twitter:image" content="http://islocal.cc/images/2017/0823/00.png">
+<meta name="twitter:title" content="Win10无法正常连接sslvpn">
+<meta name="twitter:description" content="环境Dell燃7000Win 10 64bitHangzhou DPtech Co.,Ltd. SSL VPN
+现象1、无法创建虚拟网卡2、使用vpn自带的修复工具后驱动不对，“Windows 无法验证此设备所需的驱动程序的数字签名。该值受安全引导策略保护，无法进行修改或删除”
+解决方法1、重新笔记本2、进入BIOS-Secure Boot，取消Windows UEFI模式3、删除Secure K">
 
 
 
@@ -110,9 +113,9 @@
 
 
 
-  <link rel="canonical" href="http://islocal.cc/2017/08/23/Linux下如何拨VPN/"/>
+  <link rel="canonical" href="http://islocal.cc/2017/10/25/Win10无法正常连接sslvpn/"/>
 
-  <title> Linux下如何拨VPN | 南山居 </title>
+  <title> Win10无法正常连接sslvpn | 南山居 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -252,7 +255,7 @@
             
             
               
-                Linux下如何拨VPN
+                Win10无法正常连接sslvpn
               
             
           </h1>
@@ -264,8 +267,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-08-23T15:57:28+08:00" content="2017-08-23">
-              2017-08-23
+            <time itemprop="dateCreated" datetime="2017-10-25T10:36:45+08:00" content="2017-10-25">
+              2017-10-25
             </time>
           </span>
 
@@ -278,8 +281,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Linux常识/" itemprop="url" rel="index">
-                    <span itemprop="name">Linux常识</span>
+                  <a href="/categories/Troubleshooting/" itemprop="url" rel="index">
+                    <span itemprop="name">Troubleshooting</span>
                   </a>
                 </span>
 
@@ -316,21 +319,9 @@
       
 
       
-        <p>由于公司的svn和maven仓库地址都在内网，使用Centos系统搭建持续集成的时候，没有办法访问服务器，又不想换Windows环境；于是想办法在linux下拨通vpn！<br><a id="more"></a></p>
-<h1 id="安装vpn客户端"><a href="#安装vpn客户端" class="headerlink" title="安装vpn客户端"></a>安装vpn客户端</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install pptp pptp-setup</div></pre></td></tr></table></figure>
-<h1 id="创建一个vpn连接"><a href="#创建一个vpn连接" class="headerlink" title="创建一个vpn连接"></a>创建一个vpn连接</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pptpsetup --create pptpd --server SERVER_IP --username USERNAME --password PASSWORD --encrypt --start</div></pre></td></tr></table></figure>
-<p><em><br>–create是创建的连接名称<br>–server是vpn的ip地址;<br>–username是用户名<br>–password是密码，也可以没这个参数，命令稍后会自动询问。这样可以保证账号安全<br>–encrypt 是表示需要加密，不必指定加密方式，命令会读取配置文件中的加密方式<br>–start是表示创建连接完后马上连接
-</em></p>
-<h1 id="编辑配置文件"><a href="#编辑配置文件" class="headerlink" title="编辑配置文件"></a>编辑配置文件</h1><p>创建vpn连接完成后，会有两个配置文件(ps:<strong>有域的情况下，配置文件中\需要写成\\</strong>)<br>vim /etc/ppp/peers/pptpd<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"># written by pptpsetup</div><div class="line">pty &quot;pptp 1.2.3.4 --nolaunchpppd&quot;</div><div class="line">lock</div><div class="line">noauth</div><div class="line">nobsdcomp</div><div class="line">nodeflate</div><div class="line">name domain\\username                                                                                                                                                                       </div><div class="line">remotename pptpd</div><div class="line">ipparam pptpd</div><div class="line">require-mppe-128</div></pre></td></tr></table></figure></p>
-<p>vim /etc/ppp/chap-secrets<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"># Secrets for authentication using CHAP</div><div class="line"># client    server  secret          IP addresses</div><div class="line"></div><div class="line"># added by pptpsetup for pptpd</div><div class="line">domain\\username pptpd &quot;password&quot; *</div></pre></td></tr></table></figure></p>
-<h1 id="复制开启-断开脚本"><a href="#复制开启-断开脚本" class="headerlink" title="复制开启\断开脚本"></a>复制开启\断开脚本</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cp /usr/share/doc/ppp-2.4.5/scripts/pon /usr/sbin/</div><div class="line">cp /usr/share/doc/ppp-2.4.5/scripts/poff /usr/sbin/</div><div class="line">chmod +x /usr/sbin/pon /usr/sbin/poff</div></pre></td></tr></table></figure>
-<p><em><br>pon vpnname 开启vpn<br>poff vpnname 断开vpn
-</em></p>
-<h1 id="尝试拨vpn"><a href="#尝试拨vpn" class="headerlink" title="尝试拨vpn"></a>尝试拨vpn</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pon pptpd</div></pre></td></tr></table></figure>
-<h1 id="查看连接情况"><a href="#查看连接情况" class="headerlink" title="查看连接情况"></a>查看连接情况</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ip a</div></pre></td></tr></table></figure>
-<p><img src="/images/2017/0823/00.png" alt="vpn"><br>如果有异常的话，可以跟踪系统日志排查<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tailf /var/log/messages</div></pre></td></tr></table></figure></p>
-<h1 id="设置路由"><a href="#设置路由" class="headerlink" title="设置路由"></a>设置路由</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">route add -net 192.168.0.0/24 dev ppp0</div></pre></td></tr></table></figure>
-<p><img src="/images/2017/0823/01.png" alt="vpn"></p>
+        <h1 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h1><p>Dell燃7000<br>Win 10 64bit<br>Hangzhou DPtech Co.,Ltd. SSL VPN</p>
+<h1 id="现象"><a href="#现象" class="headerlink" title="现象"></a>现象</h1><p>1、无法创建虚拟网卡<br>2、使用vpn自带的修复工具后驱动不对，“Windows 无法验证此设备所需的驱动程序的数字签名。该值受安全引导策略保护，无法进行修改或删除”</p>
+<h1 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h1><p>1、重新笔记本<br>2、进入BIOS-Secure Boot，取消Windows UEFI模式<br>3、删除Secure Key(可以备份一下，我没备份，删除后暂时未发现异常)<br>4、重启后秒拨<br>参考：<a href="http://www.cnblogs.com/easyc/p/6132581.html" target="_blank" rel="external">http://www.cnblogs.com/easyc/p/6132581.html</a></p>
 
       
     </div>
@@ -369,11 +360,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Linux/" rel="tag">#Linux</a>
-          
-            <a href="/tags/常识/" rel="tag">#常识</a>
-          
             <a href="/tags/vpn/" rel="tag">#vpn</a>
+          
+            <a href="/tags/Windows/" rel="tag">#Windows</a>
           
         </div>
       
@@ -382,17 +371,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/08/22/Jenkins邮件通知配置/" rel="next" title="Jenkins邮件通知配置">
-                <i class="fa fa-chevron-left"></i> Jenkins邮件通知配置
+              <a href="/2017/10/24/Jenkins使用Publish-Over-CIFS插件实现静态页面部署到Windows服务器/" rel="next" title="Jenkins使用Publish Over CIFS插件实现静态页面部署到Windows服务器">
+                <i class="fa fa-chevron-left"></i> Jenkins使用Publish Over CIFS插件实现静态页面部署到Windows服务器
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/08/29/Jenkins持续集成发布时tomcat不能删除目录下文件/" rel="prev" title="Jenkins持续集成发布时tomcat不能删除目录下文件">
-                Jenkins持续集成发布时tomcat不能删除目录下文件 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -512,7 +497,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装vpn客户端"><span class="nav-number">1.</span> <span class="nav-text">安装vpn客户端</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建一个vpn连接"><span class="nav-number">2.</span> <span class="nav-text">创建一个vpn连接</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编辑配置文件"><span class="nav-number">3.</span> <span class="nav-text">编辑配置文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#复制开启-断开脚本"><span class="nav-number">4.</span> <span class="nav-text">复制开启\断开脚本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#尝试拨vpn"><span class="nav-number">5.</span> <span class="nav-text">尝试拨vpn</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看连接情况"><span class="nav-number">6.</span> <span class="nav-text">查看连接情况</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#设置路由"><span class="nav-number">7.</span> <span class="nav-text">设置路由</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#环境"><span class="nav-number">1.</span> <span class="nav-text">环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#现象"><span class="nav-number">2.</span> <span class="nav-text">现象</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#解决方法"><span class="nav-number">3.</span> <span class="nav-text">解决方法</span></a></li></ol></div>
             
           </div>
         </section>
