@@ -77,25 +77,22 @@
 
 
 
-<meta name="description" content="注册表编辑被管理员禁用第一步：打开组策略窗口，开始-运行-gptdit.msc第二步：选择用户配置-管理模板-系统，双击系统选项找到【阻止访问注册表编辑工具】第三步：双击【阻止访问注册表编辑工具】选择已禁用，点击确定。第四步：在开始-运行输入regedit，打开注册表。 说明注册表已经可以访问了。
-服务灰色，无法正常使用MMC 在该文档中引用的管理单元受到策略限制第一步：开始-运行-regedi">
+<meta name="description" content="注册表编辑被管理员禁用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Windows组策略几个问题小计">
 <meta property="og:url" content="http://islocal.cc/2017/10/31/Windows组策略几个问题小计/index.html">
 <meta property="og:site_name" content="南山居">
-<meta property="og:description" content="注册表编辑被管理员禁用第一步：打开组策略窗口，开始-运行-gptdit.msc第二步：选择用户配置-管理模板-系统，双击系统选项找到【阻止访问注册表编辑工具】第三步：双击【阻止访问注册表编辑工具】选择已禁用，点击确定。第四步：在开始-运行输入regedit，打开注册表。 说明注册表已经可以访问了。
-服务灰色，无法正常使用MMC 在该文档中引用的管理单元受到策略限制第一步：开始-运行-regedi">
+<meta property="og:description" content="注册表编辑被管理员禁用">
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/01.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/02.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/03.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/04.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/05.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/06.png">
-<meta property="og:updated_time" content="2017-10-31T02:54:48.602Z">
+<meta property="og:updated_time" content="2017-10-31T02:59:16.033Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Windows组策略几个问题小计">
-<meta name="twitter:description" content="注册表编辑被管理员禁用第一步：打开组策略窗口，开始-运行-gptdit.msc第二步：选择用户配置-管理模板-系统，双击系统选项找到【阻止访问注册表编辑工具】第三步：双击【阻止访问注册表编辑工具】选择已禁用，点击确定。第四步：在开始-运行输入regedit，打开注册表。 说明注册表已经可以访问了。
-服务灰色，无法正常使用MMC 在该文档中引用的管理单元受到策略限制第一步：开始-运行-regedi">
+<meta name="twitter:description" content="注册表编辑被管理员禁用">
 <meta name="twitter:image" content="http://islocal.cc/images/2017/1031/01.png">
 
 
@@ -323,8 +320,8 @@
       
 
       
-        <a id="more"></a>
-<h1 id="注册表编辑被管理员禁用"><a href="#注册表编辑被管理员禁用" class="headerlink" title="注册表编辑被管理员禁用"></a>注册表编辑被管理员禁用</h1><p><img src="/images/2017/1031/01.png" alt="windows"><br>第一步：打开组策略窗口，开始-运行-gptdit.msc<br>第二步：选择用户配置-管理模板-系统，双击系统选项找到【阻止访问注册表编辑工具】<br>第三步：双击【阻止访问注册表编辑工具】选择已禁用，点击确定。<br>第四步：在开始-运行输入regedit，打开注册表。 说明注册表已经可以访问了。</p>
+        <h1 id="注册表编辑被管理员禁用"><a href="#注册表编辑被管理员禁用" class="headerlink" title="注册表编辑被管理员禁用"></a>注册表编辑被管理员禁用</h1><a id="more"></a>
+<p><img src="/images/2017/1031/01.png" alt="windows"><br>第一步：打开组策略窗口，开始-运行-gptdit.msc<br>第二步：选择用户配置-管理模板-系统，双击系统选项找到【阻止访问注册表编辑工具】<br>第三步：双击【阻止访问注册表编辑工具】选择已禁用，点击确定。<br>第四步：在开始-运行输入regedit，打开注册表。 说明注册表已经可以访问了。</p>
 <h1 id="服务灰色，无法正常使用"><a href="#服务灰色，无法正常使用" class="headerlink" title="服务灰色，无法正常使用"></a>服务灰色，无法正常使用</h1><p>MMC 在该文档中引用的管理单元受到策略限制<br><img src="/images/2017/1031/02.png" alt="windows"><br><img src="/images/2017/1031/03.png" alt="windows"><br>第一步：开始-运行-regedit，启动注册表编辑器<br>第二步：HKEY_CURRENT_USER\Software\Policies\Microsoft\MMC{58221C66-EA27-11CF-ADCF-00AA00A80033}\Restrict_Run，将值设为0<br><img src="/images/2017/1031/04.png" alt="windows"></p>
 <h1 id="任务管理器无法正常使用"><a href="#任务管理器无法正常使用" class="headerlink" title="任务管理器无法正常使用"></a>任务管理器无法正常使用</h1><p><img src="/images/2017/1031/05.png" alt="windows"><br>第一步：打开组策略窗口，开始-运行-gptdit.msc<br>第二步：选择用户配置-管理模板-系统-Ctrl+Alt+Del选项<br>第三步：在该列表中打开 删除“任务管理器” 的属性，在 删除“任务管理器” 属性中的“设置”选项卡中点选“已禁用”，确定。<br><img src="/images/2017/1031/06.png" alt="windows"></p>
 <p><em>PS: hexo图片是居中的，实在是太丑了，记录一下，将就看吧。</em><br>参考地址：<br><a href="http://ytweb.blog.51cto.com/5865824/1177266" target="_blank" rel="external">http://ytweb.blog.51cto.com/5865824/1177266</a><br><a href="https://jingyan.baidu.com/article/3a2f7c2e6ab84626afd61114.html" target="_blank" rel="external">https://jingyan.baidu.com/article/3a2f7c2e6ab84626afd61114.html</a><br><a href="http://blog.sina.com.cn/s/blog_4298a2c80102vii4.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_4298a2c80102vii4.html</a></p>
