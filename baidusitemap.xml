@@ -4,6 +4,54 @@
 
     
   <url>
+    <loc>http://islocal.cc/2017/04/27/Jenkins-%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</loc>
+    <lastmod>2017-11-10T06:16:16.494Z</lastmod>
+    <data>
+        <display>
+        <title>jenkins 持续集成环境搭建</title>
+        <pubTime>2017-04-27T06:04:11.000Z</pubTime>
+        
+        <tag>自动化</tag>
+         
+        <tag>运维</tag>
+         
+        <tag>Jenkins</tag>
+         
+         
+           
+             
+              <breadCrumb title="自动化运维" url="http://islocal.cc/categories/%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://islocal.cc/2017/10/19/Zabbix-6-%E7%9B%91%E6%8E%A7SQL-Server%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
+    <lastmod>2017-11-02T02:03:55.843Z</lastmod>
+    <data>
+        <display>
+        <title>Zabbix(6)监控SQL Server数据库</title>
+        <pubTime>2017-10-19T07:25:24.000Z</pubTime>
+        
+        <tag>zabbix</tag>
+         
+        <tag>监控</tag>
+         
+        <tag>MSSQL</tag>
+         
+         
+           
+             
+              <breadCrumb title="监控" url="http://islocal.cc/categories/%E7%9B%91%E6%8E%A7/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/2017/09/29/Zabbix-3-%E9%82%AE%E4%BB%B6%E6%8A%A5%E8%AD%A6%E9%85%8D%E7%BD%AE/</loc>
     <lastmod>2017-11-01T08:58:53.167Z</lastmod>
     <data>
@@ -98,54 +146,6 @@
         <display>
         <title>Jenkins使用Publish Over CIFS插件实现静态页面部署到Windows服务器</title>
         <pubTime>2017-10-24T01:42:19.000Z</pubTime>
-        
-        <tag>自动化</tag>
-         
-        <tag>运维</tag>
-         
-        <tag>Jenkins</tag>
-         
-         
-           
-             
-              <breadCrumb title="自动化运维" url="http://islocal.cc/categories/%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://islocal.cc/2017/10/19/Zabbix-6-%E7%9B%91%E6%8E%A7SQL-Server%E6%95%B0%E6%8D%AE%E5%BA%93/</loc>
-    <lastmod>2017-10-19T07:35:51.744Z</lastmod>
-    <data>
-        <display>
-        <title>Zabbix(6)监控SQL Server数据库</title>
-        <pubTime>2017-10-19T07:25:24.000Z</pubTime>
-        
-        <tag>zabbix</tag>
-         
-        <tag>监控</tag>
-         
-        <tag>oracle</tag>
-         
-         
-           
-             
-              <breadCrumb title="监控" url="http://islocal.cc/categories/%E7%9B%91%E6%8E%A7/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://islocal.cc/2017/04/27/Jenkins-%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/</loc>
-    <lastmod>2017-10-17T07:14:14.106Z</lastmod>
-    <data>
-        <display>
-        <title>jenkins 持续集成环境搭建</title>
-        <pubTime>2017-04-27T06:04:11.000Z</pubTime>
         
         <tag>自动化</tag>
          
