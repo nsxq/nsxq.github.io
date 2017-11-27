@@ -77,12 +77,12 @@
 
 
 
-<meta name="description" content="捣腾Oracle RAC环境已经半月有余，从对RAC一无所知到环境搭建成功，期间遇到很多坑，填了很多坑；特写此篇，记录一下搭建的过程，以备忘！话多不说，开干！网络环境：网络分为三个部分，Public网络用于访问业务应用，Priv网络用于检测心跳，Storge网络用于连接存储；VIP，rac-scan网络应与Public网络在同一网段12345主机名	Public网络	Priv网络	Storge网络">
+<meta name="description" content="捣腾Oracle RAC环境已经半月有余，从对RAC一无所知到环境搭建成功，期间遇到很多坑，填了很多坑；特写此篇，记录一下搭建的过程，以备忘！话多不说，开干！网络环境：网络分为三个部分，Public网络用于访问业务应用，Priv网络用于检测心跳，Storge网络用于连接存储；VIP，rac-scan网络应与Public网络在同一网段">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Oracle RAC环境搭建(Oracle Linux 6.9+Oracle 11g R2+FreeNas)">
 <meta property="og:url" content="http://islocal.cc/2017/11/23/Oracle-RAC环境搭建-Oracle-Linux-6-9-Oracle-11g-R2-FreeNas/index.html">
 <meta property="og:site_name" content="南山居">
-<meta property="og:description" content="捣腾Oracle RAC环境已经半月有余，从对RAC一无所知到环境搭建成功，期间遇到很多坑，填了很多坑；特写此篇，记录一下搭建的过程，以备忘！话多不说，开干！网络环境：网络分为三个部分，Public网络用于访问业务应用，Priv网络用于检测心跳，Storge网络用于连接存储；VIP，rac-scan网络应与Public网络在同一网段12345主机名	Public网络	Priv网络	Storge网络">
+<meta property="og:description" content="捣腾Oracle RAC环境已经半月有余，从对RAC一无所知到环境搭建成功，期间遇到很多坑，填了很多坑；特写此篇，记录一下搭建的过程，以备忘！话多不说，开干！网络环境：网络分为三个部分，Public网络用于访问业务应用，Priv网络用于检测心跳，Storge网络用于连接存储；VIP，rac-scan网络应与Public网络在同一网段">
 <meta property="og:image" content="http://islocal.cc/images/2017/1123/00.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1123/01.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1123/02.png">
@@ -162,10 +162,10 @@
 <meta property="og:image" content="http://islocal.cc/images/2017/1123/76.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1123/77.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1123/78.png">
-<meta property="og:updated_time" content="2017-11-27T09:58:29.554Z">
+<meta property="og:updated_time" content="2017-11-27T10:07:38.442Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Oracle RAC环境搭建(Oracle Linux 6.9+Oracle 11g R2+FreeNas)">
-<meta name="twitter:description" content="捣腾Oracle RAC环境已经半月有余，从对RAC一无所知到环境搭建成功，期间遇到很多坑，填了很多坑；特写此篇，记录一下搭建的过程，以备忘！话多不说，开干！网络环境：网络分为三个部分，Public网络用于访问业务应用，Priv网络用于检测心跳，Storge网络用于连接存储；VIP，rac-scan网络应与Public网络在同一网段12345主机名	Public网络	Priv网络	Storge网络">
+<meta name="twitter:description" content="捣腾Oracle RAC环境已经半月有余，从对RAC一无所知到环境搭建成功，期间遇到很多坑，填了很多坑；特写此篇，记录一下搭建的过程，以备忘！话多不说，开干！网络环境：网络分为三个部分，Public网络用于访问业务应用，Priv网络用于检测心跳，Storge网络用于连接存储；VIP，rac-scan网络应与Public网络在同一网段">
 <meta name="twitter:image" content="http://islocal.cc/images/2017/1123/00.png">
 
 
@@ -393,7 +393,7 @@
       
 
       
-        <p>捣腾Oracle RAC环境已经半月有余，从对RAC一无所知到环境搭建成功，期间遇到很多坑，填了很多坑；特写此篇，记录一下搭建的过程，以备忘！话多不说，开干！<br><img src="/images/2017/1123/00.png" alt="rac"><br>网络环境：<br>网络分为三个部分，Public网络用于访问业务应用，Priv网络用于检测心跳，Storge网络用于连接存储；VIP，rac-scan网络应与Public网络在同一网段<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">主机名	Public网络	Priv网络	Storge网络	VIP</div><div class="line">rac1	192.168.100.11	172.16.10.11	172.16.20.11	92.168.100.21</div><div class="line">rac2	192.168.100.12	172.16.10.12	172.16.20.12	192.168.100.22</div><div class="line">rac-scan						192.168.100.23</div><div class="line">freenas					172.16.20.13</div></pre></td></tr></table></figure></p>
+        <p>捣腾Oracle RAC环境已经半月有余，从对RAC一无所知到环境搭建成功，期间遇到很多坑，填了很多坑；特写此篇，记录一下搭建的过程，以备忘！话多不说，开干！<br><img src="/images/2017/1123/00.png" alt="rac"><br>网络环境：<br>网络分为三个部分，Public网络用于访问业务应用，Priv网络用于检测心跳，Storge网络用于连接存储；VIP，rac-scan网络应与Public网络在同一网段<br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">主机名	Public网络	Priv网络	Storge网络	VIP</div><div class="line">rac1	192.168.100.11	172.16.10.11	172.16.20.11	92.168.100.21</div><div class="line">rac2	192.168.100.12	172.16.10.12	172.16.20.12	192.168.100.22</div><div class="line">rac-scan						192.168.100.23</div><div class="line">freenas					172.16.20.13</div></pre></td></tr></table></figure></p>
 <p>软件环境：<br><a href="https://mirrors.dotsrc.org/oracle-linux/OL6/U9/x86_64/" target="_blank" rel="external">Oracle Linux6.9</a><br><a href="http://www.oracle.com/technetwork/database/enterprise-edition/downloads/112010-linx8664soft-100572.html" target="_blank" rel="external">Grid</a><br><a href="http://www.oracle.com/technetwork/database/enterprise-edition/downloads/112010-linx8664soft-100572.html" target="_blank" rel="external">Oracle Database 11g</a><br><a href="http://www.oracle.com/technetwork/server-storage/linux/asmlib/ol6-1709075.html" target="_blank" rel="external">ASMlib</a><br><a href="http://www.freenas.com.cn" target="_blank" rel="external">FreeNas</a></p>
 <p>RAC搭建分为五个部分：</p>
 <ul>
