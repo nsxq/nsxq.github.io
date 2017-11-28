@@ -77,22 +77,22 @@
 
 
 
-<meta name="description" content="注册表编辑被管理员禁用">
+<meta name="description" content="注册表编辑被管理员禁用第一步：打开组策略窗口，开始-运行-gptdit.msc第二步：选择用户配置-管理模板-系统，双击系统选项找到【阻止访问注册表编辑工具】第三步：双击【阻止访问注册表编辑工具】选择已禁用，点击确定。第四步：在开始-运行输入regedit，打开注册表。 说明注册表已经可以访问了。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Windows组策略几个问题小计">
 <meta property="og:url" content="http://islocal.cc/2017/10/31/Windows组策略几个问题小计/index.html">
 <meta property="og:site_name" content="南山居">
-<meta property="og:description" content="注册表编辑被管理员禁用">
+<meta property="og:description" content="注册表编辑被管理员禁用第一步：打开组策略窗口，开始-运行-gptdit.msc第二步：选择用户配置-管理模板-系统，双击系统选项找到【阻止访问注册表编辑工具】第三步：双击【阻止访问注册表编辑工具】选择已禁用，点击确定。第四步：在开始-运行输入regedit，打开注册表。 说明注册表已经可以访问了。">
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/01.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/02.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/03.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/04.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/05.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/06.png">
-<meta property="og:updated_time" content="2017-11-28T01:43:41.651Z">
+<meta property="og:updated_time" content="2017-11-28T05:55:16.686Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Windows组策略几个问题小计">
-<meta name="twitter:description" content="注册表编辑被管理员禁用">
+<meta name="twitter:description" content="注册表编辑被管理员禁用第一步：打开组策略窗口，开始-运行-gptdit.msc第二步：选择用户配置-管理模板-系统，双击系统选项找到【阻止访问注册表编辑工具】第三步：双击【阻止访问注册表编辑工具】选择已禁用，点击确定。第四步：在开始-运行输入regedit，打开注册表。 说明注册表已经可以访问了。">
 <meta name="twitter:image" content="http://islocal.cc/images/2017/1031/01.png">
 
 
@@ -320,8 +320,7 @@
       
 
       
-        <h1 id="注册表编辑被管理员禁用"><a href="#注册表编辑被管理员禁用" class="headerlink" title="注册表编辑被管理员禁用"></a>注册表编辑被管理员禁用</h1><a id="more"></a>
-<p><img src="/images/2017/1031/01.png" alt="windows"><br>第一步：打开组策略窗口，开始-运行-gptdit.msc<br>第二步：选择用户配置-管理模板-系统，双击系统选项找到【阻止访问注册表编辑工具】<br>第三步：双击【阻止访问注册表编辑工具】选择已禁用，点击确定。<br>第四步：在开始-运行输入regedit，打开注册表。 说明注册表已经可以访问了。</p>
+        <h1 id="注册表编辑被管理员禁用"><a href="#注册表编辑被管理员禁用" class="headerlink" title="注册表编辑被管理员禁用"></a>注册表编辑被管理员禁用</h1><p><img src="/images/2017/1031/01.png" alt="windows"><br>第一步：打开组策略窗口，开始-运行-gptdit.msc<br>第二步：选择用户配置-管理模板-系统，双击系统选项找到【阻止访问注册表编辑工具】<br>第三步：双击【阻止访问注册表编辑工具】选择已禁用，点击确定。<br>第四步：在开始-运行输入regedit，打开注册表。 说明注册表已经可以访问了。<br><a id="more"></a></p>
 <h1 id="服务灰色，无法正常使用"><a href="#服务灰色，无法正常使用" class="headerlink" title="服务灰色，无法正常使用"></a>服务灰色，无法正常使用</h1><p>MMC 在该文档中引用的管理单元受到策略限制<br><img src="/images/2017/1031/02.png" alt="windows"><br><img src="/images/2017/1031/03.png" alt="windows"><br>第一步：开始-运行-regedit，启动注册表编辑器<br>第二步：HKEY_CURRENT_USER\Software\Policies\Microsoft\MMC{58221C66-EA27-11CF-ADCF-00AA00A80033}\Restrict_Run，将值设为0<br><img src="/images/2017/1031/04.png" alt="windows"></p>
 <h1 id="任务管理器无法正常使用"><a href="#任务管理器无法正常使用" class="headerlink" title="任务管理器无法正常使用"></a>任务管理器无法正常使用</h1><p><img src="/images/2017/1031/05.png" alt="windows"><br>第一步：打开组策略窗口，开始-运行-gptdit.msc<br>第二步：选择用户配置-管理模板-系统-Ctrl+Alt+Del选项<br>第三步：在该列表中打开 删除“任务管理器” 的属性，在 删除“任务管理器” 属性中的“设置”选项卡中点选“已禁用”，确定。<br><img src="/images/2017/1031/06.png" alt="windows"></p>
 <h1 id="要远程登录，你需要具有通过远程桌面服务进行的登录权限"><a href="#要远程登录，你需要具有通过远程桌面服务进行的登录权限" class="headerlink" title="要远程登录，你需要具有通过远程桌面服务进行的登录权限"></a>要远程登录，你需要具有通过远程桌面服务进行的登录权限</h1><p>要远程登录，你需要具有通过远程桌面服务进行的登录权限。默认情况下，远程桌面用户组的成员有这项权限。如果你所属的组没有这项权限，或者远程桌面用户组已经删除了这项权限，那么徐佳莹手动为你授予这一权限<br>第一步：gpedit进入策略组:计算机配置-&gt;Windows设置-&gt;安全设置-&gt;本地策略-&gt;用户权限分配<br>第二步：找到拒绝通过远程桌面服务登录,把里面的账号去了即可</p>
