@@ -4,6 +4,32 @@
 
     
   <url>
+    <loc>http://islocal.cc/2017/11/23/Oracle-RAC%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-Oracle-Linux-6-9-Oracle-11g-R2-FreeNas/</loc>
+    <lastmod>2017-11-28T07:05:49.612Z</lastmod>
+    <data>
+        <display>
+        <title>Oracle RAC环境搭建(Oracle Linux 6.9+Oracle 11g R2+FreeNas)</title>
+        <pubTime>2017-11-23T00:51:44.000Z</pubTime>
+        
+        <tag>集群</tag>
+         
+        <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
+         
+        <tag>RAC</tag>
+         
+         
+           
+             
+              <breadCrumb title="数据库" url="http://islocal.cc/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/2017/10/31/Windows%E7%BB%84%E7%AD%96%E7%95%A5%E5%87%A0%E4%B8%AA%E9%97%AE%E9%A2%98%E5%B0%8F%E8%AE%A1/</loc>
     <lastmod>2017-11-28T05:55:16.686Z</lastmod>
     <data>
@@ -37,32 +63,6 @@
          
          
            
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://islocal.cc/2017/11/23/Oracle-RAC%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-Oracle-Linux-6-9-Oracle-11g-R2-FreeNas/</loc>
-    <lastmod>2017-11-27T10:12:43.393Z</lastmod>
-    <data>
-        <display>
-        <title>Oracle RAC环境搭建(Oracle Linux 6.9+Oracle 11g R2+FreeNas)</title>
-        <pubTime>2017-11-23T00:51:44.000Z</pubTime>
-        
-        <tag>集群</tag>
-         
-        <tag>数据库</tag>
-         
-        <tag>Oracle</tag>
-         
-        <tag>RAC</tag>
-         
-         
-           
-             
-              <breadCrumb title="数据库" url="http://islocal.cc/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-          
         </display>
     </data>
     </url>
