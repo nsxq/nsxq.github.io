@@ -83,7 +83,7 @@
 <meta property="og:url" content="http://islocal.cc/2016/08/16/常用命令集合/index.html">
 <meta property="og:site_name" content="南山居">
 <meta property="og:description" content="Windowsnetstat -an |findstr “8080” 查看端口netstat -an |findstr “127.0.0.1”tasklist 查看进程tasklist |findstr “nginx”tskill 结束进程tskill nginxtskill 1130映射网络驱动器net use Z: \192.168.0.x\share /user:username passw">
-<meta property="og:updated_time" content="2017-11-22T02:19:24.999Z">
+<meta property="og:updated_time" content="2017-11-30T08:50:05.176Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常用命令集合">
 <meta name="twitter:description" content="Windowsnetstat -an |findstr “8080” 查看端口netstat -an |findstr “127.0.0.1”tasklist 查看进程tasklist |findstr “nginx”tskill 结束进程tskill nginxtskill 1130映射网络驱动器net use Z: \192.168.0.x\share /user:username passw">
@@ -319,7 +319,7 @@
 <h2 id="iostat"><a href="#iostat" class="headerlink" title="iostat"></a>iostat</h2><p>查看磁盘性能</p>
 <p>iostat -x 1 5<br>%util 接近100%的时候，产生 的I/O 请求太多，I/O 系统已经满负荷，该磁盘可能存在瓶颈<br>%idle 小于70%的时候，I/O 的 压力比较大，说明读取中有很多的wait</p>
 <h2 id="du"><a href="#du" class="headerlink" title="du"></a>du</h2><p>查看系统目录占用空间大小</p>
-<p>在根目录下执行<br>du -hsx * |sort -rh |head -10<br>du -ah –max-depth=1</p>
+<p>在根目录下执行<br>du -hsx * |sort -rh |head -10<br>du -ah –max-depth=1<br>推荐一款速度更快的工具ncdu</p>
 <h2 id="uptime"><a href="#uptime" class="headerlink" title="uptime"></a>uptime</h2><p>查看cpu的负载</p>
 <p>每cpu的核心当前活动进程数不大于3，表示性能良好，大于五表示严重。</p>
 <h2 id="dd"><a href="#dd" class="headerlink" title="dd"></a>dd</h2><p>瞬间创建（1T）大文件</p>
