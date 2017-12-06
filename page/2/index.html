@@ -248,6 +248,123 @@
             
               
                 
+                <a class="post-title-link" href="/2017/09/29/Zabbix-3-邮件报警配置/" itemprop="url">
+                  Zabbix(3)邮件报警配置
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-09-29T17:56:22+08:00" content="2017-09-29">
+              2017-09-29
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/监控/" itemprop="url" rel="index">
+                    <span itemprop="name">监控</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>报警的方式有很多，邮件，短信，微信，钉钉，最简单的方式这种脚本去发邮件，在此记录一下配置过程。</p>
+<h1 id="配置邮件发送"><a href="#配置邮件发送" class="headerlink" title="配置邮件发送"></a>配置邮件发送</h1><h2 id="安装mailx"><a href="#安装mailx" class="headerlink" title="安装mailx"></a>安装mailx</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install mailx</div></pre></td></tr></table></figure>
+<p>安装好，自己就有软链接了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@vm03 ~]# ls -l /usr/bin/mail</div><div class="line">lrwxrwxrwx 1 root root 5 May  6 02:07 /usr/bin/mail -&gt; mailx</div></pre></td></tr></table></figure></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/09/29/Zabbix-3-邮件报警配置/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/09/29/Zabbix-2-监控客户端安装/" itemprop="url">
                   Zabbix(2)监控客户端安装
                 </a>
@@ -1249,123 +1366,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/16/Lustre文件系统部署/" itemprop="url">
-                  Lustre文件系统部署
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-08-16T15:44:31+08:00" content="2017-08-16">
-              2017-08-16
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/HPC/" itemprop="url" rel="index">
-                    <span itemprop="name">HPC</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>软件下载<br><a href="https://downloads.hpdd.intel.com/public/lustre/" target="_blank" rel="external">https://downloads.hpdd.intel.com/public/lustre/</a><br><a href="https://downloads.hpdd.intel.com/public/e2fsprogs/1.42.7.wc1/" target="_blank" rel="external">https://downloads.hpdd.intel.com/public/e2fsprogs/1.42.7.wc1/</a><br><a href="http://mirror.symnds.com/software/zfsonlinux/repo/epel-testing/6/x86_64/ldiskfsprogs-1.42.7.wc1.3chaos-7.ch5.1.1.x86_64.rpm" target="_blank" rel="external">http://mirror.symnds.com/software/zfsonlinux/repo/epel-testing/6/x86_64/ldiskfsprogs-1.42.7.wc1.3chaos-7.ch5.1.1.x86_64.rpm</a></p>
-<p>查看lustre版本和操作系统对应关系参考：<a href="https://wiki.hpdd.intel.com/display/PUB/Lustre+Support+Matrix" target="_blank" rel="external">https://wiki.hpdd.intel.com/display/PUB/Lustre+Support+Matrix</a></p>
-<p>2.4以后的版本支持多个mds<br>查看lustre版本<br>lctl get_param version</p>
-<p>&lt;未完待续&gt;</p>
-<p>参考文档：<br><a href="http://www.google.com.pg/patents/CN102169448A?cl=zh" target="_blank" rel="external">http://www.google.com.pg/patents/CN102169448A?cl=zh</a><br><a href="http://cdn.opensfs.org/wp-content/uploads/2014/10/6-LUG-Inspur-WWWrevised.pdf" target="_blank" rel="external">http://cdn.opensfs.org/wp-content/uploads/2014/10/6-LUG-Inspur-WWWrevised.pdf</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1410,7 +1410,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">59</span>
+              <span class="site-state-item-count">60</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1427,7 +1427,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">55</span>
+                <span class="site-state-item-count">57</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
