@@ -248,6 +248,123 @@
             
               
                 
+                <a class="post-title-link" href="/2017/03/21/mailx-发送邮件小计/" itemprop="url">
+                  mailx 发送邮件小计
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-21T10:24:36+08:00" content="2017-03-21">
+              2017-03-21
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/监控/" itemprop="url" rel="index">
+                    <span itemprop="name">监控</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="安装postfix服务"><a href="#安装postfix服务" class="headerlink" title="安装postfix服务"></a>安装postfix服务</h1><p>yum install postfix<br>/etc/init.d/postfix start<br>chkconfig postfix on</p>
+<h1 id="发送格式"><a href="#发送格式" class="headerlink" title="发送格式"></a>发送格式</h1><p>mailx -s subject user@xxx.com &lt; message_file<br>echo “内容” | mailx -s “邮件标题” user@xxx.com</p>
+<h1 id="其他选项"><a href="#其他选项" class="headerlink" title="其他选项"></a>其他选项</h1><p>-r 指定发件人<br>-c 指定抄送人<br>-b 指定密送人<br>多个收件人使用逗号分隔<br>有些邮箱（如qq邮箱）会当成垃圾邮件拦截，日志中可以看到500错误<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/03/21/mailx-发送邮件小计/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/01/16/SSH-奇淫技巧之隧道模式/" itemprop="url">
                   SSH 奇淫技巧之隧道模式
                 </a>
@@ -1230,123 +1347,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/08/09/正在启动windows卡住故障的填坑之路/" itemprop="url">
-                  正在启动windows卡住故障的填坑之路
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-08-09T14:45:36+08:00" content="2016-08-09">
-              2016-08-09
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Troubleshooting/" itemprop="url" rel="index">
-                    <span itemprop="name">Troubleshooting</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="事件起因"><a href="#事件起因" class="headerlink" title="事件起因"></a>事件起因</h1><p>同事新买了一个ThinkPad E460，出厂系统为Windows8.1，希望修改为win7，于是开始了我的填坑之路，此故障之前在联想的S405上也遇到了一次。</p>
-<h1 id="故障现象"><a href="#故障现象" class="headerlink" title="故障现象"></a>故障现象</h1><p>安装完操作系统后，出现“正在启动windows卡住”，如图:</p>
-<p><img src="/images/2016/0809/1.jpg" alt="Alttext"></p>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/08/09/正在启动windows卡住故障的填坑之路/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1391,7 +1391,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">61</span>
+              <span class="site-state-item-count">62</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

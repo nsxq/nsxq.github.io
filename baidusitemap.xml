@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://islocal.cc/2017/12/27/CentOS6-9%E7%8E%AF%E5%A2%83%E9%9D%99%E9%BB%98%E5%AE%89%E8%A3%85Oracle11g/</loc>
+    <lastmod>2017-12-27T09:21:56.649Z</lastmod>
+    <data>
+        <display>
+        <title>CentOS6.9环境静默安装Oracle11g</title>
+        <pubTime>2017-12-27T03:19:50.000Z</pubTime>
+        
+        <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
+         
+         
+           
+             
+              <breadCrumb title="数据库" url="http://islocal.cc/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/2017/11/23/Oracle-RAC%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-Oracle-Linux-6-9-Oracle-11g-R2-FreeNas/</loc>
     <lastmod>2017-12-26T07:44:36.450Z</lastmod>
     <data>
@@ -330,9 +352,9 @@
         <title>Win10无法正常连接sslvpn</title>
         <pubTime>2017-10-25T02:36:45.000Z</pubTime>
         
-        <tag>Windows</tag>
-         
         <tag>vpn</tag>
+         
+        <tag>Windows</tag>
          
          
            
