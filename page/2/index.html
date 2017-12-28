@@ -248,6 +248,121 @@
             
               
                 
+                <a class="post-title-link" href="/2017/10/10/Oracle删除用户报错ORA-01940-cannot-drop-a-user-that-is-currently-connected/" itemprop="url">
+                  Oracle删除用户报错ORA-01940: cannot drop a user that is currently connected
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-10-10T11:58:34+08:00" content="2017-10-10">
+              2017-10-10
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>oracle导入数据之前，删除用户时候报错“ORA-01940: cannot drop a user that is currently connected”，原因是因为用户正在连接使用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">SQL&gt; drop user air_forecast cascade;</div><div class="line">drop user air_forecast cascade</div><div class="line">*</div><div class="line">ERROR at line 1:</div><div class="line">ORA-01940: cannot drop a user that is currently connected</div></pre></td></tr></table></figure></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/10/10/Oracle删除用户报错ORA-01940-cannot-drop-a-user-that-is-currently-connected/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/10/09/Oracle数据库错误表SYS-AUD-无法通过8192-在表空间SYSTEM中-扩展/" itemprop="url">
                   Oracle数据库错误表SYS.AUD$无法通过8192(在表空间SYSTEM中)扩展
                 </a>
@@ -1265,126 +1380,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2017/08/22/Jenkins邮件通知配置/" itemprop="url">
-                  Jenkins邮件通知配置
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-08-22T16:36:52+08:00" content="2017-08-22">
-              2017-08-22
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/自动化运维/" itemprop="url" rel="index">
-                    <span itemprop="name">自动化运维</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Jenkins<a href="http://islocal.cc/2017/04/27/jenkins-%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a>完成了,项目自动化编译打包也调通了，但是我们不能保证每次都是正常的，根据自己的情况(构建失败，构建状态不稳定)配置邮件通知是有必要的；这篇文章我采用腾讯qq邮箱来发送，使用公司邮箱来接收；</p>
-<h1 id="常用的几种方式"><a href="#常用的几种方式" class="headerlink" title="常用的几种方式"></a>常用的几种方式</h1><ul>
-<li>使用内置的邮件插进（使用全局的配置，只能有一个接收方）</li>
-<li>使用邮件扩展插件【Email Extension Plugin】（使用全局的配置，能有多个接收方，但是只能有一个发送方）</li>
-<li>使用邮件扩展插件【Email Extension Plugin】+Groovy脚本（实现每个Job对应不同的发送邮件，多个发送方）</li>
-<li>开发邮件转发中间件或者使用Foxmail这些工具来转发（每个Job发送到对应的邮箱，然后中间件负责转发到成员列表的邮箱。对发送插件没什么要求，只要能发送即可）<br><em>(这篇文章只说一下前两种方式)</em>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2017/08/22/Jenkins邮件通知配置/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1429,7 +1424,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">62</span>
+              <span class="site-state-item-count">63</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
