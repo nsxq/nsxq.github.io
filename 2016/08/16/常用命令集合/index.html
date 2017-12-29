@@ -77,16 +77,19 @@
 
 
 
-<meta name="description" content="Windowsnetstat -an |findstr “8080” 查看端口netstat -an |findstr “127.0.0.1”tasklist 查看进程tasklist |findstr “nginx”tskill 结束进程tskill nginxtskill 1130映射网络驱动器net use Z: \192.168.0.x\share /user:username passw">
+<meta name="description" content="Windows进程查看1234567netstat -an |findstr “8080” 查看端口netstat -an |findstr “127.0.0.1”tasklist 查看进程tasklist |findstr “nginx”tskill 结束进程tskill nginxtskill 1130
+映射网络驱动器1234net use Z: \\192.168.0.x\share /us">
 <meta property="og:type" content="article">
 <meta property="og:title" content="常用命令集合">
 <meta property="og:url" content="http://islocal.cc/2016/08/16/常用命令集合/index.html">
 <meta property="og:site_name" content="南山居">
-<meta property="og:description" content="Windowsnetstat -an |findstr “8080” 查看端口netstat -an |findstr “127.0.0.1”tasklist 查看进程tasklist |findstr “nginx”tskill 结束进程tskill nginxtskill 1130映射网络驱动器net use Z: \192.168.0.x\share /user:username passw">
-<meta property="og:updated_time" content="2017-11-30T08:50:05.176Z">
+<meta property="og:description" content="Windows进程查看1234567netstat -an |findstr “8080” 查看端口netstat -an |findstr “127.0.0.1”tasklist 查看进程tasklist |findstr “nginx”tskill 结束进程tskill nginxtskill 1130
+映射网络驱动器1234net use Z: \\192.168.0.x\share /us">
+<meta property="og:updated_time" content="2017-12-29T09:53:03.957Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常用命令集合">
-<meta name="twitter:description" content="Windowsnetstat -an |findstr “8080” 查看端口netstat -an |findstr “127.0.0.1”tasklist 查看进程tasklist |findstr “nginx”tskill 结束进程tskill nginxtskill 1130映射网络驱动器net use Z: \192.168.0.x\share /user:username passw">
+<meta name="twitter:description" content="Windows进程查看1234567netstat -an |findstr “8080” 查看端口netstat -an |findstr “127.0.0.1”tasklist 查看进程tasklist |findstr “nginx”tskill 结束进程tskill nginxtskill 1130
+映射网络驱动器1234net use Z: \\192.168.0.x\share /us">
 
 
 
@@ -313,26 +316,29 @@
       
 
       
-        <h1 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h1><p>netstat -an |findstr “8080” 查看端口<br>netstat -an |findstr “127.0.0.1”<br>tasklist 查看进程<br>tasklist |findstr “nginx”<br>tskill 结束进程<br>tskill nginx<br>tskill 1130<br>映射网络驱动器<br>net use Z: \192.168.0.x\share /user:username password<br>断开网络驱动器<br>net use Z: /del /y<br>net use * /del /y</p>
+        <h1 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h1><h2 id="进程查看"><a href="#进程查看" class="headerlink" title="进程查看"></a>进程查看</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">netstat -an |findstr “8080” 查看端口</div><div class="line">netstat -an |findstr “127.0.0.1”</div><div class="line">tasklist 查看进程</div><div class="line">tasklist |findstr “nginx”</div><div class="line">tskill 结束进程</div><div class="line">tskill nginx</div><div class="line">tskill 1130</div></pre></td></tr></table></figure>
+<h2 id="映射网络驱动器"><a href="#映射网络驱动器" class="headerlink" title="映射网络驱动器"></a>映射网络驱动器</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">net use Z: \\192.168.0.x\share /user:username password</div><div class="line">#断开网络驱动器</div><div class="line">net use Z: /del /y</div><div class="line">net use * /del /y</div></pre></td></tr></table></figure>
+<h2 id="桌面图标设置"><a href="#桌面图标设置" class="headerlink" title="桌面图标设置"></a>桌面图标设置</h2><p>添加计算机到桌面<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rundll32.exe shell32.dll,Control_RunDLL desk.cpl,,0</div></pre></td></tr></table></figure></p>
+<h2 id="常用快捷命令"><a href="#常用快捷命令" class="headerlink" title="常用快捷命令"></a>常用快捷命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">winver		# 查看系统信息</div><div class="line">control.exe	# 控制面板</div><div class="line">sysdm.cpl	# 系统属性</div><div class="line">devmgmt.msc	# 设备管理器</div><div class="line">compmgmt.msc	# 计算机管理</div><div class="line">wf.msc		# 防火墙管理</div></pre></td></tr></table></figure>
+<p>网络与共享中心<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">control.exe /name Microsoft.NetworkAndSharingCenter</div></pre></td></tr></table></figure></p>
 <h1 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h1><h2 id="free"><a href="#free" class="headerlink" title="free"></a>free</h2><p>查看内存使用情况</p>
 <p>可用内存=free+buffers+cached<br>以用内存=used-buffers-cached<br>所以看内存的使用不要看used 和free ，看 -/+ buffers/cache 就可以了</p>
 <h2 id="iostat"><a href="#iostat" class="headerlink" title="iostat"></a>iostat</h2><p>查看磁盘性能</p>
 <p>iostat -x 1 5<br>%util 接近100%的时候，产生 的I/O 请求太多，I/O 系统已经满负荷，该磁盘可能存在瓶颈<br>%idle 小于70%的时候，I/O 的 压力比较大，说明读取中有很多的wait</p>
 <h2 id="du"><a href="#du" class="headerlink" title="du"></a>du</h2><p>查看系统目录占用空间大小</p>
-<p>在根目录下执行<br>du -hsx * |sort -rh |head -10<br>du -ah –max-depth=1<br>推荐一款速度更快的工具ncdu</p>
+<p>在根目录下执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">du -hsx * |sort -rh |head -10</div><div class="line">du -ah --max-depth=1</div></pre></td></tr></table></figure></p>
+<p>推荐一款速度更快的工具ncdu</p>
 <h2 id="uptime"><a href="#uptime" class="headerlink" title="uptime"></a>uptime</h2><p>查看cpu的负载</p>
 <p>每cpu的核心当前活动进程数不大于3，表示性能良好，大于五表示严重。</p>
-<h2 id="dd"><a href="#dd" class="headerlink" title="dd"></a>dd</h2><p>瞬间创建（1T）大文件</p>
-<p>dd if=/dev/zero of=file bs=1G seek=1024 count=0<br>这个文件用ll -h 看着是1TB的，用du -sh 看着是空文件，随着写入的数据而增长</p>
-<p>dd制作ISO镜像</p>
-<p>dd if=/dev/cdrom of=/mnt/cd1.iso</p>
-<h2 id="shopt"><a href="#shopt" class="headerlink" title="shopt"></a>shopt</h2><p>选择性删除文件</p>
-<p>shopt -s extglob 打开<br>rm -fr !(file1|file2)<br>shopt -u extglob #关闭</p>
-<h2 id="dstat"><a href="#dstat" class="headerlink" title="dstat"></a>dstat</h2><p>监控系统状态</p>
-<h2 id="alias"><a href="#alias" class="headerlink" title="alias"></a>alias</h2><p>alias dstat=’dstat -cdlmnpsyy’</p>
+<h2 id="dd"><a href="#dd" class="headerlink" title="dd"></a>dd</h2><p>瞬间创建（1T）大文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/zero of=file bs=1G seek=1024 count=0</div></pre></td></tr></table></figure></p>
+<p>这个文件用ll -h 看着是1TB的，用du -sh 看着是空文件，随着写入的数据而增长</p>
+<p>dd制作ISO镜像<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/cdrom of=/mnt/cd1.iso</div></pre></td></tr></table></figure></p>
+<h2 id="shopt"><a href="#shopt" class="headerlink" title="shopt"></a>shopt</h2><p>选择性删除文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">shopt -s extglob 打开</div><div class="line">rm -fr !(file1|file2)</div><div class="line">shopt -u extglob #关闭</div></pre></td></tr></table></figure></p>
+<h2 id="dstat"><a href="#dstat" class="headerlink" title="dstat"></a>dstat</h2><p>监控系统状态<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">alias dstat=&apos;dstat -cdlmnpsy&apos;</div></pre></td></tr></table></figure></p>
 <h2 id="iftop"><a href="#iftop" class="headerlink" title="iftop"></a>iftop</h2><p>n 显示ip/主机名<br>p 显示端口<br>l 输入过滤内容<br><a href="http://www.vpser.net/manage/iftop.html" target="_blank" rel="external">http://www.vpser.net/manage/iftop.html</a></p>
-<h2 id="网卡灯闪烁"><a href="#网卡灯闪烁" class="headerlink" title="网卡灯闪烁"></a>网卡灯闪烁</h2><p>ethtool -p eth0</p>
-<h1 id="终端快捷键"><a href="#终端快捷键" class="headerlink" title="终端快捷键"></a>终端快捷键</h1><p>ctrl + a    移动光标到行首<br>ctrl + e    移动光标到行尾（好像不生效）<br>ctrl + r    查找历史命令<br>ctrl + u    删除从光标到行首<br>ctrl + k    删除从光标到行尾<br>ctrl + l    清屏<br>更多参考：<a href="http://harttle.com/2015/11/09/bash-shortcuts.html" target="_blank" rel="external">http://harttle.com/2015/11/09/bash-shortcuts.html</a></p>
+<h2 id="网卡灯闪烁"><a href="#网卡灯闪烁" class="headerlink" title="网卡灯闪烁"></a>网卡灯闪烁</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ethtool -p eth0</div></pre></td></tr></table></figure>
+<h1 id="终端快捷键"><a href="#终端快捷键" class="headerlink" title="终端快捷键"></a>终端快捷键</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ctrl + a	移动光标到行首</div><div class="line">ctrl + e	移动光标到行尾（好像不生效）</div><div class="line">ctrl + r	查找历史命令</div><div class="line">ctrl + u	删除从光标到行首</div><div class="line">ctrl + k	删除从光标到行尾</div><div class="line">ctrl + l	清屏</div></pre></td></tr></table></figure>
+<p>更多参考：<a href="http://harttle.com/2015/11/09/bash-shortcuts.html" target="_blank" rel="external">http://harttle.com/2015/11/09/bash-shortcuts.html</a></p>
 
       
     </div>
@@ -512,7 +518,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows"><span class="nav-number">1.</span> <span class="nav-text">Windows</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux"><span class="nav-number">2.</span> <span class="nav-text">Linux</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#free"><span class="nav-number">2.1.</span> <span class="nav-text">free</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iostat"><span class="nav-number">2.2.</span> <span class="nav-text">iostat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#du"><span class="nav-number">2.3.</span> <span class="nav-text">du</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uptime"><span class="nav-number">2.4.</span> <span class="nav-text">uptime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dd"><span class="nav-number">2.5.</span> <span class="nav-text">dd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shopt"><span class="nav-number">2.6.</span> <span class="nav-text">shopt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dstat"><span class="nav-number">2.7.</span> <span class="nav-text">dstat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#alias"><span class="nav-number">2.8.</span> <span class="nav-text">alias</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iftop"><span class="nav-number">2.9.</span> <span class="nav-text">iftop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网卡灯闪烁"><span class="nav-number">2.10.</span> <span class="nav-text">网卡灯闪烁</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#终端快捷键"><span class="nav-number">3.</span> <span class="nav-text">终端快捷键</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows"><span class="nav-number">1.</span> <span class="nav-text">Windows</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程查看"><span class="nav-number">1.1.</span> <span class="nav-text">进程查看</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#映射网络驱动器"><span class="nav-number">1.2.</span> <span class="nav-text">映射网络驱动器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#桌面图标设置"><span class="nav-number">1.3.</span> <span class="nav-text">桌面图标设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常用快捷命令"><span class="nav-number">1.4.</span> <span class="nav-text">常用快捷命令</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux"><span class="nav-number">2.</span> <span class="nav-text">Linux</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#free"><span class="nav-number">2.1.</span> <span class="nav-text">free</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iostat"><span class="nav-number">2.2.</span> <span class="nav-text">iostat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#du"><span class="nav-number">2.3.</span> <span class="nav-text">du</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#uptime"><span class="nav-number">2.4.</span> <span class="nav-text">uptime</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dd"><span class="nav-number">2.5.</span> <span class="nav-text">dd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#shopt"><span class="nav-number">2.6.</span> <span class="nav-text">shopt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dstat"><span class="nav-number">2.7.</span> <span class="nav-text">dstat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#iftop"><span class="nav-number">2.8.</span> <span class="nav-text">iftop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#网卡灯闪烁"><span class="nav-number">2.9.</span> <span class="nav-text">网卡灯闪烁</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#终端快捷键"><span class="nav-number">3.</span> <span class="nav-text">终端快捷键</span></a></li></ol></div>
             
           </div>
         </section>
