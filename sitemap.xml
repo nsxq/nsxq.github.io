@@ -2,16 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://islocal.cc/2017/05/18/Oracle%20%E5%A4%9A%E5%AE%9E%E4%BE%8B%E5%90%AF%E5%8A%A8/</loc>
+    <loc>http://islocal.cc/2017/07/04/Centos7%E4%B8%8BRsync%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E9%85%8D%E7%BD%AE/</loc>
     
-    <lastmod>2018-01-05T08:00:31.214Z</lastmod>
+    <lastmod>2018-01-11T01:55:32.073Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://islocal.cc/2017/11/23/Oracle-RAC%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-Oracle-Linux-6-9-Oracle-11g-R2-FreeNas/</loc>
     
-    <lastmod>2018-01-02T10:20:21.432Z</lastmod>
+    <lastmod>2018-01-11T01:54:11.746Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://islocal.cc/2017/05/18/Oracle%20%E5%A4%9A%E5%AE%9E%E4%BE%8B%E5%90%AF%E5%8A%A8/</loc>
+    
+    <lastmod>2018-01-05T08:00:31.214Z</lastmod>
     
   </url>
   
@@ -299,13 +306,6 @@
     <loc>http://islocal.cc/2017/06/13/NFS-%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E8%AE%B0%E5%BD%95/</loc>
     
     <lastmod>2017-07-19T11:06:41.178Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://islocal.cc/2017/07/04/Centos7%E4%B8%8BRsync%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA%E9%85%8D%E7%BD%AE/</loc>
-    
-    <lastmod>2017-07-19T01:38:33.378Z</lastmod>
     
   </url>
   
