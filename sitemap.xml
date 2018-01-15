@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://islocal.cc/2017/12/28/Oracle%E8%A1%A8%E7%A9%BA%E9%97%B4%E6%89%A9%E5%AE%B9/</loc>
+    
+    <lastmod>2018-01-15T10:33:52.103Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://islocal.cc/2017/11/23/Oracle-RAC%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA-Oracle-Linux-6-9-Oracle-11g-R2-FreeNas/</loc>
     
-    <lastmod>2018-01-11T08:45:31.213Z</lastmod>
+    <lastmod>2018-01-15T08:29:46.896Z</lastmod>
     
   </url>
   
@@ -26,13 +33,6 @@
     <loc>http://islocal.cc/2016/08/16/%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E9%9B%86%E5%90%88/</loc>
     
     <lastmod>2017-12-29T09:53:03.957Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://islocal.cc/2017/12/28/Oracle%E8%A1%A8%E7%A9%BA%E9%97%B4%E6%89%A9%E5%AE%B9/</loc>
-    
-    <lastmod>2017-12-28T10:56:35.460Z</lastmod>
     
   </url>
   
