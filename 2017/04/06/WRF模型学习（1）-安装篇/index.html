@@ -104,7 +104,7 @@
 <meta property="og:image" content="http://islocal.cc/images/2017/0406/01.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/0406/02.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/0406/03.png">
-<meta property="og:updated_time" content="2017-04-21T07:30:59.653Z">
+<meta property="og:updated_time" content="2018-01-24T06:49:17.478Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="WRF模型学习（1）--安装篇">
 <meta name="twitter:description" content="WRF简介WRF全称Weather Research and Forecasting Model, 是一个先进的大气建模系统，专为气象研究和数值天气预报而设计。它为大气过程提供了许多选项，可以在各种计算平台上运行。WRF在数千米到数千公里范围内的应用范围广泛，包括以下内容。
@@ -357,8 +357,8 @@
 <h1 id="系统环境"><a href="#系统环境" class="headerlink" title="系统环境"></a>系统环境</h1><p>VMware Wrokstation 12 pro<br>CentOS 6.4 x64</p>
 <h1 id="软件环境"><a href="#软件环境" class="headerlink" title="软件环境"></a>软件环境</h1><p>zlib-1.2.11.tar.gz<br>hdf5-1.8.18.tar<br>netcdf-4.4.1.1.tar.gz<br>netcdf-fortran-4.4.4.tar.gz<br>pgilinux-2016-1610-x86_64.tar.gz<br>WRFV3.8.1.TAR.gz<br>WPSV3.8.1.TAR.gz</p>
 <h1 id="WRF-模型安装"><a href="#WRF-模型安装" class="headerlink" title="WRF 模型安装"></a>WRF 模型安装</h1><p>安装WRF模型的的顺序为：WRF–&gt;WPS–&gt;WRF-chem等<br>WRF模拟系统主要包含WPS和WRF两部分模块： WPS模块全称为WRF Pre-processing System，即WRF预处理系统，用来为WRF模型准备输入数据；如果只是做理想实验(idealized modeling)，就不需要用WPS处理真实数据。<br>WRF模块就是数值求解的模块，它有两个版本：ARW(Advanced Research WRF) 和 NMM(Nonhydrostatic Mesoscale Model)。大多数研究者主要用的都是ARW版本。 除了WPS与WRF两大核心模块外，WRF系统还有很多附加模块：比如用于数据同化的WRF-DA，用于化学传输的WRF-chem，用于林火模拟的WRF-fire。</p>
-<h1 id="安装依赖zlib"><a href="#安装依赖zlib" class="headerlink" title="安装依赖zlib"></a>安装依赖zlib</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># tar xf zlib-1.2.11.tar.gz</div><div class="line"># cd zlib-1.2.11</div><div class="line"># ./configure --prefix=/usr/local/zlib/</div></pre></td></tr></table></figure>
-<h1 id="安装依赖hdf5"><a href="#安装依赖hdf5" class="headerlink" title="安装依赖hdf5"></a>安装依赖hdf5</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># tar xf hdf5-1.8.18.tar</div><div class="line"># cd hdf5-1.8.18</div><div class="line">#./configure --prefix=/usr/local/hdf5/ --with-zlib=/usr/local/zlib/</div></pre></td></tr></table></figure>
+<h1 id="安装依赖zlib"><a href="#安装依赖zlib" class="headerlink" title="安装依赖zlib"></a>安装依赖zlib</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># tar xf zlib-1.2.11.tar.gz</div><div class="line"># cd zlib-1.2.11</div><div class="line"># ./configure --prefix=/usr/local/zlib/</div><div class="line"># make &amp;&amp; make install</div></pre></td></tr></table></figure>
+<h1 id="安装依赖hdf5"><a href="#安装依赖hdf5" class="headerlink" title="安装依赖hdf5"></a>安装依赖hdf5</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># tar xf hdf5-1.8.18.tar</div><div class="line"># cd hdf5-1.8.18</div><div class="line">#./configure --prefix=/usr/local/hdf5/ --with-zlib=/usr/local/zlib/</div><div class="line"># make &amp;&amp; make install</div></pre></td></tr></table></figure>
 <h1 id="安装依赖netcdf"><a href="#安装依赖netcdf" class="headerlink" title="安装依赖netcdf"></a>安装依赖netcdf</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># tar xf netcdf-4.4.1.1.tar.gz</div><div class="line"># cd netcdf-4.4.1.1</div><div class="line"># ./configure --prefix=/usr/local/netcdf/ --enable-netcdf-4 LDFLAGS=&quot;-L/usr/local/hdf5/lib/&quot; CPPFLAGS=&quot;-I/usr/local/hdf5/include/&quot;</div><div class="line"># make &amp;&amp; make install</div></pre></td></tr></table></figure>
 <h1 id="安装依赖netcdf-fortran"><a href="#安装依赖netcdf-fortran" class="headerlink" title="安装依赖netcdf-fortran"></a>安装依赖netcdf-fortran</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># tar xf netcdf-fortran-4.4.4.tar.gz </div><div class="line"># cd netcdf-fortran-4.4.4</div><div class="line"># ./configure --prefix=/usr/local/netcdf/ LDFLAGS=&quot;-L/usr/local/netcdf/lib&quot; CPPFLAGS=&quot;-I/usr/local/netcdf/include&quot; FC=gfortran</div><div class="line"># make &amp;&amp; make install</div></pre></td></tr></table></figure>
 <p>此步骤中报错可以查看日志文件config.log 进行解决<br>我遇到的问题configure: error: cannot compute sizeof (off_t)，最终是设置了环境变量解决的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">export LDFLAGS=&quot;-L/usr/local/netcdf/lib/&quot;</div><div class="line">export CPPFLAGS=&quot;-I/usr/local/netcdf/include/&quot;</div><div class="line">export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/netcdf/lib/</div></pre></td></tr></table></figure></p>
@@ -502,7 +502,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">66</span>
+              <span class="site-state-item-count">67</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -519,7 +519,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">67</span>
+                <span class="site-state-item-count">68</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

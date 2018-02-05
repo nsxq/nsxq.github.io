@@ -4,6 +4,50 @@
 
     
   <url>
+    <loc>http://islocal.cc/2018/02/02/Sonar%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7%E5%AE%89%E8%A3%85/</loc>
+    <lastmod>2018-02-05T08:44:29.545Z</lastmod>
+    <data>
+        <display>
+        <title>Sonar代码质量管理工具安装</title>
+        <pubTime>2018-02-02T09:54:03.000Z</pubTime>
+        
+        <tag>自动化</tag>
+         
+        <tag>运维</tag>
+         
+        <tag>Sonar</tag>
+         
+         
+           
+             
+              <breadCrumb title="自动化运维" url="http://islocal.cc/categories/%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://islocal.cc/2017/04/06/WRF%E6%A8%A1%E5%9E%8B%E5%AD%A6%E4%B9%A0%EF%BC%881%EF%BC%89-%E5%AE%89%E8%A3%85%E7%AF%87/</loc>
+    <lastmod>2018-01-24T06:49:17.478Z</lastmod>
+    <data>
+        <display>
+        <title>WRF模型学习（1）--安装篇</title>
+        <pubTime>2017-04-06T09:09:10.000Z</pubTime>
+        
+        <tag>WRF</tag>
+         
+         
+           
+             
+              <breadCrumb title="大气模型" url="http://islocal.cc/categories/%E5%A4%A7%E6%B0%94%E6%A8%A1%E5%9E%8B/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/2018/01/19/%E9%83%A8%E7%BD%B2office%E5%9C%A8%E7%BA%BF%E9%A2%84%E8%A7%88%E6%9C%8D%E5%8A%A1%E5%99%A8-Office-Web-Apps-Server/</loc>
     <lastmod>2018-01-23T02:45:34.583Z</lastmod>
     <data>
@@ -1385,26 +1429,6 @@
          
          
            
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://islocal.cc/2017/04/06/WRF%E6%A8%A1%E5%9E%8B%E5%AD%A6%E4%B9%A0%EF%BC%881%EF%BC%89-%E5%AE%89%E8%A3%85%E7%AF%87/</loc>
-    <lastmod>2017-04-21T07:30:59.653Z</lastmod>
-    <data>
-        <display>
-        <title>WRF模型学习（1）--安装篇</title>
-        <pubTime>2017-04-06T09:09:10.000Z</pubTime>
-        
-        <tag>WRF</tag>
-         
-         
-           
-             
-              <breadCrumb title="大气模型" url="http://islocal.cc/categories/%E5%A4%A7%E6%B0%94%E6%A8%A1%E5%9E%8B/"/>
-          
         </display>
     </data>
     </url>
