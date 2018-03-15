@@ -271,7 +271,7 @@
             
               
                 
-                <a class="post-title-link" href="/2018/03/15/使用wgrib2将GFS数据导入到mysql/" itemprop="url">
+                <a class="post-title-link" href="/arlo/551cdbc9/" itemprop="url">
                   使用wgrib2将GFS数据导入到mysql
                 </a>
               
@@ -336,7 +336,7 @@
           <h1 id="GFS数据来源"><a href="#GFS数据来源" class="headerlink" title="GFS数据来源"></a>GFS数据来源</h1><blockquote>
 <p>数据来源采自美国国家环境预报中心的GFS(全球预报系统)，该系统每天发布4次全球范围的气象数据，分辨率最高可达到0.25° x 0.25°，精度还是比较可观的。<br>GFS数据提供FTP下载方式：<a href="http://www.ftp.ncep.noaa.gov/data/nccf/com/gfs/prod/">http://www.ftp.ncep.noaa.gov/data/nccf/com/gfs/prod/</a><br>每次发布的数据保存在命名为gfs.YYYYMMDDHH的文件夹中。本次需要的数据精度为0.25°（0p25），所以数据的文件名为：gfs.t{HH}z.pgrb2.0p25.f{XXX}<br>其中HH表示发布的时间，XXX表示未来几小时的预报数据。例如gfs.t00z.pgrb2.0p25.f001 表示0时发布的未来1小时气象数据信息。<br>那么问题来了，这个文件太大了，因为分辨率比较高，每个文件高达200多MB，不仅下载速度慢，处理慢，对存储空间也是一个考验。<br>于是找到了一个可以在线过滤要下载数据的地址：<br><a href="http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl">http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl</a><br>这个网站允许用户仅下载过滤后的文件，并提供下载网址，这样文件就会小很多。<br>例如，在本项目中，仅需要下载降雨数据（PWAT），并且经纬度范围为特定区域，每次发布的数据全部下载下来也才8M多点。<br>那么要想获得GRIB文件中的数据，则需要用到一个软件wgrib2,，该软件在ncep网站上提供源码下载。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2018/03/15/使用wgrib2将GFS数据导入到mysql/#more" rel="contents">
+            <a class="btn" href="/arlo/551cdbc9/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -387,7 +387,7 @@
             
               
                 
-                <a class="post-title-link" href="/2018/03/13/安装rlwrap，使SqlPlus工具支持上下左右键/" itemprop="url">
+                <a class="post-title-link" href="/arlo/d9547628/" itemprop="url">
                   安装rlwrap，使SqlPlus工具支持上下左右键
                 </a>
               
@@ -451,7 +451,7 @@
         
           <p>SqlPlus 工具中默认不支持上下左右键调出历史命令，很不方便；需安装rlwrap。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2018/03/13/安装rlwrap，使SqlPlus工具支持上下左右键/#more" rel="contents">
+            <a class="btn" href="/arlo/d9547628/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -502,7 +502,7 @@
             
               
                 
-                <a class="post-title-link" href="/2018/02/02/Sonar代码质量管理工具安装/" itemprop="url">
+                <a class="post-title-link" href="/arlo/96c3f480/" itemprop="url">
                   Sonar代码质量管理工具安装
                 </a>
               
@@ -566,7 +566,7 @@
         
           <p>Sonar(SonarQube)是一款静态代码检查工具，采用B/S架构，帮助检查代码缺陷，改善代码质量，提高开发速度，通过插件形式，可以支持Java、C、C++、JavaScripe等等二十几种编程语言的代码质量管理与检测；通过客户端插件分析源代码，sonar客户端可以采用IDE插件、Sonar-Scanner插件、Ant插件和Maven插件方式，并通过各种不同的分析机制对项目源代码进行分析和扫描，并把分析扫描后的结果上传到sonar的数据库，通过sonar web界面对分析结果进行管理。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2018/02/02/Sonar代码质量管理工具安装/#more" rel="contents">
+            <a class="btn" href="/arlo/96c3f480/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -617,7 +617,7 @@
             
               
                 
-                <a class="post-title-link" href="/2018/01/22/Bginfo-Windows系统信息显示工具/" itemprop="url">
+                <a class="post-title-link" href="/arlo/ea6f862b/" itemprop="url">
                   Bginfo--Windows系统信息显示工具
                 </a>
               
@@ -681,7 +681,7 @@
         
           <p>经常维护多台Windows服务器，在服务器之间来回切换，经常容易搞混，为大家推荐一个维护利器BGinfo。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2018/01/22/Bginfo-Windows系统信息显示工具/#more" rel="contents">
+            <a class="btn" href="/arlo/ea6f862b/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -732,7 +732,7 @@
             
               
                 
-                <a class="post-title-link" href="/2018/01/19/部署office在线预览服务器-Office-Web-Apps-Server/" itemprop="url">
+                <a class="post-title-link" href="/arlo/5b552504/" itemprop="url">
                   部署office在线预览服务器(Office Web Apps Server)
                 </a>
               
@@ -796,7 +796,7 @@
         
           <p>Office Web Apps Server 是一种 Office 服务器产品，可提供在浏览器中查看和编辑 Office 文件的服务。可提供浏览器版 Word、PowerPoint、Excel 和 OneNote。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2018/01/19/部署office在线预览服务器-Office-Web-Apps-Server/#more" rel="contents">
+            <a class="btn" href="/arlo/5b552504/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -847,7 +847,7 @@
             
               
                 
-                <a class="post-title-link" href="/2018/01/18/Scp拷贝大文件出现stalled故障解决方法/" itemprop="url">
+                <a class="post-title-link" href="/arlo/8954c4ab/" itemprop="url">
                   Scp拷贝大文件出现stalled故障解决方法
                 </a>
               
@@ -911,7 +911,7 @@
         
           <p>最近倒腾oracle数据库异地备份，由于端口限制不能使用rsync（首选），只能使用scp脚本自动拷贝到本地服务器，数据库按用户备份的，最大一个文件53G，发现每次都拷贝不完就中断了；之前以为是网络的问题导致shell退出，今天开了screen，手动执行脚本，特地跟踪了一下，发现出现stalled的故障；网上有找到的方法有以下几种，个人认为第三种更治根。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2018/01/18/Scp拷贝大文件出现stalled故障解决方法/#more" rel="contents">
+            <a class="btn" href="/arlo/8954c4ab/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -962,7 +962,7 @@
             
               
                 
-                <a class="post-title-link" href="/2017/12/28/Oracle表空间扩容/" itemprop="url">
+                <a class="post-title-link" href="/arlo/989e9822/" itemprop="url">
                   Oracle表空间扩容
                 </a>
               
@@ -1026,7 +1026,7 @@
         
           <p>在新装完的oracle数据库中导入数据，由于数据量比较大，报以下错误；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ORA-39171: Job is experiencing a resumable wait.</div><div class="line">ORA-01653: unable to extend table AIR_FORECAST.T_WRF_DATA by 8192 in tablespace USERS</div></pre></td></tr></table></figure></p>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/12/28/Oracle表空间扩容/#more" rel="contents">
+            <a class="btn" href="/arlo/989e9822/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1077,7 +1077,7 @@
             
               
                 
-                <a class="post-title-link" href="/2017/12/27/CentOS6-9环境静默安装Oracle11g/" itemprop="url">
+                <a class="post-title-link" href="/arlo/6dacbf16/" itemprop="url">
                   CentOS6.9环境静默安装Oracle11g
                 </a>
               
@@ -1141,7 +1141,7 @@
         
           <h1 id="系统基础环境"><a href="#系统基础环境" class="headerlink" title="系统基础环境"></a>系统基础环境</h1><p>操作系统：CentOS 6.9 x64<br>Iptables：off<br>Selinux：disabled<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/12/27/CentOS6-9环境静默安装Oracle11g/#more" rel="contents">
+            <a class="btn" href="/arlo/6dacbf16/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1192,7 +1192,7 @@
             
               
                 
-                <a class="post-title-link" href="/2017/12/06/枚举卷期间出错-客户端无法连接到请求中指定的目标……/" itemprop="url">
+                <a class="post-title-link" href="/arlo/143cd09f/" itemprop="url">
                   枚举卷期间出错: 客户端无法连接到请求中指定的目标……
                 </a>
               
@@ -1259,7 +1259,7 @@
 <p>枚举存储期间出错。枚举卷期间出错: 客户端无法连接到请求中指定的目标。 请验证该目标上的服务是否正在运行以及是否正在接受请求。 有关目标(通常是 IIS 或 WinRM)上运行的 WS 管理服务，请查阅日志和文档。 如果目标是 WinRM 服务，则在目标上运行以下命令来分析和配置 WinRM 服务: “winrm quickconfig”。</p>
 </blockquote>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/12/06/枚举卷期间出错-客户端无法连接到请求中指定的目标……/#more" rel="contents">
+            <a class="btn" href="/arlo/143cd09f/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1310,7 +1310,7 @@
             
               
                 
-                <a class="post-title-link" href="/2017/12/06/搭建ftp服务器并配置虚拟用户登录/" itemprop="url">
+                <a class="post-title-link" href="/arlo/5cd2f164/" itemprop="url">
                   搭建ftp服务器并配置虚拟用户登录
                 </a>
               
@@ -1374,7 +1374,7 @@
         
           <p>vsftpd 是“very secure FTP daemon”的缩写，安全性是它的一个最大的特点。<br>本次搭建ftp服务器，采用虚拟用户登录；所谓虚拟用户就是没有使用真实的系统用户，只是通过映射到真实的账户和设置权限的目的。虚拟用户不能登录操作系统。<br>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2017/12/06/搭建ftp服务器并配置虚拟用户登录/#more" rel="contents">
+            <a class="btn" href="/arlo/5cd2f164/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>

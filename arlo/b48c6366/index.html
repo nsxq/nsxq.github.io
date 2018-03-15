@@ -1,0 +1,823 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="数据库,Mariadb,Mysql," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="基础环境配置iptables: disabledselinux:  disabled|系统        |主机名        |IP地址            |角色          ||CentOS 7.2 x64    |mysql_a    |192.168.6.126    |Atlas代理服务 ||CentOS 7.2 x64    |mysql_b    |192.168.6.1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mariadb 读写分离集群搭建">
+<meta property="og:url" content="http://islocal.cc/arlo/b48c6366/index.html">
+<meta property="og:site_name" content="南山居">
+<meta property="og:description" content="基础环境配置iptables: disabledselinux:  disabled|系统        |主机名        |IP地址            |角色          ||CentOS 7.2 x64    |mysql_a    |192.168.6.126    |Atlas代理服务 ||CentOS 7.2 x64    |mysql_b    |192.168.6.1">
+<meta property="og:image" content="http://islocal.cc/images/2017/0801/01.png">
+<meta property="og:updated_time" content="2018-03-15T07:17:45.911Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mariadb 读写分离集群搭建">
+<meta name="twitter:description" content="基础环境配置iptables: disabledselinux:  disabled|系统        |主机名        |IP地址            |角色          ||CentOS 7.2 x64    |mysql_a    |192.168.6.126    |Atlas代理服务 ||CentOS 7.2 x64    |mysql_b    |192.168.6.1">
+<meta name="twitter:image" content="http://islocal.cc/images/2017/0801/01.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://islocal.cc/arlo/b48c6366/"/>
+
+  <title> Mariadb 读写分离集群搭建 | 南山居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">南山居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Mariadb 读写分离集群搭建
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-08-01T17:24:42+08:00" content="2017-08-01">
+              2017-08-01
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">本文总阅读量
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="基础环境配置"><a href="#基础环境配置" class="headerlink" title="基础环境配置"></a>基础环境配置</h1><p>iptables: disabled<br>selinux:  disabled<br>|系统        |主机名        |IP地址            |角色          |<br>|CentOS 7.2 x64    |mysql_a    |192.168.6.126    |Atlas代理服务 |<br>|CentOS 7.2 x64    |mysql_b    |192.168.6.127    |Mysql主服务器 |<br>|CentOS 7.2 x64    |mysql_c    |192.168.6.128    |Mysql 从服务器|<br><a id="more"></a></p>
+<h2 id="在mysql-a上安装ansible"><a href="#在mysql-a上安装ansible" class="headerlink" title="在mysql_a上安装ansible"></a>在mysql_a上安装ansible</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@mysql_a ~]# yum -y install epel-release</div><div class="line">[root@mysql_a ~]# yum -y install ansible</div><div class="line">[root@mysql_a ~]# vim /etc/ansible/hosts</div><div class="line">[mysql]</div><div class="line">mysql_b</div><div class="line">mysql_c</div></pre></td></tr></table></figure>
+<h2 id="建立无密码通信"><a href="#建立无密码通信" class="headerlink" title="建立无密码通信"></a>建立无密码通信</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@mysql_a ~]# ssh-keygen -t rsa</div><div class="line">[root@mysql_a ~]# ssh-copy-id -i ~/.ssh/id_rsa.pub mysql_b</div><div class="line">[root@mysql_a ~]# ssh-copy-id -i ~/.ssh/id_rsa.pub mysql_c</div></pre></td></tr></table></figure>
+<h2 id="保持服务器时间同步"><a href="#保持服务器时间同步" class="headerlink" title="保持服务器时间同步"></a>保持服务器时间同步</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@mysql_a ~]# ansible mysql -a &apos;timedatectl set-timezone Asia/Shanghai&apos;</div><div class="line">[root@mysql_a ~]# ansible mysql -a &apos;timedatectl set-ntp true&apos;</div><div class="line">[root@mysql_a ~]# ansible mysql -a &apos;ntpdate cn.ntp.org.cn&apos;</div></pre></td></tr></table></figure>
+<h2 id="配置三台服务器的hosts"><a href="#配置三台服务器的hosts" class="headerlink" title="配置三台服务器的hosts"></a>配置三台服务器的hosts</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cat /etc/hosts</div><div class="line">192.168.6.126   mysql_a</div><div class="line">192.168.6.127   mysql_b</div><div class="line">192.168.6.128   mysql_c</div><div class="line">[root@mysql_a ~]# ansible mysql -m copy -a &apos;src=/etc/hosts dest=/etc/hosts&apos;</div></pre></td></tr></table></figure>
+<h1 id="搭建Mariadb-mysql-主从复制"><a href="#搭建Mariadb-mysql-主从复制" class="headerlink" title="搭建Mariadb(mysql)主从复制"></a>搭建Mariadb(mysql)主从复制</h1><h2 id="配置Mariadb-yum源"><a href="#配置Mariadb-yum源" class="headerlink" title="配置Mariadb yum源"></a>配置Mariadb yum源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[root@mysql_a ~]# vim /etc/yum.repos.d/MariaDB.repo</div><div class="line"># MariaDB 10.2 CentOS repository list - created 2017-07-27 03:36 UTC</div><div class="line"># http://downloads.mariadb.org/mariadb/repositories/</div><div class="line">[mariadb]</div><div class="line">name = MariaDB</div><div class="line">baseurl = http://yum.mariadb.org/10.2/centos7-amd64</div><div class="line">gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB</div><div class="line">gpgcheck=1</div></pre></td></tr></table></figure>
+<h2 id="安装Mariadb-mysql"><a href="#安装Mariadb-mysql" class="headerlink" title="安装Mariadb(mysql)"></a>安装Mariadb(mysql)</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@mysql_a ~]# ansible mysql -m copy -a &apos;src=/etc/yum.repos.d/MariaDB.repo dest=/etc/yum.repos.d/MariaDB.repo&apos;</div><div class="line">[root@mysql_a ~]# ansible mysql -m yum -a &apos;name=MariaDB-server state=installed&apos;</div><div class="line">[root@mysql_a ~]# ansible mysql -m yum -a &apos;name=MariaDB-client state=installed&apos;</div></pre></td></tr></table></figure>
+<p><strong>Ps：也可以下载以下几个rpm包，使用yum localinstall *.rpm 进行安装（速度会快一些）</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@mysql_b mariadb]# ll</div><div class="line">total 171204</div><div class="line">-rw-r--r-- 1 root root   8353220 Aug  1 13:56 galera-25.3.20-1.rhel7.el7.centos.x86_64.rpm</div><div class="line">-rw-r--r-- 1 root root  50251656 Aug  1 09:46 MariaDB-10.2.7-centos7-x86_64-client.rpm</div><div class="line">-rw-r--r-- 1 root root    158012 Aug  1 09:46 MariaDB-10.2.7-centos7-x86_64-common.rpm</div><div class="line">-rw-r--r-- 1 root root   2975776 Aug  1 09:46 MariaDB-10.2.7-centos7-x86_64-compat.rpm</div><div class="line">-rw-r--r-- 1 root root 113565340 Aug  1 09:46 MariaDB-10.2.7-centos7-x86_64-server.rpm</div></pre></td></tr></table></figure></p>
+<h2 id="拷贝模板配置文件"><a href="#拷贝模板配置文件" class="headerlink" title="拷贝模板配置文件"></a>拷贝模板配置文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@mysql_a ~]# ansible mysql -a &apos;cp /usr/share/mysql/my-medium.cnf /etc/my.cnf&apos;</div></pre></td></tr></table></figure>
+<h2 id="各服务器上执行初始化操作"><a href="#各服务器上执行初始化操作" class="headerlink" title="各服务器上执行初始化操作"></a>各服务器上执行初始化操作</h2><p>mysql_secure_installation</p>
+<h2 id="修改mysql-b配置文件"><a href="#修改mysql-b配置文件" class="headerlink" title="修改mysql_b配置文件"></a>修改mysql_b配置文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">vim /etc/my.cnf</div><div class="line">log-bin=/var/lib/mysql/mysql-bin</div><div class="line">binlog_format=row</div><div class="line">server-id = 127</div><div class="line">sync_binlog = 1</div><div class="line">innodb_support_xa = 1</div><div class="line">innodb-flush-log-at-trx-commit=1</div></pre></td></tr></table></figure>
+<h2 id="建立授权账号"><a href="#建立授权账号" class="headerlink" title="建立授权账号"></a>建立授权账号</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@mysql_b mariadb]# mysql -uroot -pffffff</div><div class="line">MariaDB [mysql]&gt; grant replication slave on *.* to &apos;repl&apos;@&apos;192.168.6.%&apos; identified by &apos;111111&apos;;</div><div class="line">MariaDB [(none)]&gt; show master status;</div><div class="line">+------------------+----------+--------------+------------------+</div><div class="line">| File             | Position | Binlog_Do_DB | Binlog_Ignore_DB |</div><div class="line">+------------------+----------+--------------+------------------+</div><div class="line">| mysql-bin.000002 |      342 |              |                  |</div><div class="line">+------------------+----------+--------------+------------------+</div><div class="line">1 row in set (0.00 sec)</div></pre></td></tr></table></figure>
+<h2 id="修改mysql-c配置文件"><a href="#修改mysql-c配置文件" class="headerlink" title="修改mysql_c配置文件"></a>修改mysql_c配置文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">vim /etc/my.cnf</div><div class="line">binlog_format=row</div><div class="line">server-id  = 128</div><div class="line">replicate-ignore-db=mysql</div><div class="line">relay_log=relay-bin</div></pre></td></tr></table></figure>
+<h2 id="重启两台Mariadb-mysql-服务"><a href="#重启两台Mariadb-mysql-服务" class="headerlink" title="重启两台Mariadb(mysql)服务"></a>重启两台Mariadb(mysql)服务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@mysql_a ~]# ansible mysql -a &apos;systemctl restart mariadb.service&apos;</div></pre></td></tr></table></figure>
+<h2 id="开启主从同步"><a href="#开启主从同步" class="headerlink" title="开启主从同步"></a>开启主从同步</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@mysql_c mysql]# mysql -uroot –pffffff</div><div class="line">MariaDB [(none)]&gt; stop slave;</div><div class="line">MariaDB [(none)]&gt; change master to master_host=&apos;mysql_b&apos;, master_user=&apos;repl&apos;, master_password=&apos;111111&apos;,master_log_file=&apos;mysql-bin.000002&apos;,master_log_pos=342;</div><div class="line">MariaDB [(none)]&gt; start slave;</div><div class="line">MariaDB [(none)]&gt; show slave status\G</div></pre></td></tr></table></figure>
+<p><img src="/images/2017/0801/01.png" alt="mariadb"></p>
+<h1 id="Atlas安装配置"><a href="#Atlas安装配置" class="headerlink" title="Atlas安装配置"></a>Atlas安装配置</h1><h2 id="安装Mariadb-Mysql-客户端"><a href="#安装Mariadb-Mysql-客户端" class="headerlink" title="安装Mariadb(Mysql)客户端"></a>安装Mariadb(Mysql)客户端</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@mysql_a mariadb]# yum install MariaDB-client</div><div class="line">[root@mysql_a mariadb]# systemctl status mariadb.service //确保Atlas本机没有mysql服务被启动</div><div class="line">Unit mariadb.service could not be found.</div></pre></td></tr></table></figure>
+<h2 id="安装atlas"><a href="#安装atlas" class="headerlink" title="安装atlas"></a>安装atlas</h2><p>下载的时候有两个软件包带分片功能的Atlas-sharding 和Atlas，我们下后边这个（el6的包centos7可以安装）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@mysql_a src]# axel https://github.com/Qihoo360/Atlas/releases/download/2.2.1/Atlas-2.2.1.el6.x86_64.rpm</div><div class="line">[root@mysql_a src]# rpm -ivh Atlas-2.2.1.el6.x86_64.rpm</div></pre></td></tr></table></figure></p>
+<p>安装目录为/usr/local/mysql-proxy/，会在此目录下生成bin,conf,lib,log四个目录</p>
+<h2 id="生成一个加密字符串，配置文件中会用到"><a href="#生成一个加密字符串，配置文件中会用到" class="headerlink" title="生成一个加密字符串，配置文件中会用到"></a>生成一个加密字符串，配置文件中会用到</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@mysql_a bin]# ./encrypt 111111</div><div class="line">kOVJsquUepY=</div></pre></td></tr></table></figure>
+<h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><p><em>360团队很良心，中文注释很详细</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div></pre></td><td class="code"><pre><div class="line">[root@mysql_a bin]# vim /usr/local/mysql-proxy/conf/test.cnf</div><div class="line">[mysql-proxy]</div><div class="line"></div><div class="line">#带#号的为非必需的配置项目</div><div class="line"></div><div class="line">#管理接口的用户名</div><div class="line">admin-username = nsxq</div><div class="line"></div><div class="line">#管理接口的密码</div><div class="line">admin-password = ffffff</div><div class="line"></div><div class="line">#Atlas后端连接的MySQL主库的IP和端口，可设置多项，用逗号分隔</div><div class="line">proxy-backend-addresses = 192.168.6.127:3306</div><div class="line"></div><div class="line">#Atlas后端连接的MySQL从库的IP和端口，@后面的数字代表权重，用来作负载均衡，若省略则默认为1，可设置多项，用逗号分隔</div><div class="line">proxy-read-only-backend-addresses = 192.168.6.128:3306@1</div><div class="line"></div><div class="line">#用户名与其对应的加密过的MySQL密码，密码使用PREFIX/bin目录下的加密程序encrypt加密，下行的user1和user2为示例，将其替换为你的MySQL的用户名和加密密码！</div><div class="line">pwds = atlas:kOVJsquUepY=</div><div class="line"></div><div class="line">#设置Atlas的运行方式，设为true时为守护进程方式，设为false时为前台方式，一般开发调试时设为false，线上运行时设为true,true后面不能有空格。</div><div class="line">daemon = true</div><div class="line"></div><div class="line">#设置Atlas的运行方式，设为true时Atlas会启动两个进程，一个为monitor，一个为worker，monitor在worker意外退出后会自动将其重启，设为false时只有worker，没有monitor，一般开发调试时设为false，线上&gt;</div><div class="line">运行时设为true,true后面不能有空格。</div><div class="line">keepalive = true</div><div class="line"></div><div class="line">#工作线程数，对Atlas的性能有很大影响，可根据情况适当设置</div><div class="line">event-threads = 8</div><div class="line"></div><div class="line">#日志级别，分为message、warning、critical、error、debug五个级别</div><div class="line">log-level = message</div><div class="line"></div><div class="line">#日志存放的路径</div><div class="line">log-path = /usr/local/mysql-proxy/log</div><div class="line"></div><div class="line">#SQL日志的开关，可设置为OFF、ON、REALTIME，OFF代表不记录SQL日志，ON代表记录SQL日志，REALTIME代表记录SQL日志且实时写入磁盘，默认为OFF</div><div class="line">#sql-log = OFF</div><div class="line"></div><div class="line">#慢日志输出设置。当设置了该参数时，则日志只输出执行时间超过sql-log-slow（单位：ms)的日志记录。不设置该参数则输出全部日志。</div><div class="line">#sql-log-slow = 10</div><div class="line"></div><div class="line">#实例名称，用于同一台机器上多个Atlas实例间的区分</div><div class="line">#instance = test</div><div class="line"></div><div class="line">#Atlas监听的工作接口IP和端口</div><div class="line">proxy-address = 0.0.0.0:1234 </div><div class="line">#分表设置，此例中person为库名，mt为表名，id为分表字段，3为子表数量，可设置多项，以逗号分隔，若不分表则不需要设置该项</div><div class="line">#tables = person.mt.id.3</div><div class="line"></div><div class="line">#默认字符集，设置该项后客户端不再需要执行SET NAMES语句</div><div class="line">#charset = utf8</div><div class="line"></div><div class="line">#允许连接Atlas的客户端的IP，可以是精确IP，也可以是IP段，以逗号分隔，若不设置该项则允许所有IP连接，否则只允许列表中的IP连接</div><div class="line">#client-ips = 127.0.0.1, 192.168.1</div><div class="line"></div><div class="line">#Atlas前面挂接的LVS的物理网卡的IP(注意不是虚IP)，若有LVS且设置了client-ips则此项必须设置，否则可以不设置</div><div class="line">#lvs-ips = 192.168.1.1</div></pre></td></tr></table></figure></p>
+<h2 id="启动Atlas服务"><a href="#启动Atlas服务" class="headerlink" title="启动Atlas服务"></a>启动Atlas服务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@mysql_a bin]# ./mysql-proxyd test start</div><div class="line">[root@mysql_a mariadb]# ps -ef |grep mysql</div><div class="line">root     21456     1  0 15:24 ?        00:00:00 /usr/local/mysql-proxy/bin/mysql-proxy --defaults-file=/usr/local/mysql-proxy/conf/test.cnf</div><div class="line">root     21457 21456  0 15:24 ?        00:00:00 /usr/local/mysql-proxy/bin/mysql-proxy --defaults-file=/usr/local/mysql-proxy/conf/test.cnf</div><div class="line">root     21607 20025  0 15:35 pts/0    00:00:00 grep --color=auto mysql</div></pre></td></tr></table></figure>
+<h2 id="通过Atlas访问"><a href="#通过Atlas访问" class="headerlink" title="通过Atlas访问"></a>通过Atlas访问</h2><h3 id="通过管理接口访问"><a href="#通过管理接口访问" class="headerlink" title="通过管理接口访问"></a>通过管理接口访问</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@mysql_a mariadb]# mysql -h127.0.0.1 -P2345 -unsxq –pffffff</div></pre></td></tr></table></figure>
+<h3 id="通过工作接口访问"><a href="#通过工作接口访问" class="headerlink" title="通过工作接口访问"></a>通过工作接口访问</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">要保证这个用户在主从节点上都有权限，在主从节点上都添加一个用户</div><div class="line">MariaDB [mysql]&gt; grant all on *.* to atlas@&apos;192.168.6.%&apos; identified by &apos;111111&apos;;</div><div class="line">[root@mysql_a mariadb]# mysql -h127.0.0.1 -P1234 -uatlas -p111111</div></pre></td></tr></table></figure>
+<p>参考连接：<br><a href="https://github.com/Qihoo360/Atlas/wiki" target="_blank" rel="external">https://github.com/Qihoo360/Atlas/wiki</a><br><a href="http://www.cnblogs.com/yyhh/p/5084844.html" target="_blank" rel="external">http://www.cnblogs.com/yyhh/p/5084844.html</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/01/alipay.jpg" alt="南山小樵 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据库/" rel="tag">#数据库</a>
+          
+            <a href="/tags/Mariadb/" rel="tag">#Mariadb</a>
+          
+            <a href="/tags/Mysql/" rel="tag">#Mysql</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/arlo/fe63d61c/" rel="next" title="Mariadb主从复制集群">
+                <i class="fa fa-chevron-left"></i> Mariadb主从复制集群
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/arlo/49c257f9/" rel="prev" title="Mariadb(MHA)高可用集群搭建">
+                Mariadb(MHA)高可用集群搭建 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: document.location.href, 
+    sourceId: "���� page.path ����",
+    productKey: "0df311b624f44726a84b2b6249d64c11",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/01/psir.jpg"
+               alt="南山小樵" />
+          <p class="site-author-name" itemprop="name">南山小樵</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">69</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">70</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基础环境配置"><span class="nav-number">1.</span> <span class="nav-text">基础环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#在mysql-a上安装ansible"><span class="nav-number">1.1.</span> <span class="nav-text">在mysql_a上安装ansible</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建立无密码通信"><span class="nav-number">1.2.</span> <span class="nav-text">建立无密码通信</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#保持服务器时间同步"><span class="nav-number">1.3.</span> <span class="nav-text">保持服务器时间同步</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置三台服务器的hosts"><span class="nav-number">1.4.</span> <span class="nav-text">配置三台服务器的hosts</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#搭建Mariadb-mysql-主从复制"><span class="nav-number">2.</span> <span class="nav-text">搭建Mariadb(mysql)主从复制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Mariadb-yum源"><span class="nav-number">2.1.</span> <span class="nav-text">配置Mariadb yum源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Mariadb-mysql"><span class="nav-number">2.2.</span> <span class="nav-text">安装Mariadb(mysql)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拷贝模板配置文件"><span class="nav-number">2.3.</span> <span class="nav-text">拷贝模板配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#各服务器上执行初始化操作"><span class="nav-number">2.4.</span> <span class="nav-text">各服务器上执行初始化操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改mysql-b配置文件"><span class="nav-number">2.5.</span> <span class="nav-text">修改mysql_b配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#建立授权账号"><span class="nav-number">2.6.</span> <span class="nav-text">建立授权账号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改mysql-c配置文件"><span class="nav-number">2.7.</span> <span class="nav-text">修改mysql_c配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重启两台Mariadb-mysql-服务"><span class="nav-number">2.8.</span> <span class="nav-text">重启两台Mariadb(mysql)服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开启主从同步"><span class="nav-number">2.9.</span> <span class="nav-text">开启主从同步</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Atlas安装配置"><span class="nav-number">3.</span> <span class="nav-text">Atlas安装配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Mariadb-Mysql-客户端"><span class="nav-number">3.1.</span> <span class="nav-text">安装Mariadb(Mysql)客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装atlas"><span class="nav-number">3.2.</span> <span class="nav-text">安装atlas</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成一个加密字符串，配置文件中会用到"><span class="nav-number">3.3.</span> <span class="nav-text">生成一个加密字符串，配置文件中会用到</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改配置文件"><span class="nav-number">3.4.</span> <span class="nav-text">修改配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动Atlas服务"><span class="nav-number">3.5.</span> <span class="nav-text">启动Atlas服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过Atlas访问"><span class="nav-number">3.6.</span> <span class="nav-text">通过Atlas访问</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通过管理接口访问"><span class="nav-number">3.6.1.</span> <span class="nav-text">通过管理接口访问</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过工作接口访问"><span class="nav-number">3.6.2.</span> <span class="nav-text">通过工作接口访问</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南山小樵</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
