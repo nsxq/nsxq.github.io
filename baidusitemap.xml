@@ -5,7 +5,7 @@
     
   <url>
     <loc>http://islocal.cc/2018/03/15/%E4%BD%BF%E7%94%A8wgrib2%E5%B0%86GFS%E6%95%B0%E6%8D%AE%E5%AF%BC%E5%85%A5%E5%88%B0mysql/</loc>
-    <lastmod>2018-03-15T03:55:38.245Z</lastmod>
+    <lastmod>2018-03-15T03:57:21.981Z</lastmod>
     <data>
         <display>
         <title>使用wgrib2将GFS数据导入到mysql</title>
