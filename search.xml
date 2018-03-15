@@ -34,8 +34,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Sonar</tag>
       </tags>
   </entry>
@@ -87,8 +87,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -99,8 +99,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -138,8 +138,8 @@
       </categories>
       <tags>
         <tag>集群</tag>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
         <tag>RAC</tag>
       </tags>
   </entry>
@@ -175,8 +175,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -214,8 +214,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -227,8 +227,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -315,8 +315,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
         <tag>tomcat</tag>
       </tags>
@@ -342,8 +342,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -355,8 +355,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -482,8 +482,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -495,8 +495,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -508,8 +508,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -521,8 +521,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -534,8 +534,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>expect</tag>
         <tag>脚本</tag>
       </tags>
@@ -548,8 +548,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -576,8 +576,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -601,8 +601,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -613,8 +613,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -659,8 +659,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -672,8 +672,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Cobbler</tag>
       </tags>
   </entry>

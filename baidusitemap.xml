@@ -85,9 +85,9 @@
         <title>Sonar代码质量管理工具安装</title>
         <pubTime>2018-02-02T09:54:03.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Sonar</tag>
          
@@ -229,9 +229,9 @@
         <title>windows 下使用expdp自动备份多用户oracle脚本</title>
         <pubTime>2017-06-16T10:56:32.000Z</pubTime>
         
-        <tag>数据库</tag>
-         
         <tag>Oracle</tag>
+         
+        <tag>数据库</tag>
          
          
            
@@ -251,9 +251,9 @@
         <title>使用 Cobbler 自动化和管理系统安装</title>
         <pubTime>2017-04-20T13:45:06.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Cobbler</tag>
          
@@ -621,9 +621,9 @@
         <title>Oracle表空间扩容</title>
         <pubTime>2017-12-28T05:55:53.000Z</pubTime>
         
-        <tag>数据库</tag>
-         
         <tag>Oracle</tag>
+         
+        <tag>数据库</tag>
          
          
            
@@ -643,9 +643,9 @@
         <title>Oracle数据库错误表SYS.AUD$无法通过8192(在表空间SYSTEM中)扩展</title>
         <pubTime>2017-10-09T01:45:23.000Z</pubTime>
         
-        <tag>数据库</tag>
-         
         <tag>Oracle</tag>
+         
+        <tag>数据库</tag>
          
         <tag>Troubleshooting</tag>
          
@@ -667,9 +667,9 @@
         <title>Oracle删除用户报错ORA-01940: cannot drop a user that is currently connected</title>
         <pubTime>2017-10-10T03:58:34.000Z</pubTime>
         
-        <tag>数据库</tag>
-         
         <tag>Oracle</tag>
+         
+        <tag>数据库</tag>
          
         <tag>Troubleshooting</tag>
          
@@ -691,9 +691,9 @@
         <title>Oracle入门</title>
         <pubTime>2017-05-12T07:51:16.000Z</pubTime>
         
-        <tag>数据库</tag>
-         
         <tag>Oracle</tag>
+         
+        <tag>数据库</tag>
          
          
            
@@ -713,9 +713,9 @@
         <title>Oracle TNS-12541、TNS-00511 无监听程序</title>
         <pubTime>2017-06-13T11:27:34.000Z</pubTime>
         
-        <tag>数据库</tag>
-         
         <tag>Oracle</tag>
+         
+        <tag>数据库</tag>
          
          
            
@@ -737,9 +737,9 @@
         
         <tag>集群</tag>
          
-        <tag>数据库</tag>
-         
         <tag>Oracle</tag>
+         
+        <tag>数据库</tag>
          
         <tag>RAC</tag>
          
@@ -761,9 +761,9 @@
         <title>Oracle 多实例启动</title>
         <pubTime>2017-05-18T07:51:16.000Z</pubTime>
         
-        <tag>数据库</tag>
-         
         <tag>Oracle</tag>
+         
+        <tag>数据库</tag>
          
          
            
@@ -984,9 +984,9 @@
         <title>Jenkins邮件通知配置</title>
         <pubTime>2017-08-22T08:36:52.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Jenkins</tag>
          
@@ -1008,9 +1008,9 @@
         <title>Jenkins持续集成发布时tomcat不能删除目录下文件</title>
         <pubTime>2017-08-29T06:48:29.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Jenkins</tag>
          
@@ -1034,9 +1034,9 @@
         <title>Jenkins打包不能发现本地仓库包</title>
         <pubTime>2017-08-17T07:48:30.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Jenkins</tag>
          
@@ -1058,9 +1058,9 @@
         <title>Jenkins使用Publish Over CIFS插件实现静态页面部署到Windows服务器</title>
         <pubTime>2017-10-24T01:42:19.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Jenkins</tag>
          
@@ -1082,9 +1082,9 @@
         <title>jenkins 持续集成环境搭建</title>
         <pubTime>2017-04-27T06:04:11.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Jenkins</tag>
          
@@ -1176,9 +1176,9 @@
         <title>Except实践之 修改主机密码&添加用户&ssh免密码验证</title>
         <pubTime>2017-06-18T08:35:04.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>expect</tag>
          
@@ -1224,9 +1224,9 @@
         <title>CentOS6.9环境静默安装Oracle11g</title>
         <pubTime>2017-12-27T03:19:50.000Z</pubTime>
         
-        <tag>数据库</tag>
-         
         <tag>Oracle</tag>
+         
+        <tag>数据库</tag>
          
          
            
@@ -1246,9 +1246,9 @@
         <title>Ansible 模块篇</title>
         <pubTime>2017-06-21T06:22:00.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Ansible</tag>
          
@@ -1270,9 +1270,9 @@
         <title>Ansible 入门篇</title>
         <pubTime>2017-06-21T06:10:50.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Ansible</tag>
          
@@ -1294,9 +1294,9 @@
         <title>Ansible Playbook入门篇</title>
         <pubTime>2017-06-22T01:04:14.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Ansible</tag>
          
@@ -1318,9 +1318,9 @@
         <title>Aansible palybook 创建lvm并自动挂载</title>
         <pubTime>2017-06-27T10:03:12.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Ansible</tag>
          
