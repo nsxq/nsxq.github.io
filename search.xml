@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[使用wgrib2将GFS数据导入到mysql]]></title>
     <url>%2Farlo%2F551cdbc9%2F</url>
-    <content type="text"><![CDATA[GFS数据来源数据来源采自美国国家环境预报中心的GFS(全球预报系统)，该系统每天发布4次全球范围的气象数据，分辨率最高可达到0.25° x 0.25°，精度还是比较可观的。GFS数据提供FTP下载方式：http://www.ftp.ncep.noaa.gov/data/nccf/com/gfs/prod/每次发布的数据保存在命名为gfs.YYYYMMDDHH的文件夹中。本次需要的数据精度为0.25°（0p25），所以数据的文件名为：gfs.t{HH}z.pgrb2.0p25.f{XXX}其中HH表示发布的时间，XXX表示未来几小时的预报数据。例如gfs.t00z.pgrb2.0p25.f001 表示0时发布的未来1小时气象数据信息。那么问题来了，这个文件太大了，因为分辨率比较高，每个文件高达200多MB，不仅下载速度慢，处理慢，对存储空间也是一个考验。于是找到了一个可以在线过滤要下载数据的地址：http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl这个网站允许用户仅下载过滤后的文件，并提供下载网址，这样文件就会小很多。例如，在本项目中，仅需要下载降雨数据（PWAT），并且经纬度范围为特定区域，每次发布的数据全部下载下来也才8M多点。那么要想获得GRIB文件中的数据，则需要用到一个软件wgrib2,，该软件在ncep网站上提供源码下载。Mysql安装配置查看mysql安装1234567[root@siluxa_oracle grib2]# rpm -qa |grep -i mysqlmysql-community-common-5.6.36-2.el6.x86_64mysql-community-client-5.6.36-2.el6.x86_64mysql-community-server-5.6.36-2.el6.x86_64mysql-community-libs-compat-5.6.37-2.el6.x86_64mysql-community-libs-5.6.36-2.el6.x86_64mysql-community-devel-5.6.39-2.el6.x86_64创建数据库和表1234567# 创建数据库CREATE DATABASE weatherDB DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;# 创建表create table wgrib2 (rt datetime, vt datetime, lat double, lon double, param varchar(80), level varchar(30), value double); # 创建用户和表，并赋予权限(实验环境可以直接用root，生产环境强烈建议使用普通用户)-- CREATE USER wgrib2 IDENTIFIED BY &apos;ffffff&apos;;-- GRANT ALL on weatherDB.* to wgrib2@&quot;%&quot; Identified by &quot;ffffff&quot;编译安装wgrib2软件包编译安装wgrib2123456789101112131415#安装gcc和gfortran编译器yum install gcc gcc-gfortran -y#下载wgrib2软件包wget http://www.ftp.cpc.ncep.noaa.gov/wd51we/wgrib2/wgrib2.tgz -O /usr/local/src/wgrib2.tgzcd /usr/local/srctar wgrib2.tgzcd grib2/#设置编译环境export CC=gccexport FC=gfortran# 启用mysql支持，修改第114行vim makefile USE_MYSQL=1# 编译make查看wgrib2配置12345678910111213141516171819202122232425262728293031323334353637[root@siluxa_oracle grib2]#cd wgrib2[root@siluxa_oracle grib2]# ./wgrib2 -configwgrib2 v0.2.0.7 12/2017 Wesley Ebisuzaki, Reinoud Bokhorst, John Howard, Jaakko Hyvätti, Dusan Jovic, Daniel Lee, Kristian Nilssen, Karl Pfeiffer, Pablo Romero, Manfred Schwarb, Gregor Schee, Arlindo da Silva, Niklas Sondell, Sam Trahan, Sergey Varlamov stock buildCompiled on 11:02:41 Mar 15 2018Netcdf package: &quot;3.6.3&quot; of Mar 15 2018 11:02:16 $ is installedlibaec-1.0.2.tar.gz is installedJasper 1.900.1 is installedmysql package is installedregex package is installedtigge package is installedIPOLATES iplib.v3.0.0 is installed, default vectors: UGRD/VGRD VUCSH/VVCSH UFLX/VFLX UGUST/VGUST USTM/VSTM VDFUA/VDFVA MAXUW/MAXVW UOGRD/VOGRD UICE/VICE U-GWD/V-GWD USSD/VSSD Geolocation library status (by search order) gctpc geolocation is enabled spherical geolocation is enabledUDF package is not installedversion ftime=2maximum number of arguments on command line: 10000maximum number of -match,-not,-if, and -not_if options: 2000maximum number of -match_fs,-not_fs,-if_fs, and -not_if_fs options: 2000maximum number of -fgrep, -egrep, -fgrep_v, -egrep_v options: 200RPN registers: 0..19memory files: @mem:0, @mem:1 .. @mem:19stdout buffer length: 30000default decoding: g2clib emulationg2clib decoders are not installedSupported decoding: simple, complex, rle, ieee, png, jpeg2000, CCSDS AECuser gribtable: (none)C compiler: gcc (GCC) 4.4.7 20120313 (Red Hat 4.4.7-18)Fortran compiler: gfortranOpenMP: control number of threads with environment variable OMP_NUM_THREADSINT_MAX: 2147483647ULONG_MAX: 18446744073709551615将gfs数据导入到mysql中1./wgrib2 /mnt/wgrib2/gfs_20180313_0000_0p25_240.240 -mysql 192.168.6.123 root ffffff weatherDB wgrib2查看导入结果123mysql -uroot -pffffffmysql&gt; use weatherDB;mysql&gt; select * from `weatherDB`.`wgrib2` limit 0, 20;参考链接：http://blog.csdn.net/pch1982cn/article/details/74292772http://www.cpc.ncep.noaa.gov/products/wesley/wgrib2/index.html数据下载地址:ftp://ftpprd.ncep.noaa.gov/pub/data/nccf/com/gfs/prod/]]></content>
+    <content type="text"><![CDATA[GFS数据来源数据来源采自美国国家环境预报中心的GFS(全球预报系统)，该系统每天发布4次全球范围的气象数据，分辨率最高可达到0.25° x 0.25°，精度还是比较可观的。GFS数据提供FTP下载方式：http://www.ftp.ncep.noaa.gov/data/nccf/com/gfs/prod/每次发布的数据保存在命名为gfs.YYYYMMDDHH的文件夹中。本次需要的数据精度为0.25°（0p25），所以数据的文件名为：gfs.t{HH}z.pgrb2.0p25.f{XXX}其中HH表示发布的时间，XXX表示未来几小时的预报数据。例如gfs.t00z.pgrb2.0p25.f001 表示0时发布的未来1小时气象数据信息。那么问题来了，这个文件太大了，因为分辨率比较高，每个文件高达200多MB，不仅下载速度慢，处理慢，对存储空间也是一个考验。于是找到了一个可以在线过滤要下载数据的地址：http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl这个网站允许用户仅下载过滤后的文件，并提供下载网址，这样文件就会小很多。例如，在本项目中，仅需要下载降雨数据（PWAT），并且经纬度范围为特定区域，每次发布的数据全部下载下来也才8M多点。那么要想获得GRIB文件中的数据，则需要用到一个软件wgrib2,，该软件在ncep网站上提供源码下载。Mysql安装配置查看mysql安装1234567[root@siluxa_oracle grib2]# rpm -qa |grep -i mysqlmysql-community-common-5.6.36-2.el6.x86_64mysql-community-client-5.6.36-2.el6.x86_64mysql-community-server-5.6.36-2.el6.x86_64mysql-community-libs-compat-5.6.37-2.el6.x86_64mysql-community-libs-5.6.36-2.el6.x86_64mysql-community-devel-5.6.39-2.el6.x86_64创建数据库和表1234567# 创建数据库CREATE DATABASE weatherDB DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;# 创建表create table wgrib2 (rt datetime, vt datetime, lat double, lon double, param varchar(80), level varchar(30), value double); # 创建用户和表，并赋予权限(实验环境可以直接用root，生产环境强烈建议使用普通用户)-- CREATE USER wgrib2 IDENTIFIED BY &apos;ffffff&apos;;-- GRANT ALL on weatherDB.* to wgrib2@&quot;%&quot; Identified by &quot;ffffff&quot;编译安装wgrib2软件包编译安装wgrib2123456789101112131415#安装gcc和gfortran编译器yum install gcc gcc-gfortran -y#下载wgrib2软件包wget http://www.ftp.cpc.ncep.noaa.gov/wd51we/wgrib2/wgrib2.tgz -O /usr/local/src/wgrib2.tgzcd /usr/local/srctar wgrib2.tgzcd grib2/#设置编译环境export CC=gccexport FC=gfortran# 启用mysql支持，修改第114行vim makefile USE_MYSQL=1# 编译make查看wgrib2配置12345678910111213141516171819202122232425262728293031323334353637[root@siluxa_oracle grib2]#cd wgrib2[root@siluxa_oracle grib2]# ./wgrib2 -configwgrib2 v0.2.0.7 12/2017 Wesley Ebisuzaki, Reinoud Bokhorst, John Howard, Jaakko Hyvätti, Dusan Jovic, Daniel Lee, Kristian Nilssen, Karl Pfeiffer, Pablo Romero, Manfred Schwarb, Gregor Schee, Arlindo da Silva, Niklas Sondell, Sam Trahan, Sergey Varlamov stock buildCompiled on 11:02:41 Mar 15 2018Netcdf package: &quot;3.6.3&quot; of Mar 15 2018 11:02:16 $ is installedlibaec-1.0.2.tar.gz is installedJasper 1.900.1 is installedmysql package is installedregex package is installedtigge package is installedIPOLATES iplib.v3.0.0 is installed, default vectors: UGRD/VGRD VUCSH/VVCSH UFLX/VFLX UGUST/VGUST USTM/VSTM VDFUA/VDFVA MAXUW/MAXVW UOGRD/VOGRD UICE/VICE U-GWD/V-GWD USSD/VSSD Geolocation library status (by search order) gctpc geolocation is enabled spherical geolocation is enabledUDF package is not installedversion ftime=2maximum number of arguments on command line: 10000maximum number of -match,-not,-if, and -not_if options: 2000maximum number of -match_fs,-not_fs,-if_fs, and -not_if_fs options: 2000maximum number of -fgrep, -egrep, -fgrep_v, -egrep_v options: 200RPN registers: 0..19memory files: @mem:0, @mem:1 .. @mem:19stdout buffer length: 30000default decoding: g2clib emulationg2clib decoders are not installedSupported decoding: simple, complex, rle, ieee, png, jpeg2000, CCSDS AECuser gribtable: (none)C compiler: gcc (GCC) 4.4.7 20120313 (Red Hat 4.4.7-18)Fortran compiler: gfortranOpenMP: control number of threads with environment variable OMP_NUM_THREADSINT_MAX: 2147483647ULONG_MAX: 18446744073709551615将gfs数据导入到mysql中1./wgrib2 /mnt/wgrib2/gfs_20180313_0000_0p25_240.240 -mysql 192.168.6.123 root ffffff weatherDB wgrib2查看导入结果123mysql -uroot -pffffffmysql&gt; use weatherDB;mysql&gt; select * from `weatherDB`.`wgrib2` limit 0, 20;参考链接：http://blog.csdn.net/pch1982cn/article/details/74292772http://www.cpc.ncep.noaa.gov/products/wesley/wgrib2/index.html数据下载地址:ftp://ftpprd.ncep.noaa.gov/pub/data/nccf/com/gfs/prod/在线过滤要下载数据的地址:http://nomads.ncep.noaa.gov]]></content>
       <categories>
         <category>大气模型</category>
       </categories>
@@ -21,8 +21,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>Oracle</tag>
       </tags>
   </entry>
@@ -73,8 +73,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>Scp</tag>
         <tag>MTU</tag>
       </tags>
@@ -289,8 +289,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>Windows</tag>
         <tag>jdk</tag>
       </tags>
@@ -329,8 +329,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>vpn</tag>
       </tags>
   </entry>
@@ -444,8 +444,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>下载</tag>
         <tag>axel</tag>
       </tags>
@@ -696,8 +696,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>epel</tag>
       </tags>
   </entry>
@@ -790,9 +790,9 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>xshell</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
       </tags>
   </entry>
   <entry>
@@ -803,8 +803,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>常识</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
