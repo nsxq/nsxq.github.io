@@ -1,1 +1,822 @@
-<!doctype html><html class="theme-next muse use-motion"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"><link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css"><link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css"><meta name="keywords" content="数据库,Oracle,"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1"><meta name="description" content="系统基础环境操作系统：CentOS 6.9 x64Iptables：offSelinux：disabled"><meta property="og:type" content="article"><meta property="og:title" content="CentOS6.9环境静默安装Oracle11g"><meta property="og:url" content="http://islocal.cc/arlo/6dacbf16/index.html"><meta property="og:site_name" content="南山居"><meta property="og:description" content="系统基础环境操作系统：CentOS 6.9 x64Iptables：offSelinux：disabled"><meta property="og:updated_time" content="2018-03-15T07:17:45.879Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="CentOS6.9环境静默安装Oracle11g"><meta name="twitter:description" content="系统基础环境操作系统：CentOS 6.9 x64Iptables：offSelinux：disabled"><script type="text/javascript" id="hexo.configuration">var NexT=window.NexT||{},CONFIG={scheme:"Muse",sidebar:{position:"left",display:"post"},fancybox:!0,motion:!0,duoshuo:{userId:0,author:"博主"}}</script><link rel="canonical" href="http://islocal.cc/arlo/6dacbf16/"><title>CentOS6.9环境静默安装Oracle11g | 南山居</title></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"><div class="container one-collumn sidebar-position-left page-post-detail"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">南山居</span> <span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle"></p></div><div class="site-nav-toggle"><button><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签</a></li><li class="menu-item menu-item-about"><a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul><div class="site-search"><div class="popup"><span class="search-icon fa fa-search"></span> <input type="text" id="local-search-input"><div id="local-search-result"></div><span class="popup-btn-close">close</span></div></div></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline">CentOS6.9环境静默安装Oracle11g</h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2017-12-27T11:19:50+08:00" content="2017-12-27">2017-12-27 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span> </a></span></span>&nbsp; | &nbsp; <span class="page-pv">本文总阅读量 <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次</span></div></header><div class="post-body" itemprop="articleBody"><h1 id="系统基础环境"><a href="#系统基础环境" class="headerlink" title="系统基础环境"></a>系统基础环境</h1><p>操作系统：CentOS 6.9 x64<br>Iptables：off<br>Selinux：disabled<br><a id="more"></a></p><h2 id="修改主机名"><a href="#修改主机名" class="headerlink" title="修改主机名"></a>修改主机名</h2><p>安装oracle后不要修改主机名，会引起故障<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">vim /etc/sysconfig/network</div><div class="line">NETWORKING=yes</div><div class="line">HOSTNAME=&quot;dbserver&quot;</div></pre></td></tr></table></figure><p></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hostname dbserver</div></pre></td></tr></table></figure><h2 id="基础软件安装"><a href="#基础软件安装" class="headerlink" title="基础软件安装"></a>基础软件安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">#默认是不安装32位软件包的，添加此选项</div><div class="line">echo &apos;multilib_policy=all&apos; &gt;&gt; /etc/yum.conf</div><div class="line">yum -y install  binutils-* compat-libstdc++-* elfutils-libelf-*  elfutils-libelf-devel-* gcc-* gcc-c++-* glibc-* glibc-common-* glibc-devel-*  glibc-headers-* ksh-* libaio-*  libaio-devel-* libgcc-*  libstdc++* libstdc++-devel* make-*  sysstat-* unixODBC-* unixODBC-devel-* mksh</div><div class="line">#监测一下软件是否安装全</div><div class="line">rpm -q \</div><div class="line">binutils \</div><div class="line">compat-libstdc++-33 \</div><div class="line">elfutils-libelf \</div><div class="line">elfutils-libelf-devel \</div><div class="line">expat \</div><div class="line">gcc \</div><div class="line">gcc-c++ \</div><div class="line">glibc \</div><div class="line">glibc-common \</div><div class="line">glibc-devel \</div><div class="line">glibc-headers \</div><div class="line">libaio \</div><div class="line">libaio-devel \</div><div class="line">libgcc \</div><div class="line">libstdc++ \</div><div class="line">libstdc++-devel \</div><div class="line">make \</div><div class="line">pdksh \</div><div class="line">sysstat \</div><div class="line">unixODBC \</div><div class="line">unixODBC-devel | grep &quot;not installed&quot;</div></pre></td></tr></table></figure><h2 id="修改PAM配置文件"><a href="#修改PAM配置文件" class="headerlink" title="修改PAM配置文件"></a>修改PAM配置文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">vi /etc/pam.d/login</div><div class="line">session    required     /lib64/security/pam_limits.so</div><div class="line">session    required     pam_limits.so</div></pre></td></tr></table></figure><h2 id="修改内核参数"><a href="#修改内核参数" class="headerlink" title="修改内核参数"></a>修改内核参数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">fs.aio-max-nr = 1048576 </div><div class="line">fs.file-max = 6815744 </div><div class="line">kernel.shmmni = 4096 </div><div class="line">kernel.sem = 250 32000 100 128 </div><div class="line">net.ipv4.ip_local_port_range = 9000 65500 </div><div class="line">net.core.rmem_default = 262144 </div><div class="line">net.core.rmem_max = 4194304 </div><div class="line">net.core.wmem_default = 262144 </div><div class="line">net.core.wmem_max = 1048586</div><div class="line"></div><div class="line"></div><div class="line">#重新加载生效</div><div class="line">sysctl –p</div></pre></td></tr></table></figure><h2 id="修改系统资源限制"><a href="#修改系统资源限制" class="headerlink" title="修改系统资源限制"></a>修改系统资源限制</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">vi /etc/security/limits.conf  </div><div class="line">oracle  soft  nproc   2047 </div><div class="line">oracle  hard  nproc   16384 </div><div class="line">oracle  soft  nofile  1024 </div><div class="line">oracle  hard  nofile  65536</div><div class="line">oracle	soft  stack   10240</div></pre></td></tr></table></figure><h1 id="Oracle相关环境配置"><a href="#Oracle相关环境配置" class="headerlink" title="Oracle相关环境配置"></a>Oracle相关环境配置</h1><h2 id="新建用户"><a href="#新建用户" class="headerlink" title="新建用户"></a>新建用户</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">groupadd -g 500 oinstall</div><div class="line">groupadd -g 501 dba</div><div class="line">useradd -u 500 -g oinstall -G dba oracle</div><div class="line">#设置oracle用户密码为oracle</div><div class="line">echo &quot;oracle:oracle&quot; | chpasswd</div></pre></td></tr></table></figure><h2 id="修改用户配置文件"><a href="#修改用户配置文件" class="headerlink" title="修改用户配置文件"></a>修改用户配置文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">vi/ etc/profile</div><div class="line">if [ $USER = &quot;oracle&quot; ]; then</div><div class="line">   if [ $SHELL = &quot;/bin/ksh&quot; ]; then</div><div class="line">       ulimit -p 16384</div><div class="line">       ulimit -n 65536</div><div class="line">   else</div><div class="line">       ulimit -u 16384 -n 65536</div><div class="line">   fi</div><div class="line">fi</div></pre></td></tr></table></figure><h2 id="新建目录并设置权限"><a href="#新建目录并设置权限" class="headerlink" title="新建目录并设置权限"></a>新建目录并设置权限</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mkdir -p /u01/app/oracle/product/11.2.0/db_1</div><div class="line">mkdir -p /u01/app/oraInventory</div><div class="line">chown -R oracle.oinstall /u01/app/oracle</div><div class="line">chown -R oracle.oinstall /u01/app/oraInventory</div><div class="line">chmod -R 775 /u01/app</div></pre></td></tr></table></figure><h2 id="设置oracle用户环境变量"><a href="#设置oracle用户环境变量" class="headerlink" title="设置oracle用户环境变量"></a>设置oracle用户环境变量</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">su - oracle</div><div class="line">$ vim ~/.bash_profile </div><div class="line">export ORACLE_BASE=/u01/app/oracle</div><div class="line">export ORACLE_HOME=$ORACLE_BASE/product/11.2.0/db_1</div><div class="line">export ORACLE_SID=sx21</div><div class="line">export PATH=$PATH:$ORACLE_HOME/bin</div><div class="line">export LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib</div><div class="line">export NLS_LANG=American_America.ZHS16GBK</div></pre></td></tr></table></figure><h2 id="检查环境变量是否生效"><a href="#检查环境变量是否生效" class="headerlink" title="检查环境变量是否生效"></a>检查环境变量是否生效</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">source ~/.bash_profile</div><div class="line">env |grep ORA</div><div class="line">ORACLE_SID=sx21</div><div class="line">ORACLE_BASE=/u01/app/oracle</div><div class="line">ORACLE_HOME=/u01/app/oracle/product/11.2.0/db_1</div></pre></td></tr></table></figure><h2 id="准备软件安装包"><a href="#准备软件安装包" class="headerlink" title="准备软件安装包"></a>准备软件安装包</h2><p>下载地址: <a href="http://www.oracle.com/technetwork/database/enterprise-edition/downloads/112010-linx8664soft-100572.html" target="_blank" rel="external">http://www.oracle.com/technetwork/database/enterprise-edition/downloads/112010-linx8664soft-100572.html</a><br>可以使用cksum校验文件完整性<br>linux.x64_11gR2_database_1of2.zip (1,239,269,270 bytes) (cksum - 3152418844)<br>linux.x64_11gR2_database_2of2.zip (1,111,416,131 bytes) (cksum - 3669256139)</p><h2 id="解压软件包"><a href="#解压软件包" class="headerlink" title="解压软件包"></a>解压软件包</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">unzip linux.x64_11gR2_database_1of2.zip</div><div class="line">unzip linux.x64_11gR2_database_2of2.zip</div></pre></td></tr></table></figure><p>解压后得到/home/oracle/database/response目录，该目录中有三个rsp文件，用来作为静默安装时的应答文件的模板。<br>备份三个文件并修改其内容<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">db_install.rsp	安装应答</div><div class="line">netca.rsp	建立监听、本地服务名等网络设置的应答</div><div class="line">dbca.rsp	创建数据库应答</div></pre></td></tr></table></figure><p></p><h1 id="静默安装数据库软件"><a href="#静默安装数据库软件" class="headerlink" title="静默安装数据库软件"></a>静默安装数据库软件</h1><h2 id="修改db-install-rsp-文件"><a href="#修改db-install-rsp-文件" class="headerlink" title="修改db_install.rsp 文件"></a>修改db_install.rsp 文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">egrep -v &quot;^#|^$&quot; db_install.rsp</div><div class="line">oracle.install.responseFileVersion=/oracle/install/rspfmt_dbinstall_response_schema_v11_2_0</div><div class="line">oracle.install.option=INSTALL_DB_SWONLY</div><div class="line">ORACLE_HOSTNAME=dbserver</div><div class="line">UNIX_GROUP_NAME=oinstall</div><div class="line">INVENTORY_LOCATION=/u01/app/oraInventory</div><div class="line">SELECTED_LANGUAGES=en,zh_CN</div><div class="line">ORACLE_HOME=/u01/app/oracle/product/11.2.0/db_1</div><div class="line">ORACLE_BASE=/u01/app/oracle</div><div class="line">oracle.install.db.InstallEdition=EE</div><div class="line">oracle.install.db.isCustomInstall=false</div><div class="line">oracle.install.db.customComponents=oracle.server:11.2.0.1.0,oracle.sysman.ccr:10.2.7.0.0,oracle.xdk:11.2.0.1.0,oracle.rdbms.oci:11.2.0.1.0,oracle.network:11.2.0.1.0,oracle.network.listener:11.2.0.1.0,oracle.rdbms:11.2.0.1.0,oracle.options:11.2.0.1.0,oracle.rdbms.partitioning:11.2.0.1.0,oracle.oraolap:11.2.0.1.0,oracle.rdbms.dm:11.2.0.1.0,oracle.rdbms.dv:11.2.0.1.0,orcle.rdbms.lbac:11.2.0.1.0,oracle.rdbms.rat:11.2.0.1.0</div><div class="line">oracle.install.db.DBA_GROUP=dba</div><div class="line">oracle.install.db.OPER_GROUP=dba</div><div class="line">oracle.install.db.CLUSTER_NODES=</div><div class="line">oracle.install.db.config.starterdb.type=</div><div class="line">oracle.install.db.config.starterdb.globalDBName=sx21</div><div class="line">oracle.install.db.config.starterdb.SID=sx21</div><div class="line">oracle.install.db.config.starterdb.characterSet=ZHS16GBK</div><div class="line">oracle.install.db.config.starterdb.memoryOption=true</div><div class="line">oracle.install.db.config.starterdb.memoryLimit=81920</div><div class="line">oracle.install.db.config.starterdb.installExampleSchemas=false</div><div class="line">oracle.install.db.config.starterdb.enableSecuritySettings=true</div><div class="line">oracle.install.db.config.starterdb.password.ALL=solution#123</div><div class="line">oracle.install.db.config.starterdb.password.SYS=</div><div class="line">oracle.install.db.config.starterdb.password.SYSTEM=</div><div class="line">oracle.install.db.config.starterdb.password.SYSMAN=</div><div class="line">oracle.install.db.config.starterdb.password.DBSNMP=</div><div class="line">oracle.install.db.config.starterdb.control=DB_CONTROL</div><div class="line">oracle.install.db.config.starterdb.gridcontrol.gridControlServiceURL=</div><div class="line">oracle.install.db.config.starterdb.dbcontrol.enableEmailNotification=false</div><div class="line">oracle.install.db.config.starterdb.dbcontrol.emailAddress=</div><div class="line">oracle.install.db.config.starterdb.dbcontrol.SMTPServer=</div><div class="line">oracle.install.db.config.starterdb.automatedBackup.enable=false</div><div class="line">oracle.install.db.config.starterdb.automatedBackup.osuid=</div><div class="line">oracle.install.db.config.starterdb.automatedBackup.ospwd=</div><div class="line">oracle.install.db.config.starterdb.storageType=</div><div class="line">oracle.install.db.config.starterdb.fileSystemStorage.dataLocation=</div><div class="line">oracle.install.db.config.starterdb.fileSystemStorage.recoveryLocation=</div><div class="line">oracle.install.db.config.asm.diskGroup=</div><div class="line">oracle.install.db.config.asm.ASMSNMPPassword=</div><div class="line">MYORACLESUPPORT_USERNAME=</div><div class="line">MYORACLESUPPORT_PASSWORD=</div><div class="line">SECURITY_UPDATES_VIA_MYORACLESUPPORT=</div><div class="line">DECLINE_SECURITY_UPDATES=true</div><div class="line">PROXY_HOST=</div><div class="line">PROXY_PORT=</div><div class="line">PROXY_USER=</div><div class="line">PROXY_PWD=</div></pre></td></tr></table></figure><h2 id="执行静默安装"><a href="#执行静默安装" class="headerlink" title="执行静默安装"></a>执行静默安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ pwd</div><div class="line">/home/oracle/database</div><div class="line">./runInstaller -silent -ignorePrereq -ignoreSysPrereqs -responseFile /home/oracle/database/response/db_install.rsp</div><div class="line"></div><div class="line">Starting Oracle Universal Installer...</div><div class="line"></div><div class="line">Checking Temp space: must be greater than 120 MB.   Actual 26363 MB    Passed</div><div class="line">Checking swap space: must be greater than 150 MB.   Actual 4095 MB    Passed</div><div class="line">Preparing to launch Oracle Universal Installer from /tmp/OraInstall2017-12-27_02-06-55PM. Please wait ...[oracle@dbserver database]$ You can find the log of this install session at:</div><div class="line"> /u01/app/oraInventory/logs/installActions2017-12-27_02-06-55PM.log</div></pre></td></tr></table></figure><p>安装过程中可以另开一个窗口跟踪查看日志<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">tailf /u01/app/oraInventory/logs/installActions2017-12-27_02-06-55PM.log</div><div class="line"></div><div class="line">……</div><div class="line"></div><div class="line">INFO: Completed validating state &lt;finish&gt;</div><div class="line">INFO: Terminating all background operations</div><div class="line">INFO: Terminated all background operations</div><div class="line">INFO: Successfully executed the flow in SILENT mode</div><div class="line">INFO: Finding the most appropriate exit status for the current application</div><div class="line">INFO: Exit Status is 0</div><div class="line">INFO: Shutdown Oracle Database 11g Release 2 Installer</div><div class="line">INFO: Unloading Setup Driver</div></pre></td></tr></table></figure><p></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"> #!/bin/sh </div><div class="line"> #Root scripts to run</div><div class="line"></div><div class="line">/u01/app/oraInventory/orainstRoot.sh</div><div class="line">/u01/app/oracle/product/11.2.0/db_1/root.sh</div><div class="line">To execute the configuration scripts:</div><div class="line">	 1. Open a terminal window </div><div class="line">	 2. Log in as &quot;root&quot; </div><div class="line">	 3. Run the scripts </div><div class="line">	 4. Return to this window and hit &quot;Enter&quot; key to continue </div><div class="line"></div><div class="line">Successfully Setup Software.</div></pre></td></tr></table></figure><p>一直到主窗口出现以上提示，以root用户打开一个窗口，一次执行下面操作<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@dbserver ~]# /u01/app/oraInventory/orainstRoot.sh</div><div class="line">Changing permissions of /u01/app/oraInventory.</div><div class="line">Adding read,write permissions for group.</div><div class="line">Removing read,write,execute permissions for world.</div><div class="line"></div><div class="line">Changing groupname of /u01/app/oraInventory to oinstall.</div><div class="line">The execution of the script is complete.</div><div class="line">[root@dbserver ~]# /u01/app/oracle/product/11.2.0/db_1/root.sh</div><div class="line">Check /u01/app/oracle/product/11.2.0/db_1/install/root_dbserver_2017-12-27_14-23-43.log for the output of root script</div></pre></td></tr></table></figure><p></p><h1 id="静默安装监听"><a href="#静默安装监听" class="headerlink" title="静默安装监听"></a>静默安装监听</h1><p>使用默认配置文件，不用修改<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">$ORACLE_HOME/bin/netca /silent /responseFile /home/oracle/database/response/netca.rsp</div><div class="line"></div><div class="line"></div><div class="line">Parsing command line arguments:</div><div class="line">    Parameter &quot;silent&quot; = true</div><div class="line">    Parameter &quot;responsefile&quot; = /home/oracle/database/response/netca.rsp</div><div class="line">Done parsing command line arguments.</div><div class="line">Oracle Net Services Configuration:</div><div class="line">Profile configuration complete.</div><div class="line">Oracle Net Listener Startup:</div><div class="line">    Running Listener Control: </div><div class="line">      /u01/app/oracle/product/11.2.0/db_1/bin/lsnrctl start LISTENER</div><div class="line">    Listener Control complete.</div><div class="line">    Listener started successfully.</div><div class="line">Listener configuration complete.</div><div class="line">Oracle Net Services configuration successful. The exit code is 0</div></pre></td></tr></table></figure><p></p><p>默认监听是开启状态<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">[oracle@dbserver database]$ lsnrctl status</div><div class="line"></div><div class="line">LSNRCTL for Linux: Version 11.2.0.1.0 - Production on 27-DEC-2017 14:26:34</div><div class="line"></div><div class="line">Copyright (c) 1991, 2009, Oracle.  All rights reserved.</div><div class="line"></div><div class="line">Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=IPC)(KEY=EXTPROC1521)))</div><div class="line">STATUS of the LISTENER</div><div class="line">------------------------</div><div class="line">Alias                     LISTENER</div><div class="line">Version                   TNSLSNR for Linux: Version 11.2.0.1.0 - Production</div><div class="line">Start Date                27-DEC-2017 14:25:48</div><div class="line">Uptime                    0 days 0 hr. 0 min. 50 sec</div><div class="line">Trace Level               off</div><div class="line">Security                  ON: Local OS Authentication</div><div class="line">SNMP                      OFF</div><div class="line">Listener Parameter File   /u01/app/oracle/product/11.2.0/db_1/network/admin/listener.ora</div><div class="line">Listener Log File         /u01/app/oracle/diag/tnslsnr/dbserver/listener/alert/log.xml</div><div class="line">Listening Endpoints Summary...</div><div class="line">  (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC1521)))</div><div class="line">  (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=dbserver)(PORT=1521)))</div><div class="line">The listener supports no services</div><div class="line">The command completed successfully</div></pre></td></tr></table></figure><p></p><h1 id="静默新建实例"><a href="#静默新建实例" class="headerlink" title="静默新建实例"></a>静默新建实例</h1><h2 id="修改dbca-rsp配置"><a href="#修改dbca-rsp配置" class="headerlink" title="修改dbca.rsp配置"></a>修改dbca.rsp配置</h2><p>这里只需要修改[CREATEDATABASE]部分即可，其他的保持默认<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">$ egrep -v &quot;^#|^$&quot; dbca.rsp </div><div class="line">[GENERAL]</div><div class="line">RESPONSEFILE_VERSION = &quot;11.2.0&quot;</div><div class="line">OPERATION_TYPE = &quot;createDatabase&quot;</div><div class="line">[CREATEDATABASE]</div><div class="line">GDBNAME = &quot;sx21&quot;</div><div class="line">SID = &quot;sx21&quot;</div><div class="line">TEMPLATENAME = &quot;General_Purpose.dbc&quot;</div><div class="line">SYSPASSWORD = &quot;solution#123&quot;</div><div class="line">SYSTEMPASSWORD = &quot;solution#123&quot;</div><div class="line">CHARACTERSET = &quot;ZHS16GBK&quot;</div><div class="line">NATIONALCHARACTERSET= &quot;AL16UTF16&quot;</div><div class="line">[createTemplateFromDB]</div><div class="line">SOURCEDB = &quot;myhost:1521:orcl&quot;</div><div class="line">SYSDBAUSERNAME = &quot;system&quot;</div><div class="line">TEMPLATENAME = &quot;My Copy TEMPLATE&quot;</div><div class="line">[createCloneTemplate]</div><div class="line">SOURCEDB = &quot;orcl&quot;</div><div class="line">TEMPLATENAME = &quot;My Clone TEMPLATE&quot;</div><div class="line">[DELETEDATABASE]</div><div class="line">SOURCEDB = &quot;orcl&quot;</div><div class="line">[generateScripts]</div><div class="line">TEMPLATENAME = &quot;New Database&quot;</div><div class="line">GDBNAME = &quot;orcl11.us.oracle.com&quot;</div><div class="line">[CONFIGUREDATABASE]</div><div class="line">[ADDINSTANCE]</div><div class="line">DB_UNIQUE_NAME = &quot;orcl11g.us.oracle.com&quot;</div><div class="line">NODELIST=</div><div class="line">SYSDBAUSERNAME = &quot;sys&quot;</div><div class="line">[DELETEINSTANCE]</div><div class="line">DB_UNIQUE_NAME = &quot;orcl11g.us.oracle.com&quot;</div><div class="line">INSTANCENAME = &quot;orcl11g&quot;</div><div class="line">SYSDBAUSERNAME = &quot;sys&quot;</div></pre></td></tr></table></figure><p></p><h2 id="执行静默安装-1"><a href="#执行静默安装-1" class="headerlink" title="执行静默安装"></a>执行静默安装</h2><p>不清楚是什么原因，我执行静默安装命令，屏幕就一直闪烁，不能输入密码，所以我将密码写到dbca.rsp文件中了，可以避免此问题！<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">$ORACLE_HOME/bin/dbca -silent -responseFile /home/oracle/database/response/dbca.rsp</div><div class="line"></div><div class="line"></div><div class="line">Copying database files</div><div class="line">1% complete</div><div class="line">2% complete</div><div class="line">4% complete</div><div class="line">37% complete</div><div class="line">Creating and starting Oracle instance</div><div class="line">38% complete</div><div class="line">40% complete</div><div class="line">45% complete</div><div class="line">50% complete</div><div class="line">51% complete</div><div class="line">56% complete</div><div class="line">57% complete</div><div class="line">61% complete</div><div class="line">62% complete</div><div class="line">Completing Database Creation</div><div class="line">66% complete</div><div class="line">70% complete</div><div class="line">73% complete</div><div class="line">74% complete</div><div class="line">85% complete</div><div class="line">86% complete</div><div class="line">98% complete</div><div class="line">100% complete</div><div class="line">Look at the log file &quot;/u01/app/oracle/cfgtoollogs/dbca/sx21/sx21.log&quot; for further details.</div></pre></td></tr></table></figure><p></p><h1 id="验证安装结果"><a href="#验证安装结果" class="headerlink" title="验证安装结果"></a>验证安装结果</h1><h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">[oracle@dbserver app]$ ps -ef |grep ora_</div><div class="line">oracle    5432     1  0 17:02 ?        00:00:00 ora_pmon_sx21</div><div class="line">oracle    5434     1  0 17:02 ?        00:00:00 ora_vktm_sx21</div><div class="line">oracle    5438     1  0 17:02 ?        00:00:00 ora_gen0_sx21</div><div class="line">oracle    5440     1  0 17:02 ?        00:00:00 ora_diag_sx21</div><div class="line">oracle    5442     1  0 17:02 ?        00:00:00 ora_dbrm_sx21</div><div class="line">oracle    5444     1  0 17:02 ?        00:00:00 ora_psp0_sx21</div><div class="line">oracle    5446     1  0 17:02 ?        00:00:00 ora_dia0_sx21</div><div class="line">oracle    5448     1  0 17:02 ?        00:00:01 ora_mman_sx21</div><div class="line">oracle    5450     1  0 17:02 ?        00:00:00 ora_dbw0_sx21</div><div class="line">oracle    5452     1  0 17:02 ?        00:00:00 ora_lgwr_sx21</div><div class="line">oracle    5454     1  0 17:02 ?        00:00:00 ora_ckpt_sx21</div><div class="line">oracle    5456     1  0 17:02 ?        00:00:00 ora_smon_sx21</div><div class="line">oracle    5458     1  0 17:02 ?        00:00:00 ora_reco_sx21</div><div class="line">oracle    5460     1  0 17:02 ?        00:00:00 ora_mmon_sx21</div><div class="line">oracle    5462     1  0 17:02 ?        00:00:00 ora_mmnl_sx21</div><div class="line">oracle    5464     1  0 17:02 ?        00:00:00 ora_d000_sx21</div><div class="line">oracle    5466     1  0 17:02 ?        00:00:00 ora_s000_sx21</div><div class="line">oracle    5558     1  0 17:02 ?        00:00:00 ora_qmnc_sx21</div><div class="line">oracle    5575     1  0 17:02 ?        00:00:00 ora_cjq0_sx21</div><div class="line">oracle    5579     1  0 17:02 ?        00:00:00 ora_q000_sx21</div><div class="line">oracle    5581     1  0 17:02 ?        00:00:00 ora_q001_sx21</div><div class="line">oracle    5585  1550  0 17:04 pts/0    00:00:00 grep ora_</div></pre></td></tr></table></figure><h2 id="监听"><a href="#监听" class="headerlink" title="监听"></a>监听</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">[oracle@dbserver app]$ lsnrctl status</div><div class="line"></div><div class="line">LSNRCTL for Linux: Version 11.2.0.1.0 - Production on 27-DEC-2017 17:04:44</div><div class="line"></div><div class="line">Copyright (c) 1991, 2009, Oracle.  All rights reserved.</div><div class="line"></div><div class="line">Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=IPC)(KEY=EXTPROC1521)))</div><div class="line">STATUS of the LISTENER</div><div class="line">------------------------</div><div class="line">Alias                     LISTENER</div><div class="line">Version                   TNSLSNR for Linux: Version 11.2.0.1.0 - Production</div><div class="line">Start Date                27-DEC-2017 16:49:14</div><div class="line">Uptime                    0 days 0 hr. 15 min. 32 sec</div><div class="line">Trace Level               off</div><div class="line">Security                  ON: Local OS Authentication</div><div class="line">SNMP                      OFF</div><div class="line">Listener Parameter File   /u01/app/oracle/product/11.2.0/db_1/network/admin/listener.ora</div><div class="line">Listener Log File         /u01/app/oracle/diag/tnslsnr/dbserver/listener/alert/log.xml</div><div class="line">Listening Endpoints Summary...</div><div class="line">  (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC1521)))</div><div class="line">  (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=dbserver)(PORT=1521)))</div><div class="line">Services Summary...</div><div class="line">Service &quot;sx21&quot; has 1 instance(s).</div><div class="line">  Instance &quot;sx21&quot;, status READY, has 1 handler(s) for this service...</div><div class="line">Service &quot;sx21XDB&quot; has 1 instance(s).</div><div class="line">  Instance &quot;sx21&quot;, status READY, has 1 handler(s) for this service...</div><div class="line">The command completed successfully</div></pre></td></tr></table></figure><h2 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">[oracle@dbserver app]$ sqlplus /nolog</div><div class="line"></div><div class="line">SQL*Plus: Release 11.2.0.1.0 Production on Wed Dec 27 17:05:57 2017</div><div class="line"></div><div class="line">Copyright (c) 1982, 2009, Oracle.  All rights reserved.</div><div class="line"></div><div class="line">SQL&gt; conn /as sysdba</div><div class="line">Connected.</div><div class="line">SQL&gt; shutdown immediate</div><div class="line">Database closed.</div><div class="line">Database dismounted.</div><div class="line">ORACLE instance shut down.</div><div class="line">SQL&gt; startup</div><div class="line">ORACLE instance started.</div><div class="line"></div><div class="line">Total System Global Area 3340451840 bytes</div><div class="line">Fixed Size		    2217952 bytes</div><div class="line">Variable Size		 1811941408 bytes</div><div class="line">Database Buffers	 1509949440 bytes</div><div class="line">Redo Buffers		   16343040 bytes</div><div class="line">Database mounted.</div><div class="line">Database opened.</div></pre></td></tr></table></figure><p>参考文档：<br><a href="https://www.jianshu.com/p/b4200e721bfd" target="_blank" rel="external">https://www.jianshu.com/p/b4200e721bfd</a><br><a href="http://blog.51cto.com/wzlinux/1710941" target="_blank" rel="external">http://blog.51cto.com/wzlinux/1710941</a></p></div><div></div><div><div style="padding:10px 0;margin:20px auto;width:90%;text-align:center"><div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div><button id="rewardButton" disable="enable" onclick='var qr=document.getElementById("QR");"none"===qr.style.display?qr.style.display="block":qr.style.display="none"'><span>赏</span></button><div id="QR" style="display:none"><div id="alipay" style="display:inline-block"><img id="alipay_qr" src="/images/01/alipay.jpg" alt="南山小樵 Alipay"><p>支付宝打赏</p></div></div></div></div><footer class="post-footer"><div class="post-tags"><a href="/tags/数据库/" rel="tag">#数据库</a> <a href="/tags/Oracle/" rel="tag">#Oracle</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/arlo/143cd09f/" rel="next" title="枚举卷期间出错: 客户端无法连接到请求中指定的目标……"><i class="fa fa-chevron-left"></i> 枚举卷期间出错: 客户端无法连接到请求中指定的目标……</a></div><div class="post-nav-prev post-nav-item"><a href="/arlo/989e9822/" rel="prev" title="Oracle表空间扩容">Oracle表空间扩容 <i class="fa fa-chevron-right"></i></a></div></div></footer></article><div class="post-spread"></div></div></div><div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div><script>var cloudTieConfig={url:document.location.href,sourceId:"���� page.path ����",productKey:"0df311b624f44726a84b2b6249d64c11",target:"cloud-tie-wrapper"}</script><script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">文章目录</li><li class="sidebar-nav-overview" data-target="site-overview">站点概览</li></ul><section class="site-overview sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/01/psir.jpg" alt="南山小樵"><p class="site-author-name" itemprop="name">南山小樵</p><p class="site-description motion-element" itemprop="description"></p></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives"><span class="site-state-item-count">69</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories"><span class="site-state-item-count">10</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags"><span class="site-state-item-count">70</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="links-of-author motion-element"></div></section><section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#系统基础环境"><span class="nav-number">1.</span> <span class="nav-text">系统基础环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#修改主机名"><span class="nav-number">1.1.</span> <span class="nav-text">修改主机名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础软件安装"><span class="nav-number">1.2.</span> <span class="nav-text">基础软件安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改PAM配置文件"><span class="nav-number">1.3.</span> <span class="nav-text">修改PAM配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改内核参数"><span class="nav-number">1.4.</span> <span class="nav-text">修改内核参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改系统资源限制"><span class="nav-number">1.5.</span> <span class="nav-text">修改系统资源限制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Oracle相关环境配置"><span class="nav-number">2.</span> <span class="nav-text">Oracle相关环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#新建用户"><span class="nav-number">2.1.</span> <span class="nav-text">新建用户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改用户配置文件"><span class="nav-number">2.2.</span> <span class="nav-text">修改用户配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建目录并设置权限"><span class="nav-number">2.3.</span> <span class="nav-text">新建目录并设置权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置oracle用户环境变量"><span class="nav-number">2.4.</span> <span class="nav-text">设置oracle用户环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检查环境变量是否生效"><span class="nav-number">2.5.</span> <span class="nav-text">检查环境变量是否生效</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备软件安装包"><span class="nav-number">2.6.</span> <span class="nav-text">准备软件安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解压软件包"><span class="nav-number">2.7.</span> <span class="nav-text">解压软件包</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#静默安装数据库软件"><span class="nav-number">3.</span> <span class="nav-text">静默安装数据库软件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#修改db-install-rsp-文件"><span class="nav-number">3.1.</span> <span class="nav-text">修改db_install.rsp 文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行静默安装"><span class="nav-number">3.2.</span> <span class="nav-text">执行静默安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#静默安装监听"><span class="nav-number">4.</span> <span class="nav-text">静默安装监听</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#静默新建实例"><span class="nav-number">5.</span> <span class="nav-text">静默新建实例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#修改dbca-rsp配置"><span class="nav-number">5.1.</span> <span class="nav-text">修改dbca.rsp配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行静默安装-1"><span class="nav-number">5.2.</span> <span class="nav-text">执行静默安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#验证安装结果"><span class="nav-number">6.</span> <span class="nav-text">验证安装结果</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程"><span class="nav-number">6.1.</span> <span class="nav-text">进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监听"><span class="nav-number">6.2.</span> <span class="nav-text">监听</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接"><span class="nav-number">6.3.</span> <span class="nav-text">连接</span></a></li></ol></li></ol></div></div></section></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2016 - <span itemprop="copyrightYear">2018</span> <span class="with-love"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">南山小樵</span></div><div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div><div class="theme-info">主题 - <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a></div><div class="busuanzi-count"><script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span> <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span></div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i></div></div><script type="text/javascript">"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null)</script><script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script><script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script><script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script><script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script><script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script><script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script><script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script><script type="text/javascript">var isfetched=!1,search_path="search.xml";0==search_path.length&&(search_path="search.xml");var path="/"+search_path;function proceedsearch(){$("body").append('<div class="popoverlay">').css("overflow","hidden"),$(".popup").toggle()}var searchFunc=function(e,c,s){"use strict";$.ajax({url:e,dataType:"xml",async:!0,success:function(e){isfetched=!0,$(".popup").detach().appendTo(".header-inner");var t=$("entry",e).map(function(){return{title:$("title",this).text(),content:$("content",this).text(),url:$("url",this).text()}}).get(),a=document.getElementById(c),r=document.getElementById(s);a.addEventListener("input",function(){var u=0,d='<ul class="search-result-list">',f=this.value.trim().toLowerCase().split(/[\s\-]+/);r.innerHTML="",1<this.value.trim().length&&t.forEach(function(e){var a=!0,r=e.title.trim().toLowerCase(),c=e.content.trim().replace(/<[^>]+>/g,"").toLowerCase(),t=e.url,s=-1,n=-1,i=-1;if(""!=r&&""!=c&&f.forEach(function(e,t){s=r.indexOf(e),n=c.indexOf(e),s<0&&n<0?a=!1:(n<0&&(n=0),0==t&&(i=n))}),a){u+=1,d+="<li><a href='"+t+"' class='search-result-title'>"+r+"</a>";var o=e.content.trim().replace(/<[^>]+>/g,"");if(0<=i){var l=i-20,p=i+80;l<0&&(l=0),0==l&&(p=50),p>o.length&&(p=o.length);var h=o.substring(l,p);f.forEach(function(e){var t=new RegExp(e,"gi");h=h.replace(t,'<b class="search-keyword">'+e+"</b>")}),d+='<p class="search-result">'+h+"...</p>"}d+="</li>"}}),d+="</ul>",0==u&&(d='<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'),""==f&&(d='<div id="no-result"><i class="fa fa-search fa-5x" /></div>'),r.innerHTML=d}),proceedsearch()}})};$(".popup-trigger").click(function(e){e.stopPropagation(),0==isfetched?searchFunc(path,"local-search-input","local-search-result"):proceedsearch()}),$(".popup-btn-close").click(function(e){$(".popup").hide(),$(".popoverlay").remove(),$("body").css("overflow","")}),$(".popup").click(function(e){e.stopPropagation()})</script></body></html>
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="数据库,Oracle," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="系统基础环境操作系统：CentOS 6.9 x64Iptables：offSelinux：disabled">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CentOS6.9环境静默安装Oracle11g">
+<meta property="og:url" content="http://islocal.cc/arlo/6dacbf16/index.html">
+<meta property="og:site_name" content="南山居">
+<meta property="og:description" content="系统基础环境操作系统：CentOS 6.9 x64Iptables：offSelinux：disabled">
+<meta property="og:updated_time" content="2018-03-15T07:17:45.879Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CentOS6.9环境静默安装Oracle11g">
+<meta name="twitter:description" content="系统基础环境操作系统：CentOS 6.9 x64Iptables：offSelinux：disabled">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://islocal.cc/arlo/6dacbf16/"/>
+
+  <title> CentOS6.9环境静默安装Oracle11g | 南山居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">南山居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                CentOS6.9环境静默安装Oracle11g
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-12-27T11:19:50+08:00" content="2017-12-27">
+              2017-12-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">本文总阅读量
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="系统基础环境"><a href="#系统基础环境" class="headerlink" title="系统基础环境"></a>系统基础环境</h1><p>操作系统：CentOS 6.9 x64<br>Iptables：off<br>Selinux：disabled<br><a id="more"></a></p>
+<h2 id="修改主机名"><a href="#修改主机名" class="headerlink" title="修改主机名"></a>修改主机名</h2><p>安装oracle后不要修改主机名，会引起故障<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">vim /etc/sysconfig/network</div><div class="line">NETWORKING=yes</div><div class="line">HOSTNAME=&quot;dbserver&quot;</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">hostname dbserver</div></pre></td></tr></table></figure>
+<h2 id="基础软件安装"><a href="#基础软件安装" class="headerlink" title="基础软件安装"></a>基础软件安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">#默认是不安装32位软件包的，添加此选项</div><div class="line">echo &apos;multilib_policy=all&apos; &gt;&gt; /etc/yum.conf</div><div class="line">yum -y install  binutils-* compat-libstdc++-* elfutils-libelf-*  elfutils-libelf-devel-* gcc-* gcc-c++-* glibc-* glibc-common-* glibc-devel-*  glibc-headers-* ksh-* libaio-*  libaio-devel-* libgcc-*  libstdc++* libstdc++-devel* make-*  sysstat-* unixODBC-* unixODBC-devel-* mksh</div><div class="line">#监测一下软件是否安装全</div><div class="line">rpm -q \</div><div class="line">binutils \</div><div class="line">compat-libstdc++-33 \</div><div class="line">elfutils-libelf \</div><div class="line">elfutils-libelf-devel \</div><div class="line">expat \</div><div class="line">gcc \</div><div class="line">gcc-c++ \</div><div class="line">glibc \</div><div class="line">glibc-common \</div><div class="line">glibc-devel \</div><div class="line">glibc-headers \</div><div class="line">libaio \</div><div class="line">libaio-devel \</div><div class="line">libgcc \</div><div class="line">libstdc++ \</div><div class="line">libstdc++-devel \</div><div class="line">make \</div><div class="line">pdksh \</div><div class="line">sysstat \</div><div class="line">unixODBC \</div><div class="line">unixODBC-devel | grep &quot;not installed&quot;</div></pre></td></tr></table></figure>
+<h2 id="修改PAM配置文件"><a href="#修改PAM配置文件" class="headerlink" title="修改PAM配置文件"></a>修改PAM配置文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">vi /etc/pam.d/login</div><div class="line">session    required     /lib64/security/pam_limits.so</div><div class="line">session    required     pam_limits.so</div></pre></td></tr></table></figure>
+<h2 id="修改内核参数"><a href="#修改内核参数" class="headerlink" title="修改内核参数"></a>修改内核参数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">fs.aio-max-nr = 1048576 </div><div class="line">fs.file-max = 6815744 </div><div class="line">kernel.shmmni = 4096 </div><div class="line">kernel.sem = 250 32000 100 128 </div><div class="line">net.ipv4.ip_local_port_range = 9000 65500 </div><div class="line">net.core.rmem_default = 262144 </div><div class="line">net.core.rmem_max = 4194304 </div><div class="line">net.core.wmem_default = 262144 </div><div class="line">net.core.wmem_max = 1048586</div><div class="line"></div><div class="line"></div><div class="line">#重新加载生效</div><div class="line">sysctl –p</div></pre></td></tr></table></figure>
+<h2 id="修改系统资源限制"><a href="#修改系统资源限制" class="headerlink" title="修改系统资源限制"></a>修改系统资源限制</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">vi /etc/security/limits.conf  </div><div class="line">oracle  soft  nproc   2047 </div><div class="line">oracle  hard  nproc   16384 </div><div class="line">oracle  soft  nofile  1024 </div><div class="line">oracle  hard  nofile  65536</div><div class="line">oracle	soft  stack   10240</div></pre></td></tr></table></figure>
+<h1 id="Oracle相关环境配置"><a href="#Oracle相关环境配置" class="headerlink" title="Oracle相关环境配置"></a>Oracle相关环境配置</h1><h2 id="新建用户"><a href="#新建用户" class="headerlink" title="新建用户"></a>新建用户</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">groupadd -g 500 oinstall</div><div class="line">groupadd -g 501 dba</div><div class="line">useradd -u 500 -g oinstall -G dba oracle</div><div class="line">#设置oracle用户密码为oracle</div><div class="line">echo &quot;oracle:oracle&quot; | chpasswd</div></pre></td></tr></table></figure>
+<h2 id="修改用户配置文件"><a href="#修改用户配置文件" class="headerlink" title="修改用户配置文件"></a>修改用户配置文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">vi/ etc/profile</div><div class="line">if [ $USER = &quot;oracle&quot; ]; then</div><div class="line">   if [ $SHELL = &quot;/bin/ksh&quot; ]; then</div><div class="line">       ulimit -p 16384</div><div class="line">       ulimit -n 65536</div><div class="line">   else</div><div class="line">       ulimit -u 16384 -n 65536</div><div class="line">   fi</div><div class="line">fi</div></pre></td></tr></table></figure>
+<h2 id="新建目录并设置权限"><a href="#新建目录并设置权限" class="headerlink" title="新建目录并设置权限"></a>新建目录并设置权限</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mkdir -p /u01/app/oracle/product/11.2.0/db_1</div><div class="line">mkdir -p /u01/app/oraInventory</div><div class="line">chown -R oracle.oinstall /u01/app/oracle</div><div class="line">chown -R oracle.oinstall /u01/app/oraInventory</div><div class="line">chmod -R 775 /u01/app</div></pre></td></tr></table></figure>
+<h2 id="设置oracle用户环境变量"><a href="#设置oracle用户环境变量" class="headerlink" title="设置oracle用户环境变量"></a>设置oracle用户环境变量</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">su - oracle</div><div class="line">$ vim ~/.bash_profile </div><div class="line">export ORACLE_BASE=/u01/app/oracle</div><div class="line">export ORACLE_HOME=$ORACLE_BASE/product/11.2.0/db_1</div><div class="line">export ORACLE_SID=sx21</div><div class="line">export PATH=$PATH:$ORACLE_HOME/bin</div><div class="line">export LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/lib</div><div class="line">export NLS_LANG=American_America.ZHS16GBK</div></pre></td></tr></table></figure>
+<h2 id="检查环境变量是否生效"><a href="#检查环境变量是否生效" class="headerlink" title="检查环境变量是否生效"></a>检查环境变量是否生效</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">source ~/.bash_profile</div><div class="line">env |grep ORA</div><div class="line">ORACLE_SID=sx21</div><div class="line">ORACLE_BASE=/u01/app/oracle</div><div class="line">ORACLE_HOME=/u01/app/oracle/product/11.2.0/db_1</div></pre></td></tr></table></figure>
+<h2 id="准备软件安装包"><a href="#准备软件安装包" class="headerlink" title="准备软件安装包"></a>准备软件安装包</h2><p>下载地址: <a href="http://www.oracle.com/technetwork/database/enterprise-edition/downloads/112010-linx8664soft-100572.html" target="_blank" rel="external">http://www.oracle.com/technetwork/database/enterprise-edition/downloads/112010-linx8664soft-100572.html</a><br>可以使用cksum校验文件完整性<br>linux.x64_11gR2_database_1of2.zip (1,239,269,270 bytes) (cksum - 3152418844)<br>linux.x64_11gR2_database_2of2.zip (1,111,416,131 bytes) (cksum - 3669256139)</p>
+<h2 id="解压软件包"><a href="#解压软件包" class="headerlink" title="解压软件包"></a>解压软件包</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">unzip linux.x64_11gR2_database_1of2.zip</div><div class="line">unzip linux.x64_11gR2_database_2of2.zip</div></pre></td></tr></table></figure>
+<p>解压后得到/home/oracle/database/response目录，该目录中有三个rsp文件，用来作为静默安装时的应答文件的模板。<br>备份三个文件并修改其内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">db_install.rsp	安装应答</div><div class="line">netca.rsp	建立监听、本地服务名等网络设置的应答</div><div class="line">dbca.rsp	创建数据库应答</div></pre></td></tr></table></figure></p>
+<h1 id="静默安装数据库软件"><a href="#静默安装数据库软件" class="headerlink" title="静默安装数据库软件"></a>静默安装数据库软件</h1><h2 id="修改db-install-rsp-文件"><a href="#修改db-install-rsp-文件" class="headerlink" title="修改db_install.rsp 文件"></a>修改db_install.rsp 文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">egrep -v &quot;^#|^$&quot; db_install.rsp</div><div class="line">oracle.install.responseFileVersion=/oracle/install/rspfmt_dbinstall_response_schema_v11_2_0</div><div class="line">oracle.install.option=INSTALL_DB_SWONLY</div><div class="line">ORACLE_HOSTNAME=dbserver</div><div class="line">UNIX_GROUP_NAME=oinstall</div><div class="line">INVENTORY_LOCATION=/u01/app/oraInventory</div><div class="line">SELECTED_LANGUAGES=en,zh_CN</div><div class="line">ORACLE_HOME=/u01/app/oracle/product/11.2.0/db_1</div><div class="line">ORACLE_BASE=/u01/app/oracle</div><div class="line">oracle.install.db.InstallEdition=EE</div><div class="line">oracle.install.db.isCustomInstall=false</div><div class="line">oracle.install.db.customComponents=oracle.server:11.2.0.1.0,oracle.sysman.ccr:10.2.7.0.0,oracle.xdk:11.2.0.1.0,oracle.rdbms.oci:11.2.0.1.0,oracle.network:11.2.0.1.0,oracle.network.listener:11.2.0.1.0,oracle.rdbms:11.2.0.1.0,oracle.options:11.2.0.1.0,oracle.rdbms.partitioning:11.2.0.1.0,oracle.oraolap:11.2.0.1.0,oracle.rdbms.dm:11.2.0.1.0,oracle.rdbms.dv:11.2.0.1.0,orcle.rdbms.lbac:11.2.0.1.0,oracle.rdbms.rat:11.2.0.1.0</div><div class="line">oracle.install.db.DBA_GROUP=dba</div><div class="line">oracle.install.db.OPER_GROUP=dba</div><div class="line">oracle.install.db.CLUSTER_NODES=</div><div class="line">oracle.install.db.config.starterdb.type=</div><div class="line">oracle.install.db.config.starterdb.globalDBName=sx21</div><div class="line">oracle.install.db.config.starterdb.SID=sx21</div><div class="line">oracle.install.db.config.starterdb.characterSet=ZHS16GBK</div><div class="line">oracle.install.db.config.starterdb.memoryOption=true</div><div class="line">oracle.install.db.config.starterdb.memoryLimit=81920</div><div class="line">oracle.install.db.config.starterdb.installExampleSchemas=false</div><div class="line">oracle.install.db.config.starterdb.enableSecuritySettings=true</div><div class="line">oracle.install.db.config.starterdb.password.ALL=solution#123</div><div class="line">oracle.install.db.config.starterdb.password.SYS=</div><div class="line">oracle.install.db.config.starterdb.password.SYSTEM=</div><div class="line">oracle.install.db.config.starterdb.password.SYSMAN=</div><div class="line">oracle.install.db.config.starterdb.password.DBSNMP=</div><div class="line">oracle.install.db.config.starterdb.control=DB_CONTROL</div><div class="line">oracle.install.db.config.starterdb.gridcontrol.gridControlServiceURL=</div><div class="line">oracle.install.db.config.starterdb.dbcontrol.enableEmailNotification=false</div><div class="line">oracle.install.db.config.starterdb.dbcontrol.emailAddress=</div><div class="line">oracle.install.db.config.starterdb.dbcontrol.SMTPServer=</div><div class="line">oracle.install.db.config.starterdb.automatedBackup.enable=false</div><div class="line">oracle.install.db.config.starterdb.automatedBackup.osuid=</div><div class="line">oracle.install.db.config.starterdb.automatedBackup.ospwd=</div><div class="line">oracle.install.db.config.starterdb.storageType=</div><div class="line">oracle.install.db.config.starterdb.fileSystemStorage.dataLocation=</div><div class="line">oracle.install.db.config.starterdb.fileSystemStorage.recoveryLocation=</div><div class="line">oracle.install.db.config.asm.diskGroup=</div><div class="line">oracle.install.db.config.asm.ASMSNMPPassword=</div><div class="line">MYORACLESUPPORT_USERNAME=</div><div class="line">MYORACLESUPPORT_PASSWORD=</div><div class="line">SECURITY_UPDATES_VIA_MYORACLESUPPORT=</div><div class="line">DECLINE_SECURITY_UPDATES=true</div><div class="line">PROXY_HOST=</div><div class="line">PROXY_PORT=</div><div class="line">PROXY_USER=</div><div class="line">PROXY_PWD=</div></pre></td></tr></table></figure>
+<h2 id="执行静默安装"><a href="#执行静默安装" class="headerlink" title="执行静默安装"></a>执行静默安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">$ pwd</div><div class="line">/home/oracle/database</div><div class="line">./runInstaller -silent -ignorePrereq -ignoreSysPrereqs -responseFile /home/oracle/database/response/db_install.rsp</div><div class="line"></div><div class="line">Starting Oracle Universal Installer...</div><div class="line"></div><div class="line">Checking Temp space: must be greater than 120 MB.   Actual 26363 MB    Passed</div><div class="line">Checking swap space: must be greater than 150 MB.   Actual 4095 MB    Passed</div><div class="line">Preparing to launch Oracle Universal Installer from /tmp/OraInstall2017-12-27_02-06-55PM. Please wait ...[oracle@dbserver database]$ You can find the log of this install session at:</div><div class="line"> /u01/app/oraInventory/logs/installActions2017-12-27_02-06-55PM.log</div></pre></td></tr></table></figure>
+<p>安装过程中可以另开一个窗口跟踪查看日志<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">tailf /u01/app/oraInventory/logs/installActions2017-12-27_02-06-55PM.log</div><div class="line"></div><div class="line">……</div><div class="line"></div><div class="line">INFO: Completed validating state &lt;finish&gt;</div><div class="line">INFO: Terminating all background operations</div><div class="line">INFO: Terminated all background operations</div><div class="line">INFO: Successfully executed the flow in SILENT mode</div><div class="line">INFO: Finding the most appropriate exit status for the current application</div><div class="line">INFO: Exit Status is 0</div><div class="line">INFO: Shutdown Oracle Database 11g Release 2 Installer</div><div class="line">INFO: Unloading Setup Driver</div></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"> #!/bin/sh </div><div class="line"> #Root scripts to run</div><div class="line"></div><div class="line">/u01/app/oraInventory/orainstRoot.sh</div><div class="line">/u01/app/oracle/product/11.2.0/db_1/root.sh</div><div class="line">To execute the configuration scripts:</div><div class="line">	 1. Open a terminal window </div><div class="line">	 2. Log in as &quot;root&quot; </div><div class="line">	 3. Run the scripts </div><div class="line">	 4. Return to this window and hit &quot;Enter&quot; key to continue </div><div class="line"></div><div class="line">Successfully Setup Software.</div></pre></td></tr></table></figure>
+<p>一直到主窗口出现以上提示，以root用户打开一个窗口，一次执行下面操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[root@dbserver ~]# /u01/app/oraInventory/orainstRoot.sh</div><div class="line">Changing permissions of /u01/app/oraInventory.</div><div class="line">Adding read,write permissions for group.</div><div class="line">Removing read,write,execute permissions for world.</div><div class="line"></div><div class="line">Changing groupname of /u01/app/oraInventory to oinstall.</div><div class="line">The execution of the script is complete.</div><div class="line">[root@dbserver ~]# /u01/app/oracle/product/11.2.0/db_1/root.sh</div><div class="line">Check /u01/app/oracle/product/11.2.0/db_1/install/root_dbserver_2017-12-27_14-23-43.log for the output of root script</div></pre></td></tr></table></figure></p>
+<h1 id="静默安装监听"><a href="#静默安装监听" class="headerlink" title="静默安装监听"></a>静默安装监听</h1><p>使用默认配置文件，不用修改<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">$ORACLE_HOME/bin/netca /silent /responseFile /home/oracle/database/response/netca.rsp</div><div class="line"></div><div class="line"></div><div class="line">Parsing command line arguments:</div><div class="line">    Parameter &quot;silent&quot; = true</div><div class="line">    Parameter &quot;responsefile&quot; = /home/oracle/database/response/netca.rsp</div><div class="line">Done parsing command line arguments.</div><div class="line">Oracle Net Services Configuration:</div><div class="line">Profile configuration complete.</div><div class="line">Oracle Net Listener Startup:</div><div class="line">    Running Listener Control: </div><div class="line">      /u01/app/oracle/product/11.2.0/db_1/bin/lsnrctl start LISTENER</div><div class="line">    Listener Control complete.</div><div class="line">    Listener started successfully.</div><div class="line">Listener configuration complete.</div><div class="line">Oracle Net Services configuration successful. The exit code is 0</div></pre></td></tr></table></figure></p>
+<p>默认监听是开启状态<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">[oracle@dbserver database]$ lsnrctl status</div><div class="line"></div><div class="line">LSNRCTL for Linux: Version 11.2.0.1.0 - Production on 27-DEC-2017 14:26:34</div><div class="line"></div><div class="line">Copyright (c) 1991, 2009, Oracle.  All rights reserved.</div><div class="line"></div><div class="line">Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=IPC)(KEY=EXTPROC1521)))</div><div class="line">STATUS of the LISTENER</div><div class="line">------------------------</div><div class="line">Alias                     LISTENER</div><div class="line">Version                   TNSLSNR for Linux: Version 11.2.0.1.0 - Production</div><div class="line">Start Date                27-DEC-2017 14:25:48</div><div class="line">Uptime                    0 days 0 hr. 0 min. 50 sec</div><div class="line">Trace Level               off</div><div class="line">Security                  ON: Local OS Authentication</div><div class="line">SNMP                      OFF</div><div class="line">Listener Parameter File   /u01/app/oracle/product/11.2.0/db_1/network/admin/listener.ora</div><div class="line">Listener Log File         /u01/app/oracle/diag/tnslsnr/dbserver/listener/alert/log.xml</div><div class="line">Listening Endpoints Summary...</div><div class="line">  (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC1521)))</div><div class="line">  (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=dbserver)(PORT=1521)))</div><div class="line">The listener supports no services</div><div class="line">The command completed successfully</div></pre></td></tr></table></figure></p>
+<h1 id="静默新建实例"><a href="#静默新建实例" class="headerlink" title="静默新建实例"></a>静默新建实例</h1><h2 id="修改dbca-rsp配置"><a href="#修改dbca-rsp配置" class="headerlink" title="修改dbca.rsp配置"></a>修改dbca.rsp配置</h2><p>这里只需要修改[CREATEDATABASE]部分即可，其他的保持默认<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">$ egrep -v &quot;^#|^$&quot; dbca.rsp </div><div class="line">[GENERAL]</div><div class="line">RESPONSEFILE_VERSION = &quot;11.2.0&quot;</div><div class="line">OPERATION_TYPE = &quot;createDatabase&quot;</div><div class="line">[CREATEDATABASE]</div><div class="line">GDBNAME = &quot;sx21&quot;</div><div class="line">SID = &quot;sx21&quot;</div><div class="line">TEMPLATENAME = &quot;General_Purpose.dbc&quot;</div><div class="line">SYSPASSWORD = &quot;solution#123&quot;</div><div class="line">SYSTEMPASSWORD = &quot;solution#123&quot;</div><div class="line">CHARACTERSET = &quot;ZHS16GBK&quot;</div><div class="line">NATIONALCHARACTERSET= &quot;AL16UTF16&quot;</div><div class="line">[createTemplateFromDB]</div><div class="line">SOURCEDB = &quot;myhost:1521:orcl&quot;</div><div class="line">SYSDBAUSERNAME = &quot;system&quot;</div><div class="line">TEMPLATENAME = &quot;My Copy TEMPLATE&quot;</div><div class="line">[createCloneTemplate]</div><div class="line">SOURCEDB = &quot;orcl&quot;</div><div class="line">TEMPLATENAME = &quot;My Clone TEMPLATE&quot;</div><div class="line">[DELETEDATABASE]</div><div class="line">SOURCEDB = &quot;orcl&quot;</div><div class="line">[generateScripts]</div><div class="line">TEMPLATENAME = &quot;New Database&quot;</div><div class="line">GDBNAME = &quot;orcl11.us.oracle.com&quot;</div><div class="line">[CONFIGUREDATABASE]</div><div class="line">[ADDINSTANCE]</div><div class="line">DB_UNIQUE_NAME = &quot;orcl11g.us.oracle.com&quot;</div><div class="line">NODELIST=</div><div class="line">SYSDBAUSERNAME = &quot;sys&quot;</div><div class="line">[DELETEINSTANCE]</div><div class="line">DB_UNIQUE_NAME = &quot;orcl11g.us.oracle.com&quot;</div><div class="line">INSTANCENAME = &quot;orcl11g&quot;</div><div class="line">SYSDBAUSERNAME = &quot;sys&quot;</div></pre></td></tr></table></figure></p>
+<h2 id="执行静默安装-1"><a href="#执行静默安装-1" class="headerlink" title="执行静默安装"></a>执行静默安装</h2><p>不清楚是什么原因，我执行静默安装命令，屏幕就一直闪烁，不能输入密码，所以我将密码写到dbca.rsp文件中了，可以避免此问题！<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">$ORACLE_HOME/bin/dbca -silent -responseFile /home/oracle/database/response/dbca.rsp</div><div class="line"></div><div class="line"></div><div class="line">Copying database files</div><div class="line">1% complete</div><div class="line">2% complete</div><div class="line">4% complete</div><div class="line">37% complete</div><div class="line">Creating and starting Oracle instance</div><div class="line">38% complete</div><div class="line">40% complete</div><div class="line">45% complete</div><div class="line">50% complete</div><div class="line">51% complete</div><div class="line">56% complete</div><div class="line">57% complete</div><div class="line">61% complete</div><div class="line">62% complete</div><div class="line">Completing Database Creation</div><div class="line">66% complete</div><div class="line">70% complete</div><div class="line">73% complete</div><div class="line">74% complete</div><div class="line">85% complete</div><div class="line">86% complete</div><div class="line">98% complete</div><div class="line">100% complete</div><div class="line">Look at the log file &quot;/u01/app/oracle/cfgtoollogs/dbca/sx21/sx21.log&quot; for further details.</div></pre></td></tr></table></figure></p>
+<h1 id="验证安装结果"><a href="#验证安装结果" class="headerlink" title="验证安装结果"></a>验证安装结果</h1><h2 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">[oracle@dbserver app]$ ps -ef |grep ora_</div><div class="line">oracle    5432     1  0 17:02 ?        00:00:00 ora_pmon_sx21</div><div class="line">oracle    5434     1  0 17:02 ?        00:00:00 ora_vktm_sx21</div><div class="line">oracle    5438     1  0 17:02 ?        00:00:00 ora_gen0_sx21</div><div class="line">oracle    5440     1  0 17:02 ?        00:00:00 ora_diag_sx21</div><div class="line">oracle    5442     1  0 17:02 ?        00:00:00 ora_dbrm_sx21</div><div class="line">oracle    5444     1  0 17:02 ?        00:00:00 ora_psp0_sx21</div><div class="line">oracle    5446     1  0 17:02 ?        00:00:00 ora_dia0_sx21</div><div class="line">oracle    5448     1  0 17:02 ?        00:00:01 ora_mman_sx21</div><div class="line">oracle    5450     1  0 17:02 ?        00:00:00 ora_dbw0_sx21</div><div class="line">oracle    5452     1  0 17:02 ?        00:00:00 ora_lgwr_sx21</div><div class="line">oracle    5454     1  0 17:02 ?        00:00:00 ora_ckpt_sx21</div><div class="line">oracle    5456     1  0 17:02 ?        00:00:00 ora_smon_sx21</div><div class="line">oracle    5458     1  0 17:02 ?        00:00:00 ora_reco_sx21</div><div class="line">oracle    5460     1  0 17:02 ?        00:00:00 ora_mmon_sx21</div><div class="line">oracle    5462     1  0 17:02 ?        00:00:00 ora_mmnl_sx21</div><div class="line">oracle    5464     1  0 17:02 ?        00:00:00 ora_d000_sx21</div><div class="line">oracle    5466     1  0 17:02 ?        00:00:00 ora_s000_sx21</div><div class="line">oracle    5558     1  0 17:02 ?        00:00:00 ora_qmnc_sx21</div><div class="line">oracle    5575     1  0 17:02 ?        00:00:00 ora_cjq0_sx21</div><div class="line">oracle    5579     1  0 17:02 ?        00:00:00 ora_q000_sx21</div><div class="line">oracle    5581     1  0 17:02 ?        00:00:00 ora_q001_sx21</div><div class="line">oracle    5585  1550  0 17:04 pts/0    00:00:00 grep ora_</div></pre></td></tr></table></figure>
+<h2 id="监听"><a href="#监听" class="headerlink" title="监听"></a>监听</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">[oracle@dbserver app]$ lsnrctl status</div><div class="line"></div><div class="line">LSNRCTL for Linux: Version 11.2.0.1.0 - Production on 27-DEC-2017 17:04:44</div><div class="line"></div><div class="line">Copyright (c) 1991, 2009, Oracle.  All rights reserved.</div><div class="line"></div><div class="line">Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=IPC)(KEY=EXTPROC1521)))</div><div class="line">STATUS of the LISTENER</div><div class="line">------------------------</div><div class="line">Alias                     LISTENER</div><div class="line">Version                   TNSLSNR for Linux: Version 11.2.0.1.0 - Production</div><div class="line">Start Date                27-DEC-2017 16:49:14</div><div class="line">Uptime                    0 days 0 hr. 15 min. 32 sec</div><div class="line">Trace Level               off</div><div class="line">Security                  ON: Local OS Authentication</div><div class="line">SNMP                      OFF</div><div class="line">Listener Parameter File   /u01/app/oracle/product/11.2.0/db_1/network/admin/listener.ora</div><div class="line">Listener Log File         /u01/app/oracle/diag/tnslsnr/dbserver/listener/alert/log.xml</div><div class="line">Listening Endpoints Summary...</div><div class="line">  (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC1521)))</div><div class="line">  (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=dbserver)(PORT=1521)))</div><div class="line">Services Summary...</div><div class="line">Service &quot;sx21&quot; has 1 instance(s).</div><div class="line">  Instance &quot;sx21&quot;, status READY, has 1 handler(s) for this service...</div><div class="line">Service &quot;sx21XDB&quot; has 1 instance(s).</div><div class="line">  Instance &quot;sx21&quot;, status READY, has 1 handler(s) for this service...</div><div class="line">The command completed successfully</div></pre></td></tr></table></figure>
+<h2 id="连接"><a href="#连接" class="headerlink" title="连接"></a>连接</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">[oracle@dbserver app]$ sqlplus /nolog</div><div class="line"></div><div class="line">SQL*Plus: Release 11.2.0.1.0 Production on Wed Dec 27 17:05:57 2017</div><div class="line"></div><div class="line">Copyright (c) 1982, 2009, Oracle.  All rights reserved.</div><div class="line"></div><div class="line">SQL&gt; conn /as sysdba</div><div class="line">Connected.</div><div class="line">SQL&gt; shutdown immediate</div><div class="line">Database closed.</div><div class="line">Database dismounted.</div><div class="line">ORACLE instance shut down.</div><div class="line">SQL&gt; startup</div><div class="line">ORACLE instance started.</div><div class="line"></div><div class="line">Total System Global Area 3340451840 bytes</div><div class="line">Fixed Size		    2217952 bytes</div><div class="line">Variable Size		 1811941408 bytes</div><div class="line">Database Buffers	 1509949440 bytes</div><div class="line">Redo Buffers		   16343040 bytes</div><div class="line">Database mounted.</div><div class="line">Database opened.</div></pre></td></tr></table></figure>
+<p>参考文档：<br><a href="https://www.jianshu.com/p/b4200e721bfd" target="_blank" rel="external">https://www.jianshu.com/p/b4200e721bfd</a><br><a href="http://blog.51cto.com/wzlinux/1710941" target="_blank" rel="external">http://blog.51cto.com/wzlinux/1710941</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/01/alipay.jpg" alt="南山小樵 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据库/" rel="tag">#数据库</a>
+          
+            <a href="/tags/Oracle/" rel="tag">#Oracle</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/arlo/143cd09f/" rel="next" title="枚举卷期间出错: 客户端无法连接到请求中指定的目标……">
+                <i class="fa fa-chevron-left"></i> 枚举卷期间出错: 客户端无法连接到请求中指定的目标……
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/arlo/989e9822/" rel="prev" title="Oracle表空间扩容">
+                Oracle表空间扩容 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: document.location.href, 
+    sourceId: "���� page.path ����",
+    productKey: "0df311b624f44726a84b2b6249d64c11",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/01/psir.jpg"
+               alt="南山小樵" />
+          <p class="site-author-name" itemprop="name">南山小樵</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">71</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">70</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#系统基础环境"><span class="nav-number">1.</span> <span class="nav-text">系统基础环境</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#修改主机名"><span class="nav-number">1.1.</span> <span class="nav-text">修改主机名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基础软件安装"><span class="nav-number">1.2.</span> <span class="nav-text">基础软件安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改PAM配置文件"><span class="nav-number">1.3.</span> <span class="nav-text">修改PAM配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改内核参数"><span class="nav-number">1.4.</span> <span class="nav-text">修改内核参数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改系统资源限制"><span class="nav-number">1.5.</span> <span class="nav-text">修改系统资源限制</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Oracle相关环境配置"><span class="nav-number">2.</span> <span class="nav-text">Oracle相关环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#新建用户"><span class="nav-number">2.1.</span> <span class="nav-text">新建用户</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改用户配置文件"><span class="nav-number">2.2.</span> <span class="nav-text">修改用户配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建目录并设置权限"><span class="nav-number">2.3.</span> <span class="nav-text">新建目录并设置权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置oracle用户环境变量"><span class="nav-number">2.4.</span> <span class="nav-text">设置oracle用户环境变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检查环境变量是否生效"><span class="nav-number">2.5.</span> <span class="nav-text">检查环境变量是否生效</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备软件安装包"><span class="nav-number">2.6.</span> <span class="nav-text">准备软件安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解压软件包"><span class="nav-number">2.7.</span> <span class="nav-text">解压软件包</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#静默安装数据库软件"><span class="nav-number">3.</span> <span class="nav-text">静默安装数据库软件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#修改db-install-rsp-文件"><span class="nav-number">3.1.</span> <span class="nav-text">修改db_install.rsp 文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行静默安装"><span class="nav-number">3.2.</span> <span class="nav-text">执行静默安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#静默安装监听"><span class="nav-number">4.</span> <span class="nav-text">静默安装监听</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#静默新建实例"><span class="nav-number">5.</span> <span class="nav-text">静默新建实例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#修改dbca-rsp配置"><span class="nav-number">5.1.</span> <span class="nav-text">修改dbca.rsp配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行静默安装-1"><span class="nav-number">5.2.</span> <span class="nav-text">执行静默安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#验证安装结果"><span class="nav-number">6.</span> <span class="nav-text">验证安装结果</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程"><span class="nav-number">6.1.</span> <span class="nav-text">进程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监听"><span class="nav-number">6.2.</span> <span class="nav-text">监听</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#连接"><span class="nav-number">6.3.</span> <span class="nav-text">连接</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南山小樵</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

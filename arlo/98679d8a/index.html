@@ -1,1 +1,818 @@
-<!doctype html><html class="theme-next muse use-motion"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"><link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css"><link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css"><meta name="keywords" content="rsync,同步,备份,"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1"><meta name="description" content="之前写了个Windows下oracle多用户自动备份的脚本，这个备份完数据还是存在服务器本地的，如果系统宕机的话，数据还是没有了，这样的备份是没有意义滴；所以我们需要把数据转移到其他的存储上，常用的方式是使用Rsync工具来保持同步数据，接下来我们搭建一个简单的Rsync服务器。"><meta property="og:type" content="article"><meta property="og:title" content="Centos7下Rsync服务器搭建配置"><meta property="og:url" content="http://islocal.cc/arlo/98679d8a/index.html"><meta property="og:site_name" content="南山居"><meta property="og:description" content="之前写了个Windows下oracle多用户自动备份的脚本，这个备份完数据还是存在服务器本地的，如果系统宕机的话，数据还是没有了，这样的备份是没有意义滴；所以我们需要把数据转移到其他的存储上，常用的方式是使用Rsync工具来保持同步数据，接下来我们搭建一个简单的Rsync服务器。"><meta property="og:updated_time" content="2018-03-15T07:17:45.887Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Centos7下Rsync服务器搭建配置"><meta name="twitter:description" content="之前写了个Windows下oracle多用户自动备份的脚本，这个备份完数据还是存在服务器本地的，如果系统宕机的话，数据还是没有了，这样的备份是没有意义滴；所以我们需要把数据转移到其他的存储上，常用的方式是使用Rsync工具来保持同步数据，接下来我们搭建一个简单的Rsync服务器。"><script type="text/javascript" id="hexo.configuration">var NexT=window.NexT||{},CONFIG={scheme:"Muse",sidebar:{position:"left",display:"post"},fancybox:!0,motion:!0,duoshuo:{userId:0,author:"博主"}}</script><link rel="canonical" href="http://islocal.cc/arlo/98679d8a/"><title>Centos7下Rsync服务器搭建配置 | 南山居</title></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"><div class="container one-collumn sidebar-position-left page-post-detail"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">南山居</span> <span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle"></p></div><div class="site-nav-toggle"><button><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签</a></li><li class="menu-item menu-item-about"><a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul><div class="site-search"><div class="popup"><span class="search-icon fa fa-search"></span> <input type="text" id="local-search-input"><div id="local-search-result"></div><span class="popup-btn-close">close</span></div></div></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline">Centos7下Rsync服务器搭建配置</h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2017-07-04T09:49:48+08:00" content="2017-07-04">2017-07-04 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/常识/" itemprop="url" rel="index"><span itemprop="name">常识</span> </a></span></span>&nbsp; | &nbsp; <span class="page-pv">本文总阅读量 <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次</span></div></header><div class="post-body" itemprop="articleBody"><p>之前写了个<a href="http://islocal.cc/2017/06/16/windows-下使用expdp自动备份多用户oracle脚本">Windows下oracle多用户自动备份的脚本</a>，这个备份完数据还是存在服务器本地的，如果系统宕机的话，数据还是没有了，这样的备份是没有意义滴；所以我们需要把数据转移到其他的存储上，常用的方式是使用Rsync工具来保持同步数据，接下来我们搭建一个简单的Rsync服务器。<br><a id="more"></a></p><h1 id="安装部署rsync服务器"><a href="#安装部署rsync服务器" class="headerlink" title="安装部署rsync服务器"></a>安装部署rsync服务器</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@sftp_server ~]# yum -y install rsync</div><div class="line">[root@sftp_server ~]# mkdir -p /etc/rsyncd/</div><div class="line">[root@sftp_server ~]# touch /etc/rsyncd/rsyncd.conf</div><div class="line">[root@sftp_server ~]# ln -s /etc/rsyncd/rsyncd.conf /etc/rsyncd.conf</div></pre></td></tr></table></figure><h1 id="配置rsync服务器"><a href="#配置rsync服务器" class="headerlink" title="配置rsync服务器"></a>配置rsync服务器</h1><h2 id="主配置文件-etc-rsyncd-conf"><a href="#主配置文件-etc-rsyncd-conf" class="headerlink" title="主配置文件/etc/rsyncd.conf"></a>主配置文件/etc/rsyncd.conf</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">[root@sftp_server ~]# cat /etc/rsyncd.conf </div><div class="line">uid = root                         </div><div class="line">gid = root                                  </div><div class="line">use chroot = yes                             </div><div class="line">hosts allow=192.168.10.33/24</div><div class="line">hosts deny=*</div><div class="line">max connections=5</div><div class="line">pid file = /var/run/rsyncd.pid </div><div class="line">secrets file = /etc/rsyncd/rsyncd.secrets </div><div class="line">motd file = /etc/rsyncd/rsyncd.motd  </div><div class="line">log file = /var/log/rsync.log</div><div class="line">transfer logging = yes  </div><div class="line">log format = %t %a %m %f %b</div><div class="line">syslog facility = local3</div><div class="line">timeout = 300</div><div class="line"></div><div class="line"></div><div class="line">[db_backup]                               </div><div class="line">path = /data/backup/                       </div><div class="line">list=yes                                   </div><div class="line">read only = no    </div><div class="line">ignore errors                              </div><div class="line">auth users = rdatabase                          </div><div class="line">comment = Oracle Database Backup</div></pre></td></tr></table></figure><h2 id="密码验证文件-etc-rsyncd-rsyncd-secrets"><a href="#密码验证文件-etc-rsyncd-rsyncd-secrets" class="headerlink" title="密码验证文件/etc/rsyncd/rsyncd.secrets"></a>密码验证文件/etc/rsyncd/rsyncd.secrets</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@sftp_server ~]# cat /etc/rsyncd/rsyncd.secrets </div><div class="line">rdatabase:sss</div><div class="line">[root@sftp_server ~]# chown root.root /etc/rsyncd/rsyncd.secrets</div><div class="line">[root@sftp_server ~]# chmod 600 /etc/rsyncd/rsyncd.secrets</div></pre></td></tr></table></figure><h2 id="欢迎提示信息文件-etc-rsyncd-rsyncd-motd"><a href="#欢迎提示信息文件-etc-rsyncd-rsyncd-motd" class="headerlink" title="欢迎提示信息文件/etc/rsyncd/rsyncd.motd"></a>欢迎提示信息文件/etc/rsyncd/rsyncd.motd</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@sftp_server ~]# cat /etc/rsyncd/rsyncd.motd</div><div class="line">+++++++++++++++++++++++++++</div><div class="line">+ Oracle Database Backup! +</div><div class="line">+++++++++++++++++++++++++++</div></pre></td></tr></table></figure><h2 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@sftp_server ~]# systemctl start rsyncd.service</div><div class="line">[root@sftp_server ~]# systemctl enable rsyncd.service</div></pre></td></tr></table></figure><h2 id="防火墙配置"><a href="#防火墙配置" class="headerlink" title="防火墙配置"></a>防火墙配置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">firewall-cmd --zone=public --add-port=873/tcp --permanent</div><div class="line">firewall-cmd --zone=public --add-service=rsyncd --permanent</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure><h1 id="客户端配置"><a href="#客户端配置" class="headerlink" title="客户端配置"></a>客户端配置</h1><p>有几个细节地方需要主机</p><ol><li>rsync命令执行的时候，前边的是src(源)，后边的是dest(目标)</li><li>路径后有/只会同步目录下的内容，路径后没有/，会把当前目录（路径的最后一层）同步过去</li></ol><h2 id="linux客户端配置"><a href="#linux客户端配置" class="headerlink" title="linux客户端配置"></a>linux客户端配置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># yum install -y rsync</div><div class="line">[airmodel@silu ~]$ rsync -avzP /tmp/data/ rdatabase@192.168.6.23::db_backup  #把本机/tmp/data/目录下的内容同步到rsync服务器db_backup模块配置的目录中去，如果要将rsync服务器上内容同步至本机，路径位置换一下即可</div></pre></td></tr></table></figure><h2 id="windows-客户端配置"><a href="#windows-客户端配置" class="headerlink" title="windows 客户端配置"></a>windows 客户端配置</h2><ol><li>下载free版本的cwrsync软件 <a href="https://itefix.net/cwrsync" target="_blank" rel="external">https://itefix.net/cwrsync</a></li><li>在c盘根目录新建一个密码文件password.rsync，内容为sss（这里写的密码和rsync服务器上的要对应，只写密码，不需要用户名）</li><li>cwrsync不识别Windows路径，C盘需要写为/cygdrive/c，E盘需要写为/cygdrive/e</li><li>新建一个计划任务，实现自动化备份，操作可以参考以下示例<br>以下实例内容为：将本地E:\database_backup\目录下的内容同步至rsync服务的db_backup模块中定义的路径中去，密码文件为C:\password.rsync</li></ol><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">C:\cwRsync_5.5.0_x86_Free\bin\rsync.exe -azvP --password-file=/cygdrive/c/password.rsync /cygdrive/e/database_backup/ rdatabase@192.168.6.23::db_backup</div></pre></td></tr></table></figure><h1 id="更优方式"><a href="#更优方式" class="headerlink" title="更优方式"></a>更优方式</h1><p>linux下可以部署inotify+rsync，实现实时同步数据</p><hr></div><div></div><div><div style="padding:10px 0;margin:20px auto;width:90%;text-align:center"><div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div><button id="rewardButton" disable="enable" onclick='var qr=document.getElementById("QR");"none"===qr.style.display?qr.style.display="block":qr.style.display="none"'><span>赏</span></button><div id="QR" style="display:none"><div id="alipay" style="display:inline-block"><img id="alipay_qr" src="/images/01/alipay.jpg" alt="南山小樵 Alipay"><p>支付宝打赏</p></div></div></div></div><footer class="post-footer"><div class="post-tags"><a href="/tags/rsync/" rel="tag">#rsync</a> <a href="/tags/同步/" rel="tag">#同步</a> <a href="/tags/备份/" rel="tag">#备份</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/arlo/1e1aab57/" rel="next" title="Aansible palybook 创建lvm并自动挂载"><i class="fa fa-chevron-left"></i> Aansible palybook 创建lvm并自动挂载</a></div><div class="post-nav-prev post-nav-item"><a href="/arlo/e5fb788a/" rel="prev" title="Intel编译器(parallel_studio_xe)安装">Intel编译器(parallel_studio_xe)安装 <i class="fa fa-chevron-right"></i></a></div></div></footer></article><div class="post-spread"></div></div></div><div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div><script>var cloudTieConfig={url:document.location.href,sourceId:"���� page.path ����",productKey:"0df311b624f44726a84b2b6249d64c11",target:"cloud-tie-wrapper"}</script><script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">文章目录</li><li class="sidebar-nav-overview" data-target="site-overview">站点概览</li></ul><section class="site-overview sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/01/psir.jpg" alt="南山小樵"><p class="site-author-name" itemprop="name">南山小樵</p><p class="site-description motion-element" itemprop="description"></p></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives"><span class="site-state-item-count">69</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories"><span class="site-state-item-count">10</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags"><span class="site-state-item-count">70</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="links-of-author motion-element"></div></section><section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装部署rsync服务器"><span class="nav-number">1.</span> <span class="nav-text">安装部署rsync服务器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置rsync服务器"><span class="nav-number">2.</span> <span class="nav-text">配置rsync服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#主配置文件-etc-rsyncd-conf"><span class="nav-number">2.1.</span> <span class="nav-text">主配置文件/etc/rsyncd.conf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#密码验证文件-etc-rsyncd-rsyncd-secrets"><span class="nav-number">2.2.</span> <span class="nav-text">密码验证文件/etc/rsyncd/rsyncd.secrets</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#欢迎提示信息文件-etc-rsyncd-rsyncd-motd"><span class="nav-number">2.3.</span> <span class="nav-text">欢迎提示信息文件/etc/rsyncd/rsyncd.motd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动服务"><span class="nav-number">2.4.</span> <span class="nav-text">启动服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#防火墙配置"><span class="nav-number">2.5.</span> <span class="nav-text">防火墙配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#客户端配置"><span class="nav-number">3.</span> <span class="nav-text">客户端配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#linux客户端配置"><span class="nav-number">3.1.</span> <span class="nav-text">linux客户端配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#windows-客户端配置"><span class="nav-number">3.2.</span> <span class="nav-text">windows 客户端配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#更优方式"><span class="nav-number">4.</span> <span class="nav-text">更优方式</span></a></li></ol></div></div></section></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2016 - <span itemprop="copyrightYear">2018</span> <span class="with-love"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">南山小樵</span></div><div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div><div class="theme-info">主题 - <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a></div><div class="busuanzi-count"><script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span> <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span></div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i></div></div><script type="text/javascript">"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null)</script><script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script><script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script><script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script><script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script><script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script><script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script><script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script><script type="text/javascript">var isfetched=!1,search_path="search.xml";0==search_path.length&&(search_path="search.xml");var path="/"+search_path;function proceedsearch(){$("body").append('<div class="popoverlay">').css("overflow","hidden"),$(".popup").toggle()}var searchFunc=function(e,c,s){"use strict";$.ajax({url:e,dataType:"xml",async:!0,success:function(e){isfetched=!0,$(".popup").detach().appendTo(".header-inner");var t=$("entry",e).map(function(){return{title:$("title",this).text(),content:$("content",this).text(),url:$("url",this).text()}}).get(),a=document.getElementById(c),r=document.getElementById(s);a.addEventListener("input",function(){var u=0,d='<ul class="search-result-list">',f=this.value.trim().toLowerCase().split(/[\s\-]+/);r.innerHTML="",1<this.value.trim().length&&t.forEach(function(e){var a=!0,r=e.title.trim().toLowerCase(),c=e.content.trim().replace(/<[^>]+>/g,"").toLowerCase(),t=e.url,s=-1,n=-1,i=-1;if(""!=r&&""!=c&&f.forEach(function(e,t){s=r.indexOf(e),n=c.indexOf(e),s<0&&n<0?a=!1:(n<0&&(n=0),0==t&&(i=n))}),a){u+=1,d+="<li><a href='"+t+"' class='search-result-title'>"+r+"</a>";var o=e.content.trim().replace(/<[^>]+>/g,"");if(0<=i){var l=i-20,p=i+80;l<0&&(l=0),0==l&&(p=50),p>o.length&&(p=o.length);var h=o.substring(l,p);f.forEach(function(e){var t=new RegExp(e,"gi");h=h.replace(t,'<b class="search-keyword">'+e+"</b>")}),d+='<p class="search-result">'+h+"...</p>"}d+="</li>"}}),d+="</ul>",0==u&&(d='<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'),""==f&&(d='<div id="no-result"><i class="fa fa-search fa-5x" /></div>'),r.innerHTML=d}),proceedsearch()}})};$(".popup-trigger").click(function(e){e.stopPropagation(),0==isfetched?searchFunc(path,"local-search-input","local-search-result"):proceedsearch()}),$(".popup-btn-close").click(function(e){$(".popup").hide(),$(".popoverlay").remove(),$("body").css("overflow","")}),$(".popup").click(function(e){e.stopPropagation()})</script></body></html>
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="rsync,同步,备份," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="之前写了个Windows下oracle多用户自动备份的脚本，这个备份完数据还是存在服务器本地的，如果系统宕机的话，数据还是没有了，这样的备份是没有意义滴；所以我们需要把数据转移到其他的存储上，常用的方式是使用Rsync工具来保持同步数据，接下来我们搭建一个简单的Rsync服务器。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Centos7下Rsync服务器搭建配置">
+<meta property="og:url" content="http://islocal.cc/arlo/98679d8a/index.html">
+<meta property="og:site_name" content="南山居">
+<meta property="og:description" content="之前写了个Windows下oracle多用户自动备份的脚本，这个备份完数据还是存在服务器本地的，如果系统宕机的话，数据还是没有了，这样的备份是没有意义滴；所以我们需要把数据转移到其他的存储上，常用的方式是使用Rsync工具来保持同步数据，接下来我们搭建一个简单的Rsync服务器。">
+<meta property="og:updated_time" content="2018-03-15T07:17:45.887Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Centos7下Rsync服务器搭建配置">
+<meta name="twitter:description" content="之前写了个Windows下oracle多用户自动备份的脚本，这个备份完数据还是存在服务器本地的，如果系统宕机的话，数据还是没有了，这样的备份是没有意义滴；所以我们需要把数据转移到其他的存储上，常用的方式是使用Rsync工具来保持同步数据，接下来我们搭建一个简单的Rsync服务器。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://islocal.cc/arlo/98679d8a/"/>
+
+  <title> Centos7下Rsync服务器搭建配置 | 南山居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">南山居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Centos7下Rsync服务器搭建配置
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-04T09:49:48+08:00" content="2017-07-04">
+              2017-07-04
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/常识/" itemprop="url" rel="index">
+                    <span itemprop="name">常识</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">本文总阅读量
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>之前写了个<a href="http://islocal.cc/2017/06/16/windows-下使用expdp自动备份多用户oracle脚本">Windows下oracle多用户自动备份的脚本</a>，这个备份完数据还是存在服务器本地的，如果系统宕机的话，数据还是没有了，这样的备份是没有意义滴；所以我们需要把数据转移到其他的存储上，常用的方式是使用Rsync工具来保持同步数据，接下来我们搭建一个简单的Rsync服务器。<br><a id="more"></a></p>
+<h1 id="安装部署rsync服务器"><a href="#安装部署rsync服务器" class="headerlink" title="安装部署rsync服务器"></a>安装部署rsync服务器</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@sftp_server ~]# yum -y install rsync</div><div class="line">[root@sftp_server ~]# mkdir -p /etc/rsyncd/</div><div class="line">[root@sftp_server ~]# touch /etc/rsyncd/rsyncd.conf</div><div class="line">[root@sftp_server ~]# ln -s /etc/rsyncd/rsyncd.conf /etc/rsyncd.conf</div></pre></td></tr></table></figure>
+<h1 id="配置rsync服务器"><a href="#配置rsync服务器" class="headerlink" title="配置rsync服务器"></a>配置rsync服务器</h1><h2 id="主配置文件-etc-rsyncd-conf"><a href="#主配置文件-etc-rsyncd-conf" class="headerlink" title="主配置文件/etc/rsyncd.conf"></a>主配置文件/etc/rsyncd.conf</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">[root@sftp_server ~]# cat /etc/rsyncd.conf </div><div class="line">uid = root                         </div><div class="line">gid = root                                  </div><div class="line">use chroot = yes                             </div><div class="line">hosts allow=192.168.10.33/24</div><div class="line">hosts deny=*</div><div class="line">max connections=5</div><div class="line">pid file = /var/run/rsyncd.pid </div><div class="line">secrets file = /etc/rsyncd/rsyncd.secrets </div><div class="line">motd file = /etc/rsyncd/rsyncd.motd  </div><div class="line">log file = /var/log/rsync.log</div><div class="line">transfer logging = yes  </div><div class="line">log format = %t %a %m %f %b</div><div class="line">syslog facility = local3</div><div class="line">timeout = 300</div><div class="line"></div><div class="line"></div><div class="line">[db_backup]                               </div><div class="line">path = /data/backup/                       </div><div class="line">list=yes                                   </div><div class="line">read only = no    </div><div class="line">ignore errors                              </div><div class="line">auth users = rdatabase                          </div><div class="line">comment = Oracle Database Backup</div></pre></td></tr></table></figure>
+<h2 id="密码验证文件-etc-rsyncd-rsyncd-secrets"><a href="#密码验证文件-etc-rsyncd-rsyncd-secrets" class="headerlink" title="密码验证文件/etc/rsyncd/rsyncd.secrets"></a>密码验证文件/etc/rsyncd/rsyncd.secrets</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@sftp_server ~]# cat /etc/rsyncd/rsyncd.secrets </div><div class="line">rdatabase:sss</div><div class="line">[root@sftp_server ~]# chown root.root /etc/rsyncd/rsyncd.secrets</div><div class="line">[root@sftp_server ~]# chmod 600 /etc/rsyncd/rsyncd.secrets</div></pre></td></tr></table></figure>
+<h2 id="欢迎提示信息文件-etc-rsyncd-rsyncd-motd"><a href="#欢迎提示信息文件-etc-rsyncd-rsyncd-motd" class="headerlink" title="欢迎提示信息文件/etc/rsyncd/rsyncd.motd"></a>欢迎提示信息文件/etc/rsyncd/rsyncd.motd</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@sftp_server ~]# cat /etc/rsyncd/rsyncd.motd</div><div class="line">+++++++++++++++++++++++++++</div><div class="line">+ Oracle Database Backup! +</div><div class="line">+++++++++++++++++++++++++++</div></pre></td></tr></table></figure>
+<h2 id="启动服务"><a href="#启动服务" class="headerlink" title="启动服务"></a>启动服务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@sftp_server ~]# systemctl start rsyncd.service</div><div class="line">[root@sftp_server ~]# systemctl enable rsyncd.service</div></pre></td></tr></table></figure>
+<h2 id="防火墙配置"><a href="#防火墙配置" class="headerlink" title="防火墙配置"></a>防火墙配置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">firewall-cmd --zone=public --add-port=873/tcp --permanent</div><div class="line">firewall-cmd --zone=public --add-service=rsyncd --permanent</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
+<h1 id="客户端配置"><a href="#客户端配置" class="headerlink" title="客户端配置"></a>客户端配置</h1><p>有几个细节地方需要主机</p>
+<ol>
+<li>rsync命令执行的时候，前边的是src(源)，后边的是dest(目标)</li>
+<li>路径后有/只会同步目录下的内容，路径后没有/，会把当前目录（路径的最后一层）同步过去 </li>
+</ol>
+<h2 id="linux客户端配置"><a href="#linux客户端配置" class="headerlink" title="linux客户端配置"></a>linux客户端配置</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># yum install -y rsync</div><div class="line">[airmodel@silu ~]$ rsync -avzP /tmp/data/ rdatabase@192.168.6.23::db_backup  #把本机/tmp/data/目录下的内容同步到rsync服务器db_backup模块配置的目录中去，如果要将rsync服务器上内容同步至本机，路径位置换一下即可</div></pre></td></tr></table></figure>
+<h2 id="windows-客户端配置"><a href="#windows-客户端配置" class="headerlink" title="windows 客户端配置"></a>windows 客户端配置</h2><ol>
+<li>下载free版本的cwrsync软件 <a href="https://itefix.net/cwrsync" target="_blank" rel="external">https://itefix.net/cwrsync</a> </li>
+<li>在c盘根目录新建一个密码文件password.rsync，内容为sss（这里写的密码和rsync服务器上的要对应，只写密码，不需要用户名）</li>
+<li>cwrsync不识别Windows路径，C盘需要写为/cygdrive/c，E盘需要写为/cygdrive/e</li>
+<li>新建一个计划任务，实现自动化备份，操作可以参考以下示例<br>以下实例内容为：将本地E:\database_backup\目录下的内容同步至rsync服务的db_backup模块中定义的路径中去，密码文件为C:\password.rsync </li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">C:\cwRsync_5.5.0_x86_Free\bin\rsync.exe -azvP --password-file=/cygdrive/c/password.rsync /cygdrive/e/database_backup/ rdatabase@192.168.6.23::db_backup</div></pre></td></tr></table></figure>
+<h1 id="更优方式"><a href="#更优方式" class="headerlink" title="更优方式"></a>更优方式</h1><p>linux下可以部署inotify+rsync，实现实时同步数据</p>
+<hr>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/01/alipay.jpg" alt="南山小樵 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/rsync/" rel="tag">#rsync</a>
+          
+            <a href="/tags/同步/" rel="tag">#同步</a>
+          
+            <a href="/tags/备份/" rel="tag">#备份</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/arlo/1e1aab57/" rel="next" title="Aansible palybook 创建lvm并自动挂载">
+                <i class="fa fa-chevron-left"></i> Aansible palybook 创建lvm并自动挂载
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/arlo/e5fb788a/" rel="prev" title="Intel编译器(parallel_studio_xe)安装">
+                Intel编译器(parallel_studio_xe)安装 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: document.location.href, 
+    sourceId: "���� page.path ����",
+    productKey: "0df311b624f44726a84b2b6249d64c11",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/01/psir.jpg"
+               alt="南山小樵" />
+          <p class="site-author-name" itemprop="name">南山小樵</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">71</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">70</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装部署rsync服务器"><span class="nav-number">1.</span> <span class="nav-text">安装部署rsync服务器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置rsync服务器"><span class="nav-number">2.</span> <span class="nav-text">配置rsync服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#主配置文件-etc-rsyncd-conf"><span class="nav-number">2.1.</span> <span class="nav-text">主配置文件/etc/rsyncd.conf</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#密码验证文件-etc-rsyncd-rsyncd-secrets"><span class="nav-number">2.2.</span> <span class="nav-text">密码验证文件/etc/rsyncd/rsyncd.secrets</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#欢迎提示信息文件-etc-rsyncd-rsyncd-motd"><span class="nav-number">2.3.</span> <span class="nav-text">欢迎提示信息文件/etc/rsyncd/rsyncd.motd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动服务"><span class="nav-number">2.4.</span> <span class="nav-text">启动服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#防火墙配置"><span class="nav-number">2.5.</span> <span class="nav-text">防火墙配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#客户端配置"><span class="nav-number">3.</span> <span class="nav-text">客户端配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#linux客户端配置"><span class="nav-number">3.1.</span> <span class="nav-text">linux客户端配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#windows-客户端配置"><span class="nav-number">3.2.</span> <span class="nav-text">windows 客户端配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#更优方式"><span class="nav-number">4.</span> <span class="nav-text">更优方式</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南山小樵</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

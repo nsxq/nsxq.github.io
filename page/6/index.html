@@ -1,1 +1,1793 @@
-<!doctype html><html class="theme-next muse use-motion"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"><link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css"><link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css"><meta name="keywords" content="Hexo, NexT"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1"><meta property="og:type" content="website"><meta property="og:title" content="南山居"><meta property="og:url" content="http://islocal.cc/page/6/index.html"><meta property="og:site_name" content="南山居"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="南山居"><script type="text/javascript" id="hexo.configuration">var NexT=window.NexT||{},CONFIG={scheme:"Muse",sidebar:{position:"left",display:"post"},fancybox:!0,motion:!0,duoshuo:{userId:0,author:"博主"}}</script><link rel="canonical" href="http://islocal.cc/page/6/"><title>南山居 -</title></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"><div class="container one-collumn sidebar-position-left page-home"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">南山居</span> <span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle"></p></div><div class="site-nav-toggle"><button><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签</a></li><li class="menu-item menu-item-about"><a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul><div class="site-search"><div class="popup"><span class="search-icon fa fa-search"></span> <input type="text" id="local-search-input"><div id="local-search-result"></div><span class="popup-btn-close">close</span></div></div></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><section id="posts" class="posts-expand"><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/arlo/8ae03ce9/" itemprop="url">Centos 7下KVM 虚拟机搭建</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2017-05-03T12:32:26+08:00" content="2017-05-03">2017-05-03 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/虚拟化/" itemprop="url" rel="index"><span itemprop="name">虚拟化</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><p>KVM（Kernel-based Virtual Machine）是支持虚拟化扩展（Intel VT 或 AMD-V技术）x86硬件的Linux完全虚拟化解决方案。它包括了一个可加载的内核模块kvm.ko，提供了核心的虚拟化架构以及一个处理器特定模块（kvm-intel.ko或kvm-amd.ko）。<br>使用KVM，用户可以运行多个无需修改的Linux或Windows虚拟机。每个虚拟机有自己私有的虚拟硬件：网卡、磁盘、显卡等等。<br></p><div class="post-more-link text-center"><a class="btn" href="/arlo/8ae03ce9/#more" rel="contents">阅读全文 &raquo;</a></div></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/arlo/42b916ee/" itemprop="url">Tomcat多实例部署</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2017-05-02T13:59:00+08:00" content="2017-05-02">2017-05-02 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/服务器搭建/" itemprop="url" rel="index"><span itemprop="name">服务器搭建</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><p>同一个tomcat下部署多个项目，重启会影响到其他项目的正常运行，为了使各项目独立，一般会使用安装多个tomcat，这样很耗费系统资源；创建tomcat多实例，有效的解决这一问题；<br></p><div class="post-more-link text-center"><a class="btn" href="/arlo/42b916ee/#more" rel="contents">阅读全文 &raquo;</a></div></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/arlo/c0b31722/" itemprop="url">jenkins 持续集成环境搭建</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2017-04-27T14:04:11+08:00" content="2017-04-27">2017-04-27 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/自动化运维/" itemprop="url" rel="index"><span itemprop="name">自动化运维</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><h1 id="持续集成"><a href="#持续集成" class="headerlink" title="持续集成"></a>持续集成</h1><blockquote><p>持续集成（CI）是一种软件工程流程，将所有工程师对于软件的工作复本，每天集成数次到共用主线（mainline）上。</p></blockquote><h2 id="依赖以下原则达到目标"><a href="#依赖以下原则达到目标" class="headerlink" title="依赖以下原则达到目标"></a>依赖以下原则达到目标</h2><ul><li>维护一个代码库</li><li>自动建置</li><li>让建置时会自我测试</li><li>所有人每天至少提交一次</li><li>应该要建置每一个提交</li><li>让建置维持快速</li><li>用在线环境的复本测试</li><li>让获取最新发布版本更容易</li><li>任何人都可以查看最后建置的结果</li><li>自动部署</li></ul><h2 id="产生的效益"><a href="#产生的效益" class="headerlink" title="产生的效益"></a>产生的效益</h2><ul><li>及早发现集成错误且由于修订的内容较小所以易于追踪，这可以节省项目的时间与成本。</li><li>避免发布日期的前一分钟发生混乱，当每个人都会尝试为他们所造成的那一点点不兼容的版本做检查。</li><li>当单元测试失败或发生错误，若开发人员需要在不除错的情况下还原代码库到一个没有问题的状态，只需要放弃一小部分的更改 (因为集成的次数频繁)。</li><li>让 “最新” 的程序可保持可用的状态供测试、展示或发布用。</li><li>频繁的提交代码会促使开发人员创建模块化，低复杂性的代码。<div class="post-more-link text-center"><a class="btn" href="/arlo/c0b31722/#more" rel="contents">阅读全文 &raquo;</a></div></li></ul></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/arlo/bb0f7c70/" itemprop="url">使用 Cobbler 自动化和管理系统安装</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2017-04-20T21:45:06+08:00" content="2017-04-20">2017-04-20 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/自动化运维/" itemprop="url" rel="index"><span itemprop="name">自动化运维</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><p>Cobbler是一套快速搭建网络自动化安装操作系统的软件，个人感觉是PXE的升级版;提供cli和web两种管理方式，还提供API接口<br></p><div class="post-more-link text-center"><a class="btn" href="/arlo/bb0f7c70/#more" rel="contents">阅读全文 &raquo;</a></div></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/arlo/7943f5da/" itemprop="url">WRF模型学习（1）--安装篇</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2017-04-06T17:09:10+08:00" content="2017-04-06">2017-04-06 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/大气模型/" itemprop="url" rel="index"><span itemprop="name">大气模型</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><h1 id="WRF简介"><a href="#WRF简介" class="headerlink" title="WRF简介"></a>WRF简介</h1><p>WRF全称Weather Research and Forecasting Model, 是一个先进的大气建模系统，专为气象研究和数值天气预报而设计。它为大气过程提供了许多选项，可以在各种计算平台上运行。WRF在数千米到数千公里范围内的应用范围广泛，包括以下内容。</p><ul><li>气象研究</li><li>实时NWP</li><li>理想模拟</li><li>数据同化</li><li>地球系统模型耦合</li><li>示范训练和教育支持</li></ul><p>官方网站：<br><a href="http://www.wrf-model.org/index.php">http://www.wrf-model.org/index.php</a><br><a href="https://www2.ucar.edu/">https://www2.ucar.edu/</a><br><a href="https://zh.wikipedia.org/wiki/NetCDF">https://zh.wikipedia.org/wiki/NetCDF</a><br></p><div class="post-more-link text-center"><a class="btn" href="/arlo/7943f5da/#more" rel="contents">阅读全文 &raquo;</a></div></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/arlo/ef6f2f28/" itemprop="url">yum 安装epel扩展后报错</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2017-04-06T10:09:46+08:00" content="2017-04-06">2017-04-06 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/Troubleshooting/" itemprop="url" rel="index"><span itemprop="name">Troubleshooting</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><p>安装epel扩展后出现的几个问题<br></p><div class="post-more-link text-center"><a class="btn" href="/arlo/ef6f2f28/#more" rel="contents">阅读全文 &raquo;</a></div></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/arlo/undefined/" itemprop="url">MPICHI3 并行计算环境搭建</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2017-03-29T16:42:30+08:00" content="2017-03-29">2017-03-29 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/HPC/" itemprop="url" rel="index"><span itemprop="name">HPC</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><p>新工作接触到HPC高性能计算项目，最近看了一些HPC高性能计算的理论资料，今天搭建MPICHI 并行计算环境，算是开始HPC的学习之路吧！<br></p><div class="post-more-link text-center"><a class="btn" href="/arlo/undefined/#more" rel="contents">阅读全文 &raquo;</a></div></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/arlo/670d97dc/" itemprop="url">mailx 发送邮件小计</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2017-03-21T10:24:36+08:00" content="2017-03-21">2017-03-21 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/监控/" itemprop="url" rel="index"><span itemprop="name">监控</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><h1 id="安装postfix服务"><a href="#安装postfix服务" class="headerlink" title="安装postfix服务"></a>安装postfix服务</h1><p>yum install postfix<br>/etc/init.d/postfix start<br>chkconfig postfix on</p><h1 id="发送格式"><a href="#发送格式" class="headerlink" title="发送格式"></a>发送格式</h1><p>mailx -s subject user@xxx.com &lt; message_file<br>echo “内容” | mailx -s “邮件标题” user@xxx.com</p><h1 id="其他选项"><a href="#其他选项" class="headerlink" title="其他选项"></a>其他选项</h1><p>-r 指定发件人<br>-c 指定抄送人<br>-b 指定密送人<br>多个收件人使用逗号分隔<br>有些邮箱（如qq邮箱）会当成垃圾邮件拦截，日志中可以看到500错误<br></p><div class="post-more-link text-center"><a class="btn" href="/arlo/670d97dc/#more" rel="contents">阅读全文 &raquo;</a></div></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/arlo/da9b9fcb/" itemprop="url">SSH 奇淫技巧之隧道模式</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2017-01-16T09:02:06+08:00" content="2017-01-16">2017-01-16</time></span></div></header><div class="post-body" itemprop="articleBody"><p>用了ssh这么久，今天才知道ssh还有这么强大的功能，穿透内外网，来去自如；其实最重要的还是方便平时工作中的调试，在此简单的记录一下。</p><h1 id="使用条件"><a href="#使用条件" class="headerlink" title="使用条件"></a>使用条件</h1><p>一台拥有ssh端口连接的外网linux服务器</p><h1 id="本地转发"><a href="#本地转发" class="headerlink" title="本地转发"></a>本地转发</h1><p>场景：公网有一台服务器的公网ip，ssh端口(已修改为2012)没有对外开放，本地想直接连接此端口，可以通过公网一台开放ssh端口的服务器跳转过去<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -p 2012 -CNg -L 2222:namenode:2012 nsxq@1.2.3.4</div></pre></td></tr></table></figure><p></p><p>将namenode服务器的2012端口通过1.2.3.4服务器映射到本地2222端口 ssh -p 2222 localhost 即可连接<br>-p 指定跳转机端口<br>—L 本地转发</p><h1 id="远程转发"><a href="#远程转发" class="headerlink" title="远程转发"></a>远程转发</h1><p>场景：本地开发环境需要被外网访问，之前一直使用花生壳，ngrok之类的程序；现在只需要本地执行一条ssh命令，将本地的端口映射到一台外网的服务器上去<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -p 2012 -CNfg -R 0.0.0.0:8888:192.168.1.5:80 nsxq@1.2.3.4</div></pre></td></tr></table></figure><p></p><p>将本地内网192.168.1.5:80 映射到1.2.3.4服务器的8888端口，访问1.2.3.4:8888 即可访问192.168.1.5:80 内容</p><p><font color="#FF0000"><strong>打开1.2.3.4服务器需要sshd_config 配置中的GatewayPorts yes</strong></font><br>记得顺手打开防火墙端口<br>-p 指定跳转机端口<br>-R 远程转发</p><h1 id="动态转发"><a href="#动态转发" class="headerlink" title="动态转发"></a>动态转发</h1><p>场景：相对于上边两种单一端口转发，此功能就是在本地启动一个端口，其他机器可以设置代理，通过此端口进行流量转发（俗称翻墙）。<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -D 5000 nsxq@1.2.3.4</div></pre></td></tr></table></figure><p></p><p>我这里没有能上google的服务器，没法测试，按道理来说，其他机器就可以将代理设置为1.2.3.4:5000 进行商上网了</p><h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[实战ssh端口转发]<a href="http://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/" target="_blank" rel="external">http://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/</a><br>[SSH的三种端口转发（Port forwarding）/ 隧道协议概要]<a href="https://blog.twofei.com/528/" target="_blank" rel="external">https://blog.twofei.com/528/</a></p></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/arlo/8fb14fc6/" itemprop="url">给下拉菜单和鼠标右键截图</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-12-09T10:23:40+08:00" content="2016-12-09">2016-12-09</time></span></div></header><div class="post-body" itemprop="articleBody"><h1 id="调用常用的QQ软件截图"><a href="#调用常用的QQ软件截图" class="headerlink" title="调用常用的QQ软件截图"></a>调用常用的QQ软件截图</h1><p><strong>1. 登陆qq</strong><br><strong>2. 同时按住Crtl+Alt+Shift</strong><br><strong>3. 松开Shift，其他两个手指不用松开</strong><br><strong>4. 按住A</strong><br><strong>5. 截图</strong></p></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article></section><nav class="pagination"><a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a></nav></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><section class="site-overview sidebar-panel sidebar-panel-active"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/01/psir.jpg" alt="南山小樵"><p class="site-author-name" itemprop="name">南山小樵</p><p class="site-description motion-element" itemprop="description"></p></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives"><span class="site-state-item-count">69</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories"><span class="site-state-item-count">10</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags"><span class="site-state-item-count">70</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="links-of-author motion-element"></div></section></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2016 - <span itemprop="copyrightYear">2018</span> <span class="with-love"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">南山小樵</span></div><div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div><div class="theme-info">主题 - <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a></div><div class="busuanzi-count"><script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span> <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span></div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i></div></div><script type="text/javascript">"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null)</script><script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script><script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script><script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script><script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script><script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script><script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script><script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script><script type="text/javascript">var isfetched=!1,search_path="search.xml";0==search_path.length&&(search_path="search.xml");var path="/"+search_path;function proceedsearch(){$("body").append('<div class="popoverlay">').css("overflow","hidden"),$(".popup").toggle()}var searchFunc=function(e,c,s){"use strict";$.ajax({url:e,dataType:"xml",async:!0,success:function(e){isfetched=!0,$(".popup").detach().appendTo(".header-inner");var t=$("entry",e).map(function(){return{title:$("title",this).text(),content:$("content",this).text(),url:$("url",this).text()}}).get(),a=document.getElementById(c),r=document.getElementById(s);a.addEventListener("input",function(){var u=0,d='<ul class="search-result-list">',f=this.value.trim().toLowerCase().split(/[\s\-]+/);r.innerHTML="",1<this.value.trim().length&&t.forEach(function(e){var a=!0,r=e.title.trim().toLowerCase(),c=e.content.trim().replace(/<[^>]+>/g,"").toLowerCase(),t=e.url,s=-1,n=-1,i=-1;if(""!=r&&""!=c&&f.forEach(function(e,t){s=r.indexOf(e),n=c.indexOf(e),s<0&&n<0?a=!1:(n<0&&(n=0),0==t&&(i=n))}),a){u+=1,d+="<li><a href='"+t+"' class='search-result-title'>"+r+"</a>";var o=e.content.trim().replace(/<[^>]+>/g,"");if(0<=i){var l=i-20,p=i+80;l<0&&(l=0),0==l&&(p=50),p>o.length&&(p=o.length);var h=o.substring(l,p);f.forEach(function(e){var t=new RegExp(e,"gi");h=h.replace(t,'<b class="search-keyword">'+e+"</b>")}),d+='<p class="search-result">'+h+"...</p>"}d+="</li>"}}),d+="</ul>",0==u&&(d='<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'),""==f&&(d='<div id="no-result"><i class="fa fa-search fa-5x" /></div>'),r.innerHTML=d}),proceedsearch()}})};$(".popup-trigger").click(function(e){e.stopPropagation(),0==isfetched?searchFunc(path,"local-search-input","local-search-result"):proceedsearch()}),$(".popup-btn-close").click(function(e){$(".popup").hide(),$(".popoverlay").remove(),$("body").css("overflow","")}),$(".popup").click(function(e){e.stopPropagation()})</script></body></html>
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="南山居">
+<meta property="og:url" content="http://islocal.cc/page/6/index.html">
+<meta property="og:site_name" content="南山居">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="南山居">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://islocal.cc/page/6/"/>
+
+  <title> 南山居 -  </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left 
+   page-home 
+ ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">南山居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/9f698189/" itemprop="url">
+                  Oracle入门
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-12T15:51:16+08:00" content="2017-05-12">
+              2017-05-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>服务、监听<br>启动oracle服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">su - oracle</div><div class="line">sqlplus /nolog</div><div class="line">sql&gt; conn /as sysdba</div><div class="line">sql&gt; startup</div><div class="line">sql&gt; exit</div></pre></td></tr></table></figure></p>
+<p>启动监听服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">lsnrctl start</div></pre></td></tr></table></figure></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/arlo/9f698189/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/8af01e65/" itemprop="url">
+                  ecFlow安装小记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-05T22:42:56+08:00" content="2017-05-05">
+              2017-05-05
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/大气模型/" itemprop="url" rel="index">
+                    <span itemprop="name">大气模型</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在数值天气预报系统中有大量的计算机任务，这些任务之间又存在错综复杂的关系，如何管理和维护大量的复杂的任务成为一个难题，ecFlow正是为解决这一问题而诞生的。ecFlow是为欧洲中期天气预报中心（ECMWF）制作的产品，作为气象应用软件项目的一部分，用于工作流的管理和监控。<br>它具有如下功能：</p>
+<ul>
+<li>提供基于文本的任务定义语言以及python接口对计算机任务进行定义 </li>
+<li>可以设定任务间的依赖关系，并在依赖关系满足时触发任务 </li>
+<li>提供任务出错时的容错机制  </li>
+<li>提供图形化的界面实时查看任务运行状况以及报错信息，用不同颜色来表示任务的运行状态，还可以根据需要自定义显示任务运行的进度。  </li>
+</ul>
+<p>ecFlow是基于客户端/服务端的模式工作的，即先启动一个ecFlow的服务端，计算机任务作为客户端，客户端任务在运行过程中将自己的状态发送到服务端，服务端根据收到的信息更新作业状态。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/arlo/8af01e65/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/8ae03ce9/" itemprop="url">
+                  Centos 7下KVM 虚拟机搭建
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-03T12:32:26+08:00" content="2017-05-03">
+              2017-05-03
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/虚拟化/" itemprop="url" rel="index">
+                    <span itemprop="name">虚拟化</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>KVM（Kernel-based Virtual Machine）是支持虚拟化扩展（Intel VT 或 AMD-V技术）x86硬件的Linux完全虚拟化解决方案。它包括了一个可加载的内核模块kvm.ko，提供了核心的虚拟化架构以及一个处理器特定模块（kvm-intel.ko或kvm-amd.ko）。<br>使用KVM，用户可以运行多个无需修改的Linux或Windows虚拟机。每个虚拟机有自己私有的虚拟硬件：网卡、磁盘、显卡等等。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/arlo/8ae03ce9/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/42b916ee/" itemprop="url">
+                  Tomcat多实例部署
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-02T13:59:00+08:00" content="2017-05-02">
+              2017-05-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/服务器搭建/" itemprop="url" rel="index">
+                    <span itemprop="name">服务器搭建</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>同一个tomcat下部署多个项目，重启会影响到其他项目的正常运行，为了使各项目独立，一般会使用安装多个tomcat，这样很耗费系统资源；创建tomcat多实例，有效的解决这一问题；<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/arlo/42b916ee/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/c0b31722/" itemprop="url">
+                  jenkins 持续集成环境搭建
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-04-27T14:04:11+08:00" content="2017-04-27">
+              2017-04-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/自动化运维/" itemprop="url" rel="index">
+                    <span itemprop="name">自动化运维</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="持续集成"><a href="#持续集成" class="headerlink" title="持续集成"></a>持续集成</h1><blockquote>
+<p> 持续集成（CI）是一种软件工程流程，将所有工程师对于软件的工作复本，每天集成数次到共用主线（mainline）上。</p>
+</blockquote>
+<h2 id="依赖以下原则达到目标"><a href="#依赖以下原则达到目标" class="headerlink" title="依赖以下原则达到目标"></a>依赖以下原则达到目标</h2><ul>
+<li>维护一个代码库</li>
+<li>自动建置</li>
+<li>让建置时会自我测试</li>
+<li>所有人每天至少提交一次</li>
+<li>应该要建置每一个提交</li>
+<li>让建置维持快速</li>
+<li>用在线环境的复本测试</li>
+<li>让获取最新发布版本更容易</li>
+<li>任何人都可以查看最后建置的结果</li>
+<li>自动部署</li>
+</ul>
+<h2 id="产生的效益"><a href="#产生的效益" class="headerlink" title="产生的效益"></a>产生的效益</h2><ul>
+<li>及早发现集成错误且由于修订的内容较小所以易于追踪，这可以节省项目的时间与成本。</li>
+<li>避免发布日期的前一分钟发生混乱，当每个人都会尝试为他们所造成的那一点点不兼容的版本做检查。</li>
+<li>当单元测试失败或发生错误，若开发人员需要在不除错的情况下还原代码库到一个没有问题的状态，只需要放弃一小部分的更改 (因为集成的次数频繁)。</li>
+<li>让 “最新” 的程序可保持可用的状态供测试、展示或发布用。</li>
+<li>频繁的提交代码会促使开发人员创建模块化，低复杂性的代码。
+          <div class="post-more-link text-center">
+            <a class="btn" href="/arlo/c0b31722/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/bb0f7c70/" itemprop="url">
+                  使用 Cobbler 自动化和管理系统安装
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-04-20T21:45:06+08:00" content="2017-04-20">
+              2017-04-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/自动化运维/" itemprop="url" rel="index">
+                    <span itemprop="name">自动化运维</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Cobbler是一套快速搭建网络自动化安装操作系统的软件，个人感觉是PXE的升级版;提供cli和web两种管理方式，还提供API接口<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/arlo/bb0f7c70/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/7943f5da/" itemprop="url">
+                  WRF模型学习（1）--安装篇
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-04-06T17:09:10+08:00" content="2017-04-06">
+              2017-04-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/大气模型/" itemprop="url" rel="index">
+                    <span itemprop="name">大气模型</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="WRF简介"><a href="#WRF简介" class="headerlink" title="WRF简介"></a>WRF简介</h1><p>WRF全称Weather Research and Forecasting Model, 是一个先进的大气建模系统，专为气象研究和数值天气预报而设计。它为大气过程提供了许多选项，可以在各种计算平台上运行。WRF在数千米到数千公里范围内的应用范围广泛，包括以下内容。</p>
+<ul>
+<li>气象研究</li>
+<li>实时NWP </li>
+<li>理想模拟</li>
+<li>数据同化</li>
+<li>地球系统模型耦合</li>
+<li>示范训练和教育支持</li>
+</ul>
+<p>官方网站：<br><a href="http://www.wrf-model.org/index.php">http://www.wrf-model.org/index.php</a><br><a href="https://www2.ucar.edu/">https://www2.ucar.edu/</a><br><a href="https://zh.wikipedia.org/wiki/NetCDF">https://zh.wikipedia.org/wiki/NetCDF</a><br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/arlo/7943f5da/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/ef6f2f28/" itemprop="url">
+                  yum 安装epel扩展后报错
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-04-06T10:09:46+08:00" content="2017-04-06">
+              2017-04-06
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Troubleshooting/" itemprop="url" rel="index">
+                    <span itemprop="name">Troubleshooting</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>安装epel扩展后出现的几个问题<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/arlo/ef6f2f28/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/undefined/" itemprop="url">
+                  MPICHI3 并行计算环境搭建
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-29T16:42:30+08:00" content="2017-03-29">
+              2017-03-29
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/HPC/" itemprop="url" rel="index">
+                    <span itemprop="name">HPC</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>新工作接触到HPC高性能计算项目，最近看了一些HPC高性能计算的理论资料，今天搭建MPICHI 并行计算环境，算是开始HPC的学习之路吧！<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/arlo/undefined/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/670d97dc/" itemprop="url">
+                  mailx 发送邮件小计
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-21T10:24:36+08:00" content="2017-03-21">
+              2017-03-21
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/监控/" itemprop="url" rel="index">
+                    <span itemprop="name">监控</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="安装postfix服务"><a href="#安装postfix服务" class="headerlink" title="安装postfix服务"></a>安装postfix服务</h1><p>yum install postfix<br>/etc/init.d/postfix start<br>chkconfig postfix on</p>
+<h1 id="发送格式"><a href="#发送格式" class="headerlink" title="发送格式"></a>发送格式</h1><p>mailx -s subject user@xxx.com &lt; message_file<br>echo “内容” | mailx -s “邮件标题” user@xxx.com</p>
+<h1 id="其他选项"><a href="#其他选项" class="headerlink" title="其他选项"></a>其他选项</h1><p>-r 指定发件人<br>-c 指定抄送人<br>-b 指定密送人<br>多个收件人使用逗号分隔<br>有些邮箱（如qq邮箱）会当成垃圾邮件拦截，日志中可以看到500错误<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/arlo/670d97dc/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/5/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><span class="page-number current">6</span><a class="page-number" href="/page/7/">7</a><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/7/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+
+          
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/01/psir.jpg"
+               alt="南山小樵" />
+          <p class="site-author-name" itemprop="name">南山小樵</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">71</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">70</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南山小樵</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

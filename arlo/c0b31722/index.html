@@ -1,1 +1,930 @@
-<!doctype html><html class="theme-next muse use-motion"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"><link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css"><link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css"><meta name="keywords" content="自动化,运维,Jenkins,"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1"><meta name="description" content="持续集成持续集成（CI）是一种软件工程流程，将所有工程师对于软件的工作复本，每天集成数次到共用主线（mainline）上。依赖以下原则达到目标维护一个代码库自动建置让建置时会自我测试所有人每天至少提交一次应该要建置每一个提交让建置维持快速用在线环境的复本测试让获取最新发布版本更容易任何人都可以查看最后建置的结果自动部署产生的效益及早发现集成错误且由于修订的内容较小所以易于追踪，这可以节省项目的时间"><meta property="og:type" content="article"><meta property="og:title" content="jenkins 持续集成环境搭建"><meta property="og:url" content="http://islocal.cc/arlo/c0b31722/index.html"><meta property="og:site_name" content="南山居"><meta property="og:description" content="持续集成持续集成（CI）是一种软件工程流程，将所有工程师对于软件的工作复本，每天集成数次到共用主线（mainline）上。依赖以下原则达到目标维护一个代码库自动建置让建置时会自我测试所有人每天至少提交一次应该要建置每一个提交让建置维持快速用在线环境的复本测试让获取最新发布版本更容易任何人都可以查看最后建置的结果自动部署产生的效益及早发现集成错误且由于修订的内容较小所以易于追踪，这可以节省项目的时间"><meta property="og:image" content="http://islocal.cc/images/2017/0427/00.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/01.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/02.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/03.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/04.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/05.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/06.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/07.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/08.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/09.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/10.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/11.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/12.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/14.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/15.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/16.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/17.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/18.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/19.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/20.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/21.png"><meta property="og:image" content="http://islocal.cc/images/2017/0427/22.png"><meta property="og:updated_time" content="2018-03-15T07:17:45.893Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="jenkins 持续集成环境搭建"><meta name="twitter:description" content="持续集成持续集成（CI）是一种软件工程流程，将所有工程师对于软件的工作复本，每天集成数次到共用主线（mainline）上。依赖以下原则达到目标维护一个代码库自动建置让建置时会自我测试所有人每天至少提交一次应该要建置每一个提交让建置维持快速用在线环境的复本测试让获取最新发布版本更容易任何人都可以查看最后建置的结果自动部署产生的效益及早发现集成错误且由于修订的内容较小所以易于追踪，这可以节省项目的时间"><meta name="twitter:image" content="http://islocal.cc/images/2017/0427/00.png"><script type="text/javascript" id="hexo.configuration">var NexT=window.NexT||{},CONFIG={scheme:"Muse",sidebar:{position:"left",display:"post"},fancybox:!0,motion:!0,duoshuo:{userId:0,author:"博主"}}</script><link rel="canonical" href="http://islocal.cc/arlo/c0b31722/"><title>jenkins 持续集成环境搭建 | 南山居</title></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"><div class="container one-collumn sidebar-position-left page-post-detail"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">南山居</span> <span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle"></p></div><div class="site-nav-toggle"><button><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签</a></li><li class="menu-item menu-item-about"><a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul><div class="site-search"><div class="popup"><span class="search-icon fa fa-search"></span> <input type="text" id="local-search-input"><div id="local-search-result"></div><span class="popup-btn-close">close</span></div></div></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline">jenkins 持续集成环境搭建</h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2017-04-27T14:04:11+08:00" content="2017-04-27">2017-04-27 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/自动化运维/" itemprop="url" rel="index"><span itemprop="name">自动化运维</span> </a></span></span>&nbsp; | &nbsp; <span class="page-pv">本文总阅读量 <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次</span></div></header><div class="post-body" itemprop="articleBody"><h1 id="持续集成"><a href="#持续集成" class="headerlink" title="持续集成"></a>持续集成</h1><blockquote><p>持续集成（CI）是一种软件工程流程，将所有工程师对于软件的工作复本，每天集成数次到共用主线（mainline）上。</p></blockquote><h2 id="依赖以下原则达到目标"><a href="#依赖以下原则达到目标" class="headerlink" title="依赖以下原则达到目标"></a>依赖以下原则达到目标</h2><ul><li>维护一个代码库</li><li>自动建置</li><li>让建置时会自我测试</li><li>所有人每天至少提交一次</li><li>应该要建置每一个提交</li><li>让建置维持快速</li><li>用在线环境的复本测试</li><li>让获取最新发布版本更容易</li><li>任何人都可以查看最后建置的结果</li><li>自动部署</li></ul><h2 id="产生的效益"><a href="#产生的效益" class="headerlink" title="产生的效益"></a>产生的效益</h2><ul><li>及早发现集成错误且由于修订的内容较小所以易于追踪，这可以节省项目的时间与成本。</li><li>避免发布日期的前一分钟发生混乱，当每个人都会尝试为他们所造成的那一点点不兼容的版本做检查。</li><li>当单元测试失败或发生错误，若开发人员需要在不除错的情况下还原代码库到一个没有问题的状态，只需要放弃一小部分的更改 (因为集成的次数频繁)。</li><li>让 “最新” 的程序可保持可用的状态供测试、展示或发布用。</li><li>频繁的提交代码会促使开发人员创建模块化，低复杂性的代码。<a id="more"></a> Jenkins是一个用Java编写的开源的持续集成工具，前身是Hudson (软件)项目，有丰富的插件支持；</li></ul><h1 id="Jenkins安装"><a href="#Jenkins安装" class="headerlink" title="Jenkins安装"></a>Jenkins安装</h1><h2 id="安装jdk"><a href="#安装jdk" class="headerlink" title="安装jdk"></a>安装jdk</h2><p>jdk下载地址： <a href="http://www.oracle.com/technetwork/java/archive-139210.html" target="_blank" rel="external">http://www.oracle.com/technetwork/java/archive-139210.html</a><br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tar xf jdk-8u112-linux-x64.tar.gz -C /usr/local/</div></pre></td></tr></table></figure><p></p><p>配置jdk环境变量<br>vim /etc/profile<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">export JAVA_HOME=/usr/local/jdk1.8.0_112</div><div class="line">export CLASSPATH=.:$JAVA_HOME/lib/:$JAVA_HOME/jre/lib/</div><div class="line">export PATH=$JAVA_HOME/bin:$PATH</div></pre></td></tr></table></figure><p></p><h2 id="安装jenkins"><a href="#安装jenkins" class="headerlink" title="安装jenkins"></a>安装jenkins</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo</div><div class="line">rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key</div><div class="line">yum install jenkins</div></pre></td></tr></table></figure><p>添加java路径到jenkins启动脚本中<br>vim /etc/init.d/jenkins<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/jdk1.8.0_112/bin/java</div></pre></td></tr></table></figure><p></p><p><img src="/images/2017/0427/00.png" alt="jenkins"><br>修改jenkins默认时区<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">vim /etc/sysconfig/jenkins</div><div class="line">JENKINS_JAVA_OPTIONS=&quot;-Djava.awt.headless=true -Dorg.apache.commons.jelly.tags.fmt.timeZone=Asia/Shanghai&quot;</div></pre></td></tr></table></figure><p></p><h2 id="启动jenkins"><a href="#启动jenkins" class="headerlink" title="启动jenkins"></a>启动jenkins</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/etc/init.d/jenkins start</div><div class="line">chkconfig --level 35 jenkins on</div></pre></td></tr></table></figure><p>访问路径 <a href="http://192.168.6.102:8080" target="_blank" rel="external">http://192.168.6.102:8080</a><br>默认密码存在这个文件中 /var/lib/jenkins/secrets/initialAdminPassword<br><img src="/images/2017/0427/01.png" alt="jenkins"><br>创建一个管理用户<br><img src="/images/2017/0427/02.png" alt="jenkins"><br><img src="/images/2017/0427/03.png" alt="jenkins"></p><h1 id="Jenkins-配置"><a href="#Jenkins-配置" class="headerlink" title="Jenkins 配置"></a>Jenkins 配置</h1><h2 id="全局工具配置"><a href="#全局工具配置" class="headerlink" title="全局工具配置"></a>全局工具配置</h2><p>点击系统配置-Global Tool Configuration<br><img src="/images/2017/0427/04.png" alt="jenkins"><br>针对项目中使用的jdk和maven情况添加对应的版本<br><img src="/images/2017/0427/05.png" alt="jenkins"></p><h2 id="插件安装配置"><a href="#插件安装配置" class="headerlink" title="插件安装配置"></a>插件安装配置</h2><p>点击系统配置-插件管理<br><img src="/images/2017/0427/06.png" alt="jenkins"></p><ul><li>可选插件直接安装<br>右上角的过滤功能很好用，可以直接搜索安装<br>安装以下插件<br>Hudson SCP publisher plugin<br>Deploy to container Plugin<br>Maven Integration plugin<br>Publish Over SSH<br>Publish Over CIFS<br>Backup plugin / ThinBackup<br>Email Ext Recipients Column Plugin</li><li>高级选项中上传插件安装<br><a href="http://mirrors.jenkins-ci.org/plugins/" target="_blank" rel="external">http://mirrors.jenkins-ci.org/plugins/</a><br>安装完插件之后，建议重启一下jenkins，防止插件未加载上，不生效；</li></ul><h1 id="发布一个静态网站"><a href="#发布一个静态网站" class="headerlink" title="发布一个静态网站"></a>发布一个静态网站</h1><h2 id="配置Hudson-SCP-publisher-plugin插件"><a href="#配置Hudson-SCP-publisher-plugin插件" class="headerlink" title="配置Hudson SCP publisher plugin插件"></a>配置Hudson SCP publisher plugin插件</h2><p>此插件用于发布静态网站，拷贝文件很方便<br><img src="/images/2017/0427/07.png" alt="jenkins"><br>配置需要发布的服务器hostname，端口，路径，用户名，密码（如果是正式环境，不建议使用root用户）</p><blockquote><p>ps:这里有个小技巧，如果这台机器上有多个静态网站目录的话，可以在服务器设置多个hosts记录，这里使用主机名来分区不同的路径</p></blockquote><h2 id="新建一个软件项目test"><a href="#新建一个软件项目test" class="headerlink" title="新建一个软件项目test"></a>新建一个软件项目test</h2><p><img src="/images/2017/0427/08.png" alt="jenkins"><br>源码管理：<br>填写svn路径<br>有获取代码权限的用户名密码<br><img src="/images/2017/0427/09.png" alt="jenkins"><br>构建后操作：<br>选择需要scp的路径<br>Source ** 表示所有<br>Keep Hierarchy 保持目录结构（否则不能拷贝文件夹）<br><img src="/images/2017/0427/10.png" alt="jenkins"><br>点击立即构建<br><img src="/images/2017/0427/11.png" alt="jenkins"><br>通过 Console Output可以看到详细日志<br><img src="/images/2017/0427/12.png" alt="jenkins"><br>至此，一个静态网站就发布完成了！</p><h1 id="发布一个java后台工程"><a href="#发布一个java后台工程" class="headerlink" title="发布一个java后台工程"></a>发布一个java后台工程</h1><h2 id="安装Deploy-to-container-Plugin插件"><a href="#安装Deploy-to-container-Plugin插件" class="headerlink" title="安装Deploy to container Plugin插件"></a>安装Deploy to container Plugin插件</h2><p>此插件可以将war/ear 包发布到tomcat，glassfish，jetty，weblogic等中间件上</p><h2 id="配置tomcat-web管理"><a href="#配置tomcat-web管理" class="headerlink" title="配置tomcat web管理"></a>配置tomcat web管理</h2><p>vim /usr/local/apache-tomcat-7.0.77/conf/tomcat-users.xml<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;role rolename=&quot;tomcat&quot;/&gt;</div><div class="line">&lt;role rolename=&quot;role1&quot;/&gt;</div><div class="line">&lt;role rolename=&quot;manager-gui&quot;/&gt;</div><div class="line">&lt;role rolename=&quot;manager-gui,manager-script,manager-jmx,manager-status&quot;/&gt;</div><div class="line">&lt;user username=&quot;tomcat&quot; password=&quot;tomcat&quot; roles=&quot;manager-gui&quot;/&gt;</div><div class="line">&lt;user username=&quot;admin&quot; password=&quot;admin&quot; roles=&quot;manager-gui,manager-script,manager-jmx,manager-status&quot;/&gt;</div></pre></td></tr></table></figure><p></p><p>由于jenkins把8080端口占用，我这里修改tomcat端口为8081<br>vim /usr/local/apache-tomcat-7.0.77/conf/server.xml<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;Connector port=&quot;8081&quot; protocol=&quot;HTTP/1.1&quot;</div></pre></td></tr></table></figure><p></p><h2 id="一个简单的maven工程代码"><a href="#一个简单的maven工程代码" class="headerlink" title="一个简单的maven工程代码"></a>一个简单的maven工程代码</h2><p><a href="https://github.com/nsxq/hello-world-war" target="_blank" rel="external">https://github.com/nsxq/hello-world-war</a></p><h2 id="maven-的简单使用"><a href="#maven-的简单使用" class="headerlink" title="maven 的简单使用"></a>maven 的简单使用</h2><p>查看版本<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn -version</div></pre></td></tr></table></figure><p></p><p>查看详细信息<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn X</div></pre></td></tr></table></figure><p></p><p>测试<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn test</div></pre></td></tr></table></figure><p></p><p>清理（target目录下的编译内容）<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn clean</div></pre></td></tr></table></figure><p></p><p>编译项目<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn compile</div></pre></td></tr></table></figure><p></p><p>打包发布<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn package</div></pre></td></tr></table></figure><p></p><p>生成eclipse项目文件<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn eclipse:eclipse</div></pre></td></tr></table></figure><p></p><p>产生site<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn site</div></pre></td></tr></table></figure><p></p><p>安装当前工程的jar安装到本地仓库<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn install</div></pre></td></tr></table></figure><p></p><p>安装jar包到本地仓库<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=10.2.0.4.0 -Dpackaging=jar -Dfile=/usr/local/src/ojdbc14-10.2.0.4.0.jar</div></pre></td></tr></table></figure><p></p><p>分析项目的依赖信息<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn dependency:analyze / mvn dependency:tree</div></pre></td></tr></table></figure><p></p><h2 id="新建一个maven工程"><a href="#新建一个maven工程" class="headerlink" title="新建一个maven工程"></a>新建一个maven工程</h2><p>获取代码<br><img src="/images/2017/0427/14.png" alt="jenkins"><br>编译参数<br><img src="/images/2017/0427/15.png" alt="jenkins"><br>构建后发布<br><img src="/images/2017/0427/16.png" alt="jenkins"><br>点击立即构建<br>查看日志，已经发布完成了<br><img src="/images/2017/0427/17.png" alt="jenkins"><br>访问项目<br><a href="http://192.168.6.102:8081/hello" target="_blank" rel="external">http://192.168.6.102:8081/hello</a><br><img src="/images/2017/0427/18.png" alt="jenkins"><br>至此，一个maven工程已经实现自动化编译、打包、发布！</p><h1 id="版本回退"><a href="#版本回退" class="headerlink" title="版本回退"></a>版本回退</h1><p>有时候发布一个新版本失败或发布有问题，我们需要回滚到指定版本的构建，这样才能更灵活的进行项目的构建部署。我们可以选择“参数化的构建过程”进行传递不同的参数来选择是进行新的构建还是退</p><h2 id="对文件进行存档"><a href="#对文件进行存档" class="headerlink" title="对文件进行存档"></a>对文件进行存档</h2><p>为了能够进行版本回退，构建完成的需要对文件进行存档<br><img src="/images/2017/0427/19.png" alt="jenkins"></p><h2 id="使用参数化构建过程"><a href="#使用参数化构建过程" class="headerlink" title="使用参数化构建过程"></a>使用参数化构建过程</h2><p>让后面的脚步可以根据不同的变量执行不同的操作。添加“Choice”参数配置不同的选项，让选择发布还是回滚，添加“String Parameter”参数来传递要回退的版本号。<br><img src="/images/2017/0427/20.png" alt="jenkins"></p><h2 id="构建选择“Execute-Shell”的方式"><a href="#构建选择“Execute-Shell”的方式" class="headerlink" title="构建选择“Execute Shell”的方式"></a>构建选择“Execute Shell”的方式</h2><p>自己根据变量，自定义构建的脚本，此时如果是发布安装maven的构建过程进行新的构建，如果是回滚，知道历史构建后的文件，复制到当前构建结果目录。<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">case $deploy_env in</div><div class="line">	deploy)</div><div class="line">    	echo &quot;deploy:$deploy_env&quot;</div><div class="line">        mvn clean test compile install package</div><div class="line">        ;;</div><div class="line">    rollback)</div><div class="line">    	echo &quot;rollback:$deploy_env&quot;</div><div class="line">        echo &quot;version: $version&quot;</div><div class="line">        rm -fr target/hello-1.war</div><div class="line">        cp -R $&#123;JENKINS_HOME&#125;/jobs/myapp/builds/$&#123;version&#125;/com.efsavage\$hello/archive/com.efsavage/hello/1/hello-1.war .</div><div class="line">        pwd &amp;&amp; ls</div><div class="line">        ;;</div><div class="line">	*)</div><div class="line">    exit</div><div class="line">    	;;</div><div class="line">esac</div></pre></td></tr></table></figure><p></p><h2 id="执行回退操作"><a href="#执行回退操作" class="headerlink" title="执行回退操作"></a>执行回退操作</h2><p>点击构建，根据不同的参数选择发布还是版本回退，回退的时候填写要回退到的历史版本号<br><img src="/images/2017/0427/21.png" alt="jenkins"><br><img src="/images/2017/0427/22.png" alt="jenkins"></p><p>PS: Tomcat8配置web管理后，Tomcat访问 manager页面 报403的解决办法：<a href="https://blog.52itstyle.com/archives/274/" target="_blank" rel="external">https://blog.52itstyle.com/archives/274/</a></p></div><div></div><div><div style="padding:10px 0;margin:20px auto;width:90%;text-align:center"><div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div><button id="rewardButton" disable="enable" onclick='var qr=document.getElementById("QR");"none"===qr.style.display?qr.style.display="block":qr.style.display="none"'><span>赏</span></button><div id="QR" style="display:none"><div id="alipay" style="display:inline-block"><img id="alipay_qr" src="/images/01/alipay.jpg" alt="南山小樵 Alipay"><p>支付宝打赏</p></div></div></div></div><footer class="post-footer"><div class="post-tags"><a href="/tags/自动化/" rel="tag">#自动化</a> <a href="/tags/运维/" rel="tag">#运维</a> <a href="/tags/Jenkins/" rel="tag">#Jenkins</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/arlo/bb0f7c70/" rel="next" title="使用 Cobbler 自动化和管理系统安装"><i class="fa fa-chevron-left"></i> 使用 Cobbler 自动化和管理系统安装</a></div><div class="post-nav-prev post-nav-item"><a href="/arlo/42b916ee/" rel="prev" title="Tomcat多实例部署">Tomcat多实例部署 <i class="fa fa-chevron-right"></i></a></div></div></footer></article><div class="post-spread"></div></div></div><div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div><script>var cloudTieConfig={url:document.location.href,sourceId:"���� page.path ����",productKey:"0df311b624f44726a84b2b6249d64c11",target:"cloud-tie-wrapper"}</script><script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">文章目录</li><li class="sidebar-nav-overview" data-target="site-overview">站点概览</li></ul><section class="site-overview sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/01/psir.jpg" alt="南山小樵"><p class="site-author-name" itemprop="name">南山小樵</p><p class="site-description motion-element" itemprop="description"></p></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives"><span class="site-state-item-count">69</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories"><span class="site-state-item-count">10</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags"><span class="site-state-item-count">70</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="links-of-author motion-element"></div></section><section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#持续集成"><span class="nav-number">1.</span> <span class="nav-text">持续集成</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#依赖以下原则达到目标"><span class="nav-number">1.1.</span> <span class="nav-text">依赖以下原则达到目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#产生的效益"><span class="nav-number">1.2.</span> <span class="nav-text">产生的效益</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Jenkins安装"><span class="nav-number">2.</span> <span class="nav-text">Jenkins安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装jdk"><span class="nav-number">2.1.</span> <span class="nav-text">安装jdk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装jenkins"><span class="nav-number">2.2.</span> <span class="nav-text">安装jenkins</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动jenkins"><span class="nav-number">2.3.</span> <span class="nav-text">启动jenkins</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Jenkins-配置"><span class="nav-number">3.</span> <span class="nav-text">Jenkins 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#全局工具配置"><span class="nav-number">3.1.</span> <span class="nav-text">全局工具配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插件安装配置"><span class="nav-number">3.2.</span> <span class="nav-text">插件安装配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#发布一个静态网站"><span class="nav-number">4.</span> <span class="nav-text">发布一个静态网站</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Hudson-SCP-publisher-plugin插件"><span class="nav-number">4.1.</span> <span class="nav-text">配置Hudson SCP publisher plugin插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建一个软件项目test"><span class="nav-number">4.2.</span> <span class="nav-text">新建一个软件项目test</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#发布一个java后台工程"><span class="nav-number">5.</span> <span class="nav-text">发布一个java后台工程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Deploy-to-container-Plugin插件"><span class="nav-number">5.1.</span> <span class="nav-text">安装Deploy to container Plugin插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置tomcat-web管理"><span class="nav-number">5.2.</span> <span class="nav-text">配置tomcat web管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一个简单的maven工程代码"><span class="nav-number">5.3.</span> <span class="nav-text">一个简单的maven工程代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#maven-的简单使用"><span class="nav-number">5.4.</span> <span class="nav-text">maven 的简单使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建一个maven工程"><span class="nav-number">5.5.</span> <span class="nav-text">新建一个maven工程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#版本回退"><span class="nav-number">6.</span> <span class="nav-text">版本回退</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对文件进行存档"><span class="nav-number">6.1.</span> <span class="nav-text">对文件进行存档</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用参数化构建过程"><span class="nav-number">6.2.</span> <span class="nav-text">使用参数化构建过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建选择“Execute-Shell”的方式"><span class="nav-number">6.3.</span> <span class="nav-text">构建选择“Execute Shell”的方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行回退操作"><span class="nav-number">6.4.</span> <span class="nav-text">执行回退操作</span></a></li></ol></li></ol></div></div></section></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2016 - <span itemprop="copyrightYear">2018</span> <span class="with-love"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">南山小樵</span></div><div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div><div class="theme-info">主题 - <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a></div><div class="busuanzi-count"><script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span> <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span></div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i></div></div><script type="text/javascript">"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null)</script><script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script><script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script><script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script><script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script><script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script><script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script><script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script><script type="text/javascript">var isfetched=!1,search_path="search.xml";0==search_path.length&&(search_path="search.xml");var path="/"+search_path;function proceedsearch(){$("body").append('<div class="popoverlay">').css("overflow","hidden"),$(".popup").toggle()}var searchFunc=function(e,c,s){"use strict";$.ajax({url:e,dataType:"xml",async:!0,success:function(e){isfetched=!0,$(".popup").detach().appendTo(".header-inner");var t=$("entry",e).map(function(){return{title:$("title",this).text(),content:$("content",this).text(),url:$("url",this).text()}}).get(),a=document.getElementById(c),r=document.getElementById(s);a.addEventListener("input",function(){var u=0,d='<ul class="search-result-list">',f=this.value.trim().toLowerCase().split(/[\s\-]+/);r.innerHTML="",1<this.value.trim().length&&t.forEach(function(e){var a=!0,r=e.title.trim().toLowerCase(),c=e.content.trim().replace(/<[^>]+>/g,"").toLowerCase(),t=e.url,s=-1,n=-1,i=-1;if(""!=r&&""!=c&&f.forEach(function(e,t){s=r.indexOf(e),n=c.indexOf(e),s<0&&n<0?a=!1:(n<0&&(n=0),0==t&&(i=n))}),a){u+=1,d+="<li><a href='"+t+"' class='search-result-title'>"+r+"</a>";var o=e.content.trim().replace(/<[^>]+>/g,"");if(0<=i){var l=i-20,p=i+80;l<0&&(l=0),0==l&&(p=50),p>o.length&&(p=o.length);var h=o.substring(l,p);f.forEach(function(e){var t=new RegExp(e,"gi");h=h.replace(t,'<b class="search-keyword">'+e+"</b>")}),d+='<p class="search-result">'+h+"...</p>"}d+="</li>"}}),d+="</ul>",0==u&&(d='<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'),""==f&&(d='<div id="no-result"><i class="fa fa-search fa-5x" /></div>'),r.innerHTML=d}),proceedsearch()}})};$(".popup-trigger").click(function(e){e.stopPropagation(),0==isfetched?searchFunc(path,"local-search-input","local-search-result"):proceedsearch()}),$(".popup-btn-close").click(function(e){$(".popup").hide(),$(".popoverlay").remove(),$("body").css("overflow","")}),$(".popup").click(function(e){e.stopPropagation()})</script></body></html>
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="运维,自动化,Jenkins," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="持续集成
+ 持续集成（CI）是一种软件工程流程，将所有工程师对于软件的工作复本，每天集成数次到共用主线（mainline）上。
+
+依赖以下原则达到目标
+维护一个代码库
+自动建置
+让建置时会自我测试
+所有人每天至少提交一次
+应该要建置每一个提交
+让建置维持快速
+用在线环境的复本测试
+让获取最新发布版本更容易
+任何人都可以查看最后建置的结果
+自动部署
+
+产生的效益
+及早发现集成错误且由于修订的内容较小">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jenkins 持续集成环境搭建">
+<meta property="og:url" content="http://islocal.cc/arlo/c0b31722/index.html">
+<meta property="og:site_name" content="南山居">
+<meta property="og:description" content="持续集成
+ 持续集成（CI）是一种软件工程流程，将所有工程师对于软件的工作复本，每天集成数次到共用主线（mainline）上。
+
+依赖以下原则达到目标
+维护一个代码库
+自动建置
+让建置时会自我测试
+所有人每天至少提交一次
+应该要建置每一个提交
+让建置维持快速
+用在线环境的复本测试
+让获取最新发布版本更容易
+任何人都可以查看最后建置的结果
+自动部署
+
+产生的效益
+及早发现集成错误且由于修订的内容较小">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/00.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/01.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/02.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/03.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/04.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/05.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/06.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/07.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/08.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/09.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/10.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/11.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/12.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/14.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/15.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/16.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/17.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/18.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/19.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/20.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/21.png">
+<meta property="og:image" content="http://islocal.cc/images/2017/0427/22.png">
+<meta property="og:updated_time" content="2018-03-15T07:17:45.893Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jenkins 持续集成环境搭建">
+<meta name="twitter:description" content="持续集成
+ 持续集成（CI）是一种软件工程流程，将所有工程师对于软件的工作复本，每天集成数次到共用主线（mainline）上。
+
+依赖以下原则达到目标
+维护一个代码库
+自动建置
+让建置时会自我测试
+所有人每天至少提交一次
+应该要建置每一个提交
+让建置维持快速
+用在线环境的复本测试
+让获取最新发布版本更容易
+任何人都可以查看最后建置的结果
+自动部署
+
+产生的效益
+及早发现集成错误且由于修订的内容较小">
+<meta name="twitter:image" content="http://islocal.cc/images/2017/0427/00.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://islocal.cc/arlo/c0b31722/"/>
+
+  <title> jenkins 持续集成环境搭建 | 南山居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">南山居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                jenkins 持续集成环境搭建
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-04-27T14:04:11+08:00" content="2017-04-27">
+              2017-04-27
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/自动化运维/" itemprop="url" rel="index">
+                    <span itemprop="name">自动化运维</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">本文总阅读量
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="持续集成"><a href="#持续集成" class="headerlink" title="持续集成"></a>持续集成</h1><blockquote>
+<p> 持续集成（CI）是一种软件工程流程，将所有工程师对于软件的工作复本，每天集成数次到共用主线（mainline）上。</p>
+</blockquote>
+<h2 id="依赖以下原则达到目标"><a href="#依赖以下原则达到目标" class="headerlink" title="依赖以下原则达到目标"></a>依赖以下原则达到目标</h2><ul>
+<li>维护一个代码库</li>
+<li>自动建置</li>
+<li>让建置时会自我测试</li>
+<li>所有人每天至少提交一次</li>
+<li>应该要建置每一个提交</li>
+<li>让建置维持快速</li>
+<li>用在线环境的复本测试</li>
+<li>让获取最新发布版本更容易</li>
+<li>任何人都可以查看最后建置的结果</li>
+<li>自动部署</li>
+</ul>
+<h2 id="产生的效益"><a href="#产生的效益" class="headerlink" title="产生的效益"></a>产生的效益</h2><ul>
+<li>及早发现集成错误且由于修订的内容较小所以易于追踪，这可以节省项目的时间与成本。</li>
+<li>避免发布日期的前一分钟发生混乱，当每个人都会尝试为他们所造成的那一点点不兼容的版本做检查。</li>
+<li>当单元测试失败或发生错误，若开发人员需要在不除错的情况下还原代码库到一个没有问题的状态，只需要放弃一小部分的更改 (因为集成的次数频繁)。</li>
+<li>让 “最新” 的程序可保持可用的状态供测试、展示或发布用。</li>
+<li>频繁的提交代码会促使开发人员创建模块化，低复杂性的代码。<a id="more"></a>
+Jenkins是一个用Java编写的开源的持续集成工具，前身是Hudson (软件)项目，有丰富的插件支持；</li>
+</ul>
+<h1 id="Jenkins安装"><a href="#Jenkins安装" class="headerlink" title="Jenkins安装"></a>Jenkins安装</h1><h2 id="安装jdk"><a href="#安装jdk" class="headerlink" title="安装jdk"></a>安装jdk</h2><p>jdk下载地址： <a href="http://www.oracle.com/technetwork/java/archive-139210.html" target="_blank" rel="external">http://www.oracle.com/technetwork/java/archive-139210.html</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">tar xf jdk-8u112-linux-x64.tar.gz -C /usr/local/</div></pre></td></tr></table></figure></p>
+<p>配置jdk环境变量<br>vim /etc/profile<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">export JAVA_HOME=/usr/local/jdk1.8.0_112</div><div class="line">export CLASSPATH=.:$JAVA_HOME/lib/:$JAVA_HOME/jre/lib/</div><div class="line">export PATH=$JAVA_HOME/bin:$PATH</div></pre></td></tr></table></figure></p>
+<h2 id="安装jenkins"><a href="#安装jenkins" class="headerlink" title="安装jenkins"></a>安装jenkins</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo</div><div class="line">rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key</div><div class="line">yum install jenkins</div></pre></td></tr></table></figure>
+<p>添加java路径到jenkins启动脚本中<br>vim /etc/init.d/jenkins<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/usr/local/jdk1.8.0_112/bin/java</div></pre></td></tr></table></figure></p>
+<p><img src="/images/2017/0427/00.png" alt="jenkins"><br>修改jenkins默认时区<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">vim /etc/sysconfig/jenkins</div><div class="line">JENKINS_JAVA_OPTIONS=&quot;-Djava.awt.headless=true -Dorg.apache.commons.jelly.tags.fmt.timeZone=Asia/Shanghai&quot;</div></pre></td></tr></table></figure></p>
+<h2 id="启动jenkins"><a href="#启动jenkins" class="headerlink" title="启动jenkins"></a>启动jenkins</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/etc/init.d/jenkins start</div><div class="line">chkconfig --level 35 jenkins on</div></pre></td></tr></table></figure>
+<p>访问路径 <a href="http://192.168.6.102:8080" target="_blank" rel="external">http://192.168.6.102:8080</a><br>默认密码存在这个文件中 /var/lib/jenkins/secrets/initialAdminPassword<br><img src="/images/2017/0427/01.png" alt="jenkins"><br>创建一个管理用户<br><img src="/images/2017/0427/02.png" alt="jenkins"><br><img src="/images/2017/0427/03.png" alt="jenkins"></p>
+<h1 id="Jenkins-配置"><a href="#Jenkins-配置" class="headerlink" title="Jenkins 配置"></a>Jenkins 配置</h1><h2 id="全局工具配置"><a href="#全局工具配置" class="headerlink" title="全局工具配置"></a>全局工具配置</h2><p>点击系统配置-Global Tool Configuration<br><img src="/images/2017/0427/04.png" alt="jenkins"><br>针对项目中使用的jdk和maven情况添加对应的版本<br><img src="/images/2017/0427/05.png" alt="jenkins"></p>
+<h2 id="插件安装配置"><a href="#插件安装配置" class="headerlink" title="插件安装配置"></a>插件安装配置</h2><p>点击系统配置-插件管理<br><img src="/images/2017/0427/06.png" alt="jenkins"></p>
+<ul>
+<li>可选插件直接安装<br>右上角的过滤功能很好用，可以直接搜索安装<br>安装以下插件<br>Hudson SCP publisher plugin<br>Deploy to container Plugin<br>Maven Integration plugin<br>Publish Over SSH<br>Publish Over CIFS<br>Backup plugin / ThinBackup<br>Email Ext Recipients Column Plugin</li>
+<li>高级选项中上传插件安装<br><a href="http://mirrors.jenkins-ci.org/plugins/" target="_blank" rel="external">http://mirrors.jenkins-ci.org/plugins/</a><br>安装完插件之后，建议重启一下jenkins，防止插件未加载上，不生效；</li>
+</ul>
+<h1 id="发布一个静态网站"><a href="#发布一个静态网站" class="headerlink" title="发布一个静态网站"></a>发布一个静态网站</h1><h2 id="配置Hudson-SCP-publisher-plugin插件"><a href="#配置Hudson-SCP-publisher-plugin插件" class="headerlink" title="配置Hudson SCP publisher plugin插件"></a>配置Hudson SCP publisher plugin插件</h2><p>此插件用于发布静态网站，拷贝文件很方便<br><img src="/images/2017/0427/07.png" alt="jenkins"><br>配置需要发布的服务器hostname，端口，路径，用户名，密码（如果是正式环境，不建议使用root用户）</p>
+<blockquote>
+<p>ps:这里有个小技巧，如果这台机器上有多个静态网站目录的话，可以在服务器设置多个hosts记录，这里使用主机名来分区不同的路径</p>
+</blockquote>
+<h2 id="新建一个软件项目test"><a href="#新建一个软件项目test" class="headerlink" title="新建一个软件项目test"></a>新建一个软件项目test</h2><p><img src="/images/2017/0427/08.png" alt="jenkins"><br>源码管理：<br>填写svn路径<br>有获取代码权限的用户名密码<br><img src="/images/2017/0427/09.png" alt="jenkins"><br>构建后操作：<br>选择需要scp的路径<br>Source ** 表示所有<br>Keep Hierarchy  保持目录结构（否则不能拷贝文件夹）<br><img src="/images/2017/0427/10.png" alt="jenkins"><br>点击立即构建<br><img src="/images/2017/0427/11.png" alt="jenkins"><br>通过 Console Output可以看到详细日志<br><img src="/images/2017/0427/12.png" alt="jenkins"><br>至此，一个静态网站就发布完成了！</p>
+<h1 id="发布一个java后台工程"><a href="#发布一个java后台工程" class="headerlink" title="发布一个java后台工程"></a>发布一个java后台工程</h1><h2 id="安装Deploy-to-container-Plugin插件"><a href="#安装Deploy-to-container-Plugin插件" class="headerlink" title="安装Deploy to container Plugin插件"></a>安装Deploy to container Plugin插件</h2><p>此插件可以将war/ear 包发布到tomcat，glassfish，jetty，weblogic等中间件上</p>
+<h2 id="配置tomcat-web管理"><a href="#配置tomcat-web管理" class="headerlink" title="配置tomcat web管理"></a>配置tomcat web管理</h2><p>vim /usr/local/apache-tomcat-7.0.77/conf/tomcat-users.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">&lt;role rolename=&quot;tomcat&quot;/&gt;</div><div class="line">&lt;role rolename=&quot;role1&quot;/&gt;</div><div class="line">&lt;role rolename=&quot;manager-gui&quot;/&gt;</div><div class="line">&lt;role rolename=&quot;manager-gui,manager-script,manager-jmx,manager-status&quot;/&gt;</div><div class="line">&lt;user username=&quot;tomcat&quot; password=&quot;tomcat&quot; roles=&quot;manager-gui&quot;/&gt;</div><div class="line">&lt;user username=&quot;admin&quot; password=&quot;admin&quot; roles=&quot;manager-gui,manager-script,manager-jmx,manager-status&quot;/&gt;</div></pre></td></tr></table></figure></p>
+<p>由于jenkins把8080端口占用，我这里修改tomcat端口为8081<br>vim /usr/local/apache-tomcat-7.0.77/conf/server.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">&lt;Connector port=&quot;8081&quot; protocol=&quot;HTTP/1.1&quot;</div></pre></td></tr></table></figure></p>
+<h2 id="一个简单的maven工程代码"><a href="#一个简单的maven工程代码" class="headerlink" title="一个简单的maven工程代码"></a>一个简单的maven工程代码</h2><p><a href="https://github.com/nsxq/hello-world-war" target="_blank" rel="external">https://github.com/nsxq/hello-world-war</a></p>
+<h2 id="maven-的简单使用"><a href="#maven-的简单使用" class="headerlink" title="maven 的简单使用"></a>maven 的简单使用</h2><p>查看版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn -version</div></pre></td></tr></table></figure></p>
+<p>查看详细信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn X</div></pre></td></tr></table></figure></p>
+<p>测试<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn test</div></pre></td></tr></table></figure></p>
+<p>清理（target目录下的编译内容）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn clean</div></pre></td></tr></table></figure></p>
+<p>编译项目<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn compile</div></pre></td></tr></table></figure></p>
+<p>打包发布<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn package</div></pre></td></tr></table></figure></p>
+<p>生成eclipse项目文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn eclipse:eclipse</div></pre></td></tr></table></figure></p>
+<p>产生site<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn site</div></pre></td></tr></table></figure></p>
+<p>安装当前工程的jar安装到本地仓库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn install</div></pre></td></tr></table></figure></p>
+<p>安装jar包到本地仓库<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn install:install-file -DgroupId=com.oracle -DartifactId=ojdbc14 -Dversion=10.2.0.4.0 -Dpackaging=jar -Dfile=/usr/local/src/ojdbc14-10.2.0.4.0.jar</div></pre></td></tr></table></figure></p>
+<p>分析项目的依赖信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mvn dependency:analyze / mvn dependency:tree</div></pre></td></tr></table></figure></p>
+<h2 id="新建一个maven工程"><a href="#新建一个maven工程" class="headerlink" title="新建一个maven工程"></a>新建一个maven工程</h2><p>获取代码<br><img src="/images/2017/0427/14.png" alt="jenkins"><br>编译参数<br><img src="/images/2017/0427/15.png" alt="jenkins"><br>构建后发布<br><img src="/images/2017/0427/16.png" alt="jenkins"><br>点击立即构建<br>查看日志，已经发布完成了<br><img src="/images/2017/0427/17.png" alt="jenkins"><br>访问项目<br><a href="http://192.168.6.102:8081/hello" target="_blank" rel="external">http://192.168.6.102:8081/hello</a><br><img src="/images/2017/0427/18.png" alt="jenkins"><br>至此，一个maven工程已经实现自动化编译、打包、发布！</p>
+<h1 id="版本回退"><a href="#版本回退" class="headerlink" title="版本回退"></a>版本回退</h1><p>有时候发布一个新版本失败或发布有问题，我们需要回滚到指定版本的构建，这样才能更灵活的进行项目的构建部署。我们可以选择“参数化的构建过程”进行传递不同的参数来选择是进行新的构建还是退</p>
+<h2 id="对文件进行存档"><a href="#对文件进行存档" class="headerlink" title="对文件进行存档"></a>对文件进行存档</h2><p>为了能够进行版本回退，构建完成的需要对文件进行存档<br><img src="/images/2017/0427/19.png" alt="jenkins"></p>
+<h2 id="使用参数化构建过程"><a href="#使用参数化构建过程" class="headerlink" title="使用参数化构建过程"></a>使用参数化构建过程</h2><p>让后面的脚步可以根据不同的变量执行不同的操作。添加“Choice”参数配置不同的选项，让选择发布还是回滚，添加“String Parameter”参数来传递要回退的版本号。<br><img src="/images/2017/0427/20.png" alt="jenkins"></p>
+<h2 id="构建选择“Execute-Shell”的方式"><a href="#构建选择“Execute-Shell”的方式" class="headerlink" title="构建选择“Execute Shell”的方式"></a>构建选择“Execute Shell”的方式</h2><p>自己根据变量，自定义构建的脚本，此时如果是发布安装maven的构建过程进行新的构建，如果是回滚，知道历史构建后的文件，复制到当前构建结果目录。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">case $deploy_env in</div><div class="line">	deploy)</div><div class="line">    	echo &quot;deploy:$deploy_env&quot;</div><div class="line">        mvn clean test compile install package</div><div class="line">        ;;</div><div class="line">    rollback)</div><div class="line">    	echo &quot;rollback:$deploy_env&quot;</div><div class="line">        echo &quot;version: $version&quot;</div><div class="line">        rm -fr target/hello-1.war</div><div class="line">        cp -R $&#123;JENKINS_HOME&#125;/jobs/myapp/builds/$&#123;version&#125;/com.efsavage\$hello/archive/com.efsavage/hello/1/hello-1.war .</div><div class="line">        pwd &amp;&amp; ls</div><div class="line">        ;;</div><div class="line">	*)</div><div class="line">    exit</div><div class="line">    	;;</div><div class="line">esac</div></pre></td></tr></table></figure></p>
+<h2 id="执行回退操作"><a href="#执行回退操作" class="headerlink" title="执行回退操作"></a>执行回退操作</h2><p>点击构建，根据不同的参数选择发布还是版本回退，回退的时候填写要回退到的历史版本号<br><img src="/images/2017/0427/21.png" alt="jenkins"><br><img src="/images/2017/0427/22.png" alt="jenkins"></p>
+<p>PS: Tomcat8配置web管理后，Tomcat访问 manager页面 报403的解决办法：<a href="https://blog.52itstyle.com/archives/274/" target="_blank" rel="external">https://blog.52itstyle.com/archives/274/</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/01/alipay.jpg" alt="南山小樵 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/运维/" rel="tag">#运维</a>
+          
+            <a href="/tags/自动化/" rel="tag">#自动化</a>
+          
+            <a href="/tags/Jenkins/" rel="tag">#Jenkins</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/arlo/bb0f7c70/" rel="next" title="使用 Cobbler 自动化和管理系统安装">
+                <i class="fa fa-chevron-left"></i> 使用 Cobbler 自动化和管理系统安装
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/arlo/42b916ee/" rel="prev" title="Tomcat多实例部署">
+                Tomcat多实例部署 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: document.location.href, 
+    sourceId: "���� page.path ����",
+    productKey: "0df311b624f44726a84b2b6249d64c11",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/01/psir.jpg"
+               alt="南山小樵" />
+          <p class="site-author-name" itemprop="name">南山小樵</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">71</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">70</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#持续集成"><span class="nav-number">1.</span> <span class="nav-text">持续集成</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#依赖以下原则达到目标"><span class="nav-number">1.1.</span> <span class="nav-text">依赖以下原则达到目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#产生的效益"><span class="nav-number">1.2.</span> <span class="nav-text">产生的效益</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Jenkins安装"><span class="nav-number">2.</span> <span class="nav-text">Jenkins安装</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装jdk"><span class="nav-number">2.1.</span> <span class="nav-text">安装jdk</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装jenkins"><span class="nav-number">2.2.</span> <span class="nav-text">安装jenkins</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动jenkins"><span class="nav-number">2.3.</span> <span class="nav-text">启动jenkins</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Jenkins-配置"><span class="nav-number">3.</span> <span class="nav-text">Jenkins 配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#全局工具配置"><span class="nav-number">3.1.</span> <span class="nav-text">全局工具配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插件安装配置"><span class="nav-number">3.2.</span> <span class="nav-text">插件安装配置</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#发布一个静态网站"><span class="nav-number">4.</span> <span class="nav-text">发布一个静态网站</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Hudson-SCP-publisher-plugin插件"><span class="nav-number">4.1.</span> <span class="nav-text">配置Hudson SCP publisher plugin插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建一个软件项目test"><span class="nav-number">4.2.</span> <span class="nav-text">新建一个软件项目test</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#发布一个java后台工程"><span class="nav-number">5.</span> <span class="nav-text">发布一个java后台工程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Deploy-to-container-Plugin插件"><span class="nav-number">5.1.</span> <span class="nav-text">安装Deploy to container Plugin插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置tomcat-web管理"><span class="nav-number">5.2.</span> <span class="nav-text">配置tomcat web管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一个简单的maven工程代码"><span class="nav-number">5.3.</span> <span class="nav-text">一个简单的maven工程代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#maven-的简单使用"><span class="nav-number">5.4.</span> <span class="nav-text">maven 的简单使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建一个maven工程"><span class="nav-number">5.5.</span> <span class="nav-text">新建一个maven工程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#版本回退"><span class="nav-number">6.</span> <span class="nav-text">版本回退</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#对文件进行存档"><span class="nav-number">6.1.</span> <span class="nav-text">对文件进行存档</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用参数化构建过程"><span class="nav-number">6.2.</span> <span class="nav-text">使用参数化构建过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建选择“Execute-Shell”的方式"><span class="nav-number">6.3.</span> <span class="nav-text">构建选择“Execute Shell”的方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#执行回退操作"><span class="nav-number">6.4.</span> <span class="nav-text">执行回退操作</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南山小樵</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

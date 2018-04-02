@@ -1,1 +1,1727 @@
-<!doctype html><html class="theme-next muse use-motion"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"><link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css"><link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css"><meta name="keywords" content="Hexo, NexT"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1"><meta property="og:type" content="website"><meta property="og:title" content="南山居"><meta property="og:url" content="http://islocal.cc/page/7/index.html"><meta property="og:site_name" content="南山居"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="南山居"><script type="text/javascript" id="hexo.configuration">var NexT=window.NexT||{},CONFIG={scheme:"Muse",sidebar:{position:"left",display:"post"},fancybox:!0,motion:!0,duoshuo:{userId:0,author:"博主"}}</script><link rel="canonical" href="http://islocal.cc/page/7/"><title>南山居 -</title></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"><div class="container one-collumn sidebar-position-left page-home"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">南山居</span> <span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle"></p></div><div class="site-nav-toggle"><button><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签</a></li><li class="menu-item menu-item-about"><a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul><div class="site-search"><div class="popup"><span class="search-icon fa fa-search"></span> <input type="text" id="local-search-input"><div id="local-search-result"></div><span class="popup-btn-close">close</span></div></div></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><section id="posts" class="posts-expand"><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/arlo/42c94ca5/" itemprop="url">使用阿里云Docker镜像库加速</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-11-02T09:25:40+08:00" content="2016-11-02">2016-11-02 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/DevOps/" itemprop="url" rel="index"><span itemprop="name">DevOps</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><h1 id="开发者账号"><a href="#开发者账号" class="headerlink" title="开发者账号"></a>开发者账号</h1><p>由于docker官方的镜像下载太慢了，于是开通了阿里云的开发者账号；<br><strong>申请开发者账号</strong><br><a href="http://console.d.aliyun.com/join.htm?spm=0.0.0.0.Xx1dX0#/docker/booster" target="_blank" rel="external">http://console.d.aliyun.com/join.htm?spm=0.0.0.0.Xx1dX0#/docker/booster</a><br><strong>本人的专属加速器地址</strong><br><a href="https://4c2kkvb9.mirror.aliyuncs.com" target="_blank" rel="external">https://4c2kkvb9.mirror.aliyuncs.com</a><br><strong>阿里云docker镜像搜索地址：</strong><br><a href="https://cr.console.aliyun.com/#/imageSearch" target="_blank" rel="external">https://cr.console.aliyun.com/#/imageSearch</a><br><strong>阿里云docker加速器</strong><br>使用加速器将会提升您在国内获取Docker官方镜像的速度！<br><a href="https://cr.console.aliyun.com/#/accelerator" target="_blank" rel="external">https://cr.console.aliyun.com/#/accelerator</a></p><h1 id="加速器操作文档"><a href="#加速器操作文档" class="headerlink" title="加速器操作文档"></a>加速器操作文档</h1><p>安装或升级Docker<br>您可以通过阿里云的镜像仓库下载：<strong><a href="http://mirrors.aliyun.com/help/docker-engine" target="_blank" rel="external">mirrors.aliyun.com/help/docker-engine</a></strong><br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -sSL http://acs-public-mirror.oss-cn-hangzhou.aliyuncs.com/docker-engine/internet | sh -</div></pre></td></tr></table></figure><p></p><p>配置Docker加速器</p><p>您可以使用如下的脚本将mirror的配置添加到docker daemon的启动参数中。<br>系统要求 CentOS 7 以上，Docker 1.9 以上。<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cp -n /lib/systemd/system/docker.service /etc/systemd/system/docker.service   </div><div class="line">sed -i &quot;s|ExecStart=/usr/bin/dockerd|ExecStart=/usr/bin/docker daemon --registry-mirror=https://4c2kkvb9.mirror.aliyuncs.com|g&quot; /etc/systemd/system/docker.service    </div><div class="line">systemctl daemon-reload </div><div class="line">systemctl restart docker</div></pre></td></tr></table></figure><p></p><h1 id="QA"><a href="#QA" class="headerlink" title="QA"></a>QA</h1><p>Q: docker pull 时候报错“ x509: certificate has expired or is not yet valid”<br>A: 此问题是由于主机的时间不同步造成的，使用ntpdate cn.ntp.org.cn 同步网络时间即可。</p><hr></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/arlo/f9f5730/" itemprop="url">使用kubernetes 1.4 新特性kubeadm创建集群</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-10-21T10:50:13+08:00" content="2016-10-21">2016-10-21 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/DevOps/" itemprop="url" rel="index"><span itemprop="name">DevOps</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>kubernetes 发布的最新版本1.4，增加了很多新特性，据说只用两条命令就可以创建一个k8s集群，比起之前的搭建起来简单很多。<br>[官方文档][<strong> <a href="http://kubernetes.io/docs/getting-started-guides/kubeadm/">http://kubernetes.io/docs/getting-started-guides/kubeadm/</a> </strong>]<br></p><div class="post-more-link text-center"><a class="btn" href="/arlo/f9f5730/#more" rel="contents">阅读全文 &raquo;</a></div></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/arlo/5a65cdf4/" itemprop="url">CentOs 7 firewalld 防火墙无法启动</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-09-22T17:42:50+08:00" content="2016-09-22">2016-09-22 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/Troubleshooting/" itemprop="url" rel="index"><span itemprop="name">Troubleshooting</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><p>CentOs 7 无法启动，提示“Job for firewalld.service failed because a timeout was exceeded. See “systemctl status firewalld.service” and “journalctl -xe” for details.”<br></p><div class="post-more-link text-center"><a class="btn" href="/arlo/5a65cdf4/#more" rel="contents">阅读全文 &raquo;</a></div></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/arlo/ef870e7c/" itemprop="url">Jumpserver跳转机搭建过程中的疑问</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-08-30T09:20:33+08:00" content="2016-08-30">2016-08-30</time></span></div></header><div class="post-body" itemprop="articleBody"><h1 id="跳转机"><a href="#跳转机" class="headerlink" title="跳转机"></a>跳转机</h1><p>跳转机又名堡垒机，主要作用是在终端连接服务器之间加一层防护保障，保障连接到服务器的方式更加安全，更加透明，更加可控。<br><img src="/images/2016/0830/1.png" alt="Jumpserver 架构图"><br></p><div class="post-more-link text-center"><a class="btn" href="/arlo/ef870e7c/#more" rel="contents">阅读全文 &raquo;</a></div></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/arlo/d1d8517a/" itemprop="url">Xshell 使用技巧</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-08-19T14:17:46+08:00" content="2016-08-19">2016-08-19 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/常识/" itemprop="url" rel="index"><span itemprop="name">常识</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><p>Xshell 是一个强大的安全终端模拟软件，它支持SSH1, SSH2, 以及Microsoft Windows 平台的TELNET 协议。Xshell 通过互联网到远程主机的安全连接以及它创新性的设计和特色帮助用户在复杂的网络环境中享受他们的工作。Xshell可以在Windows界面下用来访问远端不同系统下的服务器，从而比较好的达到远程控制终端的目的。<br></p><div class="post-more-link text-center"><a class="btn" href="/arlo/d1d8517a/#more" rel="contents">阅读全文 &raquo;</a></div></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/arlo/ddba52eb/" itemprop="url">常用命令集合</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-08-16T17:36:57+08:00" content="2016-08-16">2016-08-16 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/常识/" itemprop="url" rel="index"><span itemprop="name">常识</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><h1 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h1><h2 id="进程查看"><a href="#进程查看" class="headerlink" title="进程查看"></a>进程查看</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">netstat -ano |findstr “8080” 查看端口</div><div class="line">netstat -ano |findstr “127.0.0.1”</div><div class="line">tasklist 查看进程</div><div class="line">tasklist |findstr “nginx”</div><div class="line">tskill 结束进程</div><div class="line">tskill nginx</div><div class="line">tskill 1130</div><div class="line">#查看文件被哪个进程占用</div><div class="line">打开资源管理器-CPU-关联的句柄-输入文件名称</div></pre></td></tr></table></figure><h2 id="映射网络驱动器"><a href="#映射网络驱动器" class="headerlink" title="映射网络驱动器"></a>映射网络驱动器</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">net use Z: \\192.168.0.x\share /user:username password</div><div class="line">#断开网络驱动器</div><div class="line">net use Z: /del /y</div><div class="line">net use * /del /y</div></pre></td></tr></table></figure><h2 id="桌面图标设置"><a href="#桌面图标设置" class="headerlink" title="桌面图标设置"></a>桌面图标设置</h2><p>添加计算机到桌面<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rundll32.exe shell32.dll,Control_RunDLL desk.cpl,,0</div></pre></td></tr></table></figure><p></p><h2 id="常用快捷命令"><a href="#常用快捷命令" class="headerlink" title="常用快捷命令"></a>常用快捷命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">winver		# 查看系统信息</div><div class="line">control.exe	# 控制面板</div><div class="line">sysdm.cpl	# 系统属性</div><div class="line">devmgmt.msc	# 设备管理器</div><div class="line">compmgmt.msc	# 计算机管理</div><div class="line">wf.msc		# 防火墙管理</div></pre></td></tr></table></figure><p>网络与共享中心<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">control.exe /name Microsoft.NetworkAndSharingCenter</div></pre></td></tr></table></figure><p></p><h1 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h1><h2 id="free"><a href="#free" class="headerlink" title="free"></a>free</h2><p>查看内存使用情况</p><p>可用内存=free+buffers+cached<br>以用内存=used-buffers-cached<br>所以看内存的使用不要看used 和free ，看 -/+ buffers/cache 就可以了</p><h2 id="iostat"><a href="#iostat" class="headerlink" title="iostat"></a>iostat</h2><p>查看磁盘性能</p><p>iostat -x 1 5<br>%util 接近100%的时候，产生 的I/O 请求太多，I/O 系统已经满负荷，该磁盘可能存在瓶颈<br>%idle 小于70%的时候，I/O 的 压力比较大，说明读取中有很多的wait</p><h2 id="du"><a href="#du" class="headerlink" title="du"></a>du</h2><p>查看系统目录占用空间大小</p><p>在根目录下执行<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">du -hsx * |sort -rh |head -10</div><div class="line">du -ah --max-depth=1</div></pre></td></tr></table></figure><p></p><p>推荐一款速度更快的工具ncdu</p><h2 id="uptime"><a href="#uptime" class="headerlink" title="uptime"></a>uptime</h2><p>查看cpu的负载</p><p>每cpu的核心当前活动进程数不大于3，表示性能良好，大于五表示严重。</p><h2 id="dd"><a href="#dd" class="headerlink" title="dd"></a>dd</h2><p>瞬间创建（1T）大文件<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/zero of=file bs=1G seek=1024 count=0</div></pre></td></tr></table></figure><p></p><p>这个文件用ll -h 看着是1TB的，用du -sh 看着是空文件，随着写入的数据而增长</p><p>dd制作ISO镜像<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/cdrom of=/mnt/cd1.iso</div></pre></td></tr></table></figure><p></p><h2 id="shopt"><a href="#shopt" class="headerlink" title="shopt"></a>shopt</h2><p>选择性删除文件<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">shopt -s extglob 打开</div><div class="line">rm -fr !(file1|file2)</div><div class="line">shopt -u extglob #关闭</div></pre></td></tr></table></figure><p></p><h2 id="dstat"><a href="#dstat" class="headerlink" title="dstat"></a>dstat</h2><p>监控系统状态<br></p><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">alias dstat=&apos;dstat -cdlmnpsy&apos;</div></pre></td></tr></table></figure><p></p><h2 id="iftop"><a href="#iftop" class="headerlink" title="iftop"></a>iftop</h2><p>n 显示ip/主机名<br>p 显示端口<br>l 输入过滤内容<br><a href="http://www.vpser.net/manage/iftop.html" target="_blank" rel="external">http://www.vpser.net/manage/iftop.html</a></p><h2 id="网卡灯闪烁"><a href="#网卡灯闪烁" class="headerlink" title="网卡灯闪烁"></a>网卡灯闪烁</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ethtool -p eth0</div></pre></td></tr></table></figure><h1 id="终端快捷键"><a href="#终端快捷键" class="headerlink" title="终端快捷键"></a>终端快捷键</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ctrl + a	移动光标到行首</div><div class="line">ctrl + e	移动光标到行尾（好像不生效）</div><div class="line">ctrl + r	查找历史命令</div><div class="line">ctrl + u	删除从光标到行首</div><div class="line">ctrl + k	删除从光标到行尾</div><div class="line">ctrl + l	清屏</div></pre></td></tr></table></figure><p>更多参考：<a href="http://harttle.com/2015/11/09/bash-shortcuts.html" target="_blank" rel="external">http://harttle.com/2015/11/09/bash-shortcuts.html</a></p></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/arlo/3b439eff/" itemprop="url">升级mysql数据库字符集为utf8mb4</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-08-12T15:21:30+08:00" content="2016-08-12">2016-08-12 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/Troubleshooting/" itemprop="url" rel="index"><span itemprop="name">Troubleshooting</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><p>之前公司的项目中一直使用的mysql版本(5.1.73)，使用utf8字符集，基本上没有什么问题的;<br><img src="/images/2016/0812/1.jpg" alt="之前的mysql版本"><br>现在开始做一些手机客户端之类的项目，发送表情(emoji)的时候会报错“ ‘\xF0\x9F\x98\xB1’ for column ‘body’ at row 1”；<br><img src="/images/2016/0812/2.jpg" alt="发送表情报错"><br></p><div class="post-more-link text-center"><a class="btn" href="/arlo/3b439eff/#more" rel="contents">阅读全文 &raquo;</a></div></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/arlo/4c7121ca/" itemprop="url">正在启动windows卡住故障的填坑之路</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-08-09T14:45:36+08:00" content="2016-08-09">2016-08-09 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/Troubleshooting/" itemprop="url" rel="index"><span itemprop="name">Troubleshooting</span></a></span></span></div></header><div class="post-body" itemprop="articleBody"><h1 id="事件起因"><a href="#事件起因" class="headerlink" title="事件起因"></a>事件起因</h1><p>同事新买了一个ThinkPad E460，出厂系统为Windows8.1，希望修改为win7，于是开始了我的填坑之路，此故障之前在联想的S405上也遇到了一次。</p><h1 id="故障现象"><a href="#故障现象" class="headerlink" title="故障现象"></a>故障现象</h1><p>安装完操作系统后，出现“正在启动windows卡住”，如图:</p><p><img src="/images/2016/0809/1.jpg" alt="Alttext"></p><div class="post-more-link text-center"><a class="btn" href="/arlo/4c7121ca/#more" rel="contents">阅读全文 &raquo;</a></div></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline"><a class="post-title-link" href="/arlo/e5e5519a/" itemprop="url">Hexo博客搭建简记</a></h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-08-08T10:11:23+08:00" content="2016-08-08">2016-08-08</time></span></div></header><div class="post-body" itemprop="articleBody"><h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>博客是我记录学习过程最好的方式；我的第一个博客是百度空间，后来百度关闭了；第二个博客是ChinaUnix，最近ChinaUnix升级了安全，牛盾老是阻止我访问，再者ChinaUnix风格太老了，写出来的东西也不漂亮，于是就想自己搭建一个博客，现在的blog有很多，比如wordpress，ghost，等等，<a href="http://kaimingwan.com/post/gong-ju/farbox-jekyll-octopress-ghost-hexodeng-zhu-liu-bo-ke-sheng-cheng-qi-te-dian-gai-xuan-ze-na-ge">比较之下</a>觉得hexo有逼格，高大上，就你了！<br></p><div class="post-more-link text-center"><a class="btn" href="/arlo/e5e5519a/#more" rel="contents">阅读全文 &raquo;</a></div></div><div></div><div></div><footer class="post-footer"><div class="post-eof"></div></footer></article></section><nav class="pagination"><a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span></nav></div></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><section class="site-overview sidebar-panel sidebar-panel-active"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/01/psir.jpg" alt="南山小樵"><p class="site-author-name" itemprop="name">南山小樵</p><p class="site-description motion-element" itemprop="description"></p></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives"><span class="site-state-item-count">69</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories"><span class="site-state-item-count">10</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags"><span class="site-state-item-count">70</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="links-of-author motion-element"></div></section></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2016 - <span itemprop="copyrightYear">2018</span> <span class="with-love"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">南山小樵</span></div><div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div><div class="theme-info">主题 - <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a></div><div class="busuanzi-count"><script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span> <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span></div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i></div></div><script type="text/javascript">"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null)</script><script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script><script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script><script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script><script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script><script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script><script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script><script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script><script type="text/javascript">var isfetched=!1,search_path="search.xml";0==search_path.length&&(search_path="search.xml");var path="/"+search_path;function proceedsearch(){$("body").append('<div class="popoverlay">').css("overflow","hidden"),$(".popup").toggle()}var searchFunc=function(e,c,s){"use strict";$.ajax({url:e,dataType:"xml",async:!0,success:function(e){isfetched=!0,$(".popup").detach().appendTo(".header-inner");var t=$("entry",e).map(function(){return{title:$("title",this).text(),content:$("content",this).text(),url:$("url",this).text()}}).get(),a=document.getElementById(c),r=document.getElementById(s);a.addEventListener("input",function(){var u=0,d='<ul class="search-result-list">',f=this.value.trim().toLowerCase().split(/[\s\-]+/);r.innerHTML="",1<this.value.trim().length&&t.forEach(function(e){var a=!0,r=e.title.trim().toLowerCase(),c=e.content.trim().replace(/<[^>]+>/g,"").toLowerCase(),t=e.url,s=-1,n=-1,i=-1;if(""!=r&&""!=c&&f.forEach(function(e,t){s=r.indexOf(e),n=c.indexOf(e),s<0&&n<0?a=!1:(n<0&&(n=0),0==t&&(i=n))}),a){u+=1,d+="<li><a href='"+t+"' class='search-result-title'>"+r+"</a>";var o=e.content.trim().replace(/<[^>]+>/g,"");if(0<=i){var l=i-20,p=i+80;l<0&&(l=0),0==l&&(p=50),p>o.length&&(p=o.length);var h=o.substring(l,p);f.forEach(function(e){var t=new RegExp(e,"gi");h=h.replace(t,'<b class="search-keyword">'+e+"</b>")}),d+='<p class="search-result">'+h+"...</p>"}d+="</li>"}}),d+="</ul>",0==u&&(d='<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'),""==f&&(d='<div id="no-result"><i class="fa fa-search fa-5x" /></div>'),r.innerHTML=d}),proceedsearch()}})};$(".popup-trigger").click(function(e){e.stopPropagation(),0==isfetched?searchFunc(path,"local-search-input","local-search-result"):proceedsearch()}),$(".popup-btn-close").click(function(e){$(".popup").hide(),$(".popoverlay").remove(),$("body").css("overflow","")}),$(".popup").click(function(e){e.stopPropagation()})</script></body></html>
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="南山居">
+<meta property="og:url" content="http://islocal.cc/page/7/index.html">
+<meta property="og:site_name" content="南山居">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="南山居">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://islocal.cc/page/7/"/>
+
+  <title> 南山居 -  </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left 
+   page-home 
+ ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">南山居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/da9b9fcb/" itemprop="url">
+                  SSH 奇淫技巧之隧道模式
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-01-16T09:02:06+08:00" content="2017-01-16">
+              2017-01-16
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>用了ssh这么久，今天才知道ssh还有这么强大的功能，穿透内外网，来去自如；其实最重要的还是方便平时工作中的调试，在此简单的记录一下。</p>
+<h1 id="使用条件"><a href="#使用条件" class="headerlink" title="使用条件"></a>使用条件</h1><p>一台拥有ssh端口连接的外网linux服务器</p>
+<h1 id="本地转发"><a href="#本地转发" class="headerlink" title="本地转发"></a>本地转发</h1><p>场景：公网有一台服务器的公网ip，ssh端口(已修改为2012)没有对外开放，本地想直接连接此端口，可以通过公网一台开放ssh端口的服务器跳转过去<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -p 2012 -CNg -L 2222:namenode:2012 nsxq@1.2.3.4</div></pre></td></tr></table></figure></p>
+<p>将namenode服务器的2012端口通过1.2.3.4服务器映射到本地2222端口 ssh -p 2222 localhost 即可连接<br>-p 指定跳转机端口<br>—L 本地转发</p>
+<h1 id="远程转发"><a href="#远程转发" class="headerlink" title="远程转发"></a>远程转发</h1><p>场景：本地开发环境需要被外网访问，之前一直使用花生壳，ngrok之类的程序；现在只需要本地执行一条ssh命令，将本地的端口映射到一台外网的服务器上去<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -p 2012 -CNfg -R 0.0.0.0:8888:192.168.1.5:80 nsxq@1.2.3.4</div></pre></td></tr></table></figure></p>
+<p>将本地内网192.168.1.5:80 映射到1.2.3.4服务器的8888端口，访问1.2.3.4:8888 即可访问192.168.1.5:80 内容</p>
+<p><font color="#FF0000"> <strong>打开1.2.3.4服务器需要sshd_config 配置中的GatewayPorts yes</strong></font><br>记得顺手打开防火墙端口<br>-p 指定跳转机端口<br>-R 远程转发</p>
+<h1 id="动态转发"><a href="#动态转发" class="headerlink" title="动态转发"></a>动态转发</h1><p>场景：相对于上边两种单一端口转发，此功能就是在本地启动一个端口，其他机器可以设置代理，通过此端口进行流量转发（俗称翻墙）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ssh -D 5000 nsxq@1.2.3.4</div></pre></td></tr></table></figure></p>
+<p>我这里没有能上google的服务器，没法测试，按道理来说，其他机器就可以将代理设置为1.2.3.4:5000 进行商上网了</p>
+<h1 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h1><p>[实战ssh端口转发]<a href="http://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/" target="_blank" rel="external">http://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/</a><br>[SSH的三种端口转发（Port forwarding）/ 隧道协议概要]<a href="https://blog.twofei.com/528/" target="_blank" rel="external">https://blog.twofei.com/528/</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/8fb14fc6/" itemprop="url">
+                  给下拉菜单和鼠标右键截图
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-12-09T10:23:40+08:00" content="2016-12-09">
+              2016-12-09
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="调用常用的QQ软件截图"><a href="#调用常用的QQ软件截图" class="headerlink" title="调用常用的QQ软件截图"></a>调用常用的QQ软件截图</h1><p><strong>1. 登陆qq</strong><br><strong>2. 同时按住Crtl+Alt+Shift</strong><br><strong>3. 松开Shift，其他两个手指不用松开</strong><br><strong>4. 按住A</strong><br><strong>5. 截图</strong></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/42c94ca5/" itemprop="url">
+                  使用阿里云Docker镜像库加速
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-02T09:25:40+08:00" content="2016-11-02">
+              2016-11-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/DevOps/" itemprop="url" rel="index">
+                    <span itemprop="name">DevOps</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="开发者账号"><a href="#开发者账号" class="headerlink" title="开发者账号"></a>开发者账号</h1><p>由于docker官方的镜像下载太慢了，于是开通了阿里云的开发者账号；<br><strong>申请开发者账号</strong><br><a href="http://console.d.aliyun.com/join.htm?spm=0.0.0.0.Xx1dX0#/docker/booster" target="_blank" rel="external">http://console.d.aliyun.com/join.htm?spm=0.0.0.0.Xx1dX0#/docker/booster</a><br><strong>本人的专属加速器地址</strong><br><a href="https://4c2kkvb9.mirror.aliyuncs.com" target="_blank" rel="external">https://4c2kkvb9.mirror.aliyuncs.com</a><br><strong>阿里云docker镜像搜索地址：</strong><br><a href="https://cr.console.aliyun.com/#/imageSearch" target="_blank" rel="external">https://cr.console.aliyun.com/#/imageSearch</a><br><strong>阿里云docker加速器</strong><br>使用加速器将会提升您在国内获取Docker官方镜像的速度！<br><a href="https://cr.console.aliyun.com/#/accelerator" target="_blank" rel="external">https://cr.console.aliyun.com/#/accelerator</a></p>
+<h1 id="加速器操作文档"><a href="#加速器操作文档" class="headerlink" title="加速器操作文档"></a>加速器操作文档</h1><p>安装或升级Docker<br>您可以通过阿里云的镜像仓库下载：<strong><a href="http://mirrors.aliyun.com/help/docker-engine" target="_blank" rel="external">mirrors.aliyun.com/help/docker-engine</a></strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -sSL http://acs-public-mirror.oss-cn-hangzhou.aliyuncs.com/docker-engine/internet | sh -</div></pre></td></tr></table></figure></p>
+<p>配置Docker加速器</p>
+<p>您可以使用如下的脚本将mirror的配置添加到docker daemon的启动参数中。<br>系统要求 CentOS 7 以上，Docker 1.9 以上。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cp -n /lib/systemd/system/docker.service /etc/systemd/system/docker.service   </div><div class="line">sed -i &quot;s|ExecStart=/usr/bin/dockerd|ExecStart=/usr/bin/docker daemon --registry-mirror=https://4c2kkvb9.mirror.aliyuncs.com|g&quot; /etc/systemd/system/docker.service    </div><div class="line">systemctl daemon-reload </div><div class="line">systemctl restart docker</div></pre></td></tr></table></figure></p>
+<h1 id="QA"><a href="#QA" class="headerlink" title="QA"></a>QA</h1><p>Q: docker pull 时候报错“ x509: certificate has expired or is not yet valid”<br>A: 此问题是由于主机的时间不同步造成的，使用ntpdate cn.ntp.org.cn 同步网络时间即可。</p>
+<hr>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/f9f5730/" itemprop="url">
+                  使用kubernetes 1.4 新特性kubeadm创建集群
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-10-21T10:50:13+08:00" content="2016-10-21">
+              2016-10-21
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/DevOps/" itemprop="url" rel="index">
+                    <span itemprop="name">DevOps</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>kubernetes 发布的最新版本1.4，增加了很多新特性，据说只用两条命令就可以创建一个k8s集群，比起之前的搭建起来简单很多。<br>[官方文档][<strong> <a href="http://kubernetes.io/docs/getting-started-guides/kubeadm/">http://kubernetes.io/docs/getting-started-guides/kubeadm/</a> </strong>]<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/arlo/f9f5730/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/5a65cdf4/" itemprop="url">
+                  CentOs 7 firewalld 防火墙无法启动
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-22T17:42:50+08:00" content="2016-09-22">
+              2016-09-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Troubleshooting/" itemprop="url" rel="index">
+                    <span itemprop="name">Troubleshooting</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>CentOs 7 无法启动，提示“Job for firewalld.service failed because a timeout was exceeded. See “systemctl status firewalld.service” and “journalctl -xe” for details.”<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/arlo/5a65cdf4/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/ef870e7c/" itemprop="url">
+                  Jumpserver跳转机搭建过程中的疑问
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-30T09:20:33+08:00" content="2016-08-30">
+              2016-08-30
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="跳转机"><a href="#跳转机" class="headerlink" title="跳转机"></a>跳转机</h1><p>跳转机又名堡垒机，主要作用是在终端连接服务器之间加一层防护保障，保障连接到服务器的方式更加安全，更加透明，更加可控。<br><img src="/images/2016/0830/1.png" alt="Jumpserver 架构图"><br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/arlo/ef870e7c/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/d1d8517a/" itemprop="url">
+                  Xshell 使用技巧
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-19T14:17:46+08:00" content="2016-08-19">
+              2016-08-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/常识/" itemprop="url" rel="index">
+                    <span itemprop="name">常识</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Xshell 是一个强大的安全终端模拟软件，它支持SSH1, SSH2, 以及Microsoft Windows 平台的TELNET 协议。Xshell 通过互联网到远程主机的安全连接以及它创新性的设计和特色帮助用户在复杂的网络环境中享受他们的工作。Xshell可以在Windows界面下用来访问远端不同系统下的服务器，从而比较好的达到远程控制终端的目的。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/arlo/d1d8517a/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/ddba52eb/" itemprop="url">
+                  常用命令集合
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-16T17:36:57+08:00" content="2016-08-16">
+              2016-08-16
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/常识/" itemprop="url" rel="index">
+                    <span itemprop="name">常识</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Windows"><a href="#Windows" class="headerlink" title="Windows"></a>Windows</h1><h2 id="进程查看"><a href="#进程查看" class="headerlink" title="进程查看"></a>进程查看</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">netstat -ano |findstr “8080” 查看端口</div><div class="line">netstat -ano |findstr “127.0.0.1”</div><div class="line">tasklist 查看进程</div><div class="line">tasklist |findstr “nginx”</div><div class="line">tskill 结束进程</div><div class="line">tskill nginx</div><div class="line">tskill 1130</div><div class="line">#查看文件被哪个进程占用</div><div class="line">打开资源管理器-CPU-关联的句柄-输入文件名称</div></pre></td></tr></table></figure>
+<h2 id="映射网络驱动器"><a href="#映射网络驱动器" class="headerlink" title="映射网络驱动器"></a>映射网络驱动器</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">net use Z: \\192.168.0.x\share /user:username password</div><div class="line">#断开网络驱动器</div><div class="line">net use Z: /del /y</div><div class="line">net use * /del /y</div></pre></td></tr></table></figure>
+<h2 id="桌面图标设置"><a href="#桌面图标设置" class="headerlink" title="桌面图标设置"></a>桌面图标设置</h2><p>添加计算机到桌面<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">rundll32.exe shell32.dll,Control_RunDLL desk.cpl,,0</div></pre></td></tr></table></figure></p>
+<h2 id="常用快捷命令"><a href="#常用快捷命令" class="headerlink" title="常用快捷命令"></a>常用快捷命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">winver		# 查看系统信息</div><div class="line">control.exe	# 控制面板</div><div class="line">sysdm.cpl	# 系统属性</div><div class="line">devmgmt.msc	# 设备管理器</div><div class="line">compmgmt.msc	# 计算机管理</div><div class="line">wf.msc		# 防火墙管理</div></pre></td></tr></table></figure>
+<p>网络与共享中心<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">control.exe /name Microsoft.NetworkAndSharingCenter</div></pre></td></tr></table></figure></p>
+<h1 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h1><h2 id="free"><a href="#free" class="headerlink" title="free"></a>free</h2><p>查看内存使用情况</p>
+<p>可用内存=free+buffers+cached<br>以用内存=used-buffers-cached<br>所以看内存的使用不要看used 和free ，看 -/+ buffers/cache 就可以了</p>
+<h2 id="iostat"><a href="#iostat" class="headerlink" title="iostat"></a>iostat</h2><p>查看磁盘性能</p>
+<p>iostat -x 1 5<br>%util 接近100%的时候，产生 的I/O 请求太多，I/O 系统已经满负荷，该磁盘可能存在瓶颈<br>%idle 小于70%的时候，I/O 的 压力比较大，说明读取中有很多的wait</p>
+<h2 id="du"><a href="#du" class="headerlink" title="du"></a>du</h2><p>查看系统目录占用空间大小</p>
+<p>在根目录下执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">du -hsx * |sort -rh |head -10</div><div class="line">du -ah --max-depth=1</div></pre></td></tr></table></figure></p>
+<p>推荐一款速度更快的工具ncdu</p>
+<h2 id="uptime"><a href="#uptime" class="headerlink" title="uptime"></a>uptime</h2><p>查看cpu的负载</p>
+<p>每cpu的核心当前活动进程数不大于3，表示性能良好，大于五表示严重。</p>
+<h2 id="dd"><a href="#dd" class="headerlink" title="dd"></a>dd</h2><p>瞬间创建（1T）大文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/zero of=file bs=1G seek=1024 count=0</div></pre></td></tr></table></figure></p>
+<p>这个文件用ll -h 看着是1TB的，用du -sh 看着是空文件，随着写入的数据而增长</p>
+<p>dd制作ISO镜像<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/cdrom of=/mnt/cd1.iso</div></pre></td></tr></table></figure></p>
+<h2 id="shopt"><a href="#shopt" class="headerlink" title="shopt"></a>shopt</h2><p>选择性删除文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">shopt -s extglob 打开</div><div class="line">rm -fr !(file1|file2)</div><div class="line">shopt -u extglob #关闭</div></pre></td></tr></table></figure></p>
+<h2 id="dstat"><a href="#dstat" class="headerlink" title="dstat"></a>dstat</h2><p>监控系统状态<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">alias dstat=&apos;dstat -cdlmnpsy&apos;</div></pre></td></tr></table></figure></p>
+<h2 id="iftop"><a href="#iftop" class="headerlink" title="iftop"></a>iftop</h2><p>n 显示ip/主机名<br>p 显示端口<br>l 输入过滤内容<br><a href="http://www.vpser.net/manage/iftop.html" target="_blank" rel="external">http://www.vpser.net/manage/iftop.html</a></p>
+<h2 id="网卡灯闪烁"><a href="#网卡灯闪烁" class="headerlink" title="网卡灯闪烁"></a>网卡灯闪烁</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ethtool -p eth0</div></pre></td></tr></table></figure>
+<h1 id="终端快捷键"><a href="#终端快捷键" class="headerlink" title="终端快捷键"></a>终端快捷键</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ctrl + a	移动光标到行首</div><div class="line">ctrl + e	移动光标到行尾（好像不生效）</div><div class="line">ctrl + r	查找历史命令</div><div class="line">ctrl + u	删除从光标到行首</div><div class="line">ctrl + k	删除从光标到行尾</div><div class="line">ctrl + l	清屏</div></pre></td></tr></table></figure>
+<p>更多参考：<a href="http://harttle.com/2015/11/09/bash-shortcuts.html" target="_blank" rel="external">http://harttle.com/2015/11/09/bash-shortcuts.html</a></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/3b439eff/" itemprop="url">
+                  升级mysql数据库字符集为utf8mb4
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-12T15:21:30+08:00" content="2016-08-12">
+              2016-08-12
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Troubleshooting/" itemprop="url" rel="index">
+                    <span itemprop="name">Troubleshooting</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>之前公司的项目中一直使用的mysql版本(5.1.73)，使用utf8字符集，基本上没有什么问题的;<br><img src="/images/2016/0812/1.jpg" alt="之前的mysql版本"><br>现在开始做一些手机客户端之类的项目，发送表情(emoji)的时候会报错“ ‘\xF0\x9F\x98\xB1’ for column ‘body’ at row 1”；<br><img src="/images/2016/0812/2.jpg" alt="发送表情报错"><br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/arlo/3b439eff/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/arlo/4c7121ca/" itemprop="url">
+                  正在启动windows卡住故障的填坑之路
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-09T14:45:36+08:00" content="2016-08-09">
+              2016-08-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Troubleshooting/" itemprop="url" rel="index">
+                    <span itemprop="name">Troubleshooting</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="事件起因"><a href="#事件起因" class="headerlink" title="事件起因"></a>事件起因</h1><p>同事新买了一个ThinkPad E460，出厂系统为Windows8.1，希望修改为win7，于是开始了我的填坑之路，此故障之前在联想的S405上也遇到了一次。</p>
+<h1 id="故障现象"><a href="#故障现象" class="headerlink" title="故障现象"></a>故障现象</h1><p>安装完操作系统后，出现“正在启动windows卡住”，如图:</p>
+<p><img src="/images/2016/0809/1.jpg" alt="Alttext"></p>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/arlo/4c7121ca/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+  </section>
+
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/page/6/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/8/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+
+          
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/01/psir.jpg"
+               alt="南山小樵" />
+          <p class="site-author-name" itemprop="name">南山小樵</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">71</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">70</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南山小樵</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,1 +1,842 @@
-<!doctype html><html class="theme-next muse use-motion"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"><link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css"><link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css"><meta name="keywords" content="Hexo, NexT"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1"><meta name="description" content="事件起因同事新买了一个ThinkPad E460，出厂系统为Windows8.1，希望修改为win7，于是开始了我的填坑之路，此故障之前在联想的S405上也遇到了一次。故障现象安装完操作系统后，出现“正在启动windows卡住”，如图:"><meta property="og:type" content="article"><meta property="og:title" content="正在启动windows卡住故障的填坑之路"><meta property="og:url" content="http://islocal.cc/arlo/4c7121ca/index.html"><meta property="og:site_name" content="南山居"><meta property="og:description" content="事件起因同事新买了一个ThinkPad E460，出厂系统为Windows8.1，希望修改为win7，于是开始了我的填坑之路，此故障之前在联想的S405上也遇到了一次。故障现象安装完操作系统后，出现“正在启动windows卡住”，如图:"><meta property="og:image" content="http://islocal.cc/images/2016/0809/1.jpg"><meta property="og:image" content="http://islocal.cc/images/2016/0809/2.png"><meta property="og:image" content="http://islocal.cc/images/2016/0809/3.png"><meta property="og:image" content="http://islocal.cc/images/2016/0809/4.png"><meta property="og:image" content="http://islocal.cc/images/2016/0809/8.jpg"><meta property="og:image" content="http://islocal.cc/images/2016/0809/15.png"><meta property="og:image" content="http://islocal.cc/images/2016/0809/21.jpg"><meta property="og:image" content="http://islocal.cc/images/2016/0809/22.jpg"><meta property="og:image" content="http://islocal.cc/images/2016/0809/23.jpg"><meta property="og:image" content="http://islocal.cc/images/2016/0809/24.jpg"><meta property="og:image" content="http://islocal.cc/images/2016/0809/25.jpg"><meta property="og:image" content="http://islocal.cc/images/2016/0809/26.jpg"><meta property="og:image" content="http://islocal.cc/images/2016/0809/27.jpg"><meta property="og:updated_time" content="2018-03-15T07:17:45.794Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="正在启动windows卡住故障的填坑之路"><meta name="twitter:description" content="事件起因同事新买了一个ThinkPad E460，出厂系统为Windows8.1，希望修改为win7，于是开始了我的填坑之路，此故障之前在联想的S405上也遇到了一次。故障现象安装完操作系统后，出现“正在启动windows卡住”，如图:"><meta name="twitter:image" content="http://islocal.cc/images/2016/0809/1.jpg"><script type="text/javascript" id="hexo.configuration">var NexT=window.NexT||{},CONFIG={scheme:"Muse",sidebar:{position:"left",display:"post"},fancybox:!0,motion:!0,duoshuo:{userId:0,author:"博主"}}</script><link rel="canonical" href="http://islocal.cc/arlo/4c7121ca/"><title>正在启动windows卡住故障的填坑之路 | 南山居</title></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"><div class="container one-collumn sidebar-position-left page-post-detail"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">南山居</span> <span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle"></p></div><div class="site-nav-toggle"><button><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签</a></li><li class="menu-item menu-item-about"><a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul><div class="site-search"><div class="popup"><span class="search-icon fa fa-search"></span> <input type="text" id="local-search-input"><div id="local-search-result"></div><span class="popup-btn-close">close</span></div></div></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline">正在启动windows卡住故障的填坑之路</h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2016-08-09T14:45:36+08:00" content="2016-08-09">2016-08-09 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/Troubleshooting/" itemprop="url" rel="index"><span itemprop="name">Troubleshooting</span> </a></span></span>&nbsp; | &nbsp; <span class="page-pv">本文总阅读量 <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次</span></div></header><div class="post-body" itemprop="articleBody"><h1 id="事件起因"><a href="#事件起因" class="headerlink" title="事件起因"></a>事件起因</h1><p>同事新买了一个ThinkPad E460，出厂系统为Windows8.1，希望修改为win7，于是开始了我的填坑之路，此故障之前在联想的S405上也遇到了一次。</p><h1 id="故障现象"><a href="#故障现象" class="headerlink" title="故障现象"></a>故障现象</h1><p>安装完操作系统后，出现“正在启动windows卡住”，如图:</p><p><img src="/images/2016/0809/1.jpg" alt="Alttext"></p><a id="more"></a><ul><li>更换安装版镜像</li><li>BIOS中硬盘模式调整</li><li>PE中重新分区</li><li>使用mhdd工具扫描硬盘</li></ul><p>做了以上步骤，实在是黔驴技穷啊，于是联系了ThinkPad的客服人员！</p><h2 id="使用安装版镜像，不能发现硬盘问题"><a href="#使用安装版镜像，不能发现硬盘问题" class="headerlink" title="使用安装版镜像，不能发现硬盘问题"></a>使用安装版镜像，不能发现硬盘问题</h2><p>官方客服给出的故障原因是，“原生Win7系统不包含USB3.0的驱动，所以无法使用USB3.0的U盘在USB3.0的设备上引导，且安装完系统后还需要重新安装USB3.0驱动”</p><h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案:"></a>解决方案:</h2><blockquote><p><strong><em>注：此方案仅适用于Intel芯片组的机型，AMD芯片组的机型将无法使用,文档中写明支持win7 32位系统，但是实测部分32位系统会存在问题，建议使用win7 64位系统安装</em></strong></p></blockquote><ul><li>从Intel官网下载<a href="https://downloadcenter.intel.com/zh-cn/download/25476/Windows7-USB3-0Creator" target="_blank" rel="external">Windows7 USB3.0 Creator 实用程序</a></li><li>解压缩之前下载的软件，在解压缩路径下右键以管理员方式运行Installer_Creator.exe<br><img src="/images/2016/0809/2.png" alt="Alt text"></li><li>在弹出界面中点击右侧的选择按钮，选中U盘所在分区<br><img src="/images/2016/0809/3.png" alt="Alt text"></li><li>点击Create Image开始往U盘中添加程序，过程会比较长，Intel官方数据是15分钟，实测超过20分钟<br><img src="/images/2016/0809/4.png" alt="Alt text"></li><li>在出现Upadte finished！后创建结束，现在就可以使用这个U盘在USB 3.0接口上安装系统了<br><img src="/images/2016/0809/8.jpg" alt="Alt text"><br>使用安装完补丁的U盘安装完系统USB3.0驱动会自动安装上。<h1 id="坑"><a href="#坑" class="headerlink" title="坑"></a>坑</h1><h2 id="坑一："><a href="#坑一：" class="headerlink" title="坑一："></a>坑一：</h2>win7，win8.1，win10 均不能讲此驱动安装到U盘上，报错如下图<br><img src="/images/2016/0809/15.png" alt="Alt text"><h2 id="坑二"><a href="#坑二" class="headerlink" title="坑二"></a>坑二</h2>更换Ghost版本的镜像，安装完操作系统后依然是启动到“正在启动windows”卡主，进入安全模式卡在“\Windows\System32\drivers\ahcix64s.sys 界面”<h2 id="坑三"><a href="#坑三" class="headerlink" title="坑三"></a>坑三</h2></li><li>使用DG格式化整个硬盘</li><li>重建分区表</li><li>更换分区类型（MBR/GPT）</li><li>激活主分区<h2 id="其他坑"><a href="#其他坑" class="headerlink" title="其他坑"></a>其他坑</h2><a href="http://iknow.lenovo.com/detail/dc_093720.html" target="_blank" rel="external">预装Win8/8.1系统的电脑改装为Win7系统的操作步骤及常见问题</a></li></ul><h1 id="填坑"><a href="#填坑" class="headerlink" title="填坑"></a>填坑</h1><p>使用<a href="https://www.microsoft.com/en-us/download/windows-usb-dvd-download-tool" target="_blank" rel="external">Windows 7 USB DVD Download Tool</a>或者软碟通（UltraISO）制作Win7原版安装盘（不要使用Ghost镜像制作，否则后续会有报错）</p><ul><li>使用Win7光盘或者U盘（建议usb2.0的U盘）引导，进入系统安装界面<br><img src="/images/2016/0809/21.jpg" alt="Alt text"></li><li>按Shift + F10打开命令提示符。(Edge系列机器需要按Fn+Shift+F10)<br><img src="/images/2016/0809/22.jpg" alt="Alt text"></li><li>输入”Diskpart”(不用输入引号，下同)，并按回车，进入操作界面<br><img src="/images/2016/0809/23.jpg" alt="Alt text"></li><li>输入：”list空格disk”，查看磁盘信息。注意看磁盘容量来选择。图中465G的Disk 0是硬盘，3852M的Disk 1是用于Win7安装的U盘<br><img src="/images/2016/0809/24.jpg" alt="Alt text"></li><li>输入：”select 空格disk空格 0”，选择disk 0为当前操作的磁盘<br><img src="/images/2016/0809/25.jpg" alt="Alt text"></li><li>输入：”Clean”，清空当前磁盘分区。<br><img src="/images/2016/0809/26.jpg" alt="Alt text"></li><li>输入：”convert 空格 mbr”，转换为MBR分区。<br><img src="/images/2016/0809/27.jpg" alt="Alt text"></li><li>操作完成，关闭此命令提示符窗口，继续按照正常的方法安装Win7系统即可（由于我坑一中的usb3.0 的驱动没有填好，就使用PE安装ghost版本的镜像安装了）。</li></ul><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这个故障是我在安装操作系统的时候遇到的最棘手的问题，最主要的步骤就是在dos模式下清空一下磁盘分区；这里只是记录了其中最主要的几个坑，希望给遇到的朋友一些参考。</p><hr></div><div></div><div><div style="padding:10px 0;margin:20px auto;width:90%;text-align:center"><div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div><button id="rewardButton" disable="enable" onclick='var qr=document.getElementById("QR");"none"===qr.style.display?qr.style.display="block":qr.style.display="none"'><span>赏</span></button><div id="QR" style="display:none"><div id="alipay" style="display:inline-block"><img id="alipay_qr" src="/images/01/alipay.jpg" alt="南山小樵 Alipay"><p>支付宝打赏</p></div></div></div></div><footer class="post-footer"><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/arlo/e5e5519a/" rel="next" title="Hexo博客搭建简记"><i class="fa fa-chevron-left"></i> Hexo博客搭建简记</a></div><div class="post-nav-prev post-nav-item"><a href="/arlo/3b439eff/" rel="prev" title="升级mysql数据库字符集为utf8mb4">升级mysql数据库字符集为utf8mb4 <i class="fa fa-chevron-right"></i></a></div></div></footer></article><div class="post-spread"></div></div></div><div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div><script>var cloudTieConfig={url:document.location.href,sourceId:"���� page.path ����",productKey:"0df311b624f44726a84b2b6249d64c11",target:"cloud-tie-wrapper"}</script><script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">文章目录</li><li class="sidebar-nav-overview" data-target="site-overview">站点概览</li></ul><section class="site-overview sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/01/psir.jpg" alt="南山小樵"><p class="site-author-name" itemprop="name">南山小樵</p><p class="site-description motion-element" itemprop="description"></p></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives"><span class="site-state-item-count">69</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories"><span class="site-state-item-count">10</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags"><span class="site-state-item-count">70</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="links-of-author motion-element"></div></section><section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#事件起因"><span class="nav-number">1.</span> <span class="nav-text">事件起因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#故障现象"><span class="nav-number">2.</span> <span class="nav-text">故障现象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用安装版镜像，不能发现硬盘问题"><span class="nav-number">2.1.</span> <span class="nav-text">使用安装版镜像，不能发现硬盘问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案"><span class="nav-number">2.2.</span> <span class="nav-text">解决方案:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#坑"><span class="nav-number">3.</span> <span class="nav-text">坑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#坑一："><span class="nav-number">3.1.</span> <span class="nav-text">坑一：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#坑二"><span class="nav-number">3.2.</span> <span class="nav-text">坑二</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#坑三"><span class="nav-number">3.3.</span> <span class="nav-text">坑三</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他坑"><span class="nav-number">3.4.</span> <span class="nav-text">其他坑</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#填坑"><span class="nav-number">4.</span> <span class="nav-text">填坑</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div></div></section></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2016 - <span itemprop="copyrightYear">2018</span> <span class="with-love"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">南山小樵</span></div><div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div><div class="theme-info">主题 - <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a></div><div class="busuanzi-count"><script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span> <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span></div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i></div></div><script type="text/javascript">"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null)</script><script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script><script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script><script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script><script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script><script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script><script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script><script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script><script type="text/javascript">var isfetched=!1,search_path="search.xml";0==search_path.length&&(search_path="search.xml");var path="/"+search_path;function proceedsearch(){$("body").append('<div class="popoverlay">').css("overflow","hidden"),$(".popup").toggle()}var searchFunc=function(e,c,s){"use strict";$.ajax({url:e,dataType:"xml",async:!0,success:function(e){isfetched=!0,$(".popup").detach().appendTo(".header-inner");var t=$("entry",e).map(function(){return{title:$("title",this).text(),content:$("content",this).text(),url:$("url",this).text()}}).get(),a=document.getElementById(c),r=document.getElementById(s);a.addEventListener("input",function(){var u=0,d='<ul class="search-result-list">',f=this.value.trim().toLowerCase().split(/[\s\-]+/);r.innerHTML="",1<this.value.trim().length&&t.forEach(function(e){var a=!0,r=e.title.trim().toLowerCase(),c=e.content.trim().replace(/<[^>]+>/g,"").toLowerCase(),t=e.url,s=-1,n=-1,i=-1;if(""!=r&&""!=c&&f.forEach(function(e,t){s=r.indexOf(e),n=c.indexOf(e),s<0&&n<0?a=!1:(n<0&&(n=0),0==t&&(i=n))}),a){u+=1,d+="<li><a href='"+t+"' class='search-result-title'>"+r+"</a>";var o=e.content.trim().replace(/<[^>]+>/g,"");if(0<=i){var l=i-20,p=i+80;l<0&&(l=0),0==l&&(p=50),p>o.length&&(p=o.length);var h=o.substring(l,p);f.forEach(function(e){var t=new RegExp(e,"gi");h=h.replace(t,'<b class="search-keyword">'+e+"</b>")}),d+='<p class="search-result">'+h+"...</p>"}d+="</li>"}}),d+="</ul>",0==u&&(d='<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'),""==f&&(d='<div id="no-result"><i class="fa fa-search fa-5x" /></div>'),r.innerHTML=d}),proceedsearch()}})};$(".popup-trigger").click(function(e){e.stopPropagation(),0==isfetched?searchFunc(path,"local-search-input","local-search-result"):proceedsearch()}),$(".popup-btn-close").click(function(e){$(".popup").hide(),$(".popoverlay").remove(),$("body").css("overflow","")}),$(".popup").click(function(e){e.stopPropagation()})</script></body></html>
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="事件起因同事新买了一个ThinkPad E460，出厂系统为Windows8.1，希望修改为win7，于是开始了我的填坑之路，此故障之前在联想的S405上也遇到了一次。
+故障现象安装完操作系统后，出现“正在启动windows卡住”，如图:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="正在启动windows卡住故障的填坑之路">
+<meta property="og:url" content="http://islocal.cc/arlo/4c7121ca/index.html">
+<meta property="og:site_name" content="南山居">
+<meta property="og:description" content="事件起因同事新买了一个ThinkPad E460，出厂系统为Windows8.1，希望修改为win7，于是开始了我的填坑之路，此故障之前在联想的S405上也遇到了一次。
+故障现象安装完操作系统后，出现“正在启动windows卡住”，如图:">
+<meta property="og:image" content="http://islocal.cc/images/2016/0809/1.jpg">
+<meta property="og:image" content="http://islocal.cc/images/2016/0809/2.png">
+<meta property="og:image" content="http://islocal.cc/images/2016/0809/3.png">
+<meta property="og:image" content="http://islocal.cc/images/2016/0809/4.png">
+<meta property="og:image" content="http://islocal.cc/images/2016/0809/8.jpg">
+<meta property="og:image" content="http://islocal.cc/images/2016/0809/15.png">
+<meta property="og:image" content="http://islocal.cc/images/2016/0809/21.jpg">
+<meta property="og:image" content="http://islocal.cc/images/2016/0809/22.jpg">
+<meta property="og:image" content="http://islocal.cc/images/2016/0809/23.jpg">
+<meta property="og:image" content="http://islocal.cc/images/2016/0809/24.jpg">
+<meta property="og:image" content="http://islocal.cc/images/2016/0809/25.jpg">
+<meta property="og:image" content="http://islocal.cc/images/2016/0809/26.jpg">
+<meta property="og:image" content="http://islocal.cc/images/2016/0809/27.jpg">
+<meta property="og:updated_time" content="2018-03-15T07:17:45.794Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="正在启动windows卡住故障的填坑之路">
+<meta name="twitter:description" content="事件起因同事新买了一个ThinkPad E460，出厂系统为Windows8.1，希望修改为win7，于是开始了我的填坑之路，此故障之前在联想的S405上也遇到了一次。
+故障现象安装完操作系统后，出现“正在启动windows卡住”，如图:">
+<meta name="twitter:image" content="http://islocal.cc/images/2016/0809/1.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://islocal.cc/arlo/4c7121ca/"/>
+
+  <title> 正在启动windows卡住故障的填坑之路 | 南山居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">南山居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                正在启动windows卡住故障的填坑之路
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-09T14:45:36+08:00" content="2016-08-09">
+              2016-08-09
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Troubleshooting/" itemprop="url" rel="index">
+                    <span itemprop="name">Troubleshooting</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">本文总阅读量
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="事件起因"><a href="#事件起因" class="headerlink" title="事件起因"></a>事件起因</h1><p>同事新买了一个ThinkPad E460，出厂系统为Windows8.1，希望修改为win7，于是开始了我的填坑之路，此故障之前在联想的S405上也遇到了一次。</p>
+<h1 id="故障现象"><a href="#故障现象" class="headerlink" title="故障现象"></a>故障现象</h1><p>安装完操作系统后，出现“正在启动windows卡住”，如图:</p>
+<p><img src="/images/2016/0809/1.jpg" alt="Alttext"></p>
+<a id="more"></a>
+<ul>
+<li>更换安装版镜像</li>
+<li>BIOS中硬盘模式调整</li>
+<li>PE中重新分区</li>
+<li>使用mhdd工具扫描硬盘</li>
+</ul>
+<p>做了以上步骤，实在是黔驴技穷啊，于是联系了ThinkPad的客服人员！</p>
+<h2 id="使用安装版镜像，不能发现硬盘问题"><a href="#使用安装版镜像，不能发现硬盘问题" class="headerlink" title="使用安装版镜像，不能发现硬盘问题"></a>使用安装版镜像，不能发现硬盘问题</h2><p>官方客服给出的故障原因是，“原生Win7系统不包含USB3.0的驱动，所以无法使用USB3.0的U盘在USB3.0的设备上引导，且安装完系统后还需要重新安装USB3.0驱动”</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案:"></a>解决方案:</h2><blockquote>
+<p><strong><em>注：此方案仅适用于Intel芯片组的机型，AMD芯片组的机型将无法使用,文档中写明支持win7 32位系统，但是实测部分32位系统会存在问题，建议使用win7 64位系统安装</em></strong></p>
+</blockquote>
+<ul>
+<li>从Intel官网下载<a href="https://downloadcenter.intel.com/zh-cn/download/25476/Windows7-USB3-0Creator" target="_blank" rel="external">Windows7 USB3.0 Creator 实用程序</a></li>
+<li>解压缩之前下载的软件，在解压缩路径下右键以管理员方式运行Installer_Creator.exe<br><img src="/images/2016/0809/2.png" alt="Alt text"></li>
+<li>在弹出界面中点击右侧的选择按钮，选中U盘所在分区<br><img src="/images/2016/0809/3.png" alt="Alt text"></li>
+<li>点击Create Image开始往U盘中添加程序，过程会比较长，Intel官方数据是15分钟，实测超过20分钟<br><img src="/images/2016/0809/4.png" alt="Alt text"></li>
+<li>在出现Upadte finished！后创建结束，现在就可以使用这个U盘在USB 3.0接口上安装系统了<br><img src="/images/2016/0809/8.jpg" alt="Alt text"><br>使用安装完补丁的U盘安装完系统USB3.0驱动会自动安装上。<h1 id="坑"><a href="#坑" class="headerlink" title="坑"></a>坑</h1><h2 id="坑一："><a href="#坑一：" class="headerlink" title="坑一："></a>坑一：</h2>win7，win8.1，win10 均不能讲此驱动安装到U盘上，报错如下图<br><img src="/images/2016/0809/15.png" alt="Alt text"><h2 id="坑二"><a href="#坑二" class="headerlink" title="坑二"></a>坑二</h2>更换Ghost版本的镜像，安装完操作系统后依然是启动到“正在启动windows”卡主，进入安全模式卡在“\Windows\System32\drivers\ahcix64s.sys 界面”<h2 id="坑三"><a href="#坑三" class="headerlink" title="坑三"></a>坑三</h2></li>
+<li>使用DG格式化整个硬盘</li>
+<li>重建分区表</li>
+<li>更换分区类型（MBR/GPT）</li>
+<li>激活主分区<h2 id="其他坑"><a href="#其他坑" class="headerlink" title="其他坑"></a>其他坑</h2><a href="http://iknow.lenovo.com/detail/dc_093720.html" target="_blank" rel="external">预装Win8/8.1系统的电脑改装为Win7系统的操作步骤及常见问题</a></li>
+</ul>
+<h1 id="填坑"><a href="#填坑" class="headerlink" title="填坑"></a>填坑</h1><p>使用<a href="https://www.microsoft.com/en-us/download/windows-usb-dvd-download-tool" target="_blank" rel="external">Windows 7 USB DVD Download Tool</a>或者软碟通（UltraISO）制作Win7原版安装盘（不要使用Ghost镜像制作，否则后续会有报错）</p>
+<ul>
+<li>使用Win7光盘或者U盘（建议usb2.0的U盘）引导，进入系统安装界面<br><img src="/images/2016/0809/21.jpg" alt="Alt text"></li>
+<li>按Shift + F10打开命令提示符。(Edge系列机器需要按Fn+Shift+F10)<br><img src="/images/2016/0809/22.jpg" alt="Alt text"></li>
+<li>输入”Diskpart”(不用输入引号，下同)，并按回车，进入操作界面<br><img src="/images/2016/0809/23.jpg" alt="Alt text"></li>
+<li>输入：”list空格disk”，查看磁盘信息。注意看磁盘容量来选择。图中465G的Disk 0是硬盘，3852M的Disk 1是用于Win7安装的U盘<br><img src="/images/2016/0809/24.jpg" alt="Alt text"></li>
+<li>输入：”select 空格disk空格 0”，选择disk 0为当前操作的磁盘<br><img src="/images/2016/0809/25.jpg" alt="Alt text"></li>
+<li>输入：”Clean”，清空当前磁盘分区。<br><img src="/images/2016/0809/26.jpg" alt="Alt text"></li>
+<li>输入：”convert 空格 mbr”，转换为MBR分区。<br><img src="/images/2016/0809/27.jpg" alt="Alt text"></li>
+<li>操作完成，关闭此命令提示符窗口，继续按照正常的方法安装Win7系统即可（由于我坑一中的usb3.0 的驱动没有填好，就使用PE安装ghost版本的镜像安装了）。</li>
+</ul>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>这个故障是我在安装操作系统的时候遇到的最棘手的问题，最主要的步骤就是在dos模式下清空一下磁盘分区；这里只是记录了其中最主要的几个坑，希望给遇到的朋友一些参考。</p>
+<hr>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/01/alipay.jpg" alt="南山小樵 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/arlo/e5e5519a/" rel="next" title="Hexo博客搭建简记">
+                <i class="fa fa-chevron-left"></i> Hexo博客搭建简记
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/arlo/3b439eff/" rel="prev" title="升级mysql数据库字符集为utf8mb4">
+                升级mysql数据库字符集为utf8mb4 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: document.location.href, 
+    sourceId: "���� page.path ����",
+    productKey: "0df311b624f44726a84b2b6249d64c11",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/01/psir.jpg"
+               alt="南山小樵" />
+          <p class="site-author-name" itemprop="name">南山小樵</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">71</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">70</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#事件起因"><span class="nav-number">1.</span> <span class="nav-text">事件起因</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#故障现象"><span class="nav-number">2.</span> <span class="nav-text">故障现象</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用安装版镜像，不能发现硬盘问题"><span class="nav-number">2.1.</span> <span class="nav-text">使用安装版镜像，不能发现硬盘问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决方案"><span class="nav-number">2.2.</span> <span class="nav-text">解决方案:</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#坑"><span class="nav-number">3.</span> <span class="nav-text">坑</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#坑一："><span class="nav-number">3.1.</span> <span class="nav-text">坑一：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#坑二"><span class="nav-number">3.2.</span> <span class="nav-text">坑二</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#坑三"><span class="nav-number">3.3.</span> <span class="nav-text">坑三</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他坑"><span class="nav-number">3.4.</span> <span class="nav-text">其他坑</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#填坑"><span class="nav-number">4.</span> <span class="nav-text">填坑</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">5.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南山小樵</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>

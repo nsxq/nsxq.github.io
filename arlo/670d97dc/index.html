@@ -1,1 +1,809 @@
-<!doctype html><html class="theme-next muse use-motion"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css"><link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css"><link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css"><meta name="keywords" content="监控,mail,"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1"><meta name="description" content="安装postfix服务yum install postfix/etc/init.d/postfix startchkconfig postfix on发送格式mailx -s subject user@xxx.com &amp;lt; message_fileecho “内容” | mailx -s “邮件标题” user@xxx.com其他选项-r 指定发件人-c 指定抄送人-b 指定密送人多个收件人使"><meta property="og:type" content="article"><meta property="og:title" content="mailx 发送邮件小计"><meta property="og:url" content="http://islocal.cc/arlo/670d97dc/index.html"><meta property="og:site_name" content="南山居"><meta property="og:description" content="安装postfix服务yum install postfix/etc/init.d/postfix startchkconfig postfix on发送格式mailx -s subject user@xxx.com &amp;lt; message_fileecho “内容” | mailx -s “邮件标题” user@xxx.com其他选项-r 指定发件人-c 指定抄送人-b 指定密送人多个收件人使"><meta property="og:updated_time" content="2018-03-15T07:17:45.952Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="mailx 发送邮件小计"><meta name="twitter:description" content="安装postfix服务yum install postfix/etc/init.d/postfix startchkconfig postfix on发送格式mailx -s subject user@xxx.com &amp;lt; message_fileecho “内容” | mailx -s “邮件标题” user@xxx.com其他选项-r 指定发件人-c 指定抄送人-b 指定密送人多个收件人使"><script type="text/javascript" id="hexo.configuration">var NexT=window.NexT||{},CONFIG={scheme:"Muse",sidebar:{position:"left",display:"post"},fancybox:!0,motion:!0,duoshuo:{userId:0,author:"博主"}}</script><link rel="canonical" href="http://islocal.cc/arlo/670d97dc/"><title>mailx 发送邮件小计 | 南山居</title></head><body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans"><div class="container one-collumn sidebar-position-left page-post-detail"><div class="headband"></div><header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-meta"><div class="custom-logo-site-title"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span> <span class="site-title">南山居</span> <span class="logo-line-after"><i></i></span></a></div><p class="site-subtitle"></p></div><div class="site-nav-toggle"><button><span class="btn-bar"></span> <span class="btn-bar"></span> <span class="btn-bar"></span></button></div><nav class="site-nav"><ul id="menu" class="menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i><br>首页</a></li><li class="menu-item menu-item-categories"><a href="/categories" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i><br>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i><br>归档</a></li><li class="menu-item menu-item-tags"><a href="/tags" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i><br>标签</a></li><li class="menu-item menu-item-about"><a href="/about" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i><br>关于</a></li><li class="menu-item menu-item-search"><a href="javascript:;" class="popup-trigger"><i class="menu-item-icon fa fa-search fa-fw"></i><br>搜索</a></li></ul><div class="site-search"><div class="popup"><span class="search-icon fa fa-search"></span> <input type="text" id="local-search-input"><div id="local-search-result"></div><span class="popup-btn-close">close</span></div></div></nav></div></header><main id="main" class="main"><div class="main-inner"><div class="content-wrap"><div id="content" class="content"><div id="posts" class="posts-expand"><article class="post post-type-normal" itemscope itemtype="http://schema.org/Article"><header class="post-header"><h1 class="post-title" itemprop="name headline">mailx 发送邮件小计</h1><div class="post-meta"><span class="post-time"><span class="post-meta-item-icon"><i class="fa fa-calendar-o"></i> </span><span class="post-meta-item-text">发表于</span> <time itemprop="dateCreated" datetime="2017-03-21T10:24:36+08:00" content="2017-03-21">2017-03-21 </time></span><span class="post-category">&nbsp; | &nbsp; <span class="post-meta-item-icon"><i class="fa fa-folder-o"></i> </span><span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a href="/categories/监控/" itemprop="url" rel="index"><span itemprop="name">监控</span> </a></span></span>&nbsp; | &nbsp; <span class="page-pv">本文总阅读量 <span class="busuanzi-value" id="busuanzi_value_page_pv"></span>次</span></div></header><div class="post-body" itemprop="articleBody"><h1 id="安装postfix服务"><a href="#安装postfix服务" class="headerlink" title="安装postfix服务"></a>安装postfix服务</h1><p>yum install postfix<br>/etc/init.d/postfix start<br>chkconfig postfix on</p><h1 id="发送格式"><a href="#发送格式" class="headerlink" title="发送格式"></a>发送格式</h1><p>mailx -s subject user@xxx.com &lt; message_file<br>echo “内容” | mailx -s “邮件标题” user@xxx.com</p><h1 id="其他选项"><a href="#其他选项" class="headerlink" title="其他选项"></a>其他选项</h1><p>-r 指定发件人<br>-c 指定抄送人<br>-b 指定密送人<br>多个收件人使用逗号分隔<br>有些邮箱（如qq邮箱）会当成垃圾邮件拦截，日志中可以看到500错误<br><a id="more"></a></p><h1 id="监控服务脚本是否运行正常"><a href="#监控服务脚本是否运行正常" class="headerlink" title="监控服务脚本是否运行正常"></a>监控服务脚本是否运行正常</h1><h2 id="监控脚本内容"><a href="#监控脚本内容" class="headerlink" title="监控脚本内容"></a>监控脚本内容</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">count=`ssh m1 ps -ef|grep real_wrf.csh |grep -v &quot;grep&quot; |wc -l`</div><div class="line">#echo $count</div><div class="line">if [ 0 == $count ];then</div><div class="line">        mailx -s &quot;the real_wrf.csh is not running &quot; a1@xxx.com.cn,a2@xxx.com.cn &lt; t.txt     </div><div class="line">fi</div></pre></td></tr></table></figure><h2 id="监测目录下是否有文件"><a href="#监测目录下是否有文件" class="headerlink" title="监测目录下是否有文件"></a>监测目录下是否有文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">#每天6:00~7:00检查前一天00时的数据，每天16:00~18:00检查前一天12时的数据</div><div class="line"></div><div class="line">Date1=`date -d &quot;1 day ago&quot; +&quot;%Y%m%d00&quot;`</div><div class="line">Date2=`date -d &quot;1 day ago&quot; +&quot;%Y%m%d_06&quot;`</div><div class="line">file=&quot;\</div><div class="line">/data/Model3/WRF/data/output/wrf/$Date1/wrfout_d03 \</div><div class="line">/data/Model3/CMAQ4.7/data/cctm-wrf/$Date1/CCTM_CONC.cn03.*.ncf \</div><div class="line">/data/Model3/CAMx6/data/post_save/$Date1/camxsave_d03* \</div><div class="line">/data/em/result/predictions/SHAANXI/$Date2/POST/naqpms_d03.* \</div><div class="line">/data/Model3/WRF/data/output/wrfchem/$Date1/wrfout_d03* \</div><div class="line">&quot;</div><div class="line">for i in $file</div><div class="line">do</div><div class="line">    if [ ! -f &quot;$i&quot; ]; then</div><div class="line">        echo &quot;$i 文件不存在&quot; &gt;&gt;  check_00mx_$Date1.txt</div><div class="line">        mailx -s &quot;00时文件数据模型数据不存在&quot; b@xx.com.cn &lt; check_00mx_$Date1.txt                           </div><div class="line">    fi</div><div class="line">done</div></pre></td></tr></table></figure><h2 id="监测目录是否存在，目录是否为空"><a href="#监测目录是否存在，目录是否为空" class="headerlink" title="监测目录是否存在，目录是否为空"></a>监测目录是否存在，目录是否为空</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">#每天6:00~7:00检查前一天00时的数据，每天16:00~18:00检查前一天12时的数据</div><div class="line"></div><div class="line">Date1=`date +&quot;%Y&quot;`</div><div class="line">Date2=`date +&quot;%m&quot;`</div><div class="line">Date3=`date -d &apos;-1 day&apos;  +&quot;%d&quot;`</div><div class="line">Date4=`date +&quot;%Y%m%d00&quot;`</div><div class="line">Dir=/data/Model3/WeatherForecast</div><div class="line">WRF_Dir=&quot;$Dir/WRF/$Date1/$Date2/$Date3/d3/500/ \</div><div class="line">$Dir/WRF/$Date1/$Date2/$Date3/d3/700/ \</div><div class="line">$Dir/WRF/$Date1/$Date2/$Date3/d3/850/ \</div><div class="line">$Dir/WRF/$Date1/$Date2/$Date3/d3/srf/&quot;</div><div class="line"></div><div class="line">WRFCHEM_Dir=&quot;$Dir/WRFCHEM/$Date1/$Date2/$Date3/00/d3/aqi \</div><div class="line">$Dir/WRFCHEM/$Date1/$Date2/$Date3/00/d3/co \</div><div class="line">$Dir/WRFCHEM/$Date1/$Date2/$Date3/00/d3/no2 \</div><div class="line">$Dir/WRFCHEM/$Date1/$Date2/$Date3/00/d3/o3 \</div><div class="line">$Dir/WRFCHEM/$Date1/$Date2/$Date3/00/d3/pm10 \</div><div class="line">$Dir/WRFCHEM/$Date1/$Date2/$Date3/00/d3/pm25 \</div><div class="line">$Dir/WRFCHEM/$Date1/$Date2/$Date3/00/d3/so2&quot;</div><div class="line"></div><div class="line">WRFCHEMDAY_Dir=&quot;$Dir/WRFCHEMDAY/$Date1/$Date2/$Date3/00/d3/aqi \</div><div class="line">$Dir/WRFCHEMDAY/$Date1/$Date2/$Date3/00/d3/co \</div><div class="line">$Dir/WRFCHEMDAY/$Date1/$Date2/$Date3/00/d3/no2 \</div><div class="line">$Dir/WRFCHEMDAY/$Date1/$Date2/$Date3/00/d3/o3 \</div><div class="line">$Dir/WRFCHEMDAY/$Date1/$Date2/$Date3/00/d3/pm10 \</div><div class="line">$Dir/WRFCHEMDAY/$Date1/$Date2/$Date3/00/d3/pm25 \</div><div class="line">$Dir/WRFCHEMDAY/$Date1/$Date2/$Date3/00/d3/so2&quot;</div><div class="line"></div><div class="line">CAMX_Dir=&quot;$Dir/CAMX/$Date1/$Date2/$Date3/00/d3/aqi \</div><div class="line">$Dir/CAMX/$Date1/$Date2/$Date3/00/d3/co \</div><div class="line">$Dir/CAMX/$Date1/$Date2/$Date3/00/d3/no2 \</div><div class="line">$Dir/CAMX/$Date1/$Date2/$Date3/00/d3/o3 \</div><div class="line">$Dir/CAMX/$Date1/$Date2/$Date3/00/d3/pm10 \</div><div class="line">$Dir/CAMX/$Date1/$Date2/$Date3/00/d3/pm25 \</div><div class="line">$Dir/CAMX/$Date1/$Date2/$Date3/00/d3/so2 &quot;</div><div class="line"></div><div class="line">CAMxDAY_Dir=&quot;$Dir/CAMxDAY/$Date1/$Date2/$Date3/00/d3/aqi \</div><div class="line">$Dir/CAMxDAY/$Date1/$Date2/$Date3/00/d3/co \</div><div class="line">$Dir/CAMxDAY/$Date1/$Date2/$Date3/00/d3/no2 \</div><div class="line">$Dir/CAMxDAY/$Date1/$Date2/$Date3/00/d3/o3 \</div><div class="line">$Dir/CAMxDAY/$Date1/$Date2/$Date3/00/d3/pm10 \</div><div class="line">$Dir/CAMxDAY/$Date1/$Date2/$Date3/00/d3/pm25 \</div><div class="line">$Dir/CAMxDAY/$Date1/$Date2/$Date3/00/d3/so2 &quot;</div><div class="line"></div><div class="line">CMAQ_WRF_Dir=&quot;$Dir/CMAQ.WRF/$Date1/$Date2/$Date3/00/d3/aqi \</div><div class="line">$Dir/CMAQ.WRF/$Date1/$Date2/$Date3/00/d3/co \</div><div class="line">$Dir/CMAQ.WRF/$Date1/$Date2/$Date3/00/d3/no2 \</div><div class="line">$Dir/CMAQ.WRF/$Date1/$Date2/$Date3/00/d3/o3 \</div><div class="line">$Dir/CMAQ.WRF/$Date1/$Date2/$Date3/00/d3/pm10 \</div><div class="line">$Dir/CMAQ.WRF/$Date1/$Date2/$Date3/00/d3/pm25 \</div><div class="line">$Dir/CMAQ.WRF/$Date1/$Date2/$Date3/00/d3/so2 &quot;</div><div class="line"></div><div class="line">CMAQDAY_Dir=&quot;$Dir/CMAQDAY/$Date1/$Date2/$Date3/00/d3/aqi \</div><div class="line">$Dir/CMAQDAY/$Date1/$Date2/$Date3/00/d3/co \</div><div class="line">$Dir/CMAQDAY/$Date1/$Date2/$Date3/00/d3/no2 \</div><div class="line">$Dir/CMAQDAY/$Date1/$Date2/$Date3/00/d3/o3 \</div><div class="line">$Dir/CMAQDAY/$Date1/$Date2/$Date3/00/d3/pm10 \</div><div class="line">$Dir/CMAQDAY/$Date1/$Date2/$Date3/00/d3/pm25 \</div><div class="line">$Dir/CMAQDAY/$Date1/$Date2/$Date3/00/d3/so2 &quot;</div><div class="line"></div><div class="line">NAQMPS_Dir=&quot;$Dir/NAQMPS/$Date1/$Date2/$Date3/00/d3/aqi \</div><div class="line">$Dir/NAQMPS/$Date1/$Date2/$Date3/00/d3/co \</div><div class="line">$Dir/NAQMPS/$Date1/$Date2/$Date3/00/d3/no2 \</div><div class="line">$Dir/NAQMPS/$Date1/$Date2/$Date3/00/d3/o3 \</div><div class="line">$Dir/NAQMPS/$Date1/$Date2/$Date3/00/d3/pm10 \</div><div class="line">$Dir/NAQMPS/$Date1/$Date2/$Date3/00/d3/pm25 \</div><div class="line">$Dir/NAQMPS/$Date1/$Date2/$Date3/00/d3/so2 &quot;</div><div class="line"></div><div class="line">NAQMPSDAY_Dir=&quot;$Dir/NAQMPSDAY/$Date1/$Date2/$Date3/00/d3/aqi \</div><div class="line">$Dir/NAQMPSDAY/$Date1/$Date2/$Date3/00/d3/co \</div><div class="line">$Dir/NAQMPSDAY/$Date1/$Date2/$Date3/00/d3/no2 \</div><div class="line">$Dir/NAQMPSDAY/$Date1/$Date2/$Date3/00/d3/o3 \</div><div class="line">$Dir/NAQMPSDAY/$Date1/$Date2/$Date3/00/d3/pm10 \</div><div class="line">$Dir/NAQMPSDAY/$Date1/$Date2/$Date3/00/d3/pm25 \</div><div class="line">$Dir/NAQMPSDAY/$Date1/$Date2/$Date3/00/d3/so2 &quot;</div><div class="line"></div><div class="line">Dir2=&quot;$WRF_Dir $WRFCHEM_Dir $WRFCHEMDAY_Dir $CAMX_Dir $CAMxDAY_Dir $CMAQ_WRF_Dir $CMAQDAY_Dir $NAQMPS_Dir $NAQMPSDAY_Dir&quot;</div><div class="line">for d in $Dir2</div><div class="line">do</div><div class="line">    if [ ! -d $d ]; then</div><div class="line">        echo &quot;$d 目录不存在&quot; &gt;&gt; /tmp/check_00tp_$Date4.txt</div><div class="line">    elif [ `ls $d |wc -l` -eq 0  ]; then</div><div class="line">        echo &quot;$d 目录下文件不存在&quot; &gt;&gt; /tmp/check_00tp_$Date4.txt</div><div class="line">    fi</div><div class="line">done</div><div class="line">mailx -s &quot;$Date4 00时 模型出图情况&quot; c@xx.com.cn &lt; /tmp/check_00tp_$Date4.txt</div></pre></td></tr></table></figure><h2 id="设置crontab"><a href="#设置crontab" class="headerlink" title="设置crontab"></a>设置crontab</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">01 13,17,01,04 * * * /data/tool/DRAW/shell/check_status/check_wrf.sh</div><div class="line">01 07 * * * /data/tool/DRAW/shell/check_status/check_00mx.sh</div><div class="line">01 08 * * * /data/tool/DRAW/shell/check_status/check_00tp.sh</div></pre></td></tr></table></figure><h1 id="另附短信发送脚本"><a href="#另附短信发送脚本" class="headerlink" title="另附短信发送脚本"></a>另附短信发送脚本</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">datedir1=`date +%Y%d`</div><div class="line">datedir2=`date +%Y%d%y`</div><div class="line">un=&quot;xxxxxxxx&quot;</div><div class="line">pw=&quot;xxxxxxxxxx&quot;</div><div class="line">phone=&quot;xxxxxxxxxxx&quot;</div><div class="line">msg=&quot;this is a test mes,please ignore&quot;</div><div class="line"></div><div class="line">if [ ! -d &quot;/data/em/data/GFS/$datedir1/$datedir2&quot; ];then</div><div class="line">    curl --data &quot;un=$un&amp;pw=$pw&amp;phone=$phone&amp;msg=$msg&amp;rd=1&quot; &quot;http://sms.253.com/msg/send&quot;</div><div class="line">    echo  -e &quot;\n query balance:&quot;</div><div class="line">    curl --data &quot;un=$un&amp;pw=$pw&quot; &quot;http://sms.253.com/msg/balance&quot;</div><div class="line">fi</div><div class="line">echo &quot;send sms:&quot;</div></pre></td></tr></table></figure><p>短信参考：<a href="https://www.253.com/api-docs-13.html" target="_blank" rel="external">https://www.253.com/api-docs-13.html</a></p></div><div></div><div><div style="padding:10px 0;margin:20px auto;width:90%;text-align:center"><div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div><button id="rewardButton" disable="enable" onclick='var qr=document.getElementById("QR");"none"===qr.style.display?qr.style.display="block":qr.style.display="none"'><span>赏</span></button><div id="QR" style="display:none"><div id="alipay" style="display:inline-block"><img id="alipay_qr" src="/images/01/alipay.jpg" alt="南山小樵 Alipay"><p>支付宝打赏</p></div></div></div></div><footer class="post-footer"><div class="post-tags"><a href="/tags/监控/" rel="tag">#监控</a> <a href="/tags/mail/" rel="tag">#mail</a></div><div class="post-nav"><div class="post-nav-next post-nav-item"><a href="/arlo/da9b9fcb/" rel="next" title="SSH 奇淫技巧之隧道模式"><i class="fa fa-chevron-left"></i> SSH 奇淫技巧之隧道模式</a></div><div class="post-nav-prev post-nav-item"><a href="/arlo/undefined/" rel="prev" title="MPICHI3 并行计算环境搭建">MPICHI3 并行计算环境搭建 <i class="fa fa-chevron-right"></i></a></div></div></footer></article><div class="post-spread"></div></div></div><div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div><script>var cloudTieConfig={url:document.location.href,sourceId:"���� page.path ����",productKey:"0df311b624f44726a84b2b6249d64c11",target:"cloud-tie-wrapper"}</script><script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script></div><div class="sidebar-toggle"><div class="sidebar-toggle-line-wrap"><span class="sidebar-toggle-line sidebar-toggle-line-first"></span> <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span> <span class="sidebar-toggle-line sidebar-toggle-line-last"></span></div></div><aside id="sidebar" class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">文章目录</li><li class="sidebar-nav-overview" data-target="site-overview">站点概览</li></ul><section class="site-overview sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"><img class="site-author-image" itemprop="image" src="/images/01/psir.jpg" alt="南山小樵"><p class="site-author-name" itemprop="name">南山小樵</p><p class="site-description motion-element" itemprop="description"></p></div><nav class="site-state motion-element"><div class="site-state-item site-state-posts"><a href="/archives"><span class="site-state-item-count">69</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"><a href="/categories"><span class="site-state-item-count">10</span> <span class="site-state-item-name">分类</span></a></div><div class="site-state-item site-state-tags"><a href="/tags"><span class="site-state-item-count">70</span> <span class="site-state-item-name">标签</span></a></div></nav><div class="links-of-author motion-element"></div></section><section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active"><div class="post-toc"><div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装postfix服务"><span class="nav-number">1.</span> <span class="nav-text">安装postfix服务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#发送格式"><span class="nav-number">2.</span> <span class="nav-text">发送格式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他选项"><span class="nav-number">3.</span> <span class="nav-text">其他选项</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#监控服务脚本是否运行正常"><span class="nav-number">4.</span> <span class="nav-text">监控服务脚本是否运行正常</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#监控脚本内容"><span class="nav-number">4.1.</span> <span class="nav-text">监控脚本内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监测目录下是否有文件"><span class="nav-number">4.2.</span> <span class="nav-text">监测目录下是否有文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监测目录是否存在，目录是否为空"><span class="nav-number">4.3.</span> <span class="nav-text">监测目录是否存在，目录是否为空</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置crontab"><span class="nav-number">4.4.</span> <span class="nav-text">设置crontab</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#另附短信发送脚本"><span class="nav-number">5.</span> <span class="nav-text">另附短信发送脚本</span></a></li></ol></div></div></section></div></aside></div></main><footer id="footer" class="footer"><div class="footer-inner"><div class="copyright">&copy; 2016 - <span itemprop="copyrightYear">2018</span> <span class="with-love"><i class="fa fa-heart"></i> </span><span class="author" itemprop="copyrightHolder">南山小樵</span></div><div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div><div class="theme-info">主题 - <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a></div><div class="busuanzi-count"><script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span> <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span></div></div></footer><div class="back-to-top"><i class="fa fa-arrow-up"></i></div></div><script type="text/javascript">"[object Function]"!==Object.prototype.toString.call(window.Promise)&&(window.Promise=null)</script><script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script><script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script><script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script><script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script><script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script><script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script><script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script><script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script><script type="text/javascript">var isfetched=!1,search_path="search.xml";0==search_path.length&&(search_path="search.xml");var path="/"+search_path;function proceedsearch(){$("body").append('<div class="popoverlay">').css("overflow","hidden"),$(".popup").toggle()}var searchFunc=function(e,c,s){"use strict";$.ajax({url:e,dataType:"xml",async:!0,success:function(e){isfetched=!0,$(".popup").detach().appendTo(".header-inner");var t=$("entry",e).map(function(){return{title:$("title",this).text(),content:$("content",this).text(),url:$("url",this).text()}}).get(),a=document.getElementById(c),r=document.getElementById(s);a.addEventListener("input",function(){var u=0,d='<ul class="search-result-list">',f=this.value.trim().toLowerCase().split(/[\s\-]+/);r.innerHTML="",1<this.value.trim().length&&t.forEach(function(e){var a=!0,r=e.title.trim().toLowerCase(),c=e.content.trim().replace(/<[^>]+>/g,"").toLowerCase(),t=e.url,s=-1,n=-1,i=-1;if(""!=r&&""!=c&&f.forEach(function(e,t){s=r.indexOf(e),n=c.indexOf(e),s<0&&n<0?a=!1:(n<0&&(n=0),0==t&&(i=n))}),a){u+=1,d+="<li><a href='"+t+"' class='search-result-title'>"+r+"</a>";var o=e.content.trim().replace(/<[^>]+>/g,"");if(0<=i){var l=i-20,p=i+80;l<0&&(l=0),0==l&&(p=50),p>o.length&&(p=o.length);var h=o.substring(l,p);f.forEach(function(e){var t=new RegExp(e,"gi");h=h.replace(t,'<b class="search-keyword">'+e+"</b>")}),d+='<p class="search-result">'+h+"...</p>"}d+="</li>"}}),d+="</ul>",0==u&&(d='<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'),""==f&&(d='<div id="no-result"><i class="fa fa-search fa-5x" /></div>'),r.innerHTML=d}),proceedsearch()}})};$(".popup-trigger").click(function(e){e.stopPropagation(),0==isfetched?searchFunc(path,"local-search-input","local-search-result"):proceedsearch()}),$(".popup-btn-close").click(function(e){$(".popup").hide(),$(".popoverlay").remove(),$("body").css("overflow","")}),$(".popup").click(function(e){e.stopPropagation()})</script></body></html>
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="监控,mail," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="安装postfix服务yum install postfix/etc/init.d/postfix startchkconfig postfix on
+发送格式mailx -s subject user@xxx.com &amp;lt; message_fileecho “内容” | mailx -s “邮件标题” user@xxx.com
+其他选项-r 指定发件人-c 指定抄送人-b 指定密送人多个收件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="mailx 发送邮件小计">
+<meta property="og:url" content="http://islocal.cc/arlo/670d97dc/index.html">
+<meta property="og:site_name" content="南山居">
+<meta property="og:description" content="安装postfix服务yum install postfix/etc/init.d/postfix startchkconfig postfix on
+发送格式mailx -s subject user@xxx.com &amp;lt; message_fileecho “内容” | mailx -s “邮件标题” user@xxx.com
+其他选项-r 指定发件人-c 指定抄送人-b 指定密送人多个收件">
+<meta property="og:updated_time" content="2018-03-15T07:17:45.952Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="mailx 发送邮件小计">
+<meta name="twitter:description" content="安装postfix服务yum install postfix/etc/init.d/postfix startchkconfig postfix on
+发送格式mailx -s subject user@xxx.com &amp;lt; message_fileecho “内容” | mailx -s “邮件标题” user@xxx.com
+其他选项-r 指定发件人-c 指定抄送人-b 指定密送人多个收件">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://islocal.cc/arlo/670d97dc/"/>
+
+  <title> mailx 发送邮件小计 | 南山居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">南山居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                mailx 发送邮件小计
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-03-21T10:24:36+08:00" content="2017-03-21">
+              2017-03-21
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/监控/" itemprop="url" rel="index">
+                    <span itemprop="name">监控</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">本文总阅读量
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="安装postfix服务"><a href="#安装postfix服务" class="headerlink" title="安装postfix服务"></a>安装postfix服务</h1><p>yum install postfix<br>/etc/init.d/postfix start<br>chkconfig postfix on</p>
+<h1 id="发送格式"><a href="#发送格式" class="headerlink" title="发送格式"></a>发送格式</h1><p>mailx -s subject user@xxx.com &lt; message_file<br>echo “内容” | mailx -s “邮件标题” user@xxx.com</p>
+<h1 id="其他选项"><a href="#其他选项" class="headerlink" title="其他选项"></a>其他选项</h1><p>-r 指定发件人<br>-c 指定抄送人<br>-b 指定密送人<br>多个收件人使用逗号分隔<br>有些邮箱（如qq邮箱）会当成垃圾邮件拦截，日志中可以看到500错误<br><a id="more"></a></p>
+<h1 id="监控服务脚本是否运行正常"><a href="#监控服务脚本是否运行正常" class="headerlink" title="监控服务脚本是否运行正常"></a>监控服务脚本是否运行正常</h1><h2 id="监控脚本内容"><a href="#监控脚本内容" class="headerlink" title="监控脚本内容"></a>监控脚本内容</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">count=`ssh m1 ps -ef|grep real_wrf.csh |grep -v &quot;grep&quot; |wc -l`</div><div class="line">#echo $count</div><div class="line">if [ 0 == $count ];then</div><div class="line">        mailx -s &quot;the real_wrf.csh is not running &quot; a1@xxx.com.cn,a2@xxx.com.cn &lt; t.txt     </div><div class="line">fi</div></pre></td></tr></table></figure>
+<h2 id="监测目录下是否有文件"><a href="#监测目录下是否有文件" class="headerlink" title="监测目录下是否有文件"></a>监测目录下是否有文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">#每天6:00~7:00检查前一天00时的数据，每天16:00~18:00检查前一天12时的数据</div><div class="line"></div><div class="line">Date1=`date -d &quot;1 day ago&quot; +&quot;%Y%m%d00&quot;`</div><div class="line">Date2=`date -d &quot;1 day ago&quot; +&quot;%Y%m%d_06&quot;`</div><div class="line">file=&quot;\</div><div class="line">/data/Model3/WRF/data/output/wrf/$Date1/wrfout_d03 \</div><div class="line">/data/Model3/CMAQ4.7/data/cctm-wrf/$Date1/CCTM_CONC.cn03.*.ncf \</div><div class="line">/data/Model3/CAMx6/data/post_save/$Date1/camxsave_d03* \</div><div class="line">/data/em/result/predictions/SHAANXI/$Date2/POST/naqpms_d03.* \</div><div class="line">/data/Model3/WRF/data/output/wrfchem/$Date1/wrfout_d03* \</div><div class="line">&quot;</div><div class="line">for i in $file</div><div class="line">do</div><div class="line">    if [ ! -f &quot;$i&quot; ]; then</div><div class="line">        echo &quot;$i 文件不存在&quot; &gt;&gt;  check_00mx_$Date1.txt</div><div class="line">        mailx -s &quot;00时文件数据模型数据不存在&quot; b@xx.com.cn &lt; check_00mx_$Date1.txt                           </div><div class="line">    fi</div><div class="line">done</div></pre></td></tr></table></figure>
+<h2 id="监测目录是否存在，目录是否为空"><a href="#监测目录是否存在，目录是否为空" class="headerlink" title="监测目录是否存在，目录是否为空"></a>监测目录是否存在，目录是否为空</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">#每天6:00~7:00检查前一天00时的数据，每天16:00~18:00检查前一天12时的数据</div><div class="line"></div><div class="line">Date1=`date +&quot;%Y&quot;`</div><div class="line">Date2=`date +&quot;%m&quot;`</div><div class="line">Date3=`date -d &apos;-1 day&apos;  +&quot;%d&quot;`</div><div class="line">Date4=`date +&quot;%Y%m%d00&quot;`</div><div class="line">Dir=/data/Model3/WeatherForecast</div><div class="line">WRF_Dir=&quot;$Dir/WRF/$Date1/$Date2/$Date3/d3/500/ \</div><div class="line">$Dir/WRF/$Date1/$Date2/$Date3/d3/700/ \</div><div class="line">$Dir/WRF/$Date1/$Date2/$Date3/d3/850/ \</div><div class="line">$Dir/WRF/$Date1/$Date2/$Date3/d3/srf/&quot;</div><div class="line"></div><div class="line">WRFCHEM_Dir=&quot;$Dir/WRFCHEM/$Date1/$Date2/$Date3/00/d3/aqi \</div><div class="line">$Dir/WRFCHEM/$Date1/$Date2/$Date3/00/d3/co \</div><div class="line">$Dir/WRFCHEM/$Date1/$Date2/$Date3/00/d3/no2 \</div><div class="line">$Dir/WRFCHEM/$Date1/$Date2/$Date3/00/d3/o3 \</div><div class="line">$Dir/WRFCHEM/$Date1/$Date2/$Date3/00/d3/pm10 \</div><div class="line">$Dir/WRFCHEM/$Date1/$Date2/$Date3/00/d3/pm25 \</div><div class="line">$Dir/WRFCHEM/$Date1/$Date2/$Date3/00/d3/so2&quot;</div><div class="line"></div><div class="line">WRFCHEMDAY_Dir=&quot;$Dir/WRFCHEMDAY/$Date1/$Date2/$Date3/00/d3/aqi \</div><div class="line">$Dir/WRFCHEMDAY/$Date1/$Date2/$Date3/00/d3/co \</div><div class="line">$Dir/WRFCHEMDAY/$Date1/$Date2/$Date3/00/d3/no2 \</div><div class="line">$Dir/WRFCHEMDAY/$Date1/$Date2/$Date3/00/d3/o3 \</div><div class="line">$Dir/WRFCHEMDAY/$Date1/$Date2/$Date3/00/d3/pm10 \</div><div class="line">$Dir/WRFCHEMDAY/$Date1/$Date2/$Date3/00/d3/pm25 \</div><div class="line">$Dir/WRFCHEMDAY/$Date1/$Date2/$Date3/00/d3/so2&quot;</div><div class="line"></div><div class="line">CAMX_Dir=&quot;$Dir/CAMX/$Date1/$Date2/$Date3/00/d3/aqi \</div><div class="line">$Dir/CAMX/$Date1/$Date2/$Date3/00/d3/co \</div><div class="line">$Dir/CAMX/$Date1/$Date2/$Date3/00/d3/no2 \</div><div class="line">$Dir/CAMX/$Date1/$Date2/$Date3/00/d3/o3 \</div><div class="line">$Dir/CAMX/$Date1/$Date2/$Date3/00/d3/pm10 \</div><div class="line">$Dir/CAMX/$Date1/$Date2/$Date3/00/d3/pm25 \</div><div class="line">$Dir/CAMX/$Date1/$Date2/$Date3/00/d3/so2 &quot;</div><div class="line"></div><div class="line">CAMxDAY_Dir=&quot;$Dir/CAMxDAY/$Date1/$Date2/$Date3/00/d3/aqi \</div><div class="line">$Dir/CAMxDAY/$Date1/$Date2/$Date3/00/d3/co \</div><div class="line">$Dir/CAMxDAY/$Date1/$Date2/$Date3/00/d3/no2 \</div><div class="line">$Dir/CAMxDAY/$Date1/$Date2/$Date3/00/d3/o3 \</div><div class="line">$Dir/CAMxDAY/$Date1/$Date2/$Date3/00/d3/pm10 \</div><div class="line">$Dir/CAMxDAY/$Date1/$Date2/$Date3/00/d3/pm25 \</div><div class="line">$Dir/CAMxDAY/$Date1/$Date2/$Date3/00/d3/so2 &quot;</div><div class="line"></div><div class="line">CMAQ_WRF_Dir=&quot;$Dir/CMAQ.WRF/$Date1/$Date2/$Date3/00/d3/aqi \</div><div class="line">$Dir/CMAQ.WRF/$Date1/$Date2/$Date3/00/d3/co \</div><div class="line">$Dir/CMAQ.WRF/$Date1/$Date2/$Date3/00/d3/no2 \</div><div class="line">$Dir/CMAQ.WRF/$Date1/$Date2/$Date3/00/d3/o3 \</div><div class="line">$Dir/CMAQ.WRF/$Date1/$Date2/$Date3/00/d3/pm10 \</div><div class="line">$Dir/CMAQ.WRF/$Date1/$Date2/$Date3/00/d3/pm25 \</div><div class="line">$Dir/CMAQ.WRF/$Date1/$Date2/$Date3/00/d3/so2 &quot;</div><div class="line"></div><div class="line">CMAQDAY_Dir=&quot;$Dir/CMAQDAY/$Date1/$Date2/$Date3/00/d3/aqi \</div><div class="line">$Dir/CMAQDAY/$Date1/$Date2/$Date3/00/d3/co \</div><div class="line">$Dir/CMAQDAY/$Date1/$Date2/$Date3/00/d3/no2 \</div><div class="line">$Dir/CMAQDAY/$Date1/$Date2/$Date3/00/d3/o3 \</div><div class="line">$Dir/CMAQDAY/$Date1/$Date2/$Date3/00/d3/pm10 \</div><div class="line">$Dir/CMAQDAY/$Date1/$Date2/$Date3/00/d3/pm25 \</div><div class="line">$Dir/CMAQDAY/$Date1/$Date2/$Date3/00/d3/so2 &quot;</div><div class="line"></div><div class="line">NAQMPS_Dir=&quot;$Dir/NAQMPS/$Date1/$Date2/$Date3/00/d3/aqi \</div><div class="line">$Dir/NAQMPS/$Date1/$Date2/$Date3/00/d3/co \</div><div class="line">$Dir/NAQMPS/$Date1/$Date2/$Date3/00/d3/no2 \</div><div class="line">$Dir/NAQMPS/$Date1/$Date2/$Date3/00/d3/o3 \</div><div class="line">$Dir/NAQMPS/$Date1/$Date2/$Date3/00/d3/pm10 \</div><div class="line">$Dir/NAQMPS/$Date1/$Date2/$Date3/00/d3/pm25 \</div><div class="line">$Dir/NAQMPS/$Date1/$Date2/$Date3/00/d3/so2 &quot;</div><div class="line"></div><div class="line">NAQMPSDAY_Dir=&quot;$Dir/NAQMPSDAY/$Date1/$Date2/$Date3/00/d3/aqi \</div><div class="line">$Dir/NAQMPSDAY/$Date1/$Date2/$Date3/00/d3/co \</div><div class="line">$Dir/NAQMPSDAY/$Date1/$Date2/$Date3/00/d3/no2 \</div><div class="line">$Dir/NAQMPSDAY/$Date1/$Date2/$Date3/00/d3/o3 \</div><div class="line">$Dir/NAQMPSDAY/$Date1/$Date2/$Date3/00/d3/pm10 \</div><div class="line">$Dir/NAQMPSDAY/$Date1/$Date2/$Date3/00/d3/pm25 \</div><div class="line">$Dir/NAQMPSDAY/$Date1/$Date2/$Date3/00/d3/so2 &quot;</div><div class="line"></div><div class="line">Dir2=&quot;$WRF_Dir $WRFCHEM_Dir $WRFCHEMDAY_Dir $CAMX_Dir $CAMxDAY_Dir $CMAQ_WRF_Dir $CMAQDAY_Dir $NAQMPS_Dir $NAQMPSDAY_Dir&quot;</div><div class="line">for d in $Dir2</div><div class="line">do</div><div class="line">    if [ ! -d $d ]; then</div><div class="line">        echo &quot;$d 目录不存在&quot; &gt;&gt; /tmp/check_00tp_$Date4.txt</div><div class="line">    elif [ `ls $d |wc -l` -eq 0  ]; then</div><div class="line">        echo &quot;$d 目录下文件不存在&quot; &gt;&gt; /tmp/check_00tp_$Date4.txt</div><div class="line">    fi</div><div class="line">done</div><div class="line">mailx -s &quot;$Date4 00时 模型出图情况&quot; c@xx.com.cn &lt; /tmp/check_00tp_$Date4.txt</div></pre></td></tr></table></figure>
+<h2 id="设置crontab"><a href="#设置crontab" class="headerlink" title="设置crontab"></a>设置crontab</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">01 13,17,01,04 * * * /data/tool/DRAW/shell/check_status/check_wrf.sh</div><div class="line">01 07 * * * /data/tool/DRAW/shell/check_status/check_00mx.sh</div><div class="line">01 08 * * * /data/tool/DRAW/shell/check_status/check_00tp.sh</div></pre></td></tr></table></figure>
+<h1 id="另附短信发送脚本"><a href="#另附短信发送脚本" class="headerlink" title="另附短信发送脚本"></a>另附短信发送脚本</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">datedir1=`date +%Y%d`</div><div class="line">datedir2=`date +%Y%d%y`</div><div class="line">un=&quot;xxxxxxxx&quot;</div><div class="line">pw=&quot;xxxxxxxxxx&quot;</div><div class="line">phone=&quot;xxxxxxxxxxx&quot;</div><div class="line">msg=&quot;this is a test mes,please ignore&quot;</div><div class="line"></div><div class="line">if [ ! -d &quot;/data/em/data/GFS/$datedir1/$datedir2&quot; ];then</div><div class="line">    curl --data &quot;un=$un&amp;pw=$pw&amp;phone=$phone&amp;msg=$msg&amp;rd=1&quot; &quot;http://sms.253.com/msg/send&quot;</div><div class="line">    echo  -e &quot;\n query balance:&quot;</div><div class="line">    curl --data &quot;un=$un&amp;pw=$pw&quot; &quot;http://sms.253.com/msg/balance&quot;</div><div class="line">fi</div><div class="line">echo &quot;send sms:&quot;</div></pre></td></tr></table></figure>
+<p>短信参考：<a href="https://www.253.com/api-docs-13.html" target="_blank" rel="external">https://www.253.com/api-docs-13.html</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/01/alipay.jpg" alt="南山小樵 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/监控/" rel="tag">#监控</a>
+          
+            <a href="/tags/mail/" rel="tag">#mail</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/arlo/da9b9fcb/" rel="next" title="SSH 奇淫技巧之隧道模式">
+                <i class="fa fa-chevron-left"></i> SSH 奇淫技巧之隧道模式
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/arlo/undefined/" rel="prev" title="MPICHI3 并行计算环境搭建">
+                MPICHI3 并行计算环境搭建 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: document.location.href, 
+    sourceId: "���� page.path ����",
+    productKey: "0df311b624f44726a84b2b6249d64c11",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/01/psir.jpg"
+               alt="南山小樵" />
+          <p class="site-author-name" itemprop="name">南山小樵</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">71</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">70</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装postfix服务"><span class="nav-number">1.</span> <span class="nav-text">安装postfix服务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#发送格式"><span class="nav-number">2.</span> <span class="nav-text">发送格式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他选项"><span class="nav-number">3.</span> <span class="nav-text">其他选项</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#监控服务脚本是否运行正常"><span class="nav-number">4.</span> <span class="nav-text">监控服务脚本是否运行正常</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#监控脚本内容"><span class="nav-number">4.1.</span> <span class="nav-text">监控脚本内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监测目录下是否有文件"><span class="nav-number">4.2.</span> <span class="nav-text">监测目录下是否有文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#监测目录是否存在，目录是否为空"><span class="nav-number">4.3.</span> <span class="nav-text">监测目录是否存在，目录是否为空</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置crontab"><span class="nav-number">4.4.</span> <span class="nav-text">设置crontab</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#另附短信发送脚本"><span class="nav-number">5.</span> <span class="nav-text">另附短信发送脚本</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南山小樵</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
