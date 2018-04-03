@@ -87,7 +87,7 @@
 数据来源采自美国国家环境预报中心的GFS(全球预报系统)，该系统每天发布4次全球范围的气象数据，分辨率最高可达到0.25° x 0.25°，精度还是比较可观的。GFS数据提供FTP下载方式：http://www.ftp.ncep.noaa.gov/data/nccf/com/gfs/prod/每次发布的数据保存在命名为gfs.YYYYMMDDHH的文件夹中。本次需要的数据精度为0.">
 <meta property="og:image" content="http://islocal.cc/images/2018/0315/01.png">
 <meta property="og:image" content="http://islocal.cc/images/2018/0315/02.png">
-<meta property="og:updated_time" content="2018-03-29T01:52:59.079Z">
+<meta property="og:updated_time" content="2018-04-03T08:02:56.742Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用wgrib2将GFS数据导入到mysql">
 <meta name="twitter:description" content="GFS数据来源
@@ -343,8 +343,9 @@
 
       
         <h1 id="GFS数据来源"><a href="#GFS数据来源" class="headerlink" title="GFS数据来源"></a>GFS数据来源</h1><blockquote>
-<p>数据来源采自美国国家环境预报中心的GFS(全球预报系统)，该系统每天发布4次全球范围的气象数据，分辨率最高可达到0.25° x 0.25°，精度还是比较可观的。<br>GFS数据提供FTP下载方式：<a href="http://www.ftp.ncep.noaa.gov/data/nccf/com/gfs/prod/" target="_blank" rel="external">http://www.ftp.ncep.noaa.gov/data/nccf/com/gfs/prod/</a><br>每次发布的数据保存在命名为gfs.YYYYMMDDHH的文件夹中。本次需要的数据精度为0.25°（0p25），所以数据的文件名为：gfs.t{HH}z.pgrb2.0p25.f{XXX}<br>其中HH表示发布的时间，XXX表示未来几小时的预报数据。例如gfs.t00z.pgrb2.0p25.f001 表示0时发布的未来1小时气象数据信息。<br>那么问题来了，这个文件太大了，因为分辨率比较高，每个文件高达200多MB，不仅下载速度慢，处理慢，对存储空间也是一个考验。<br>于是找到了一个可以在线过滤要下载数据的地址：<br><a href="http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl" target="_blank" rel="external">http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl</a><br>这个网站允许用户仅下载过滤后的文件，并提供下载网址，这样文件就会小很多。<br>例如，在本项目中，仅需要下载降雨数据（PWAT），并且经纬度范围为特定区域，每次发布的数据全部下载下来也才8M多点。<br>那么要想获得GRIB文件中的数据，则需要用到一个软件wgrib2,，该软件在ncep网站上提供源码下载。<br><a id="more"></a></p>
+<p>数据来源采自美国国家环境预报中心的GFS(全球预报系统)，该系统每天发布4次全球范围的气象数据，分辨率最高可达到0.25° x 0.25°，精度还是比较可观的。<br>GFS数据提供FTP下载方式：<a href="http://www.ftp.ncep.noaa.gov/data/nccf/com/gfs/prod/" target="_blank" rel="external">http://www.ftp.ncep.noaa.gov/data/nccf/com/gfs/prod/</a><br>每次发布的数据保存在命名为gfs.YYYYMMDDHH的文件夹中。本次需要的数据精度为0.25°（0p25），所以数据的文件名为：gfs.t{HH}z.pgrb2.0p25.f{XXX}<br>其中HH表示发布的时间，XXX表示未来几小时的预报数据。例如gfs.t00z.pgrb2.0p25.f001 表示0时发布的未来1小时气象数据信息。<br>那么问题来了，这个文件太大了，因为分辨率比较高，每个文件高达200多MB，不仅下载速度慢，处理慢，对存储空间也是一个考验。<br>于是找到了一个可以在线过滤要下载数据的地址：<br><a href="http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl" target="_blank" rel="external">http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl</a><br>这个网站允许用户仅下载过滤后的文件，并提供下载网址，这样文件就会小很多。<br>例如，在本项目中，仅需要下载降雨数据（PWAT），并且经纬度范围为特定区域，每次发布的数据全部下载下来也才8M多点。<br>那么要想获得GRIB文件中的数据，则需要用到一个软件wgrib2,，该软件在ncep网站上提供源码下载。</p>
 </blockquote>
+<a id="more"></a>
 <h1 id="Mysql安装配置"><a href="#Mysql安装配置" class="headerlink" title="Mysql安装配置"></a>Mysql安装配置</h1><h2 id="查看mysql安装"><a href="#查看mysql安装" class="headerlink" title="查看mysql安装"></a>查看mysql安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[root@siluxa_oracle grib2]# rpm -qa |grep -i mysql</div><div class="line">mysql-community-common-5.6.36-2.el6.x86_64</div><div class="line">mysql-community-client-5.6.36-2.el6.x86_64</div><div class="line">mysql-community-server-5.6.36-2.el6.x86_64</div><div class="line">mysql-community-libs-compat-5.6.37-2.el6.x86_64</div><div class="line">mysql-community-libs-5.6.36-2.el6.x86_64</div><div class="line">mysql-community-devel-5.6.39-2.el6.x86_64</div></pre></td></tr></table></figure>
 <h1 id="创建数据库和表"><a href="#创建数据库和表" class="headerlink" title="创建数据库和表"></a>创建数据库和表</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># 创建数据库</div><div class="line">CREATE DATABASE weatherDB DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;</div><div class="line"># 创建表</div><div class="line">create table wgrib2 (rt datetime, vt datetime, lat double, lon double, param varchar(80), level varchar(30), value double); </div><div class="line"># 创建用户和表，并赋予权限(实验环境可以直接用root，生产环境强烈建议使用普通用户)</div><div class="line">-- CREATE USER wgrib2 IDENTIFIED BY &apos;ffffff&apos;;</div><div class="line">-- GRANT ALL on weatherDB.* to wgrib2@&quot;%&quot; Identified by &quot;ffffff&quot;</div></pre></td></tr></table></figure>
 <h1 id="编译安装wgrib2软件包"><a href="#编译安装wgrib2软件包" class="headerlink" title="编译安装wgrib2软件包"></a>编译安装wgrib2软件包</h1><h2 id="编译安装wgrib2"><a href="#编译安装wgrib2" class="headerlink" title="编译安装wgrib2"></a>编译安装wgrib2</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">#安装gcc和gfortran编译器</div><div class="line">yum install gcc gcc-gfortran -y</div><div class="line">#下载wgrib2软件包</div><div class="line">wget http://www.ftp.cpc.ncep.noaa.gov/wd51we/wgrib2/wgrib2.tgz -O  /usr/local/src/wgrib2.tgz</div><div class="line">cd /usr/local/src</div><div class="line">tar wgrib2.tgz</div><div class="line">cd grib2/</div><div class="line">#设置编译环境</div><div class="line">export CC=gcc</div><div class="line">export FC=gfortran</div><div class="line"># 启用mysql支持，修改第114行</div><div class="line">vim makefile  </div><div class="line">USE_MYSQL=1</div><div class="line"># 编译</div><div class="line">make</div></pre></td></tr></table></figure>
@@ -490,7 +491,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">71</span>
+              <span class="site-state-item-count">72</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -507,7 +508,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">70</span>
+                <span class="site-state-item-count">71</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
