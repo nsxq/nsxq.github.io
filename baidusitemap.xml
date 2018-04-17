@@ -4,13 +4,43 @@
 
     
   <url>
+    <loc>http://islocal.cc/arlo/7c94dafb/</loc>
+    <lastmod>2018-04-17T07:31:29.348Z</lastmod>
+    <data>
+        <display>
+        <title>zabbix(8)使用ansible批量部署zabbix agent</title>
+        <pubTime>2018-04-17T07:04:45.000Z</pubTime>
+        
+        <tag>自动化</tag>
+         
+        <tag>运维</tag>
+         
+        <tag>Ansible</tag>
+         
+        <tag>zabbix</tag>
+         
+         
+           
+             
+              <breadCrumb title="监控" url="http://islocal.cc/categories/%E7%9B%91%E6%8E%A7/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/arlo/429ab963/</loc>
-    <lastmod>2018-04-17T06:33:52.053Z</lastmod>
+    <lastmod>2018-04-17T07:30:37.853Z</lastmod>
     <data>
         <display>
         <title>zabbix(7)监控端口、服务存活</title>
-        <pubTime>2018-04-17T05:49:16.761Z</pubTime>
+        <pubTime>2018-04-17T05:49:16.000Z</pubTime>
         
+        <tag>zabbix</tag>
+         
+        <tag>监控</tag>
+         
          
            
              
@@ -235,9 +265,9 @@
         <title>Sonar代码质量管理工具安装</title>
         <pubTime>2018-02-02T09:54:03.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Sonar</tag>
          
@@ -379,9 +409,9 @@
         <title>使用 Cobbler 自动化和管理系统安装</title>
         <pubTime>2017-04-20T13:45:06.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Cobbler</tag>
          
@@ -1088,9 +1118,9 @@
         <title>Jenkins邮件通知配置</title>
         <pubTime>2017-08-22T08:36:52.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Jenkins</tag>
          
@@ -1112,9 +1142,9 @@
         <title>Jenkins持续集成发布时tomcat不能删除目录下文件</title>
         <pubTime>2017-08-29T06:48:29.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Jenkins</tag>
          
@@ -1138,9 +1168,9 @@
         <title>Jenkins打包不能发现本地仓库包</title>
         <pubTime>2017-08-17T07:48:30.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Jenkins</tag>
          
@@ -1162,9 +1192,9 @@
         <title>Jenkins使用Publish Over CIFS插件实现静态页面部署到Windows服务器</title>
         <pubTime>2017-10-24T01:42:19.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Jenkins</tag>
          
@@ -1186,9 +1216,9 @@
         <title>jenkins 持续集成环境搭建</title>
         <pubTime>2017-04-27T06:04:11.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Jenkins</tag>
          
@@ -1280,9 +1310,9 @@
         <title>Except实践之 修改主机密码&添加用户&ssh免密码验证</title>
         <pubTime>2017-06-18T08:35:04.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>expect</tag>
          
@@ -1350,9 +1380,9 @@
         <title>Ansible 模块篇</title>
         <pubTime>2017-06-21T06:22:00.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Ansible</tag>
          
@@ -1374,9 +1404,9 @@
         <title>Ansible 入门篇</title>
         <pubTime>2017-06-21T06:10:50.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Ansible</tag>
          
@@ -1398,9 +1428,9 @@
         <title>Ansible Playbook入门篇</title>
         <pubTime>2017-06-22T01:04:14.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Ansible</tag>
          
@@ -1422,9 +1452,9 @@
         <title>Aansible palybook 创建lvm并自动挂载</title>
         <pubTime>2017-06-27T10:03:12.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Ansible</tag>
          
