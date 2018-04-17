@@ -271,6 +271,121 @@
             
               
                 
+                <a class="post-title-link" href="/arlo/98679d8a/" itemprop="url">
+                  Centos7下Rsync服务器搭建配置
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-07-04T09:49:48+08:00" content="2017-07-04">
+              2017-07-04
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/常识/" itemprop="url" rel="index">
+                    <span itemprop="name">常识</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>之前写了个<a href="http://islocal.cc/2017/06/16/windows-下使用expdp自动备份多用户oracle脚本">Windows下oracle多用户自动备份的脚本</a>，这个备份完数据还是存在服务器本地的，如果系统宕机的话，数据还是没有了，这样的备份是没有意义滴；所以我们需要把数据转移到其他的存储上，常用的方式是使用Rsync工具来保持同步数据，接下来我们搭建一个简单的Rsync服务器。<br>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/arlo/98679d8a/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/arlo/1e1aab57/" itemprop="url">
                   Aansible palybook 创建lvm并自动挂载
                 </a>
@@ -1267,125 +1382,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/arlo/ffa6a879/" itemprop="url">
-                  在已存在的目录中增加一层路径
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-05-25T17:02:45+08:00" content="2017-05-25">
-              2017-05-25
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/常识/" itemprop="url" rel="index">
-                    <span itemprop="name">常识</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>由于之前项目上考虑不周，路径配置的有问题，现在需要在已有的目录中某一级增加一层目录，需要解决几个问题；<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">/data/Model3/WeatherForecast/CAMX/2017/05/01/&#123;d1,d2,d3&#125;</div><div class="line">/data/Model3/WeatherForecast/CAMX/2017/05/01/00/&#123;d1,d2,d3&#125;</div></pre></td></tr></table></figure></p>
-<ol>
-<li>多级目录，多个参数，CAMX/2017/05/01 这四个参数是变化的</li>
-<li>判断父级目录是否存在，存在后增加一层目录</li>
-<li>移动之前的数据到当前目录
-          <div class="post-more-link text-center">
-            <a class="btn" href="/arlo/ffa6a879/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1430,7 +1426,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">72</span>
+              <span class="site-state-item-count">73</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

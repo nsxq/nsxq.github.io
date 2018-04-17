@@ -85,7 +85,7 @@
 <meta property="og:site_name" content="南山居">
 <meta property="og:description" content="Windows进程查看123456789netstat -ano |findstr “8080” 查看端口netstat -ano |findstr “127.0.0.1”tasklist 查看进程tasklist |findstr “nginx”tskill 结束进程tskill nginxtskill 1130#查看文件被哪个进程占用打开资源管理器-CPU-关联的句柄-输入文件名称
 映射网络驱">
-<meta property="og:updated_time" content="2018-03-15T07:17:45.792Z">
+<meta property="og:updated_time" content="2018-04-17T06:03:15.566Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="常用命令集合">
 <meta name="twitter:description" content="Windows进程查看123456789netstat -ano |findstr “8080” 查看端口netstat -ano |findstr “127.0.0.1”tasklist 查看进程tasklist |findstr “nginx”tskill 结束进程tskill nginxtskill 1130#查看文件被哪个进程占用打开资源管理器-CPU-关联的句柄-输入文件名称
@@ -345,7 +345,9 @@
 <h2 id="常用快捷命令"><a href="#常用快捷命令" class="headerlink" title="常用快捷命令"></a>常用快捷命令</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">winver		# 查看系统信息</div><div class="line">control.exe	# 控制面板</div><div class="line">sysdm.cpl	# 系统属性</div><div class="line">devmgmt.msc	# 设备管理器</div><div class="line">compmgmt.msc	# 计算机管理</div><div class="line">wf.msc		# 防火墙管理</div></pre></td></tr></table></figure>
 <p>网络与共享中心<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">control.exe /name Microsoft.NetworkAndSharingCenter</div></pre></td></tr></table></figure></p>
 <h1 id="Linux"><a href="#Linux" class="headerlink" title="Linux"></a>Linux</h1><h2 id="free"><a href="#free" class="headerlink" title="free"></a>free</h2><p>查看内存使用情况</p>
-<p>可用内存=free+buffers+cached<br>以用内存=used-buffers-cached<br>所以看内存的使用不要看used 和free ，看 -/+ buffers/cache 就可以了</p>
+<p>可用内存=free+buffers+cached<br>以用内存=used-buffers-cached<br>所以看内存的使用不要看used 和free ，看 -/+ buffers/cache 就可以了<br>查看内存插槽数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dmidecode|grep -P -A5 &quot;Memory\s+Device&quot;|grep Size|grep -v Range</div></pre></td></tr></table></figure></p>
+<p>查看内存最大容量<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dmidecode | grep -P &apos;Maximum\s+Capacity&apos;</div></pre></td></tr></table></figure></p>
+<p>查看内存频率<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dmidecode|grep -A16 &quot;Memory Device&quot;|grep &apos;Speed&apos;</div></pre></td></tr></table></figure></p>
 <h2 id="iostat"><a href="#iostat" class="headerlink" title="iostat"></a>iostat</h2><p>查看磁盘性能</p>
 <p>iostat -x 1 5<br>%util 接近100%的时候，产生 的I/O 请求太多，I/O 系统已经满负荷，该磁盘可能存在瓶颈<br>%idle 小于70%的时候，I/O 的 压力比较大，说明读取中有很多的wait</p>
 <h2 id="du"><a href="#du" class="headerlink" title="du"></a>du</h2><p>查看系统目录占用空间大小</p>
@@ -495,7 +497,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">72</span>
+              <span class="site-state-item-count">73</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
