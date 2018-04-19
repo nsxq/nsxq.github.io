@@ -61,7 +61,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="自动化,运维,zabbix," />
 
 
 
@@ -77,16 +77,23 @@
 
 
 
-<meta name="description" content="在playbooks中使用模块跟在命令行中使用有一点不同，主要是因为在playbook中有许多从setup模块或者之前模块中获取的数据需要处理。有些模块在命令行中无法使用，是因为他们需要访问变量，还有一些可以在命令行中使用的模块在playbooks中使用有用更加强大的功能。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Ansible Playbook模块篇">
-<meta property="og:url" content="http://islocal.cc/Ansible-Playbook模块篇.html">
+<meta name="description" content="zabbix 可以通过sensors-detect检测内核模块，使用zabbix监控系统自定义监控项，采集监控数据并设置告警。可以监控物理机器(虚拟机获取不到)的温度。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Zabbix(9)结合sensor监控cpu温度">
+<meta property="og:url" content="http://islocal.cc/arlo/ce74a028/index.html">
 <meta property="og:site_name" content="南山居">
-<meta property="og:description" content="在playbooks中使用模块跟在命令行中使用有一点不同，主要是因为在playbook中有许多从setup模块或者之前模块中获取的数据需要处理。有些模块在命令行中无法使用，是因为他们需要访问变量，还有一些可以在命令行中使用的模块在playbooks中使用有用更加强大的功能。">
-<meta property="og:updated_time" content="2017-06-23T08:48:21.027Z">
+<meta property="og:description" content="zabbix 可以通过sensors-detect检测内核模块，使用zabbix监控系统自定义监控项，采集监控数据并设置告警。可以监控物理机器(虚拟机获取不到)的温度。">
+<meta property="og:image" content="http://islocal.cc/images/2018/0419/01.png">
+<meta property="og:image" content="http://islocal.cc/images/2018/0419/02.png">
+<meta property="og:image" content="http://islocal.cc/images/2018/0419/03.png">
+<meta property="og:image" content="http://islocal.cc/images/2018/0419/04.png">
+<meta property="og:image" content="http://islocal.cc/images/2018/0419/05.png">
+<meta property="og:image" content="http://islocal.cc/images/2018/0419/06.png">
+<meta property="og:updated_time" content="2018-04-19T11:02:20.753Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Ansible Playbook模块篇">
-<meta name="twitter:description" content="在playbooks中使用模块跟在命令行中使用有一点不同，主要是因为在playbook中有许多从setup模块或者之前模块中获取的数据需要处理。有些模块在命令行中无法使用，是因为他们需要访问变量，还有一些可以在命令行中使用的模块在playbooks中使用有用更加强大的功能。">
+<meta name="twitter:title" content="Zabbix(9)结合sensor监控cpu温度">
+<meta name="twitter:description" content="zabbix 可以通过sensors-detect检测内核模块，使用zabbix监控系统自定义监控项，采集监控数据并设置告警。可以监控物理机器(虚拟机获取不到)的温度。">
+<meta name="twitter:image" content="http://islocal.cc/images/2018/0419/01.png">
 
 
 
@@ -107,15 +114,9 @@
 
 
 
-  <link rel="canonical" href="http://islocal.cc/Ansible-Playbook模块篇.html"/>
+  <link rel="canonical" href="http://islocal.cc/arlo/ce74a028/"/>
 
-  <title>
-  
-
-  
-    Ansible Playbook模块篇 | 南山居
-  
-</title>
+  <title> Zabbix(9)结合sensor监控cpu温度 | 南山居 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -136,7 +137,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -259,12 +260,171 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
     
-      <p>在playbooks中使用模块跟在命令行中使用有一点不同，主要是因为在playbook中有许多从setup模块或者之前模块中获取的数据需要处理。有些模块在命令行中无法使用，是因为他们需要访问变量，还有一些可以在命令行中使用的模块在playbooks中使用有用更加强大的功能。<br><a id="more"></a></p>
-<h1 id="template-模块"><a href="#template-模块" class="headerlink" title="template 模块"></a>template 模块</h1><p>在实际应用中，我们的配置文件有些地方可能会根据远程主机的配置的不同而有稍许的不同，template可以使用变量来接收远程主机上setup收集到的facts信息，针对不同配置的主机，定制配置文件。其中Jinja2模板尤为复杂，包含条件、循环、宏；copy模块会把源文件直接复制过去，template会把Jinja2模板中的变量替换为值。</p>
-<h1 id="set-fact-模块"><a href="#set-fact-模块" class="headerlink" title="set_fact 模块"></a>set_fact 模块</h1><p>在远程受控机器上</p>
-<h1 id="pause-模块"><a href="#pause-模块" class="headerlink" title="pause 模块"></a>pause 模块</h1><h1 id="wait-for-模块"><a href="#wait-for-模块" class="headerlink" title="wait_for 模块"></a>wait_for 模块</h1><h1 id="assemble-模块"><a href="#assemble-模块" class="headerlink" title="assemble 模块"></a>assemble 模块</h1><h1 id="add-host-模块"><a href="#add-host-模块" class="headerlink" title="add_host 模块"></a>add_host 模块</h1><h1 id="group-by-模块"><a href="#group-by-模块" class="headerlink" title="group_by 模块"></a>group_by 模块</h1><h1 id="get-url-模块"><a href="#get-url-模块" class="headerlink" title="get_url 模块"></a>get_url 模块</h1><h1 id="debug-模块"><a href="#debug-模块" class="headerlink" title="debug 模块"></a>debug 模块</h1><h1 id="fail-模块"><a href="#fail-模块" class="headerlink" title="fail 模块"></a>fail 模块</h1>
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Zabbix(9)结合sensor监控cpu温度
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-04-19T18:42:47+08:00" content="2018-04-19">
+              2018-04-19
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/监控/" itemprop="url" rel="index">
+                    <span itemprop="name">监控</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">本文总阅读量
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
     
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>zabbix 可以通过sensors-detect检测内核模块，使用zabbix监控系统自定义监控项，采集监控数据并设置告警。可以监控物理机器(虚拟机获取不到)的温度。<br><a id="more"></a></p>
+<h1 id="安装sensors"><a href="#安装sensors" class="headerlink" title="安装sensors"></a>安装sensors</h1><p><code>yum install lm_sensors</code><br>运行sensors，可以看到每颗cpu的温度<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">[root@siluxa2 src]# sensors</div><div class="line">i350bb-pci-0100</div><div class="line">Adapter: PCI adapter</div><div class="line">loc1:         +50.0°C  (high = +120.0°C, crit = +110.0°C)</div><div class="line"></div><div class="line">coretemp-isa-0000</div><div class="line">Adapter: ISA adapter</div><div class="line">Physical id 0:  +55.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 0:         +45.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 1:         +46.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 2:         +45.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 3:         +46.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 4:         +46.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 8:         +46.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 9:         +46.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 10:        +46.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 11:        +44.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 12:        +45.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line"></div><div class="line">coretemp-isa-0001</div><div class="line">Adapter: ISA adapter</div><div class="line">Physical id 1:  +49.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 0:         +42.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 1:         +41.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 2:         +41.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 3:         +41.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 4:         +42.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 8:         +41.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 9:         +42.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 10:        +41.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 11:        +41.0°C  (high = +80.0°C, crit = +90.0°C)</div><div class="line">Core 12:        +41.0°C  (high = +80.0°C, crit = +90.0°C)</div></pre></td></tr></table></figure></p>
+<h1 id="配置zabbix-agent客户端文件"><a href="#配置zabbix-agent客户端文件" class="headerlink" title="配置zabbix agent客户端文件"></a>配置zabbix agent客户端文件</h1><p>修改客户端配置文件zabbix_agentd.conf<br>第一次自定义监控时要设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">在配置文件中添加一行：</div><div class="line">```UserParameter=get_temp_cpu[*],sensors|grep &quot;Physical id $1&quot;|cut -c 17-20</div></pre></td></tr></table></figure></p>
+<h1 id="添加监控项"><a href="#添加监控项" class="headerlink" title="添加监控项"></a>添加监控项</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">sensor[device,sensor,&lt;mode&gt;]</div><div class="line">读取硬件传感器</div><div class="line">device - 设备名称  </div><div class="line">sensor - 传感器名称  </div><div class="line">mode - 可选值:avg, max, min</div><div class="line">示例key: sensor[w83781d-i2c-0-2d,temp1] Prior to Zabbix 1.8.4, the sensor[temp1] format was used. On Linux 2.6+, 读取/sys/class/hwmon. On OpenBSD, 读取hw.sensors MIB.示例keys: sensor[cpu0,temp0] – CPU0的温度 sensor[cpu[0-2]$,temp,avg] – cpu平均温度Zabbix 1.8.4开始支持OpenBSD</div></pre></td></tr></table></figure>
+<p>我这里添加两颗cpu为例！<br><img src="/images/2018/0419/01.png" alt="z"><br><img src="/images/2018/0419/02.png" alt="z"></p>
+<h1 id="添加触发器"><a href="#添加触发器" class="headerlink" title="添加触发器"></a>添加触发器</h1><p><img src="/images/2018/0419/03.png" alt="z"><br><img src="/images/2018/0419/04.png" alt="z"></p>
+<h1 id="添加图形"><a href="#添加图形" class="headerlink" title="添加图形"></a>添加图形</h1><p><img src="/images/2018/0419/05.png" alt="z"></p>
+<h1 id="查看图形"><a href="#查看图形" class="headerlink" title="查看图形"></a>查看图形</h1><p><img src="/images/2018/0419/06.png" alt="z"></p>
+<p>参考链接：<a href="http://xy.uyun.cn/post/1865.html" target="_blank" rel="external">http://xy.uyun.cn/post/1865.html</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/01/alipay.jpg" alt="南山小樵 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/自动化/" rel="tag">#自动化</a>
+          
+            <a href="/tags/运维/" rel="tag">#运维</a>
+          
+            <a href="/tags/zabbix/" rel="tag">#zabbix</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/arlo/7c94dafb/" rel="next" title="Zabbix(8)使用ansible批量部署zabbix agent">
+                <i class="fa fa-chevron-left"></i> Zabbix(8)使用ansible批量部署zabbix agent
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -302,8 +462,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/01/psir.jpg"
@@ -314,7 +483,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">74</span>
+              <span class="site-state-item-count">75</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -353,6 +522,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#安装sensors"><span class="nav-number">1.</span> <span class="nav-text">安装sensors</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置zabbix-agent客户端文件"><span class="nav-number">2.</span> <span class="nav-text">配置zabbix agent客户端文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加监控项"><span class="nav-number">3.</span> <span class="nav-text">添加监控项</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加触发器"><span class="nav-number">4.</span> <span class="nav-text">添加触发器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#添加图形"><span class="nav-number">5.</span> <span class="nav-text">添加图形</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#查看图形"><span class="nav-number">6.</span> <span class="nav-text">查看图形</span></a></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -465,6 +645,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 

@@ -4,6 +4,30 @@
 
     
   <url>
+    <loc>http://islocal.cc/arlo/ce74a028/</loc>
+    <lastmod>2018-04-19T11:02:20.753Z</lastmod>
+    <data>
+        <display>
+        <title>Zabbix(9)结合sensor监控cpu温度</title>
+        <pubTime>2018-04-19T10:42:47.000Z</pubTime>
+        
+        <tag>自动化</tag>
+         
+        <tag>运维</tag>
+         
+        <tag>zabbix</tag>
+         
+         
+           
+             
+              <breadCrumb title="监控" url="http://islocal.cc/categories/%E7%9B%91%E6%8E%A7/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/arlo/3b5e53af/</loc>
     <lastmod>2018-04-17T08:58:14.509Z</lastmod>
     <data>
@@ -1524,6 +1548,23 @@
 
     
   <url>
+    <loc>http://islocal.cc/arlo/e5e5519a/</loc>
+    <lastmod>2018-03-15T07:17:45.788Z</lastmod>
+    <data>
+        <display>
+        <title>Hexo博客搭建简记</title>
+        <pubTime>2016-08-08T02:11:23.000Z</pubTime>
+        
+        <tag>hexo</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/arlo/3b439eff/</loc>
     <lastmod>2018-03-15T07:17:45.788Z</lastmod>
     <data>
@@ -1538,23 +1579,6 @@
              
               <breadCrumb title="Troubleshooting" url="http://islocal.cc/categories/Troubleshooting/"/>
           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://islocal.cc/arlo/e5e5519a/</loc>
-    <lastmod>2018-03-15T07:17:45.788Z</lastmod>
-    <data>
-        <display>
-        <title>Hexo博客搭建简记</title>
-        <pubTime>2016-08-08T02:11:23.000Z</pubTime>
-        
-        <tag>hexo</tag>
-         
-         
-           
         </display>
     </data>
     </url>
@@ -1649,7 +1673,6 @@
     </data>
     </url>
 
-    
     
     
   <url>
