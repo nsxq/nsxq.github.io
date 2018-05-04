@@ -78,19 +78,19 @@
 
 
 <meta name="description" content="之前安装oracle的时候，没有安装默认的示例，练习过程中，教程常用的hr等用户都没有，可以从官网下载示例来安装。
-下载官方example包登录http://www.oracle.com，到下载页浏览就可以找到名为linux.x64_11gR2_examples.zipunzip linux.x64_11gR2_examples.zip">
+下载官方example包登录http://www.oracle.com 到下载页浏览就可以找到名为 linux.x64_11gR2_examples.zipunzip linux.x64_11gR2_examples.zip">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Oracle 11g静默安装官方提供的examples">
 <meta property="og:url" content="http://islocal.cc/arlo/56125275/index.html">
 <meta property="og:site_name" content="南山居">
 <meta property="og:description" content="之前安装oracle的时候，没有安装默认的示例，练习过程中，教程常用的hr等用户都没有，可以从官网下载示例来安装。
-下载官方example包登录http://www.oracle.com，到下载页浏览就可以找到名为linux.x64_11gR2_examples.zipunzip linux.x64_11gR2_examples.zip">
+下载官方example包登录http://www.oracle.com 到下载页浏览就可以找到名为 linux.x64_11gR2_examples.zipunzip linux.x64_11gR2_examples.zip">
 <meta property="og:image" content="http://islocal.cc/images/2018/0504/01.png">
-<meta property="og:updated_time" content="2018-05-04T10:15:52.626Z">
+<meta property="og:updated_time" content="2018-05-04T10:21:16.216Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Oracle 11g静默安装官方提供的examples">
 <meta name="twitter:description" content="之前安装oracle的时候，没有安装默认的示例，练习过程中，教程常用的hr等用户都没有，可以从官网下载示例来安装。
-下载官方example包登录http://www.oracle.com，到下载页浏览就可以找到名为linux.x64_11gR2_examples.zipunzip linux.x64_11gR2_examples.zip">
+下载官方example包登录http://www.oracle.com 到下载页浏览就可以找到名为 linux.x64_11gR2_examples.zipunzip linux.x64_11gR2_examples.zip">
 <meta name="twitter:image" content="http://islocal.cc/images/2018/0504/01.png">
 
 
@@ -342,7 +342,7 @@
 
       
         <p>之前安装oracle的时候，没有安装默认的示例，练习过程中，教程常用的hr等用户都没有，可以从官网下载示例来安装。</p>
-<h1 id="下载官方example包"><a href="#下载官方example包" class="headerlink" title="下载官方example包"></a>下载官方example包</h1><p>登录<a href="http://www.oracle.com，到下载页浏览就可以找到名为" target="_blank" rel="external">http://www.oracle.com，到下载页浏览就可以找到名为</a><br>linux.x64_11gR2_examples.zip<br><code>unzip linux.x64_11gR2_examples.zip</code><br><a id="more"></a></p>
+<h1 id="下载官方example包"><a href="#下载官方example包" class="headerlink" title="下载官方example包"></a>下载官方example包</h1><p>登录<a href="http://www.oracle.com" target="_blank" rel="external">http://www.oracle.com</a> 到下载页浏览就可以找到名为 linux.x64_11gR2_examples.zip<br><code>unzip linux.x64_11gR2_examples.zip</code><br><a id="more"></a></p>
 <h1 id="编辑rsp静默安装文件"><a href="#编辑rsp静默安装文件" class="headerlink" title="编辑rsp静默安装文件"></a>编辑rsp静默安装文件</h1><p><code>cp examples/response/demos_install.rsp .</code><br><code>egrep -v &quot;^$|^#&quot; /home/oracle/demos_install.rsp</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">ORACLE_HOSTNAME=siluxa_oracle</div><div class="line">UNIX_GROUP_NAME=oinstall</div><div class="line">INVENTORY_LOCATION=/u01/app/oraInventory/</div><div class="line">SELECTED_LANGUAGES=en,zh_CN</div><div class="line">ORACLE_HOME=/u01/app/oracle/product/11.1.0/db_1</div><div class="line">ORACLE_BASE=/u01/app/oracle</div></pre></td></tr></table></figure></p>
 <h1 id="静默安装example"><a href="#静默安装example" class="headerlink" title="静默安装example"></a>静默安装example</h1><p><code>./runInstaller -silent -responseFile /home/oracle/demos_install.rsp -ignorePrereq</code></p>
 <h1 id="执行sql脚本文件，安装特定模式"><a href="#执行sql脚本文件，安装特定模式" class="headerlink" title="执行sql脚本文件，安装特定模式"></a>执行sql脚本文件，安装特定模式</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">[oracle@siluxa_oracle human_resources]$ sqlplus sys/solution as sysdba</div><div class="line"></div><div class="line">SQL*Plus: Release 11.2.0.1.0 Production on Fri May 4 18:01:11 2018</div><div class="line"></div><div class="line">Copyright (c) 1982, 2009, Oracle.  All rights reserved.</div><div class="line"></div><div class="line"></div><div class="line">Connected to:</div><div class="line">Oracle Database 11g Enterprise Edition Release 11.2.0.1.0 - 64bit Production</div><div class="line">With the Partitioning, OLAP, Data Mining and Real Application Testing options</div><div class="line"></div><div class="line">SYS@orcl&gt;  @?/demo/schema/human_resources/hr_main.sql</div><div class="line"></div><div class="line">specify password for HR as parameter 1:</div><div class="line">Enter value for 1: 123</div><div class="line"></div><div class="line">specify default tablespeace for HR as parameter 2:</div><div class="line">Enter value for 2: users</div><div class="line"></div><div class="line">specify temporary tablespace for HR as parameter 3:</div><div class="line">Enter value for 3: temp</div><div class="line"></div><div class="line">specify password for SYS as parameter 4:</div><div class="line">Enter value for 4: solution</div><div class="line"></div><div class="line">specify log path as parameter 5:</div><div class="line">Enter value for 5: $ORACLE_HOME/demo/schema/log/</div></pre></td></tr></table></figure>
