@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/07.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/08.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/09.png">
-<meta property="og:updated_time" content="2018-05-14T05:49:19.142Z">
+<meta property="og:updated_time" content="2018-05-14T05:54:07.523Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Windows组策略几个问题小计">
 <meta name="twitter:description" content="注册表编辑被管理员禁用第一步：打开组策略窗口，开始-运行-gptdit.msc第二步：选择用户配置-管理模板-系统，双击系统选项找到【阻止访问注册表编辑工具】第三步：双击【阻止访问注册表编辑工具】选择已禁用，点击确定。第四步：在开始-运行输入regedit，打开注册表。 说明注册表已经可以访问了。">
@@ -356,8 +356,9 @@
 <ol>
 <li>开始运行输入gpedit.msc</li>
 <li>计算机配置&gt;管理模板&gt;系统&gt;凭据分配&gt;加密Oracle修正 选择启用并选择易受攻击。</li>
-<li>易受攻击– 使用 CredSSP 的客户端应用程序将通过支持回退到不安全的版本使远程服务器遭受攻击，但使用 CredSSP 的服务将接受未修补的客户端。<br><img src="/images/2017/1031/09.png" alt="windows"><br>PS:该操作仅用于专业版，如果是家庭版请考虑升级(本人是家庭版，在X宝上买的key升级为专业版了)。</li>
+<li>易受攻击– 使用 CredSSP 的客户端应用程序将通过支持回退到不安全的版本使远程服务器遭受攻击，但使用 CredSSP 的服务将接受未修补的客户端。</li>
 </ol>
+<p><img src="/images/2017/1031/09.png" alt="windows"><br>PS:该操作仅用于专业版，如果是家庭版请考虑升级(本人是家庭版，在X宝上买的key升级为专业版了)。</p>
 <p>参考地址：<br><a href="http://ytweb.blog.51cto.com/5865824/1177266" target="_blank" rel="external">http://ytweb.blog.51cto.com/5865824/1177266</a><br><a href="https://jingyan.baidu.com/article/3a2f7c2e6ab84626afd61114.html" target="_blank" rel="external">https://jingyan.baidu.com/article/3a2f7c2e6ab84626afd61114.html</a><br><a href="http://blog.sina.com.cn/s/blog_4298a2c80102vii4.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_4298a2c80102vii4.html</a><br><a href="http://www.cnblogs.com/q149072205/p/6097433.html" target="_blank" rel="external">http://www.cnblogs.com/q149072205/p/6097433.html</a><br><a href="http://blog.csdn.net/flyingdream123/article/details/50724107" target="_blank" rel="external">http://blog.csdn.net/flyingdream123/article/details/50724107</a> </p>
 
       
