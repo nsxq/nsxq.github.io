@@ -92,7 +92,7 @@
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/07.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/08.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/09.png">
-<meta property="og:updated_time" content="2018-05-14T05:54:07.523Z">
+<meta property="og:updated_time" content="2018-05-15T07:38:54.747Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Windows组策略几个问题小计">
 <meta name="twitter:description" content="注册表编辑被管理员禁用第一步：打开组策略窗口，开始-运行-gptdit.msc第二步：选择用户配置-管理模板-系统，双击系统选项找到【阻止访问注册表编辑工具】第三步：双击【阻止访问注册表编辑工具】选择已禁用，点击确定。第四步：在开始-运行输入regedit，打开注册表。 说明注册表已经可以访问了。">
@@ -352,14 +352,15 @@
 <h1 id="要远程登录，你需要具有通过远程桌面服务进行的登录权限"><a href="#要远程登录，你需要具有通过远程桌面服务进行的登录权限" class="headerlink" title="要远程登录，你需要具有通过远程桌面服务进行的登录权限"></a>要远程登录，你需要具有通过远程桌面服务进行的登录权限</h1><p><img src="/images/2017/1031/07.png" alt="windows"><br>要远程登录，你需要具有通过远程桌面服务进行的登录权限。默认情况下，远程桌面用户组的成员有这项权限。如果你所属的组没有这项权限，或者远程桌面用户组已经删除了这项权限，那么需要手动为你授予这一权限<br>第一步：gpedit进入策略组:计算机配置-&gt;Windows设置-&gt;安全设置-&gt;本地策略-&gt;用户权限分配<br>第二步：找到拒绝通过远程桌面服务登录,把里面的账号去了即可</p>
 <h1 id="修改远程登录3389端口"><a href="#修改远程登录3389端口" class="headerlink" title="修改远程登录3389端口"></a>修改远程登录3389端口</h1><p>第一步: 打开“开始→运行”，输入“regedit”，打开注册表，<br>第二步: 进入[HKEY_LOCAL_MACHINE/SYSTEM/CurrentControlSet/Control/Terminal Server/Wds/rdpwd/Tds/tcp]，将PortNamber值(默认值是3389)，修改为新的端口，例如12389，注意使用十进制。<br>第三部：进入[HKEY_LOCAL_MACHINE/SYSTEM/CurrentControlSet/Control/Terminal Server/WinStations/RDP-Tcp]，将PortNumber值(默认是3389)修改为新的端口，如12389，注意使用十进制。</p>
 <h1 id="Win10家庭版找不到gpedit-msc组策略"><a href="#Win10家庭版找不到gpedit-msc组策略" class="headerlink" title="Win10家庭版找不到gpedit.msc组策略"></a>Win10家庭版找不到gpedit.msc组策略</h1><p>复制一下内容，新建一个.bat文件，然后使用管理员身份运行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">@echo off</div><div class="line"></div><div class="line">pushd &quot;%~dp0&quot;</div><div class="line"></div><div class="line">dir /b C:\Windows\servicing\Packages\Microsoft-Windows-GroupPolicy-ClientExtensions-Package~3*.mum &gt;List.txt</div><div class="line"></div><div class="line">dir /b C:\Windows\servicing\Packages\Microsoft-Windows-GroupPolicy-ClientTools-Package~3*.mum &gt;&gt;List.txt</div><div class="line"></div><div class="line">for /f %%i in (&apos;findstr /i . List.txt 2^&gt;nul&apos;) do dism /online /norestart /add-package:&quot;C:\Windows\servicing\Packages\%%i&quot;</div><div class="line"></div><div class="line">pause</div></pre></td></tr></table></figure></p>
-<h1 id="出现身份验证错误，要求的函数不受支持"><a href="#出现身份验证错误，要求的函数不受支持" class="headerlink" title="出现身份验证错误，要求的函数不受支持"></a>出现身份验证错误，要求的函数不受支持</h1><p><img src="/images/2017/1031/08.png" alt="windows"><br>使用微软官方建议修改本地组策略：</p>
+<h1 id="出现身份验证错误，要求的函数不受支持"><a href="#出现身份验证错误，要求的函数不受支持" class="headerlink" title="出现身份验证错误，要求的函数不受支持"></a>出现身份验证错误，要求的函数不受支持</h1><p><img src="/images/2017/1031/08.png" alt="windows"><br>此错误原因是检查更新了KB4103718的补丁造成的。</p>
+<p>使用微软官方建议修改本地组策略：</p>
 <ol>
 <li>开始运行输入gpedit.msc</li>
 <li>计算机配置&gt;管理模板&gt;系统&gt;凭据分配&gt;加密Oracle修正 选择启用并选择易受攻击。</li>
 <li>易受攻击– 使用 CredSSP 的客户端应用程序将通过支持回退到不安全的版本使远程服务器遭受攻击，但使用 CredSSP 的服务将接受未修补的客户端。</li>
 </ol>
-<p><img src="/images/2017/1031/09.png" alt="windows"><br>PS:该操作仅用于专业版，如果是家庭版请考虑升级(本人是家庭版，在X宝上买的key升级为专业版了)。</p>
-<p>参考地址：<br><a href="http://ytweb.blog.51cto.com/5865824/1177266" target="_blank" rel="external">http://ytweb.blog.51cto.com/5865824/1177266</a><br><a href="https://jingyan.baidu.com/article/3a2f7c2e6ab84626afd61114.html" target="_blank" rel="external">https://jingyan.baidu.com/article/3a2f7c2e6ab84626afd61114.html</a><br><a href="http://blog.sina.com.cn/s/blog_4298a2c80102vii4.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_4298a2c80102vii4.html</a><br><a href="http://www.cnblogs.com/q149072205/p/6097433.html" target="_blank" rel="external">http://www.cnblogs.com/q149072205/p/6097433.html</a><br><a href="http://blog.csdn.net/flyingdream123/article/details/50724107" target="_blank" rel="external">http://blog.csdn.net/flyingdream123/article/details/50724107</a> </p>
+<p><img src="/images/2017/1031/09.png" alt="windows"><br>PS:该操作仅用于专业版，如果是家庭版请考虑升级(本人是家庭版，在X宝上买的key升级为专业版了);<br>或者卸载KB4103718补丁重启。</p>
+<p>参考地址：<br><a href="http://ytweb.blog.51cto.com/5865824/1177266" target="_blank" rel="external">http://ytweb.blog.51cto.com/5865824/1177266</a><br><a href="https://jingyan.baidu.com/article/3a2f7c2e6ab84626afd61114.html" target="_blank" rel="external">https://jingyan.baidu.com/article/3a2f7c2e6ab84626afd61114.html</a><br><a href="http://blog.sina.com.cn/s/blog_4298a2c80102vii4.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_4298a2c80102vii4.html</a><br><a href="http://www.cnblogs.com/q149072205/p/6097433.html" target="_blank" rel="external">http://www.cnblogs.com/q149072205/p/6097433.html</a><br><a href="http://blog.csdn.net/flyingdream123/article/details/50724107" target="_blank" rel="external">http://blog.csdn.net/flyingdream123/article/details/50724107</a><br><a href="http://www.soncs.com/NewsShow/144.html" target="_blank" rel="external">http://www.soncs.com/NewsShow/144.html</a></p>
 
       
     </div>
