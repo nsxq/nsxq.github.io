@@ -61,7 +61,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="ftp,vsftp,服务器," />
+  <meta name="keywords" content="数据库,Oracle," />
 
 
 
@@ -77,18 +77,16 @@
 
 
 
-<meta name="description" content="vsftpd 是“very secure FTP daemon”的缩写，安全性是它的一个最大的特点。本次搭建ftp服务器，采用虚拟用户登录；所谓虚拟用户就是没有使用真实的系统用户，只是通过映射到真实的账户和设置权限的目的。虚拟用户不能登录操作系统。">
+<meta name="description" content="Oracle数据库常用的备份方式有，exp/imp, expdp/impdp和rman；RMAN备份内容包括:整个数据库,表空间,数据文件,指定的数据文件,控制文件,归档日志文件,参数文件等，打开归档日志后，可以做到不丢失数据，后期再详细分析研究。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="搭建ftp服务器并配置虚拟用户登录">
-<meta property="og:url" content="http://islocal.cc/arlo/5cd2f164/index.html">
+<meta property="og:title" content="expdp/impdp数据泵工具运用">
+<meta property="og:url" content="http://islocal.cc/arlo/2148c304/index.html">
 <meta property="og:site_name" content="南山居">
-<meta property="og:description" content="vsftpd 是“very secure FTP daemon”的缩写，安全性是它的一个最大的特点。本次搭建ftp服务器，采用虚拟用户登录；所谓虚拟用户就是没有使用真实的系统用户，只是通过映射到真实的账户和设置权限的目的。虚拟用户不能登录操作系统。">
-<meta property="og:image" content="http://islocal.cc/images/2017/1206/01.png">
-<meta property="og:updated_time" content="2018-03-15T07:17:45.960Z">
+<meta property="og:description" content="Oracle数据库常用的备份方式有，exp/imp, expdp/impdp和rman；RMAN备份内容包括:整个数据库,表空间,数据文件,指定的数据文件,控制文件,归档日志文件,参数文件等，打开归档日志后，可以做到不丢失数据，后期再详细分析研究。">
+<meta property="og:updated_time" content="2018-05-28T09:25:15.818Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="搭建ftp服务器并配置虚拟用户登录">
-<meta name="twitter:description" content="vsftpd 是“very secure FTP daemon”的缩写，安全性是它的一个最大的特点。本次搭建ftp服务器，采用虚拟用户登录；所谓虚拟用户就是没有使用真实的系统用户，只是通过映射到真实的账户和设置权限的目的。虚拟用户不能登录操作系统。">
-<meta name="twitter:image" content="http://islocal.cc/images/2017/1206/01.png">
+<meta name="twitter:title" content="expdp/impdp数据泵工具运用">
+<meta name="twitter:description" content="Oracle数据库常用的备份方式有，exp/imp, expdp/impdp和rman；RMAN备份内容包括:整个数据库,表空间,数据文件,指定的数据文件,控制文件,归档日志文件,参数文件等，打开归档日志后，可以做到不丢失数据，后期再详细分析研究。">
 
 
 
@@ -109,9 +107,9 @@
 
 
 
-  <link rel="canonical" href="http://islocal.cc/arlo/5cd2f164/"/>
+  <link rel="canonical" href="http://islocal.cc/arlo/2148c304/"/>
 
-  <title> 搭建ftp服务器并配置虚拟用户登录 | 南山居 </title>
+  <title> expdp/impdp数据泵工具运用 | 南山居 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -274,7 +272,7 @@
             
             
               
-                搭建ftp服务器并配置虚拟用户登录
+                expdp/impdp数据泵工具运用
               
             
           </h1>
@@ -286,8 +284,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-12-06T15:32:21+08:00" content="2017-12-06">
-              2017-12-06
+            <time itemprop="dateCreated" datetime="2018-05-28T16:49:53+08:00" content="2018-05-28">
+              2018-05-28
             </time>
           </span>
 
@@ -300,8 +298,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/服务器搭建/" itemprop="url" rel="index">
-                    <span itemprop="name">服务器搭建</span>
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
                   </a>
                 </span>
 
@@ -338,21 +336,18 @@
       
 
       
-        <p>vsftpd 是“very secure FTP daemon”的缩写，安全性是它的一个最大的特点。<br>本次搭建ftp服务器，采用虚拟用户登录；所谓虚拟用户就是没有使用真实的系统用户，只是通过映射到真实的账户和设置权限的目的。虚拟用户不能登录操作系统。<br><a id="more"></a></p>
-<h1 id="系统环境"><a href="#系统环境" class="headerlink" title="系统环境"></a>系统环境</h1><p>CentOS 6.9<br>SELinux disabled</p>
-<h1 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install db4 db4-utils vsftpd</div></pre></td></tr></table></figure>
-<h1 id="创建虚拟用户的宿主用户"><a href="#创建虚拟用户的宿主用户" class="headerlink" title="创建虚拟用户的宿主用户"></a>创建虚拟用户的宿主用户</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">useradd -u 600 -d /data/ftproot -s /sbin/nologin slvftp</div></pre></td></tr></table></figure>
-<h1 id="创建用户名密码文件"><a href="#创建用户名密码文件" class="headerlink" title="创建用户名密码文件"></a>创建用户名密码文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">vim account.txt</div><div class="line">slftp1</div><div class="line">xxxxxx</div><div class="line">slftp2</div><div class="line">yyyyyy</div></pre></td></tr></table></figure>
-<h1 id="生成虚拟用户认证文件"><a href="#生成虚拟用户认证文件" class="headerlink" title="生成虚拟用户认证文件"></a>生成虚拟用户认证文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">db_load -T -t hash -f ./account.txt /etc/vsftpd/account.db</div><div class="line">#安全原因，修改认证文件权限</div><div class="line">chmod 600 /etc/vsftpd/account.db</div><div class="line">#执行完此操作，建议删除account.txt</div></pre></td></tr></table></figure>
-<h1 id="配置认证文件"><a href="#配置认证文件" class="headerlink" title="配置认证文件"></a>配置认证文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">vim /etc/pam.d/vsftpd.sl</div><div class="line">auth required /lib64/security/pam_userdb.so db=/etc/vsftpd/account</div><div class="line">account required /lib64/security/pam_userdb.so db=/etc/vsftpd/account</div><div class="line">#我这里是64位的操作系统，写的是/lib64,如果是32位的操作系统，写成/lib即可</div></pre></td></tr></table></figure>
-<h1 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">vim /etc/vsftpd/vsftpd.conf</div><div class="line">#虚拟用户权限与匿名用户权限相同，虚拟用户权限单独设定</div><div class="line">virtual_use_local_privs=NO</div><div class="line">#服务器独立运行</div><div class="line">listen=YES</div><div class="line">#设定不允许匿名访问</div><div class="line">anonymous_enable=NO</div><div class="line">#设定本地用户可以访问。注：如使用虚拟宿主用户，在该项目设定为NO的情况下所有虚拟用户将无法访问</div><div class="line">local_enable=YES</div><div class="line">#使用户不能离开主目录</div><div class="line">chroot_list_enable=YES</div><div class="line">chroot_list_enable=YES</div><div class="line">chroot_list_file=/etc/vsftpd/chroot_list</div><div class="line">#设定支持ASCII模式的上传和下载功能</div><div class="line">ascii_upload_enable=YES</div><div class="line">ascii_download_enable=YES</div><div class="line">#PAM认证文件名。PAM将根据/etc/pam.d/vsftpd.sl进行认证</div><div class="line">pam_service_name=vsftpd.sl</div><div class="line">#设定启用虚拟用户功能</div><div class="line">guest_enable=YES</div><div class="line">#指定虚拟用户的宿主用户，CentOS中已经有内置的ftp用户了</div><div class="line">guest_username=slvftp</div><div class="line">#设定虚拟用户个人vsftp的CentOS FTP服务文件存放路径。存放虚拟用户个性的CentOS FTP服务文件(配置文件名=虚拟用户名)</div><div class="line">user_config_dir=/etc/vsftpd/user_config/</div><div class="line">#配置vsftpd日志（可选）</div><div class="line">xferlog_enable=YES</div><div class="line">xferlog_std_format=YES</div><div class="line">xferlog_file=/var/log/xferlog</div><div class="line">dual_log_enable=YES</div><div class="line">vsftpd_log_file=/var/log/vsftpd.log</div></pre></td></tr></table></figure>
-<h1 id="新建chroot-list空文件"><a href="#新建chroot-list空文件" class="headerlink" title="新建chroot_list空文件"></a>新建chroot_list空文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">touch /etc/vsftpd/chroot_list</div></pre></td></tr></table></figure>
-<h1 id="创建虚拟用户的配置目录文件"><a href="#创建虚拟用户的配置目录文件" class="headerlink" title="创建虚拟用户的配置目录文件"></a>创建虚拟用户的配置目录文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">mkdir /etc/vsftpd/user_config/</div><div class="line">#虚拟用户配置文件名必须与用户名一致</div><div class="line">vim /etc/vsftpd/user_config/slftp1</div><div class="line">guest_username=slvftp #虚拟用户的宿主用户</div><div class="line">local_root=/data/ftproot/slftp1  #虚拟用户根目录</div><div class="line">local_enable=YES</div><div class="line">write_enable=YES  #写权限</div><div class="line">anon_umask=022</div><div class="line">anon_world_readable_only=NO</div><div class="line">anon_upload_enable=YES #上传权限</div><div class="line">anon_mkdir_write_enable=YES  #创建文件夹权限</div><div class="line">anon_other_write_enable=YES  #其他权限</div><div class="line">##############</div><div class="line">vim /etc/vsftpd/user_config/slftp2</div><div class="line">guest_username=slvftp</div><div class="line">local_root=/data/ftproot/slftp2</div><div class="line">local_enable=YES</div><div class="line">write_enable=YES</div><div class="line">anon_umask=022</div><div class="line">anon_world_readable_only=NO</div><div class="line">anon_upload_enable=YES</div><div class="line">anon_mkdir_write_enable=YES</div><div class="line">anon_other_write_enable=YES</div></pre></td></tr></table></figure>
-<h1 id="创建ftp根目录"><a href="#创建ftp根目录" class="headerlink" title="创建ftp根目录"></a>创建ftp根目录</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mkdir -pv /data/ftproot/slftp&#123;1,2&#125;</div><div class="line">chmod 700 -R /data/ftproot</div><div class="line">chown slvftp.slvftp -R /data/ftproot</div></pre></td></tr></table></figure>
-<h1 id="重启vsftp服务"><a href="#重启vsftp服务" class="headerlink" title="重启vsftp服务"></a>重启vsftp服务</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/etc/init.d/vsftpd restart</div></pre></td></tr></table></figure>
-<h1 id="防火墙开放端口"><a href="#防火墙开放端口" class="headerlink" title="防火墙开放端口"></a>防火墙开放端口</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">iptables -A INPUT -m state --state NEW -m tcp -p tcp --dport 21 -j ACCEPT</div><div class="line">iptables -A INPUT -m state --state NEW -m tcp -p tcp --dport 20 -j ACCEPT</div></pre></td></tr></table></figure>
-<h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">yum -y install lftp</div><div class="line">lftp user:passwd@127.0.0.1</div></pre></td></tr></table></figure>
-<p><img src="/images/2017/1206/01.png" alt="ftp"><br>参考文档：<a href="https://dumplings.cc/bu-shu-vsftpyu-pei-zhi-xu-ni-yong-hu-deng-lu/" target="_blank" rel="external">https://dumplings.cc/bu-shu-vsftpyu-pei-zhi-xu-ni-yong-hu-deng-lu/</a></p>
+        <p>Oracle数据库常用的备份方式有，exp/imp, expdp/impdp和rman；<br>RMAN备份内容包括:整个数据库,表空间,数据文件,指定的数据文件,控制文件,归档日志文件,参数文件等，打开归档日志后，可以做到不丢失数据，后期再详细分析研究。<br><a id="more"></a><br>使用expdp和impdp时应该注重的事项：<br>1、exp和imp是客户端工具程序，它们既可以在客户端使用，也可以在服务端使用。<br>2、expdp和impdp是服务端的工具程序，他们只能在oracle服务端使用，不能在客户端使用。<br>3、imp只适用于exp导出的文件，不适用于expdp导出文件；impdp只适用于expdp导出的文件，而不适用于exp导出文件。<br>4、对于10g以上的服务器，使用exp通常不能导出0行数据的空表，而此时必须使用expdp导出。</p>
+<h1 id="查看管理员目录"><a href="#查看管理员目录" class="headerlink" title="查看管理员目录"></a>查看管理员目录</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sqlplus / as sysdba</div><div class="line">SQL&gt; select * from dba_directories;</div></pre></td></tr></table></figure>
+<h1 id="创建管理员目录并授权"><a href="#创建管理员目录并授权" class="headerlink" title="创建管理员目录并授权"></a>创建管理员目录并授权</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">SQL&gt; create directory dump_dir as &apos;/opt/db_backup&apos;;  #可以使用默认的目录，也可以自己新建目录</div><div class="line">SQL&gt; grant read,write on directory db_backup to scott;</div></pre></td></tr></table></figure>
+<h1 id="使用expdp导出数据"><a href="#使用expdp导出数据" class="headerlink" title="使用expdp导出数据"></a>使用expdp导出数据</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">1)导出用户</div><div class="line">expdp scott/tiger@orcl schemas=scott dumpfile=expdp.dmp directory=dump_dir;</div><div class="line">expdp userid=&quot;&apos;sys/passwd@orcl as sysdba&apos;&quot;  schemas=scott dumpfile=scott.dmp directory=DATA_PUMP_DIR;   #使用sys用户导出写法</div><div class="line">2)导出表</div><div class="line">expdp scott/tiger@orcl tables=emp,dept dumpfile=expdp.dmp directory=dump_dir;</div><div class="line">3)按查询条件导</div><div class="line">expdp scott/tiger@orcl directory=dump_dir dumpfile=expdp.dmp tables=emp query=&apos;where deptno=20&apos;;</div><div class="line">4)按表空间导</div><div class="line">expdp system/manager@orcl directory=dump_dir dumpfile=tablespace.dmp tablespaces=temp,example;</div><div class="line">5)导整个数据库</div><div class="line">expdp system/manager@orcl directory=dump_dir dumpfile=full.dmp full=y;</div><div class="line">expdp userid=&quot;&apos;sys/passwd@orcl as sysdba&apos;&quot; full=y directory=DATA_PUMP_DIR dumpfile=full.dmp;	#使用sys用户导出写法</div></pre></td></tr></table></figure>
+<h1 id="用impdp导入数据"><a href="#用impdp导入数据" class="headerlink" title="用impdp导入数据"></a>用impdp导入数据</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">1)导入用户（从用户scott导入到用户scott）</div><div class="line">impdp scott/tiger@orcl directory=dump_dir dumpfile=expdp.dmp schemas=scott;</div><div class="line">impdp userid=&quot;&apos;sys/passwd@orcl as sysdba&apos;&quot; schemas=scott dumpfile=scott.dmp directory=DATA_PUMP_DIR;	#使用sys用户导出写法</div><div class="line">2)导入表（从scott用户中把表dept和emp导入到system用户中）</div><div class="line">impdp system/manager@orcl directory=dump_dir dumpfile=expdp.dmp tables=scott.dept,scott.emp remap_schema=scott:system;</div><div class="line">3)导入表空间</div><div class="line">impdp system/manager@orcl directory=dump_dir dumpfile=tablespace.dmp tablespaces=example;</div><div class="line">4)导入数据库</div><div class="line">impdb system/manager@orcl directory=dump_dir dumpfile=full.dmp full=y;</div><div class="line">impdp userid=&quot;&apos;sys/passwd@orcl as sysdba&apos;&quot; full=y directory=DATA_PUMP_DIR dumpfile=full.dmp</div><div class="line">5)追加数据</div><div class="line">impdp system/manager@orcl directory=dump_dir dumpfile=expdp.dmp schemas=system table_exists_action</div></pre></td></tr></table></figure>
+<h1 id="expdp的compression参数选项（压缩）"><a href="#expdp的compression参数选项（压缩）" class="headerlink" title="expdp的compression参数选项（压缩）"></a>expdp的compression参数选项（压缩）</h1><p><strong><em>COMPRESSION=[ALL | DATA_ONLY | METADATA_ONLY | NONE]</em></strong><br>Oracle 11g中新增了几种压缩方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ALL 对导出的元数据和表数据都进行压缩，得到的导出文件是最小的，耗时也是最长的。（据说压缩比可以达到 1/7）</div><div class="line">DATA_ONLY 仅对表数据进行压缩，对于大数据量的导出效果明显，会比METADATA_ONLY方式得到更小的压缩文件。</div><div class="line">METADATA_ONLY 仅对元数据进行压缩，而不会对表数据进行压缩，这种压缩执行后效果一般不是很明显，不过速度比较快。</div><div class="line">NONE 不进行任何的压缩，导出后的文件也是最大的。</div><div class="line">DEFAULT 默认方式，即不指定COMPRESSION参数，会采用默认的压缩方式METADATA_ONLY。</div></pre></td></tr></table></figure></p>
+<h1 id="impdp的TABLE-EXISTS-ACTION参数选项"><a href="#impdp的TABLE-EXISTS-ACTION参数选项" class="headerlink" title="impdp的TABLE_EXISTS_ACTION参数选项"></a>impdp的TABLE_EXISTS_ACTION参数选项</h1><p>默认值是skip，但若设置了CONTENT=DATA_ONLY，则默认值是APPEND，不是SKIP。<br><strong><em>TABLE_EXISTS_ACTION=[SKIP | APPEND | TRUNCATE | REPLACE]</em></strong></p>
+<pre><code>SKIP：跳过这张表，继续下一个对象。如果CONTENT设置了DATA_ONLY参数，则不能使用SKIP。
+APPEND：会加载数据至对象，但不会影响已存在的行。
+TRUNCATE：删除已存在的行，然后加载所有的数据。
+REPLACE：drop已存在的表，然后create并加载数据。如果CONTENT设置了DATA_ONLY，则不能使用REPLACE。
+</code></pre><p>参考链接：<br><a href="http://blog.sina.com.cn/s/blog_67d41beb0100ixnb.html" target="_blank" rel="external">http://blog.sina.com.cn/s/blog_67d41beb0100ixnb.html</a><br><a href="https://blog.csdn.net/bisal/article/details/51482968" target="_blank" rel="external">https://blog.csdn.net/bisal/article/details/51482968</a><br><a href="http://www.htz.pw/2015/05/20/expdp的compression测试.html" target="_blank" rel="external">http://www.htz.pw/2015/05/20/expdp的compression测试.html</a></p>
 
       
     </div>
@@ -391,11 +386,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/ftp/" rel="tag">#ftp</a>
+            <a href="/tags/数据库/" rel="tag">#数据库</a>
           
-            <a href="/tags/vsftp/" rel="tag">#vsftp</a>
-          
-            <a href="/tags/服务器/" rel="tag">#服务器</a>
+            <a href="/tags/Oracle/" rel="tag">#Oracle</a>
           
         </div>
       
@@ -404,17 +397,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/arlo/e07eb088/" rel="next" title="Oracle RAC环境搭建(Oracle Linux 6.9+Oracle 11g R2+FreeNas)">
-                <i class="fa fa-chevron-left"></i> Oracle RAC环境搭建(Oracle Linux 6.9+Oracle 11g R2+FreeNas)
+              <a href="/arlo/764ae16c/" rel="next" title="等保三级安全要求之开源软件实现">
+                <i class="fa fa-chevron-left"></i> 等保三级安全要求之开源软件实现
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/arlo/143cd09f/" rel="prev" title="枚举卷期间出错: 客户端无法连接到请求中指定的目标……">
-                枚举卷期间出错: 客户端无法连接到请求中指定的目标…… <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -534,7 +523,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#系统环境"><span class="nav-number">1.</span> <span class="nav-text">系统环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#软件安装"><span class="nav-number">2.</span> <span class="nav-text">软件安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建虚拟用户的宿主用户"><span class="nav-number">3.</span> <span class="nav-text">创建虚拟用户的宿主用户</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建用户名密码文件"><span class="nav-number">4.</span> <span class="nav-text">创建用户名密码文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#生成虚拟用户认证文件"><span class="nav-number">5.</span> <span class="nav-text">生成虚拟用户认证文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置认证文件"><span class="nav-number">6.</span> <span class="nav-text">配置认证文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改配置文件"><span class="nav-number">7.</span> <span class="nav-text">修改配置文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#新建chroot-list空文件"><span class="nav-number">8.</span> <span class="nav-text">新建chroot_list空文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建虚拟用户的配置目录文件"><span class="nav-number">9.</span> <span class="nav-text">创建虚拟用户的配置目录文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建ftp根目录"><span class="nav-number">10.</span> <span class="nav-text">创建ftp根目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重启vsftp服务"><span class="nav-number">11.</span> <span class="nav-text">重启vsftp服务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#防火墙开放端口"><span class="nav-number">12.</span> <span class="nav-text">防火墙开放端口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#测试"><span class="nav-number">13.</span> <span class="nav-text">测试</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#查看管理员目录"><span class="nav-number">1.</span> <span class="nav-text">查看管理员目录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建管理员目录并授权"><span class="nav-number">2.</span> <span class="nav-text">创建管理员目录并授权</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#使用expdp导出数据"><span class="nav-number">3.</span> <span class="nav-text">使用expdp导出数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#用impdp导入数据"><span class="nav-number">4.</span> <span class="nav-text">用impdp导入数据</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#expdp的compression参数选项（压缩）"><span class="nav-number">5.</span> <span class="nav-text">expdp的compression参数选项（压缩）</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#impdp的TABLE-EXISTS-ACTION参数选项"><span class="nav-number">6.</span> <span class="nav-text">impdp的TABLE_EXISTS_ACTION参数选项</span></a></li></ol></div>
             
           </div>
         </section>
