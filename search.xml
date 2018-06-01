@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[SSH隧道实现Yum等代理]]></title>
+    <url>%2Farlo%2Ff49b27ae%2F</url>
+    <content type="text"><![CDATA[背景Linux服务器环境中有部分服务器不能上网，使用yum安装软件极为不便；解决方案可以搭建一个本地代理服务器，在不能联通外网的服务器上将1080端口跳转到另外一台可以上外网的22端口上，实现ssh跳转，设置yum代理，实现软件安装注意事项 需要一台可以连接公网的服务器A（192.168.6.123） 需要安装软件的服务器B（192.168.6.141）可以连接上A（192.168.6.123） 服务器B（192.168.6.141）上需要安装privoxy 和git 基础软件 所有操作在服务器B（192.168.6.141）上完成 在centos 6 上，yum只能使用 http, https, ftp 协议的代理。 但在 centos 7上 yum 可以使用 socks5 的代理。 建立SSH隧道12ssh -p 22 -gfND 1080 root@192.168.6.123ss -tlnup |grep 1080 安装配置privoxy12345yum -y install privoxyvim /etc/privoxy/configforward-socks5 / 127.0.0.1:1080 .#如果允许其他机器访问，需要修改listen-addresslisten-address 0.0.0.0:8118 启动privoxy服务12systemctl start privoxysystemctl enable privoxy 为YUM配置代理123456#centos7配置方法[main]proxy=socks5h://localhost:1080#centos6配置方法[main]proxy=http://localhost:8118 扩展、配置其他代理为CURL配置代理123vim ~/.curlc# socks5h 中的 h 意为远程主机名解析socks5 = &quot;socks5h://127.0.0.1:1080&quot; 为wget配置代理123456vim /etc/wgetrchttp_proxy = http://localhost:8118https_proxy = http://localhost:8118ftp_proxy = http://localhost:8118use_proxy = onwait = 15 为pip配置代理12345mkdir ~/.pipvim ~/.pip/pip.conf[global]proxy = 127.0.0.1:8118trusted-host = mirrors.aliyun.com 为git设置http https 代理123456789#设置git config --global https.proxy &apos;socks5h://127.0.0.1:1080&apos;git config --global http.proxy &apos;socks5h://127.0.0.1:1080&apos;#查看git config --global --get http.proxygit config --global --get https.proxy#取消git config --global --unset http.proxygit config --global --unset https.proxy]]></content>
+      <categories>
+        <category>常识</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+        <tag>SSH</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[expdp/impdp数据泵工具运用]]></title>
     <url>%2Farlo%2F2148c304%2F</url>
-    <content type="text"><![CDATA[Oracle数据库常用的备份方式有，exp/imp, expdp/impdp和rman；RMAN备份内容包括:整个数据库,表空间,数据文件,指定的数据文件,控制文件,归档日志文件,参数文件等，打开归档日志后，可以做到不丢失数据，后期再详细分析研究。使用expdp和impdp时应该注重的事项：1、exp和imp是客户端工具程序，它们既可以在客户端使用，也可以在服务端使用。2、expdp和impdp是服务端的工具程序，他们只能在oracle服务端使用，不能在客户端使用。3、imp只适用于exp导出的文件，不适用于expdp导出文件；impdp只适用于expdp导出的文件，而不适用于exp导出文件。4、对于10g以上的服务器，使用exp通常不能导出0行数据的空表，而此时必须使用expdp导出。 查看管理员目录12sqlplus / as sysdbaSQL&gt; select * from dba_directories; 创建管理员目录并授权12SQL&gt; create directory dump_dir as &apos;/opt/db_backup&apos;; #可以使用默认的目录，也可以自己新建目录SQL&gt; grant read,write on directory db_backup to scott; 使用expdp导出数据1234567891011121)导出用户expdp scott/tiger@orcl schemas=scott dumpfile=expdp.dmp directory=dump_dir;expdp userid=&quot;&apos;sys/passwd@orcl as sysdba&apos;&quot; schemas=scott dumpfile=scott.dmp directory=DATA_PUMP_DIR; #使用sys用户导出写法2)导出表expdp scott/tiger@orcl tables=emp,dept dumpfile=expdp.dmp directory=dump_dir;3)按查询条件导expdp scott/tiger@orcl directory=dump_dir dumpfile=expdp.dmp tables=emp query=&apos;where deptno=20&apos;;4)按表空间导expdp system/manager@orcl directory=dump_dir dumpfile=tablespace.dmp tablespaces=temp,example;5)导整个数据库expdp system/manager@orcl directory=dump_dir dumpfile=full.dmp full=y;expdp userid=&quot;&apos;sys/passwd@orcl as sysdba&apos;&quot; full=y directory=DATA_PUMP_DIR dumpfile=full.dmp; #使用sys用户导出写法 用impdp导入数据1234567891011121)导入用户（从用户scott导入到用户scott）impdp scott/tiger@orcl directory=dump_dir dumpfile=expdp.dmp schemas=scott;impdp userid=&quot;&apos;sys/passwd@orcl as sysdba&apos;&quot; schemas=scott dumpfile=scott.dmp directory=DATA_PUMP_DIR; #使用sys用户导出写法2)导入表（从scott用户中把表dept和emp导入到system用户中）impdp system/manager@orcl directory=dump_dir dumpfile=expdp.dmp tables=scott.dept,scott.emp remap_schema=scott:system;3)导入表空间impdp system/manager@orcl directory=dump_dir dumpfile=tablespace.dmp tablespaces=example;4)导入数据库impdb system/manager@orcl directory=dump_dir dumpfile=full.dmp full=y;impdp userid=&quot;&apos;sys/passwd@orcl as sysdba&apos;&quot; full=y directory=DATA_PUMP_DIR dumpfile=full.dmp5)追加数据impdp system/manager@orcl directory=dump_dir dumpfile=expdp.dmp schemas=system table_exists_action expdp的compression参数选项（压缩）COMPRESSION=[ALL | DATA_ONLY | METADATA_ONLY | NONE]Oracle 11g中新增了几种压缩方法。12345ALL 对导出的元数据和表数据都进行压缩，得到的导出文件是最小的，耗时也是最长的。（据说压缩比可以达到 1/7）DATA_ONLY 仅对表数据进行压缩，对于大数据量的导出效果明显，会比METADATA_ONLY方式得到更小的压缩文件。METADATA_ONLY 仅对元数据进行压缩，而不会对表数据进行压缩，这种压缩执行后效果一般不是很明显，不过速度比较快。NONE 不进行任何的压缩，导出后的文件也是最大的。DEFAULT 默认方式，即不指定COMPRESSION参数，会采用默认的压缩方式METADATA_ONLY。 impdp的TABLE_EXISTS_ACTION参数选项默认值是skip，但若设置了CONTENT=DATA_ONLY，则默认值是APPEND，不是SKIP。TABLE_EXISTS_ACTION=[SKIP | APPEND | TRUNCATE | REPLACE] SKIP：跳过这张表，继续下一个对象。如果CONTENT设置了DATA_ONLY参数，则不能使用SKIP。 APPEND：会加载数据至对象，但不会影响已存在的行。 TRUNCATE：删除已存在的行，然后加载所有的数据。 REPLACE：drop已存在的表，然后create并加载数据。如果CONTENT设置了DATA_ONLY，则不能使用REPLACE。 参考链接：http://blog.sina.com.cn/s/blog_67d41beb0100ixnb.htmlhttps://blog.csdn.net/bisal/article/details/51482968http://www.htz.pw/2015/05/20/expdp的compression测试.html]]></content>
+    <content type="text"><![CDATA[Oracle数据库常用的备份方式有，exp/imp, expdp/impdp和rman；RMAN备份内容包括:整个数据库,表空间,数据文件,指定的数据文件,控制文件,归档日志文件,参数文件等，打开归档日志后，可以做到不丢失数据，后期再详细分析研究。使用expdp和impdp时应该注重的事项：1、exp和imp是客户端工具程序，它们既可以在客户端使用，也可以在服务端使用。2、expdp和impdp是服务端的工具程序，他们只能在oracle服务端使用，不能在客户端使用。3、imp只适用于exp导出的文件，不适用于expdp导出文件；impdp只适用于expdp导出的文件，而不适用于exp导出文件。4、对于10g以上的服务器，使用exp通常不能导出0行数据的空表，而此时必须使用expdp导出。 查询备份和恢复数据库的数据库信息尽量保证数据库的版本和字符集等信息一致，否则会有很多坑。 查看数据库的版本1select * from v$version; 查看数据库编码1SELECT * FROM V$NLS_PARAMETERS WHERE PARAMETER IN (&apos;NLS_CHARACTERSET&apos;, &apos;NLS_NCHAR_CHARACTERSET&apos;); 查看管理员目录12sqlplus / as sysdbaSQL&gt; select * from dba_directories; 创建管理员目录并授权12SQL&gt; create directory dump_dir as &apos;/opt/db_backup&apos;; #可以使用默认的目录，也可以自己新建目录SQL&gt; grant read,write on directory db_backup to scott; 使用expdp导出数据1234567891011121)导出用户expdp scott/tiger@orcl schemas=scott dumpfile=expdp.dmp directory=dump_dir;expdp userid=&quot;&apos;sys/passwd@orcl as sysdba&apos;&quot; schemas=scott dumpfile=scott.dmp directory=DATA_PUMP_DIR; #使用sys用户导出写法2)导出表expdp scott/tiger@orcl tables=emp,dept dumpfile=expdp.dmp directory=dump_dir;3)按查询条件导expdp scott/tiger@orcl directory=dump_dir dumpfile=expdp.dmp tables=emp query=&apos;where deptno=20&apos;;4)按表空间导expdp system/manager@orcl directory=dump_dir dumpfile=tablespace.dmp tablespaces=temp,example;5)导整个数据库expdp system/manager@orcl directory=dump_dir dumpfile=full.dmp full=y;expdp userid=&quot;&apos;sys/passwd@orcl as sysdba&apos;&quot; full=y directory=DATA_PUMP_DIR dumpfile=full.dmp; #使用sys用户导出写法 用impdp导入数据1234567891011121)导入用户（从用户scott导入到用户scott）impdp scott/tiger@orcl directory=dump_dir dumpfile=expdp.dmp schemas=scott;impdp userid=&quot;&apos;sys/passwd@orcl as sysdba&apos;&quot; schemas=scott dumpfile=scott.dmp directory=DATA_PUMP_DIR; #使用sys用户导出写法2)导入表（从scott用户中把表dept和emp导入到system用户中）impdp system/manager@orcl directory=dump_dir dumpfile=expdp.dmp tables=scott.dept,scott.emp remap_schema=scott:system;3)导入表空间impdp system/manager@orcl directory=dump_dir dumpfile=tablespace.dmp tablespaces=example;4)导入数据库impdb system/manager@orcl directory=dump_dir dumpfile=full.dmp full=y;impdp userid=&quot;&apos;sys/passwd@orcl as sysdba&apos;&quot; full=y directory=DATA_PUMP_DIR dumpfile=full.dmp5)追加数据impdp system/manager@orcl directory=dump_dir dumpfile=expdp.dmp schemas=system table_exists_action expdp的compression参数选项（压缩）COMPRESSION=[ALL | DATA_ONLY | METADATA_ONLY | NONE]Oracle 11g中新增了几种压缩方法。12345ALL 对导出的元数据和表数据都进行压缩，得到的导出文件是最小的，耗时也是最长的。（据说压缩比可以达到 1/7）DATA_ONLY 仅对表数据进行压缩，对于大数据量的导出效果明显，会比METADATA_ONLY方式得到更小的压缩文件。METADATA_ONLY 仅对元数据进行压缩，而不会对表数据进行压缩，这种压缩执行后效果一般不是很明显，不过速度比较快。NONE 不进行任何的压缩，导出后的文件也是最大的。DEFAULT 默认方式，即不指定COMPRESSION参数，会采用默认的压缩方式METADATA_ONLY。 impdp的TABLE_EXISTS_ACTION参数选项默认值是skip，但若设置了CONTENT=DATA_ONLY，则默认值是APPEND，不是SKIP。TABLE_EXISTS_ACTION=[SKIP | APPEND | TRUNCATE | REPLACE]123456SKIP：跳过这张表，继续下一个对象。如果CONTENT设置了DATA_ONLY参数，则不能使用SKIP。APPEND：会加载数据至对象，但不会影响已存在的行。TRUNCATE：删除已存在的行，然后加载所有的数据。REPLACE：drop已存在的表，然后create并加载数据。如果CONTENT设置了DATA_ONLY，则不能使用REPLACE。``` # 导入过程中，常用查询语句 查询表空间使用量，如果不够，可以添加文件SELECT FILE_NAME, TABLESPACE_NAME, BYTES / 1024 / 1024 “bytes MB”,MAXBYTES / 1024 / 1024 “maxbytes MB” FROM DBA_DATA_FILES WHERE TABLESPACE_NAME = ‘USERS’;ALTER TABLESPACE USERS ADD DATAFILE ‘/u01/app/oracle/oradata/sjzdb/users02.dbf’ SIZE 5M AUTOEXTEND ON MAXSIZE 32767M; 查看SCHEMAS占用的表空间大小SELECT OWNER, SUM(BYTES) / 1024 / 1024 / 1024 SCHEMA_SIZE_GIG FROM SYS.DBA_SEGMENTS GROUP BY OWNER; 查询schemas下的所有表SELECT TABLE_NAME FROM SYS.DBA_TABLES WHERE OWNER = ‘AIR_FORECAST’;```参考链接：http://blog.sina.com.cn/s/blog_67d41beb0100ixnb.htmlhttps://blog.csdn.net/bisal/article/details/51482968http://www.htz.pw/2015/05/20/expdp的compression测试.html]]></content>
       <categories>
         <category>数据库</category>
       </categories>
@@ -55,8 +67,8 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>zabbix</tag>
       </tags>
   </entry>
@@ -68,10 +80,10 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
-        <tag>zabbix</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
+        <tag>zabbix</tag>
       </tags>
   </entry>
   <entry>
@@ -155,8 +167,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Sonar</tag>
       </tags>
   </entry>
@@ -296,8 +308,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -322,9 +334,9 @@
         <category>监控</category>
       </categories>
       <tags>
+        <tag>tomcat</tag>
         <tag>zabbix</tag>
         <tag>监控</tag>
-        <tag>tomcat</tag>
       </tags>
   </entry>
   <entry>
@@ -436,8 +448,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
         <tag>tomcat</tag>
       </tags>
@@ -463,8 +475,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -476,8 +488,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -603,8 +615,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -616,8 +628,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -629,8 +641,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -642,8 +654,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -655,8 +667,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>expect</tag>
         <tag>脚本</tag>
       </tags>
@@ -780,8 +792,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -793,8 +805,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Cobbler</tag>
       </tags>
   </entry>
@@ -849,6 +861,9 @@
     <title><![CDATA[SSH 奇淫技巧之隧道模式]]></title>
     <url>%2Farlo%2Fda9b9fcb%2F</url>
     <content type="text"><![CDATA[用了ssh这么久，今天才知道ssh还有这么强大的功能，穿透内外网，来去自如；其实最重要的还是方便平时工作中的调试，在此简单的记录一下。 使用条件一台拥有ssh端口连接的外网linux服务器 本地转发场景：公网有一台服务器的公网ip，ssh端口(已修改为2012)没有对外开放，本地想直接连接此端口，可以通过公网一台开放ssh端口的服务器跳转过去1ssh -p 2012 -CNg -L 2222:namenode:2012 nsxq@1.2.3.4 将namenode服务器的2012端口通过1.2.3.4服务器映射到本地2222端口 ssh -p 2222 localhost 即可连接-p 指定跳转机端口—L 本地转发 远程转发场景：本地开发环境需要被外网访问，之前一直使用花生壳，ngrok之类的程序；现在只需要本地执行一条ssh命令，将本地的端口映射到一台外网的服务器上去1ssh -p 2012 -CNfg -R 0.0.0.0:8888:192.168.1.5:80 nsxq@1.2.3.4 将本地内网192.168.1.5:80 映射到1.2.3.4服务器的8888端口，访问1.2.3.4:8888 即可访问192.168.1.5:80 内容 打开1.2.3.4服务器需要sshd_config 配置中的GatewayPorts yes记得顺手打开防火墙端口-p 指定跳转机端口-R 远程转发 动态转发场景：相对于上边两种单一端口转发，此功能就是在本地启动一个端口，其他机器可以设置代理，通过此端口进行流量转发（俗称翻墙）。1ssh -D 5000 nsxq@1.2.3.4 我这里没有能上google的服务器，没法测试，按道理来说，其他机器就可以将代理设置为1.2.3.4:5000 进行商上网了 参考资料[实战ssh端口转发]http://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/[SSH的三种端口转发（Port forwarding）/ 隧道协议概要]https://blog.twofei.com/528/]]></content>
+      <categories>
+        <category>常识</category>
+      </categories>
       <tags>
         <tag>Linux</tag>
         <tag>SSH</tag>
