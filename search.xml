@@ -192,7 +192,7 @@
         <category>服务器搭建</category>
       </categories>
       <tags>
-        <tag>windows</tag>
+        <tag>Windows</tag>
         <tag>域控</tag>
         <tag>office</tag>
         <tag>在线预览</tag>
@@ -244,7 +244,7 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>windows</tag>
+        <tag>Windows</tag>
         <tag>华为</tag>
         <tag>存储</tag>
       </tags>
@@ -296,7 +296,7 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>windows</tag>
+        <tag>Windows</tag>
         <tag>vpn</tag>
       </tags>
   </entry>
@@ -424,7 +424,7 @@
       <tags>
         <tag>Linux</tag>
         <tag>常识</tag>
-        <tag>windows</tag>
+        <tag>Windows</tag>
         <tag>jdk</tag>
       </tags>
   </entry>
@@ -436,7 +436,7 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>windows</tag>
+        <tag>Windows</tag>
         <tag>更新</tag>
       </tags>
   </entry>
@@ -674,7 +674,7 @@
       </tags>
   </entry>
   <entry>
-    <title><![CDATA[windows 下使用expdp自动备份多用户oracle脚本]]></title>
+    <title><![CDATA[Windows 下使用expdp自动备份多用户oracle脚本]]></title>
     <url>%2Farlo%2F85974653%2F</url>
     <content type="text"><![CDATA[Windows下多Oracle实例，根据用户自动备份12345678910111213141516171819@echo off echo ================================================ echo Windows环境下Oracle数据库的自动备份脚本 echo 1. 使用当前日期命名备份文件。 echo 2. 自动删除30天前的备份。 echo ================================================ ::以“YYYYMMDD”格式取出当前时间。 set BACKUPDATE=%date:~0,4%%date:~5,2%%date:~8,2% set DATADIR=E:\database_backup\%BACKUPDATE%echo 本次备份目录是%DATADIR%echo ================================================ echo 开始备份数据库for %%u in (AIR_FORECAST,ALK,AIR_FZ,TSUBJECT,TMAIN,TCODE,AIR_YBYJ,AIR_FXPT,INVENTORY,TENV,NEWMBGL) do expdp userid=&apos;sys/密码@实例 as sysdba&apos; schemas=%%u directory=DATA_PUMP_DIR dumpfile=%%u.dmpecho 移动文件到数据库备份目录if not exist &quot;E:\database_backup\%BACKUPDATE%&quot; mkdir E:\database_backup\%BACKUPDATE% MOVE /Y E:\app\Administrator\admin\SX21\dpdump\* E:\database_backup\%BACKUPDATE%::删除30天前的备份forfiles /p E:\database_backup\ /m 201* /d -30 /c &quot;cmd /c if @isdir==TRUE (rmdir /q /s @path) else (del /f @path)&quot; exit 参考：http://www.cnblogs.com/peterpanzsy/p/3442784.htmlhttp://blog.csdn.net/smasegain/article/details/46759267]]></content>
       <categories>
@@ -683,6 +683,7 @@
       <tags>
         <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>Windows</tag>
       </tags>
   </entry>
   <entry>
@@ -961,6 +962,9 @@
       <categories>
         <category>Troubleshooting</category>
       </categories>
+      <tags>
+        <tag>Windows</tag>
+      </tags>
   </entry>
   <entry>
     <title><![CDATA[Hexo博客搭建简记]]></title>
