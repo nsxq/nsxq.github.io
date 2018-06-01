@@ -55,11 +55,11 @@
         <title>Windows 下使用expdp自动备份多用户oracle脚本</title>
         <pubTime>2017-06-16T10:56:32.000Z</pubTime>
         
+        <tag>Windows</tag>
+         
         <tag>数据库</tag>
          
         <tag>Oracle</tag>
-         
-        <tag>Windows</tag>
          
          
            
@@ -393,9 +393,9 @@
         <title>Zabbix(9)结合sensor监控cpu温度</title>
         <pubTime>2018-04-19T10:42:47.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>zabbix</tag>
          
@@ -439,13 +439,13 @@
         <title>Zabbix(8)使用ansible批量部署zabbix agent</title>
         <pubTime>2018-04-17T07:04:45.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
          
-        <tag>Ansible</tag>
+        <tag>自动化</tag>
          
         <tag>zabbix</tag>
+         
+        <tag>Ansible</tag>
          
          
            
@@ -509,11 +509,11 @@
         <title>Zabbix(5)通过JMX监控Tomcat</title>
         <pubTime>2017-10-10T08:10:05.000Z</pubTime>
         
-        <tag>tomcat</tag>
-         
         <tag>zabbix</tag>
          
         <tag>监控</tag>
+         
+        <tag>tomcat</tag>
          
          
            
@@ -645,9 +645,9 @@
         <title>Sonar代码质量管理工具安装</title>
         <pubTime>2018-02-02T09:54:03.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Sonar</tag>
          
@@ -695,9 +695,9 @@
         <title>Bginfo--Windows系统信息显示工具</title>
         <pubTime>2018-01-22T06:01:43.000Z</pubTime>
         
-        <tag>windows</tag>
-         
         <tag>bginfo</tag>
+         
+        <tag>windows</tag>
          
          
            
@@ -765,9 +765,9 @@
         <title>使用 Cobbler 自动化和管理系统安装</title>
         <pubTime>2017-04-20T13:45:06.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Cobbler</tag>
          
@@ -1323,9 +1323,9 @@
         <title>Jenkins邮件通知配置</title>
         <pubTime>2017-08-22T08:36:52.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Jenkins</tag>
          
@@ -1347,9 +1347,9 @@
         <title>Jenkins持续集成发布时tomcat不能删除目录下文件</title>
         <pubTime>2017-08-29T06:48:29.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Jenkins</tag>
          
@@ -1373,9 +1373,9 @@
         <title>Jenkins打包不能发现本地仓库包</title>
         <pubTime>2017-08-17T07:48:30.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Jenkins</tag>
          
@@ -1397,9 +1397,9 @@
         <title>Jenkins使用Publish Over CIFS插件实现静态页面部署到Windows服务器</title>
         <pubTime>2017-10-24T01:42:19.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Jenkins</tag>
          
@@ -1421,9 +1421,9 @@
         <title>jenkins 持续集成环境搭建</title>
         <pubTime>2017-04-27T06:04:11.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Jenkins</tag>
          
@@ -1489,9 +1489,9 @@
         <title>Except实践之 修改主机密码&添加用户&ssh免密码验证</title>
         <pubTime>2017-06-18T08:35:04.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>expect</tag>
          
@@ -1537,9 +1537,9 @@
         <title>Ansible 模块篇</title>
         <pubTime>2017-06-21T06:22:00.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Ansible</tag>
          
@@ -1561,9 +1561,9 @@
         <title>Ansible 入门篇</title>
         <pubTime>2017-06-21T06:10:50.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Ansible</tag>
          
@@ -1585,9 +1585,9 @@
         <title>Ansible Playbook入门篇</title>
         <pubTime>2017-06-22T01:04:14.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Ansible</tag>
          
@@ -1609,9 +1609,9 @@
         <title>Aansible palybook 创建lvm并自动挂载</title>
         <pubTime>2017-06-27T10:03:12.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Ansible</tag>
          
