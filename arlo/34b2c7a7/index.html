@@ -111,7 +111,7 @@
 <meta property="og:image" content="http://islocal.cc/images/2018/0615/27.png">
 <meta property="og:image" content="http://islocal.cc/images/2018/0615/28.png">
 <meta property="og:image" content="http://islocal.cc/images/2018/0615/29.png">
-<meta property="og:updated_time" content="2018-06-21T07:00:41.746Z">
+<meta property="og:updated_time" content="2018-06-21T07:45:44.971Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ambari+HDP大数据平台搭建">
 <meta name="twitter:description" content="Ambari 是什么？Ambari 跟 Hadoop 等开源软件一样，也是 Apache Software Foundation 中的一个项目，并且是顶级项目。（http://ambari.apache.org） 目前最新的发布版本是 2.6.2.0；Ambari可以简单的理解为开源的Hadoop生态圈（Hive，Yarn，Hbase，Hive，Sqoop，Kafka，Zookeeper，spar">
@@ -366,7 +366,37 @@
 
       
         <h1 id="Ambari-是什么？"><a href="#Ambari-是什么？" class="headerlink" title="Ambari 是什么？"></a>Ambari 是什么？</h1><p>Ambari 跟 Hadoop 等开源软件一样，也是 Apache Software Foundation 中的一个项目，并且是顶级项目。（<a href="http://ambari.apache.org）" target="_blank" rel="external">http://ambari.apache.org）</a> 目前最新的发布版本是 2.6.2.0；Ambari可以简单的理解为开源的Hadoop生态圈（Hive，Yarn，Hbase，Hive，Sqoop，Kafka，Zookeeper，spark 等）平台的管理软件，具备Hadoop组件的安装、管理、运维等基本功能，提供Web UI进行可视化的集群管理，简化了大数据平台的安装、使用难度。<br><a id="more"></a></p>
-<h1 id="基础环境配置"><a href="#基础环境配置" class="headerlink" title="基础环境配置"></a>基础环境配置</h1><h2 id="资源规划"><a href="#资源规划" class="headerlink" title="资源规划"></a>资源规划</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">主机名			IP地址			操作系统</div><div class="line">bigdata01.islocal.cc	192.168.6.164		CentOS Linux release 7.4.1708 (Core)</div><div class="line">bigdata02.islocal.cc	192.168.6.181		CentOS Linux release 7.4.1708 (Core)</div><div class="line">bigdata03.islocal.cc	192.168.6.183		CentOS Linux release 7.4.1708 (Core)</div><div class="line">bigdata04.islocal.cc	192.168.6.194		CentOS Linux release 7.4.1708 (Core)</div></pre></td></tr></table></figure>
+<h1 id="基础环境配置"><a href="#基础环境配置" class="headerlink" title="基础环境配置"></a>基础环境配置</h1><h2 id="资源规划"><a href="#资源规划" class="headerlink" title="资源规划"></a>资源规划</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">主机名</th>
+<th style="text-align:center">IP地址</th>
+<th style="text-align:center">操作系统</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">bigdata01.islocal.cc</td>
+<td style="text-align:center">192.168.6.164</td>
+<td style="text-align:center">CentOS Linux release 7.4.1708 (Core)</td>
+</tr>
+<tr>
+<td style="text-align:center">bigdata02.islocal.cc</td>
+<td style="text-align:center">192.168.6.181</td>
+<td style="text-align:center">CentOS Linux release 7.4.1708 (Core)</td>
+</tr>
+<tr>
+<td style="text-align:center">bigdata03.islocal.cc</td>
+<td style="text-align:center">192.168.6.183</td>
+<td style="text-align:center">CentOS Linux release 7.4.1708 (Core)</td>
+</tr>
+<tr>
+<td style="text-align:center">bigdata04.islocal.cc</td>
+<td style="text-align:center">192.168.6.194</td>
+<td style="text-align:center">CentOS Linux release 7.4.1708 (Core)</td>
+</tr>
+</tbody>
+</table>
 <h2 id="软件版本"><a href="#软件版本" class="headerlink" title="软件版本"></a>软件版本</h2><p>JDK        1.8.1.8.0_112<br>postgresql    10.3<br>Ambari        2.6.2.0-155<br>HDP        2.6.4.0-91<br>HDP-GPL        2.6.4.0-91<br>HDP-UTILS    1.1.0.22    </p>
 <h2 id="下载地址"><a href="#下载地址" class="headerlink" title="下载地址"></a>下载地址</h2><ol>
 <li>首先登陆官方页面<br><a href="https://docs.hortonworks.com/index.html" target="_blank" rel="external">https://docs.hortonworks.com/index.html</a></li>
