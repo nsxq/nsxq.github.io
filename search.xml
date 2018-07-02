@@ -190,8 +190,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>Oracle</tag>
       </tags>
   </entry>
@@ -242,8 +242,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>Scp</tag>
         <tag>MTU</tag>
       </tags>
@@ -458,9 +458,9 @@
         <category>常识</category>
       </categories>
       <tags>
+        <tag>Linux</tag>
         <tag>常识</tag>
         <tag>Windows</tag>
-        <tag>Linux</tag>
         <tag>jdk</tag>
       </tags>
   </entry>
@@ -498,8 +498,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>vpn</tag>
       </tags>
   </entry>
@@ -613,8 +613,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>下载</tag>
         <tag>axel</tag>
       </tags>
@@ -703,9 +703,9 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>expect</tag>
         <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>expect</tag>
         <tag>脚本</tag>
       </tags>
   </entry>
@@ -866,8 +866,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>epel</tag>
       </tags>
   </entry>
@@ -963,9 +963,9 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>xshell</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
       </tags>
   </entry>
   <entry>
@@ -976,8 +976,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>常识</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
