@@ -111,7 +111,7 @@
 <meta property="og:image" content="http://islocal.cc/images/2018/0615/27.png">
 <meta property="og:image" content="http://islocal.cc/images/2018/0615/28.png">
 <meta property="og:image" content="http://islocal.cc/images/2018/0615/29.png">
-<meta property="og:updated_time" content="2018-06-21T07:45:44.971Z">
+<meta property="og:updated_time" content="2018-06-21T09:49:48.555Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ambari+HDP大数据平台搭建">
 <meta name="twitter:description" content="Ambari 是什么？Ambari 跟 Hadoop 等开源软件一样，也是 Apache Software Foundation 中的一个项目，并且是顶级项目。（http://ambari.apache.org） 目前最新的发布版本是 2.6.2.0；Ambari可以简单的理解为开源的Hadoop生态圈（Hive，Yarn，Hbase，Hive，Sqoop，Kafka，Zookeeper，spar">
@@ -418,7 +418,7 @@
 <h3 id="拷贝秘钥到其他主机"><a href="#拷贝秘钥到其他主机" class="headerlink" title="拷贝秘钥到其他主机"></a>拷贝秘钥到其他主机</h3><p><code>ssh-copy-id bigdata01.islocal.cc</code><br><code>ssh-copy-id bigdata02.islocal.cc</code><br><code>ssh-copy-id bigdata03.islocal.cc</code><br><code>ssh-copy-id bigdata04.islocal.cc</code></p>
 <h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p><code>ssh bigdata01.islocal.cc date</code><br><code>ssh bigdata02.islocal.cc date</code><br><code>ssh bigdata03.islocal.cc date</code><br><code>ssh bigdata04.islocal.cc date</code></p>
 <h2 id="配置时间同步"><a href="#配置时间同步" class="headerlink" title="配置时间同步"></a>配置时间同步</h2><p>如果服务器可以上外网，直接使用公网时间服务器即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">*/10 * * * * /usr/sbin/ntpdate cn.ntp.org.cn &amp;&amp; hwclock -w</div></pre></td></tr></table></figure></p>
-<h2 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">mkdir /usr/ths</div><div class="line">tar xf jdk1.8.0_112.tgz -C /usr/ths</div><div class="line"></div><div class="line">vim /etc/profile</div><div class="line">export EDITOR=/usr/bin/vim</div><div class="line">export HISTSIZE=10000</div><div class="line">export HISTTIMEFORMAT=&quot;%F %T &quot;</div><div class="line">export JAVA_HOME=/usr/ths/jdk1.8.0_112</div><div class="line">export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</div><div class="line"></div><div class="line">source /etc/profile</div></pre></td></tr></table></figure>
+<h2 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">mkdir /usr/ths</div><div class="line">tar xf jdk1.8.0_112.tgz -C /usr/ths</div><div class="line"># 安装jce</div><div class="line">http://www.oracle.com/technetwork/java/javase/downloads/jce8-download-2133166.html</div><div class="line">unzip -o -j -q jce_policy-8.zip -d /usr/ths/jdk1.8.0_112/jre/lib/security/</div><div class="line"></div><div class="line">vim /etc/profile</div><div class="line">export EDITOR=/usr/bin/vim</div><div class="line">export HISTSIZE=10000</div><div class="line">export HISTTIMEFORMAT=&quot;%F %T &quot;</div><div class="line">export JAVA_HOME=/usr/ths/jdk1.8.0_112</div><div class="line">export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar</div><div class="line"></div><div class="line">source /etc/profile</div></pre></td></tr></table></figure>
 <h2 id="系统参数优化"><a href="#系统参数优化" class="headerlink" title="系统参数优化"></a>系统参数优化</h2><p><code>vim /etc/security/limits.conf</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">* soft nofile 65536</div><div class="line">* hard nofile 65536</div></pre></td></tr></table></figure></p>
 <h1 id="本地仓库搭建"><a href="#本地仓库搭建" class="headerlink" title="本地仓库搭建"></a>本地仓库搭建</h1><p>由于ambari，hdp软件包很大，使用官方的yum源安装比较慢，我们搭建一个本地仓库，使用本地yum源</p>
 <h2 id="安装配置web服务器"><a href="#安装配置web服务器" class="headerlink" title="安装配置web服务器"></a>安装配置web服务器</h2><h3 id="安装依赖包"><a href="#安装依赖包" class="headerlink" title="安装依赖包"></a>安装依赖包</h3><p><code>yum install gcc gcc-c++ make automake autoconf libtool pcre pcre-devel zlib zlib-devel openssl openssl-devel</code></p>
@@ -520,6 +520,10 @@
 
           <div class="post-nav-prev post-nav-item">
             
+              <a href="/arlo/8566e00c/" rel="prev" title="自建KMS服务器，激活Windows & Office">
+                自建KMS服务器，激活Windows & Office <i class="fa fa-chevron-right"></i>
+              </a>
+            
           </div>
         </div>
       
@@ -592,7 +596,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-count">83</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -609,7 +613,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">75</span>
+                <span class="site-state-item-count">77</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

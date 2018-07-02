@@ -271,6 +271,126 @@
             
               
                 
+                <a class="post-title-link" href="/arlo/c26ec4ea/" itemprop="url">
+                  Jenkins邮件通知配置
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-08-22T16:36:52+08:00" content="2017-08-22">
+              2017-08-22
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/自动化运维/" itemprop="url" rel="index">
+                    <span itemprop="name">自动化运维</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>Jenkins<a href="http://islocal.cc/2017/04/27/jenkins-%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">环境搭建</a>完成了,项目自动化编译打包也调通了，但是我们不能保证每次都是正常的，根据自己的情况(构建失败，构建状态不稳定)配置邮件通知是有必要的；这篇文章我采用腾讯qq邮箱来发送，使用公司邮箱来接收；</p>
+<h1 id="常用的几种方式"><a href="#常用的几种方式" class="headerlink" title="常用的几种方式"></a>常用的几种方式</h1><ul>
+<li>使用内置的邮件插进（使用全局的配置，只能有一个接收方）</li>
+<li>使用邮件扩展插件【Email Extension Plugin】（使用全局的配置，能有多个接收方，但是只能有一个发送方）</li>
+<li>使用邮件扩展插件【Email Extension Plugin】+Groovy脚本（实现每个Job对应不同的发送邮件，多个发送方）</li>
+<li>开发邮件转发中间件或者使用Foxmail这些工具来转发（每个Job发送到对应的邮箱，然后中间件负责转发到成员列表的邮箱。对发送插件没什么要求，只要能发送即可）<br><em>(这篇文章只说一下前两种方式)</em>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/arlo/c26ec4ea/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/arlo/d4636f97/" itemprop="url">
                   Jenkins打包不能发现本地仓库包
                 </a>
@@ -1270,121 +1390,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/arlo/98679d8a/" itemprop="url">
-                  Centos7下Rsync服务器搭建配置
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-07-04T09:49:48+08:00" content="2017-07-04">
-              2017-07-04
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/常识/" itemprop="url" rel="index">
-                    <span itemprop="name">常识</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>之前写了个<a href="http://islocal.cc/2017/06/16/windows-下使用expdp自动备份多用户oracle脚本">Windows下oracle多用户自动备份的脚本</a>，这个备份完数据还是存在服务器本地的，如果系统宕机的话，数据还是没有了，这样的备份是没有意义滴；所以我们需要把数据转移到其他的存储上，常用的方式是使用Rsync工具来保持同步数据，接下来我们搭建一个简单的Rsync服务器。<br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/arlo/98679d8a/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1429,7 +1434,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">82</span>
+              <span class="site-state-item-count">83</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -1446,7 +1451,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">75</span>
+                <span class="site-state-item-count">77</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

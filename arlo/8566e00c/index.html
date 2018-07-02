@@ -1,0 +1,837 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Windows,激活,KMS," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="全文转自：https://lolico.moe/tutorial/linux-kms-server.html
+One key KMSLinux 快速搭建 KMS 激活服务器，让 PC 激活 Windows 和 Office 并自动续期，告别网上的来路不明的激活工具，防止意外中毒。虽然目前已经有各种 PC 用的 KMS 激活程序，例如KMSAuto或者KMS VL ALL之类的，但是他们都会被 Wi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自建KMS服务器，激活Windows & Office">
+<meta property="og:url" content="http://islocal.cc/arlo/8566e00c/index.html">
+<meta property="og:site_name" content="南山居">
+<meta property="og:description" content="全文转自：https://lolico.moe/tutorial/linux-kms-server.html
+One key KMSLinux 快速搭建 KMS 激活服务器，让 PC 激活 Windows 和 Office 并自动续期，告别网上的来路不明的激活工具，防止意外中毒。虽然目前已经有各种 PC 用的 KMS 激活程序，例如KMSAuto或者KMS VL ALL之类的，但是他们都会被 Wi">
+<meta property="og:image" content="http://islocal.cc/images/2018/0702/01.png">
+<meta property="og:updated_time" content="2018-07-02T08:30:09.578Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自建KMS服务器，激活Windows & Office">
+<meta name="twitter:description" content="全文转自：https://lolico.moe/tutorial/linux-kms-server.html
+One key KMSLinux 快速搭建 KMS 激活服务器，让 PC 激活 Windows 和 Office 并自动续期，告别网上的来路不明的激活工具，防止意外中毒。虽然目前已经有各种 PC 用的 KMS 激活程序，例如KMSAuto或者KMS VL ALL之类的，但是他们都会被 Wi">
+<meta name="twitter:image" content="http://islocal.cc/images/2018/0702/01.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://islocal.cc/arlo/8566e00c/"/>
+
+  <title> 自建KMS服务器，激活Windows & Office | 南山居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">南山居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                自建KMS服务器，激活Windows & Office
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-07-02T16:03:02+08:00" content="2018-07-02">
+              2018-07-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/服务器搭建/" itemprop="url" rel="index">
+                    <span itemprop="name">服务器搭建</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">本文总阅读量
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>全文转自：<a href="https://lolico.moe/tutorial/linux-kms-server.html" target="_blank" rel="external">https://lolico.moe/tutorial/linux-kms-server.html</a></p>
+<h1 id="One-key-KMS"><a href="#One-key-KMS" class="headerlink" title="One key KMS"></a>One key KMS</h1><p>Linux 快速搭建 KMS 激活服务器，让 PC 激活 Windows 和 Office 并自动续期，告别网上的来路不明的激活工具，防止意外中毒。虽然目前已经有各种 PC 用的 KMS 激活程序，例如KMSAuto或者KMS VL ALL之类的，但是他们都会被 Windows Defender 或者普通的杀毒软件认为是病毒。虽然你“相信”这些软件被报毒是很正常的，直接加入白名单了事，然而你确实不知道你从网上搜索下载的这些激活程序是不是真的经过别人的改造植入了病毒……<br>因此，我们可以利用自己的 Linux VPS 搭建 KMS 激活服务器给自己的 PC 使用，这样既安全无毒又不怕激活丢失。<br>只能激活 VL 版本（即“<a href="https://baike.baidu.com/item/VOL%E7%89%88" target="_blank" rel="external">团体批量许可证</a>”版）的 Windows，Office 则有办法从零售版转成 VL 版所以不用担心<br><a id="more"></a></p>
+<h1 id="一键搭建-KMS-服务"><a href="#一键搭建-KMS-服务" class="headerlink" title="一键搭建 KMS 服务"></a>一键搭建 KMS 服务</h1><h2 id="下载脚本并运行，根据提示键入y开始安装"><a href="#下载脚本并运行，根据提示键入y开始安装" class="headerlink" title="下载脚本并运行，根据提示键入y开始安装"></a>下载脚本并运行，根据提示键入y开始安装</h2><p>CentOS / Redhat / Fedora<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget https://raw.githubusercontent.com/dakkidaze/one-key-kms/master/one-key-kms-centos.sh &amp;&amp; chmod +x one-key-kms-centos.sh &amp;&amp;./one-key-kms-centos.sh</div></pre></td></tr></table></figure></p>
+<p>Debian / Ubuntu / Mint<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">wget https://raw.githubusercontent.com/dakkidaze/one-key-kms/master/one-key-kms-debian.sh &amp;&amp; chmod +x one-key-kms-debian.sh &amp;&amp; ./one-key-kms-debian.sh</div></pre></td></tr></table></figure></p>
+<h2 id="下载这个作者写的配套脚本来控制启动-停止-重启等"><a href="#下载这个作者写的配套脚本来控制启动-停止-重启等" class="headerlink" title="下载这个作者写的配套脚本来控制启动/停止/重启等"></a>下载这个作者写的配套脚本来控制启动/停止/重启等</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#下载脚本</div><div class="line">wget https://raw.githubusercontent.com/dakkidaze/one-key-kms/master/kms.sh &amp;&amp; chmod +x kms.sh</div><div class="line">#启动 KMS 服务</div><div class="line">./kms.sh start</div><div class="line">#这个脚本可以使用的参数：</div><div class="line"># start | stop | restart | status</div></pre></td></tr></table></figure>
+<h2 id="如果你的防火墙默认-DROP，那么需要手动放行1688端口"><a href="#如果你的防火墙默认-DROP，那么需要手动放行1688端口" class="headerlink" title="如果你的防火墙默认 DROP，那么需要手动放行1688端口"></a>如果你的防火墙默认 DROP，那么需要手动放行1688端口</h2><p>CentOS / Redhat / Fedora<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">iptables -I INPUT -p tcp --dport 1688 -j ACCEPT</div></pre></td></tr></table></figure></p>
+<p>Debian / Ubuntu / Mint<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#如果有 ufw 的话</div><div class="line">ufw allow 1688</div><div class="line">#如果没有的话，这么方便的防火墙工具为啥不装一个嘞~</div></pre></td></tr></table></figure></p>
+<h1 id="激活-Windows"><a href="#激活-Windows" class="headerlink" title="激活 Windows"></a>激活 Windows</h1><p>再次提醒，只能激活 VL 版的系统<br>以管理员身份运行命令提示符或者PowerShell，然后输入以下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cd /d &quot;%SystemRoot%\system32&quot;</div><div class="line">slmgr /skms 你的KMS服务端主机的IP或者域名</div><div class="line">slmgr /ato</div><div class="line">slmgr /xpr</div><div class="line">成功的话你应该会看到这样的提示：</div></pre></td></tr></table></figure></p>
+<p>这样，每过 180 天，系统都会自动与你的 KMS 服务器通信来激活 Windows，只要到时候你的 KMS 服务器还在，Windows 就能继续激活;当然，你也可以随时通过slmgr /skms这条命令来更换你的 KMS 服务器地址</p>
+<h1 id="激活-Office"><a href="#激活-Office" class="headerlink" title="激活 Office"></a>激活 Office</h1><p>只能激活 VL 版的 Office，如果是零售版，百度一下有很多将零售版转换为 VL 版的方法和批处理脚本；如果你比较懒，也可以直接利用KMSAuto工具来转换<br>首先确定你的 Office 版本所对应的目录名称：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">版本</th>
+<th style="text-align:center">目录名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">2016</td>
+<td style="text-align:center">Office16</td>
+</tr>
+<tr>
+<td style="text-align:center">2013</td>
+<td style="text-align:center">Office15</td>
+</tr>
+<tr>
+<td style="text-align:center">2010</td>
+<td style="text-align:center">Office14</td>
+</tr>
+</tbody>
+</table>
+<p>如果你的 Office 是 32 位的，那么目录就在<br><code>C:\Program Files (x86)\Microsoft Office\目录名称</code><br>如果是 64 位，那么在<br><code>C:\Program Files\Microsoft Office\目录名称</code><br>接下来以管理员身份运行命令提示符或者PowerShell，然后输入以下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#以 64 位的 Office2016 为例，进入 Office 目录</div><div class="line">cd &quot;C:\Program Files\Microsoft Office\Office16&quot;</div><div class="line">cscript ospp.vbs /sethst:你的KMS服务端主机的IP或者域名</div><div class="line">cscript ospp.vbs /act</div><div class="line">成功的话你应该会看到类似这样的执行输出：</div></pre></td></tr></table></figure></p>
+<p><img src="/images/2018/0702/01.png" alt="kms"></p>
+<h1 id="其他说明"><a href="#其他说明" class="headerlink" title="其他说明"></a>其他说明</h1><h2 id="开机自启"><a href="#开机自启" class="headerlink" title="开机自启"></a>开机自启</h2><p>如果只是想简单的让 KMS 服务在 Linux 上开机自启，那么编辑/etc/rc.local文件，在exit 0（如果有）前面加上一句</p>
+<p>假设之前下载的那个 kms.sh 脚本位于 /root/kms.sh<br><code>/root/kms.sh start</code><br>然后保存即可</p>
+<h2 id="守护进程"><a href="#守护进程" class="headerlink" title="守护进程"></a>守护进程</h2><p>如果你有很高的要求，想让 KMS 服务以守护进程的方式运行，防止服务意外终止<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">#Debian / Ubuntu / Mint 使用 apt-get 来安装 supervisor</div><div class="line">#CentOS / Redhat / Fedora 使用 yum 来安装 supervisor</div><div class="line">#这里以 Debian 系统为例</div><div class="line">apt-get install supervisor -y</div><div class="line">echo &quot;[program:kms]</div><div class="line">command=/usr/local/kms/vlmcsd -L 0.0.0.0:1688</div><div class="line">autorestart=true</div><div class="line">autostart=true</div><div class="line">user=root&quot; &gt; /etc/supervisor/conf.d/kms.conf</div><div class="line">/etc/init.d/supervisor restart</div></pre></td></tr></table></figure></p>
+<p>如果你使用守护进程方式运行 KMS 服务，那么就不需要在/etc/rc.local中写入开机启动命令</p>
+<p>相关链接：<br><a href="https://lolico.moe/tutorial/linux-kms-server.html" target="_blank" rel="external">https://lolico.moe/tutorial/linux-kms-server.html</a><br><a href="https://hub.docker.com/r/ilemonrain/vlmcsd/" target="_blank" rel="external">https://hub.docker.com/r/ilemonrain/vlmcsd/</a><br><a href="https://github.com/Wind4/vlmcsd" target="_blank" rel="external">https://github.com/Wind4/vlmcsd</a><br><a href="https://github.com/SystemRage/py-kms" target="_blank" rel="external">https://github.com/SystemRage/py-kms</a></p>
+<hr>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/01/alipay.jpg" alt="南山小樵 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Windows/" rel="tag">#Windows</a>
+          
+            <a href="/tags/激活/" rel="tag">#激活</a>
+          
+            <a href="/tags/KMS/" rel="tag">#KMS</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/arlo/34b2c7a7/" rel="next" title="Ambari+HDP大数据平台搭建">
+                <i class="fa fa-chevron-left"></i> Ambari+HDP大数据平台搭建
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: document.location.href, 
+    sourceId: "���� page.path ����",
+    productKey: "0df311b624f44726a84b2b6249d64c11",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/01/psir.jpg"
+               alt="南山小樵" />
+          <p class="site-author-name" itemprop="name">南山小樵</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">83</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">77</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#One-key-KMS"><span class="nav-number">1.</span> <span class="nav-text">One key KMS</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#一键搭建-KMS-服务"><span class="nav-number">2.</span> <span class="nav-text">一键搭建 KMS 服务</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#下载脚本并运行，根据提示键入y开始安装"><span class="nav-number">2.1.</span> <span class="nav-text">下载脚本并运行，根据提示键入y开始安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载这个作者写的配套脚本来控制启动-停止-重启等"><span class="nav-number">2.2.</span> <span class="nav-text">下载这个作者写的配套脚本来控制启动/停止/重启等</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如果你的防火墙默认-DROP，那么需要手动放行1688端口"><span class="nav-number">2.3.</span> <span class="nav-text">如果你的防火墙默认 DROP，那么需要手动放行1688端口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#激活-Windows"><span class="nav-number">3.</span> <span class="nav-text">激活 Windows</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#激活-Office"><span class="nav-number">4.</span> <span class="nav-text">激活 Office</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#其他说明"><span class="nav-number">5.</span> <span class="nav-text">其他说明</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#开机自启"><span class="nav-number">5.1.</span> <span class="nav-text">开机自启</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#守护进程"><span class="nav-number">5.2.</span> <span class="nav-text">守护进程</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南山小樵</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
