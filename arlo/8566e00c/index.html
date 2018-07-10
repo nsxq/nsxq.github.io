@@ -86,7 +86,7 @@ One key KMSLinux 快速搭建 KMS 激活服务器，让 PC 激活 Windows 和 Of
 <meta property="og:description" content="全文转自：https://lolico.moe/tutorial/linux-kms-server.html
 One key KMSLinux 快速搭建 KMS 激活服务器，让 PC 激活 Windows 和 Office 并自动续期，告别网上的来路不明的激活工具，防止意外中毒。虽然目前已经有各种 PC 用的 KMS 激活程序，例如KMSAuto或者KMS VL ALL之类的，但是他们都会被 Wi">
 <meta property="og:image" content="http://islocal.cc/images/2018/0702/01.png">
-<meta property="og:updated_time" content="2018-07-02T08:30:09.578Z">
+<meta property="og:updated_time" content="2018-07-02T08:53:58.701Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="自建KMS服务器，激活Windows & Office">
 <meta name="twitter:description" content="全文转自：https://lolico.moe/tutorial/linux-kms-server.html
@@ -373,7 +373,7 @@ One key KMSLinux 快速搭建 KMS 激活服务器，让 PC 激活 Windows 和 Of
 </tr>
 </tbody>
 </table>
-<p>如果你的 Office 是 32 位的，那么目录就在<br><code>C:\Program Files (x86)\Microsoft Office\目录名称</code><br>如果是 64 位，那么在<br><code>C:\Program Files\Microsoft Office\目录名称</code><br>接下来以管理员身份运行命令提示符或者PowerShell，然后输入以下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#以 64 位的 Office2016 为例，进入 Office 目录</div><div class="line">cd &quot;C:\Program Files\Microsoft Office\Office16&quot;</div><div class="line">cscript ospp.vbs /sethst:你的KMS服务端主机的IP或者域名</div><div class="line">cscript ospp.vbs /act</div><div class="line">成功的话你应该会看到类似这样的执行输出：</div></pre></td></tr></table></figure></p>
+<p>如果你的 Office 是 32 位的，那么目录就在<br><code>C:\Program Files (x86)\Microsoft Office\目录名称</code><br>如果是 64 位，那么在<br><code>C:\Program Files\Microsoft Office\目录名称</code><br>接下来以管理员身份运行命令提示符或者PowerShell，然后输入以下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">#以 64 位的 Office2016 为例，进入 Office 目录</div><div class="line">cd &quot;C:\Program Files\Microsoft Office\Office16&quot;</div><div class="line">cscript ospp.vbs /sethst:你的KMS服务端主机的IP或者域名</div><div class="line">cscript ospp.vbs /act</div></pre></td></tr></table></figure></p>
 <p><img src="/images/2018/0702/01.png" alt="kms"></p>
 <h1 id="其他说明"><a href="#其他说明" class="headerlink" title="其他说明"></a>其他说明</h1><h2 id="开机自启"><a href="#开机自启" class="headerlink" title="开机自启"></a>开机自启</h2><p>如果只是想简单的让 KMS 服务在 Linux 上开机自启，那么编辑/etc/rc.local文件，在exit 0（如果有）前面加上一句</p>
 <p>假设之前下载的那个 kms.sh 脚本位于 /root/kms.sh<br><code>/root/kms.sh start</code><br>然后保存即可</p>
