@@ -349,8 +349,11 @@
 <h2 id="du"><a href="#du" class="headerlink" title="du"></a>du</h2><p>查看系统目录占用空间大小</p>
 <p>在根目录下执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">du -hsx * |sort -rh |head -10</div><div class="line">du -ah --max-depth=1</div></pre></td></tr></table></figure></p>
 <p>推荐一款速度更快的工具ncdu</p>
-<h2 id="uptime"><a href="#uptime" class="headerlink" title="uptime"></a>uptime</h2><p>查看cpu的负载</p>
-<p>每cpu的核心当前活动进程数不大于3，表示性能良好，大于五表示严重。</p>
+<h2 id="uptime"><a href="#uptime" class="headerlink" title="uptime"></a>uptime</h2><h3 id="查看cpu的负载"><a href="#查看cpu的负载" class="headerlink" title="查看cpu的负载"></a>查看cpu的负载</h3><p>每cpu的核心当前活动进程数不大于3，表示性能良好，大于五表示严重。</p>
+<h3 id="物理CPU数"><a href="#物理CPU数" class="headerlink" title="物理CPU数"></a>物理CPU数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat /proc/cpuinfo | grep &quot;physical id&quot; | sort | uniq</div></pre></td></tr></table></figure>
+<h3 id="单个CPU的逻辑核心数量"><a href="#单个CPU的逻辑核心数量" class="headerlink" title="单个CPU的逻辑核心数量"></a>单个CPU的逻辑核心数量</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat /proc/cpuinfo | fgrep &quot;cores&quot; | uniq</div></pre></td></tr></table></figure>
+<h3 id="系统CPU线程数"><a href="#系统CPU线程数" class="headerlink" title="系统CPU线程数"></a>系统CPU线程数</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">cat /proc/cpuinfo | grep &quot;processor&quot; | wc -l</div></pre></td></tr></table></figure>
+<p>线程数=物理cpu数x单个逻辑cpu核心数，表示没有开启多线程</p>
 <h2 id="dd"><a href="#dd" class="headerlink" title="dd"></a>dd</h2><p>瞬间创建（1T）大文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/zero of=file bs=1G seek=1024 count=0</div></pre></td></tr></table></figure></p>
 <p>这个文件用ll -h 看着是1TB的，用du -sh 看着是空文件，随着写入的数据而增长</p>
 <p>dd制作ISO镜像<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">dd if=/dev/cdrom of=/mnt/cd1.iso</div></pre></td></tr></table></figure></p>
