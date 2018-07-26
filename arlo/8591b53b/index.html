@@ -1,0 +1,824 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Ambari,HDP," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Hue介绍Hue 是运营和开发Hadoop应用的图形化用户界面。Hue程序被整合到一个类似桌面的环境，以web程序的形式发布，对于单独的用户来说不需要额外的安装。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ambari集成HUE">
+<meta property="og:url" content="http://islocal.cc/arlo/8591b53b/index.html">
+<meta property="og:site_name" content="南山居">
+<meta property="og:description" content="Hue介绍Hue 是运营和开发Hadoop应用的图形化用户界面。Hue程序被整合到一个类似桌面的环境，以web程序的形式发布，对于单独的用户来说不需要额外的安装。">
+<meta property="og:image" content="http://islocal.cc/images/2018/0726/01.png">
+<meta property="og:image" content="http://islocal.cc/images/2018/0726/02.png">
+<meta property="og:updated_time" content="2018-07-26T10:54:40.637Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Ambari集成HUE">
+<meta name="twitter:description" content="Hue介绍Hue 是运营和开发Hadoop应用的图形化用户界面。Hue程序被整合到一个类似桌面的环境，以web程序的形式发布，对于单独的用户来说不需要额外的安装。">
+<meta name="twitter:image" content="http://islocal.cc/images/2018/0726/01.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://islocal.cc/arlo/8591b53b/"/>
+
+  <title> Ambari集成HUE | 南山居 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">南山居</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup">
+ <span class="search-icon fa fa-search"></span>
+ <input type="text" id="local-search-input">
+ <div id="local-search-result"></div>
+ <span class="popup-btn-close">close</span>
+</div>
+
+
+    </div>
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Ambari集成HUE
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-07-26T15:52:35+08:00" content="2018-07-26">
+              2018-07-26
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/大数据/" itemprop="url" rel="index">
+                    <span itemprop="name">大数据</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">本文总阅读量
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Hue介绍"><a href="#Hue介绍" class="headerlink" title="Hue介绍"></a>Hue介绍</h1><p>Hue 是运营和开发Hadoop应用的图形化用户界面。Hue程序被整合到一个类似桌面的环境，以web程序的形式发布，对于单独的用户来说不需要额外的安装。<br><a id="more"></a></p>
+<h1 id="依赖环境配置"><a href="#依赖环境配置" class="headerlink" title="依赖环境配置"></a>依赖环境配置</h1><h2 id="配置Maven3-5-4"><a href="#配置Maven3-5-4" class="headerlink" title="配置Maven3.5.4"></a>配置Maven3.5.4</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">cd /usr/local/src/</div><div class="line">wget http://apache.mirrors.lucidnetworks.net/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz </div><div class="line">tar xf apache-maven-3.5.4-bin.tar.gz -C /usr/local/</div><div class="line">vim  /etc/profile</div><div class="line">export MAVEN_HOME=/usr/local/apache-maven-3.5.4</div><div class="line">export PATH=$PATH:$MAVEN_HOME/bin</div><div class="line">source /etc/profile</div></pre></td></tr></table></figure>
+<h2 id="python-版本2-6-6"><a href="#python-版本2-6-6" class="headerlink" title="python 版本2.6.6+"></a>python 版本2.6.6+</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">python -V</div><div class="line">Python 2.7.5</div></pre></td></tr></table></figure>
+<h2 id="其他依赖工具和包"><a href="#其他依赖工具和包" class="headerlink" title="其他依赖工具和包"></a>其他依赖工具和包</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum -y install ant asciidoc krb5-devel cyrus-sasl-gssapi cyrus-sasl-devel libxml2-devel libxslt-devel libtidy mysql mysql-devel openldap-devel python-devel python-simplejson python-setuptools sqlite-devel gcc gcc-c++ rsync saslwrapper-devel pycrypto gmp-devel libyaml-devel cyrus-sasl-plain cyrus-sasl-devel cyrus-sasl-gssapi libssl-devel libffi-devel libsasl2-dev libsasl2-modules-gssapi-mit libkrb5-dev</div></pre></td></tr></table></figure>
+<h2 id="python模块依赖安装"><a href="#python模块依赖安装" class="headerlink" title="python模块依赖安装"></a>python模块依赖安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">pip install --upgrade pip</div><div class="line">pip install ipdb</div><div class="line">pip install psycopg2</div><div class="line">pip install psycopg2-binary</div></pre></td></tr></table></figure>
+<h1 id="编译安装"><a href="#编译安装" class="headerlink" title="编译安装"></a>编译安装</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">git clone https://github.com/cloudera/hue.git</div><div class="line">make apps（这一步可能遇到很多问题，比如某个包无法下载等，多执行几次就可以通过了）</div><div class="line">make locales（编译多语言版本）</div><div class="line">#注：若只编译简体中文版，需修改$HUE/desktop/core/src/desktop/settings.py文件中：LANGUAGE_CODE = &apos;zh_CN&apos;，并删除LANGUAGES中的其它语言项。</div><div class="line">make install  #（make install PREFIX=/usr/hdp/2.3.4.0-3485/hue HADOOP_HOME=/usr/hdp/current/hadoop-client）</div><div class="line">$HUE/build/env/bin/hue test all  #测试</div><div class="line">ln -s /usr/local/hue/desktop/libs/hadoop/java-lib/hue-plugins-3.9.0-SNAPSHOT.jar /opt/hadoop/hadoop-2.6.0/lib</div><div class="line">useradd hue</div><div class="line">chown -R hue:hue /usr/local/hue #必须新建hue用户，且hue存在home目录，并赋hue目录权限，否则启动报错</div></pre></td></tr></table></figure>
+<h1 id="修改-usr-local-hue-desktop-conf-pseudo-distributed-ini配置"><a href="#修改-usr-local-hue-desktop-conf-pseudo-distributed-ini配置" class="headerlink" title="修改/usr/local/hue/desktop/conf/pseudo-distributed.ini配置"></a>修改/usr/local/hue/desktop/conf/pseudo-distributed.ini配置</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[desktop]</div><div class="line">secret_key=qwertyuiopasdfghjklzxcvbnm1234567890   #key随便写一串就行</div><div class="line">http_host=bigdata05.islocal.cc</div><div class="line">http_port=8888</div><div class="line">time_zone=Asia/Shanghai</div><div class="line">app_blacklist = search,indexer,security   #黑名单：如果不安装oozie的话，jobsub和oozie需同时加入黑名单才能禁用oozie,因为jobsub依赖oozie，否则启动会报错。</div></pre></td></tr></table></figure>
+<h1 id="启动hue"><a href="#启动hue" class="headerlink" title="启动hue"></a>启动hue</h1><p>$HUE/build/env/bin/supervisor &amp;        #在生产环境中使用这个命令<br>$HUE/build/env/bin/hue runcpserver &amp;   #用于development模式<br>打开web页面：<a href="http://bigdata05.islocal.cc:8888" target="_blank" rel="external">http://bigdata05.islocal.cc:8888</a>  #第一次输入的用户名密码为超级管理员的用户密码。<br><strong>启动访问没有问题，即可将/usr/local/hue打成tar包，使用ambari进行集成安装</strong></p>
+<h1 id="Ambari-集成安装HUE"><a href="#Ambari-集成安装HUE" class="headerlink" title="Ambari 集成安装HUE"></a>Ambari 集成安装HUE</h1><h2 id="制作hue-tar包"><a href="#制作hue-tar包" class="headerlink" title="制作hue tar包"></a>制作hue tar包</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">tar cvzf hue-3.11.0.tgz 、/usr/local/hue/</div><div class="line">cp hue-3.11.0.tgz /var/www/html/hdp/HDP/centos7/2.6.5.0-292/hue/hue-3.11.0.tgz</div><div class="line"></div><div class="line">cat /etc/yum.repos.d/HDP.repo</div><div class="line">[HDP-2.6-repo-1]</div><div class="line">name=HDP-2.6-repo-1</div><div class="line">baseurl=http://192.168.6.157/hdp/HDP/centos7/2.6.5.0-292/</div><div class="line">path=/</div><div class="line">enabled=1</div><div class="line">gpgcheck=0</div><div class="line">vim /usr/lib/ambari-agent/lib/resource_management/core/sudo.py +142</div><div class="line">fp.write(content.encode(&quot;utf-8&quot;))</div></pre></td></tr></table></figure>
+<h2 id="版本说明"><a href="#版本说明" class="headerlink" title="版本说明"></a>版本说明</h2><p>Github中提供了两个版本的Ambari-Hue：v1.0.0和v2.0.0<br><strong>release-1.0.0</strong></p>
+<ul>
+<li>Ambari: 2.1.0~2.2.2</li>
+<li>Hue: 3.9.0</li>
+</ul>
+<p><strong>release-2.0.0</strong></p>
+<ul>
+<li>Ambari: 2.4.0+</li>
+<li>Hue: 3.10.0+<h2 id="下载ambari-hue到Ambari组件服务目录"><a href="#下载ambari-hue到Ambari组件服务目录" class="headerlink" title="下载ambari-hue到Ambari组件服务目录"></a>下载ambari-hue到Ambari组件服务目录</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">VERSION=`hdp-select status hadoop-client | sed &apos;s/hadoop-client - \([0-9]\.[0-9]\).*/\1/&apos;`</div><div class="line">rm -rf /var/lib/ambari-server/resources/stacks/HDP/$VERSION/services/HUE  </div><div class="line"># 我们这里使用hue 3.11版本，手动下载v2.0.0</div><div class="line">wget https://github.com/EsharEditor/ambari-hue-service/archive/v2.0.0.tar.gz</div><div class="line">mkdir -p /var/lib/ambari-server/resources/stacks/HDP/$VERSION/services/HUE</div><div class="line">tar xf v2.0.0.tar.gz -C /var/lib/ambari-server/resources/stacks/HDP/$VERSION/services/HUE</div><div class="line">rm -fr /usr/hdp/current/hadoop-client/lib/hue-plugins-3.11.0-SNAPSHOT.jar</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="重启ambari-server"><a href="#重启ambari-server" class="headerlink" title="重启ambari-server"></a>重启ambari-server</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ambari-server restart</div></pre></td></tr></table></figure>
+<h2 id="通过Ambari安装Hue"><a href="#通过Ambari安装Hue" class="headerlink" title="通过Ambari安装Hue"></a>通过Ambari安装Hue</h2><p><code>On bottom left -&gt; Actions -&gt; Add service -&gt; check Hue server -&gt; Next -&gt; Next -&gt; Change any config you like (e.g. install dir, port) -&gt; Next -&gt; Deploy</code><br>数据库使用默认的SqlLite即可，改成postgresql未安装成功！<br><img src="/images/2018/0726/01.png" alt=""><br><img src="/images/2018/0726/02.png" alt=""></p>
+<h1 id="Q-amp-A"><a href="#Q-amp-A" class="headerlink" title="Q&amp;A"></a>Q&amp;A</h1><h2 id="Q1：编译报错信息：error-ffi-h-No-such-file-or-directory-HUE-3-10-0编译时报此错误"><a href="#Q1：编译报错信息：error-ffi-h-No-such-file-or-directory-HUE-3-10-0编译时报此错误" class="headerlink" title="Q1：编译报错信息：error: ffi.h: No such file or directory (HUE 3.10.0编译时报此错误)"></a>Q1：编译报错信息：error: ffi.h: No such file or directory (HUE 3.10.0编译时报此错误)</h2><p>A1：解决办法：yum -y install libssl-devel libffi-devel</p>
+<h2 id="Q2：启动运行报错：UnicodeDecodeError-‘ascii’-codec-can’t-decode-byte-0xef-in-position-166-ordinal-not-in-range-128"><a href="#Q2：启动运行报错：UnicodeDecodeError-‘ascii’-codec-can’t-decode-byte-0xef-in-position-166-ordinal-not-in-range-128" class="headerlink" title="Q2：启动运行报错：UnicodeDecodeError: ‘ascii’ codec can’t decode byte 0xef in position 166: ordinal not in range(128)"></a>Q2：启动运行报错：UnicodeDecodeError: ‘ascii’ codec can’t decode byte 0xef in position 166: ordinal not in range(128)</h2><p>A2:<br>问题分析：编码问题,Python的str默认是ascii编码，和unicode编码冲突<br>解决办法：在出现问题的python文件或者页面添加如下3行信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">import sys</div><div class="line">reload(sys)</div><div class="line">sys.setdefaultencoding(&apos;utf-8&apos;)</div></pre></td></tr></table></figure></p>
+<h2 id="Q3-Hue提交Oozie任务，任务一直处于运行状态，Log日志报错信息如下：org-apache-oozie-action-ActionExecutorException-JA009-Cannot-initialize-Cluster-Please-check-your-configuration-for-mapreduce-framework-name-and-the-correspond-server-addresses"><a href="#Q3-Hue提交Oozie任务，任务一直处于运行状态，Log日志报错信息如下：org-apache-oozie-action-ActionExecutorException-JA009-Cannot-initialize-Cluster-Please-check-your-configuration-for-mapreduce-framework-name-and-the-correspond-server-addresses" class="headerlink" title="Q3: Hue提交Oozie任务，任务一直处于运行状态，Log日志报错信息如下：org.apache.oozie.action.ActionExecutorException: JA009: Cannot initialize Cluster. Please check your configuration for mapreduce.framework.name and the correspond server addresses"></a>Q3: Hue提交Oozie任务，任务一直处于运行状态，Log日志报错信息如下：org.apache.oozie.action.ActionExecutorException: JA009: Cannot initialize Cluster. Please check your configuration for mapreduce.framework.name and the correspond server addresses</h2><p>A3: 解决办法：在HDFS是ha模式下，需要配置hue-hadoop中配置信息为：logical_name= hdfs://nncluster</p>
+<h2 id="Q4-NoteBook中提交spark-shell任务："><a href="#Q4-NoteBook中提交spark-shell任务：" class="headerlink" title="Q4: NoteBook中提交spark shell任务："></a>Q4: NoteBook中提交spark shell任务：</h2><p>报错：The Spark session could not be created in the cluster: at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolTranslatorPB.mkdirs(ClientNamenodeProtocolTranslatorPB.java:558) at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) at java.lang.reflect.Method.invoke(Method.java:606) at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:252) at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:104) at com.sun.proxy.$Proxy28.mkdirs(Unknown Source) at org.apache.hadoop.hdfs.DFSClient.primitiveMkdir(DFSClient.java:3018) … 28 more<br>A4: 解决办法：在hadoop的core-site.xml文件中添加spark用户的授权信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;property&gt;</div><div class="line">  &lt;name&gt;hadoop.proxyuser.spark.groups&lt;/name&gt;</div><div class="line">  &lt;value&gt;*&lt;/value&gt;</div><div class="line">&lt;/property&gt;</div><div class="line">&lt;property&gt;</div><div class="line">  &lt;name&gt;hadoop.proxyuser.spark.hosts&lt;/name&gt;</div><div class="line">  &lt;value&gt;*&lt;/value&gt;</div><div class="line">&lt;/property&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="Q5-Hue中确认配置好hive以及在hive中添加了相关配置后，发现依旧无法连接Hiveserver2-无Kerberos认证"><a href="#Q5-Hue中确认配置好hive以及在hive中添加了相关配置后，发现依旧无法连接Hiveserver2-无Kerberos认证" class="headerlink" title="Q5: Hue中确认配置好hive以及在hive中添加了相关配置后，发现依旧无法连接Hiveserver2,无Kerberos认证"></a>Q5: Hue中确认配置好hive以及在hive中添加了相关配置后，发现依旧无法连接Hiveserver2,无Kerberos认证</h2><p>Hue中的报错信息：  Could not start SASL: Error in sasl_client_start (-4) SASL(-4): no mechanism available: No worthy mechs foundHiveserver2日志中的报错信息：  ERROR [HiveServer2-Handler-Pool: Thread-31]: server.TThreadPoolServer (TThreadPoolServer.java:run(296)) - Error occurred during processing of message.  java.lang.RuntimeException: org.apache.thrift.transport.TSaslTransportException: No data or no sasl data in the stream<br>A5: 问题分析：Hue连接Hiveserver2使用的是Python，在Centos操作系统上丢失了一些依赖：cyrus-sasl-plain cyrus-sasl-devel cyrus-sasl-gssapi<br>解决办法：yum -y install cyrus-sasl-plain cyrus-sasl-devel cyrus-sasl-gssapi<br>设置以下配置像为NOSASL或None<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">&lt;property&gt;</div><div class="line">  &lt;name&gt;hive.server2.authentication&lt;/name&gt;</div><div class="line">  &lt;value&gt;NOSASL&lt;/value&gt;</div><div class="line">  &lt;!--或者设置为</div><div class="line">    &lt;value&gt;None&lt;/value&gt;</div><div class="line">  --&gt;</div><div class="line">&lt;/property&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="Q6-报错信息：django-core-exceptions-ImproperlyConfigured-psycopg2-version-2-5-4-or-newer-is-required-you-have-2-5-1-dt-dec-pq3-ext"><a href="#Q6-报错信息：django-core-exceptions-ImproperlyConfigured-psycopg2-version-2-5-4-or-newer-is-required-you-have-2-5-1-dt-dec-pq3-ext" class="headerlink" title="Q6 报错信息：django.core.exceptions.ImproperlyConfigured: psycopg2_version 2.5.4 or newer is required; you have 2.5.1 (dt dec pq3 ext)"></a>Q6 报错信息：django.core.exceptions.ImproperlyConfigured: psycopg2_version 2.5.4 or newer is required; you have 2.5.1 (dt dec pq3 ext)</h2><p>A6: 解决方法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">pip install --upgrade pip</div><div class="line">pip upgrade psycopg2</div><div class="line">pip install psycopg2-binary</div></pre></td></tr></table></figure></p>
+<h2 id="Q7报错信息：RuntimeError-Model-class-beeswax-models-QueryHistory-doesn’t-declare-an-explicit-app-label-and-isn’t-in-an-application-in-INSTALLED-APPS"><a href="#Q7报错信息：RuntimeError-Model-class-beeswax-models-QueryHistory-doesn’t-declare-an-explicit-app-label-and-isn’t-in-an-application-in-INSTALLED-APPS" class="headerlink" title="Q7报错信息：RuntimeError: Model class beeswax.models.QueryHistory doesn’t declare an explicit app_label and isn’t in an application in INSTALLED_APPS."></a>Q7报错信息：RuntimeError: Model class beeswax.models.QueryHistory doesn’t declare an explicit app_label and isn’t in an application in INSTALLED_APPS.</h2><p>A7:  解决方法，修改配置文件/usr/local/hue/desktop/core/src/desktop/settings.py<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">INSTALLED_APPS = [</div><div class="line">    &apos;beeswax&apos;,</div><div class="line">    &apos;oozie&apos;,</div><div class="line">]</div></pre></td></tr></table></figure></p>
+<h2 id="Q8-web也没访问报错信息：Invalid-HTTP-HOST-header-’bigdata05-islocal-cc-8888’-You-may-need-to-add-u’bigdata05-islocal-cc’-to-ALLOWED-HOSTS"><a href="#Q8-web也没访问报错信息：Invalid-HTTP-HOST-header-’bigdata05-islocal-cc-8888’-You-may-need-to-add-u’bigdata05-islocal-cc’-to-ALLOWED-HOSTS" class="headerlink" title="Q8 web也没访问报错信息：Invalid HTTP_HOST header:’bigdata05.islocal.cc:8888’.You may need to add u’bigdata05.islocal.cc’ to ALLOWED_HOSTS."></a>Q8 web也没访问报错信息：Invalid HTTP_HOST header:’bigdata05.islocal.cc:8888’.You may need to add u’bigdata05.islocal.cc’ to ALLOWED_HOSTS.</h2><p>A8： 解决方法，修改配置文件/usr/local/hue/desktop/core/src/desktop/settings.py<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ALLOWED_HOSTS = [&apos;*&apos;]</div></pre></td></tr></table></figure></p>
+<h1 id="参考文档："><a href="#参考文档：" class="headerlink" title="参考文档："></a>参考文档：</h1><p>SDK文档：<a href="http://cloudera.github.io/hue/docs-3.7.0/sdk/sdk.html#introduction-and-overview" target="_blank" rel="external">http://cloudera.github.io/hue/docs-3.7.0/sdk/sdk.html#introduction-and-overview</a><br>Hue配置信息说明(中文):2018/7/26 <a href="http://www.cloudera.com/content/www/zh-CN/documentation/enterprise/5-3-x/topics/cdh_ig_hue_config.html" target="_blank" rel="external">http://www.cloudera.com/content/www/zh-CN/documentation/enterprise/5-3-x/topics/cdh_ig_hue_config.html</a><br>(英文)<a href="http://archive.cloudera.com/cdh5/cdh/5/hue/user-guide/index.html" target="_blank" rel="external">http://archive.cloudera.com/cdh5/cdh/5/hue/user-guide/index.html</a></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/01/alipay.jpg" alt="南山小樵 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Ambari/" rel="tag">#Ambari</a>
+          
+            <a href="/tags/HDP/" rel="tag">#HDP</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/arlo/ddea0a3f/" rel="next" title="关闭Oracle审计日志，解决因AUD$数据过大，导致SYSTEM表空间暴涨的问题">
+                <i class="fa fa-chevron-left"></i> 关闭Oracle审计日志，解决因AUD$数据过大，导致SYSTEM表空间暴涨的问题
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: document.location.href, 
+    sourceId: "���� page.path ����",
+    productKey: "0df311b624f44726a84b2b6249d64c11",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/01/psir.jpg"
+               alt="南山小樵" />
+          <p class="site-author-name" itemprop="name">南山小樵</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">85</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">77</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Hue介绍"><span class="nav-number">1.</span> <span class="nav-text">Hue介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#依赖环境配置"><span class="nav-number">2.</span> <span class="nav-text">依赖环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Maven3-5-4"><span class="nav-number">2.1.</span> <span class="nav-text">配置Maven3.5.4</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python-版本2-6-6"><span class="nav-number">2.2.</span> <span class="nav-text">python 版本2.6.6+</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他依赖工具和包"><span class="nav-number">2.3.</span> <span class="nav-text">其他依赖工具和包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python模块依赖安装"><span class="nav-number">2.4.</span> <span class="nav-text">python模块依赖安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#编译安装"><span class="nav-number">3.</span> <span class="nav-text">编译安装</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改-usr-local-hue-desktop-conf-pseudo-distributed-ini配置"><span class="nav-number">4.</span> <span class="nav-text">修改/usr/local/hue/desktop/conf/pseudo-distributed.ini配置</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#启动hue"><span class="nav-number">5.</span> <span class="nav-text">启动hue</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Ambari-集成安装HUE"><span class="nav-number">6.</span> <span class="nav-text">Ambari 集成安装HUE</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#制作hue-tar包"><span class="nav-number">6.1.</span> <span class="nav-text">制作hue tar包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#版本说明"><span class="nav-number">6.2.</span> <span class="nav-text">版本说明</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载ambari-hue到Ambari组件服务目录"><span class="nav-number">6.3.</span> <span class="nav-text">下载ambari-hue到Ambari组件服务目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重启ambari-server"><span class="nav-number">6.4.</span> <span class="nav-text">重启ambari-server</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过Ambari安装Hue"><span class="nav-number">6.5.</span> <span class="nav-text">通过Ambari安装Hue</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Q-amp-A"><span class="nav-number">7.</span> <span class="nav-text">Q&A</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Q1：编译报错信息：error-ffi-h-No-such-file-or-directory-HUE-3-10-0编译时报此错误"><span class="nav-number">7.1.</span> <span class="nav-text">Q1：编译报错信息：error: ffi.h: No such file or directory (HUE 3.10.0编译时报此错误)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q2：启动运行报错：UnicodeDecodeError-‘ascii’-codec-can’t-decode-byte-0xef-in-position-166-ordinal-not-in-range-128"><span class="nav-number">7.2.</span> <span class="nav-text">Q2：启动运行报错：UnicodeDecodeError: ‘ascii’ codec can’t decode byte 0xef in position 166: ordinal not in range(128)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q3-Hue提交Oozie任务，任务一直处于运行状态，Log日志报错信息如下：org-apache-oozie-action-ActionExecutorException-JA009-Cannot-initialize-Cluster-Please-check-your-configuration-for-mapreduce-framework-name-and-the-correspond-server-addresses"><span class="nav-number">7.3.</span> <span class="nav-text">Q3: Hue提交Oozie任务，任务一直处于运行状态，Log日志报错信息如下：org.apache.oozie.action.ActionExecutorException: JA009: Cannot initialize Cluster. Please check your configuration for mapreduce.framework.name and the correspond server addresses</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q4-NoteBook中提交spark-shell任务："><span class="nav-number">7.4.</span> <span class="nav-text">Q4: NoteBook中提交spark shell任务：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q5-Hue中确认配置好hive以及在hive中添加了相关配置后，发现依旧无法连接Hiveserver2-无Kerberos认证"><span class="nav-number">7.5.</span> <span class="nav-text">Q5: Hue中确认配置好hive以及在hive中添加了相关配置后，发现依旧无法连接Hiveserver2,无Kerberos认证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q6-报错信息：django-core-exceptions-ImproperlyConfigured-psycopg2-version-2-5-4-or-newer-is-required-you-have-2-5-1-dt-dec-pq3-ext"><span class="nav-number">7.6.</span> <span class="nav-text">Q6 报错信息：django.core.exceptions.ImproperlyConfigured: psycopg2_version 2.5.4 or newer is required; you have 2.5.1 (dt dec pq3 ext)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q7报错信息：RuntimeError-Model-class-beeswax-models-QueryHistory-doesn’t-declare-an-explicit-app-label-and-isn’t-in-an-application-in-INSTALLED-APPS"><span class="nav-number">7.7.</span> <span class="nav-text">Q7报错信息：RuntimeError: Model class beeswax.models.QueryHistory doesn’t declare an explicit app_label and isn’t in an application in INSTALLED_APPS.</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Q8-web也没访问报错信息：Invalid-HTTP-HOST-header-’bigdata05-islocal-cc-8888’-You-may-need-to-add-u’bigdata05-islocal-cc’-to-ALLOWED-HOSTS"><span class="nav-number">7.8.</span> <span class="nav-text">Q8 web也没访问报错信息：Invalid HTTP_HOST header:’bigdata05.islocal.cc:8888’.You may need to add u’bigdata05.islocal.cc’ to ALLOWED_HOSTS.</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#参考文档："><span class="nav-number">8.</span> <span class="nav-text">参考文档：</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南山小樵</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+        
+
+<div class="busuanzi-count">
+
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">本站访客数<span class="busuanzi-value" id="busuanzi_value_site_uv"></span>人次</span>
+  
+
+  
+    <span class="site-pv">本站总访问量<span class="busuanzi-value" id="busuanzi_value_site_pv"></span>次</span>
+  
+  
+</div>
+
+
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length == 0) {
+       search_path = "search.xml";
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    function proceedsearch() {
+      $("body").append('<div class="popoverlay">').css('overflow', 'hidden');
+      $('.popup').toggle();
+
+    }
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+    'use strict';
+    $.ajax({
+        url: path,
+        dataType: "xml",
+        async: true,
+        success: function( xmlResponse ) {
+            // get the contents from search data
+            isfetched = true;
+            $('.popup').detach().appendTo('.header-inner');
+            var datas = $( "entry", xmlResponse ).map(function() {
+                return {
+                    title: $( "title", this ).text(),
+                    content: $("content",this).text(),
+                    url: $( "url" , this).text()
+                };
+            }).get();
+            var $input = document.getElementById(search_id);
+            var $resultContent = document.getElementById(content_id);
+            $input.addEventListener('input', function(){
+                var matchcounts = 0;
+                var str='<ul class=\"search-result-list\">';
+                var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                $resultContent.innerHTML = "";
+                if (this.value.trim().length > 1) {
+                // perform local searching
+                datas.forEach(function(data) {
+                    var isMatch = true;
+                    var content_index = [];
+                    var data_title = data.title.trim().toLowerCase();
+                    var data_content = data.content.trim().replace(/<[^>]+>/g,"").toLowerCase();
+                    var data_url = data.url;
+                    var index_title = -1;
+                    var index_content = -1;
+                    var first_occur = -1;
+                    // only match artiles with not empty titles and contents
+                    if(data_title != '' && data_content != '') {
+                        keywords.forEach(function(keyword, i) {
+                            index_title = data_title.indexOf(keyword);
+                            index_content = data_content.indexOf(keyword);
+                            if( index_title < 0 && index_content < 0 ){
+                                isMatch = false;
+                            } else {
+                                if (index_content < 0) {
+                                    index_content = 0;
+                                }
+                                if (i == 0) {
+                                    first_occur = index_content;
+                                }
+                            }
+                        });
+                    }
+                    // show search results
+                    if (isMatch) {
+                        matchcounts += 1;
+                        str += "<li><a href='"+ data_url +"' class='search-result-title'>"+ data_title +"</a>";
+                        var content = data.content.trim().replace(/<[^>]+>/g,"");
+                        if (first_occur >= 0) {
+                            // cut out 100 characters
+                            var start = first_occur - 20;
+                            var end = first_occur + 80;
+                            if(start < 0){
+                                start = 0;
+                            }
+                            if(start == 0){
+                                end = 50;
+                            }
+                            if(end > content.length){
+                                end = content.length;
+                            }
+                            var match_content = content.substring(start, end);
+                            // highlight all keywords
+                            keywords.forEach(function(keyword){
+                                var regS = new RegExp(keyword, "gi");
+                                match_content = match_content.replace(regS, "<b class=\"search-keyword\">"+keyword+"</b>");
+                            });
+
+                            str += "<p class=\"search-result\">" + match_content +"...</p>"
+                        }
+                        str += "</li>";
+                    }
+                })};
+                str += "</ul>";
+                if (matchcounts == 0) { str = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>' }
+                if (keywords == "") { str = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>' }
+                $resultContent.innerHTML = str;
+            });
+            proceedsearch();
+        }
+    });}
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched == false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+
+    });
+
+    $('.popup-btn-close').click(function(e){
+      $('.popup').hide();
+      $(".popoverlay").remove();
+      $('body').css('overflow', '');
+    });
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+  </script>
+
+
+  
+
+  
+
+  
+
+</body>
+</html>
