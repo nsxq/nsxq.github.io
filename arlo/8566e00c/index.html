@@ -86,7 +86,7 @@ One key KMSLinux 快速搭建 KMS 激活服务器，让 PC 激活 Windows 和 Of
 <meta property="og:description" content="全文转自：https://lolico.moe/tutorial/linux-kms-server.html
 One key KMSLinux 快速搭建 KMS 激活服务器，让 PC 激活 Windows 和 Office 并自动续期，告别网上的来路不明的激活工具，防止意外中毒。虽然目前已经有各种 PC 用的 KMS 激活程序，例如KMSAuto或者KMS VL ALL之类的，但是他们都会被 Wi">
 <meta property="og:image" content="http://islocal.cc/images/2018/0702/01.png">
-<meta property="og:updated_time" content="2018-07-02T08:53:58.701Z">
+<meta property="og:updated_time" content="2018-08-29T05:52:21.918Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="自建KMS服务器，激活Windows & Office">
 <meta name="twitter:description" content="全文转自：https://lolico.moe/tutorial/linux-kms-server.html
@@ -348,7 +348,7 @@ One key KMSLinux 快速搭建 KMS 激活服务器，让 PC 激活 Windows 和 Of
 <h2 id="下载这个作者写的配套脚本来控制启动-停止-重启等"><a href="#下载这个作者写的配套脚本来控制启动-停止-重启等" class="headerlink" title="下载这个作者写的配套脚本来控制启动/停止/重启等"></a>下载这个作者写的配套脚本来控制启动/停止/重启等</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">#下载脚本</div><div class="line">wget https://raw.githubusercontent.com/dakkidaze/one-key-kms/master/kms.sh &amp;&amp; chmod +x kms.sh</div><div class="line">#启动 KMS 服务</div><div class="line">./kms.sh start</div><div class="line">#这个脚本可以使用的参数：</div><div class="line"># start | stop | restart | status</div></pre></td></tr></table></figure>
 <h2 id="如果你的防火墙默认-DROP，那么需要手动放行1688端口"><a href="#如果你的防火墙默认-DROP，那么需要手动放行1688端口" class="headerlink" title="如果你的防火墙默认 DROP，那么需要手动放行1688端口"></a>如果你的防火墙默认 DROP，那么需要手动放行1688端口</h2><p>CentOS / Redhat / Fedora<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">iptables -I INPUT -p tcp --dport 1688 -j ACCEPT</div></pre></td></tr></table></figure></p>
 <p>Debian / Ubuntu / Mint<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">#如果有 ufw 的话</div><div class="line">ufw allow 1688</div><div class="line">#如果没有的话，这么方便的防火墙工具为啥不装一个嘞~</div></pre></td></tr></table></figure></p>
-<h1 id="激活-Windows"><a href="#激活-Windows" class="headerlink" title="激活 Windows"></a>激活 Windows</h1><p>再次提醒，只能激活 VL 版的系统<br>以管理员身份运行命令提示符或者PowerShell，然后输入以下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cd /d &quot;%SystemRoot%\system32&quot;</div><div class="line">slmgr /skms 你的KMS服务端主机的IP或者域名</div><div class="line">slmgr /ato</div><div class="line">slmgr /xpr</div><div class="line">成功的话你应该会看到这样的提示：</div></pre></td></tr></table></figure></p>
+<h1 id="激活-Windows"><a href="#激活-Windows" class="headerlink" title="激活 Windows"></a>激活 Windows</h1><p>再次提醒，只能激活 VL 版的系统<br>以管理员身份运行命令提示符或者PowerShell，然后输入以下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd /d &quot;%SystemRoot%\system32&quot;</div><div class="line">slmgr /skms 你的KMS服务端主机的IP或者域名</div><div class="line">slmgr /ato</div><div class="line">slmgr /xpr</div></pre></td></tr></table></figure></p>
 <p>这样，每过 180 天，系统都会自动与你的 KMS 服务器通信来激活 Windows，只要到时候你的 KMS 服务器还在，Windows 就能继续激活;当然，你也可以随时通过slmgr /skms这条命令来更换你的 KMS 服务器地址</p>
 <h1 id="激活-Office"><a href="#激活-Office" class="headerlink" title="激活 Office"></a>激活 Office</h1><p>只能激活 VL 版的 Office，如果是零售版，百度一下有很多将零售版转换为 VL 版的方法和批处理脚本；如果你比较懒，也可以直接利用KMSAuto工具来转换<br>首先确定你的 Office 版本所对应的目录名称：</p>
 <table>
@@ -516,7 +516,7 @@ One key KMSLinux 快速搭建 KMS 激活服务器，让 PC 激活 Windows 和 Of
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">85</span>
+              <span class="site-state-item-count">87</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

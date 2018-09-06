@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[查询Oracle数据库连接和资源消耗常用语句]]></title>
+    <url>%2Farlo%2F5e07e8b7%2F</url>
+    <content type="text"><![CDATA[查看数据库连接命令查看数据库最大可用连接数show parameter processes; 查看数据库最大session数show parameter sessions; 查看数据库当前session数和活动sessionselect count(*) from v$session;select count(*) from v$session where status=&#39;ACTIVE&#39;; 查看数据库当前使用者SELECT osuser, a.username,cpu_time/executions/1000000||&#39;s&#39;, b.sql_text,machine from v$session a,v$sqlarea b where a.sql_address =b.address order by cpu_time/executions desc; 查看数据库资源使用情况命令查看各用户的各种资源占用123456789101112131415161718SELECT SE.SID, SES.USERNAME, SES.OSUSER, N.NAME, SE.VALUE FROM V$STATNAME N, V$SESSTAT SE, V$SESSION SES WHERE N.STATISTIC# = SE.STATISTIC# AND SE.SID = SES.SID AND SES.USERNAME IS NOT NULL AND N.NAME IN (&apos;CPU used by this session&apos;, &apos;db block gets&apos;, &apos;consistent gets&apos;, &apos;physical reads&apos;, &apos;free buffer requested&apos;, &apos;table scans (long tables)&apos;, &apos;table scan rows gotten&apos;, &apos;sorts (memory)&apos;, &apos;sorts (disk)&apos;, &apos;sorts (rows)&apos;, &apos;session uga memory max&apos;, &apos;session pga memory max&apos;) ORDER BY SID, N.STATISTIC#; 占用资源的SQL top10之类的数据123456789SELECT B.USERNAME USERNAME, A.DISK_READS READS, A.EXECUTIONS EXEC, A.DISK_READS / DECODE(A.EXECUTIONS, 0, 1, A.EXECUTIONS) RDS_EXEC_RATIO, A.SQL_TEXT STATEMENT FROM V$SQLAREA A, DBA_USERS B WHERE A.PARSING_USER_ID = B.USER_ID AND A.DISK_READS &gt; 100000 ORDER BY A.DISK_READS DESC; 使用频率最高的5个查询123456SELECT SQL_TEXT, EXECUTIONS FROM (SELECT SQL_TEXT, EXECUTIONS, RANK() OVER(ORDER BY EXECUTIONS DESC) EXEC_RANK FROM V$SQL)WHERE EXEC_RANK &lt;= 5; 消耗磁盘读取最多的sql top5123456SELECT DISK_READS, SQL_TEXT FROM (SELECT SQL_TEXT, DISK_READS, DENSE_RANK() OVER(ORDER BY DISK_READS DESC) DISK_READS_RANK FROM V$SQL) WHERE DISK_READS_RANK &lt;= 5; 找出需要大量缓冲读取（逻辑读）操作的查询123456SELECT BUFFER_GETS, SQL_TEXT FROM (SELECT SQL_TEXT, BUFFER_GETS, DENSE_RANK() OVER(ORDER BY BUFFER_GETS DESC) BUFFER_GETS_RANK FROM V$SQL) WHERE BUFFER_GETS_RANK &lt;= 5;]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>数据库</tag>
+        <tag>Oracle</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[数据库hang住，应用连接缓慢甚至无法连接]]></title>
+    <url>%2Farlo%2F9598871f%2F</url>
+    <content type="text"><![CDATA[问题现象数据库抗住，开发人员反映应用断断续续无法连接，远程telnet数据库端口不通 登录数据库，查看日志位置12345SQL&gt; select value from v$diag_info where name =&apos;Diag Trace&apos;;VALUE--------------------------------------------------------------------------------e:\app\administrator\diag\rdbms\sx21\sx21\trace 报错1：redo日志无法切换查看alert_sx21.log日志，发现大量redo日志报错1234Checkpoint not completeCurrent log# 2 seq# 76268 mem# 0: E:\APP\ADMINISTRATOR\ORADATA\SX21\REDO02.LOGThread 1 advanced to log sequence 76269 (LGWR switch)Current log# 3 seq# 76269 mem# 0: E:\APP\ADMINISTRATOR\ORADATA\SX21\REDO03.LOG 增加redo日志12alter database add logfile group 4 (&apos;E:\APP\ADMINISTRATOR\ORADATA\SX21\REDO04.LOG&apos;) size 50m;alter database add logfile group 5 (&apos;E:\APP\ADMINISTRATOR\ORADATA\SX21\REDO05.LOG&apos;) size 50m; 查看redo日志1select group#,sequence#,bytes,members,status from v$log; 修改 fast_start_mttr_target参数1alter system set fast_start_mttr_target = 30 ; 报错2：1234567891011Sat Sep 01 08:37:01 2018Errors in file e:\app\administrator\diag\rdbms\sx21\sx21\trace\sx21_mmon_6264.trc (incident=144681):ORA-00445: 后台进程 &quot;m000&quot; 在 120 秒之后仍没有启动Sat Sep 01 08:39:06 2018Errors in file e:\app\administrator\diag\rdbms\sx21\sx21\trace\sx21_smco_13976.trc (incident=144698):ORA-00445: 后台进程 &quot;W000&quot; 在 120 秒之后仍没有启动Sat Sep 01 08:41:12 2018Errors in file e:\app\administrator\diag\rdbms\sx21\sx21\trace\sx21_cjq0_21740.trc (incident=144688):ORA-00445: 后台进程 &quot;J000&quot; 在 120 秒之后仍没有启动kkjcre1p: unable to spawn jobq slave process Errors in file e:\app\administrator\diag\rdbms\sx21\sx21\trace\sx21_cjq0_21740.trc: 此问题现象为系统内存不足，建议增加内存，或增加sga，由于暂时无法增加系统内存，我先调整了sga 修改sga1234567891011SQL&gt; show parameter sga;NAME TYPE VALUE------------------------------------ ----------- ----------------------------lock_sga boolean FALSEpre_page_sga boolean FALSEsga_max_size big integer 10Gsga_target big integer 0SQL&gt; alter system set sga_max_size=20480M scope=spfile; #一定要保证SGA_MAX_SIZE小于MEMORY_TARGET，否则启动会报错SQL&gt; shutdown immediateSQL&gt; startup 一定要保证SGA_MAX_SIZE小于MEMORY_TARGET，否则启动会报以下错误ORA-00844: Parameter not taking MEMORY_TARGET into accountORA-00851: SGA_MAX_SIZE 21474836480 cannot be set to more than MEMORY_TARGET 10737418240. 解决方法如下，创建一个pfile文件，然后修改内存参数，然后在创建一格spfile，启动数据库1SQL&gt; create pfile from spfile; 修改该文件以下参数E:\app\Administrator\product\11.2.0\dbhome_4\database\INITsx21.ORA*.memory_target=27487790694*.sga_max_size=21990232555*.sga_target=219902325551SQL&gt; create spfile from pfile; 参考文档： http://blog.51cto.com/mervin/490322http://blog.51cto.com/sysadmin/203502http://blog.51cto.com/leoguan/584494https://blog.csdn.net/ggwxk1990/article/details/78712204https://blog.csdn.net/leshami/article/details/5782516]]></content>
+      <categories>
+        <category>Troubleshooting</category>
+      </categories>
+      <tags>
+        <tag>数据库</tag>
+        <tag>Oracle</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Ambari集成HUE]]></title>
     <url>%2Farlo%2F8591b53b%2F</url>
     <content type="text"><![CDATA[Hue介绍Hue 是运营和开发Hadoop应用的图形化用户界面。Hue程序被整合到一个类似桌面的环境，以web程序的形式发布，对于单独的用户来说不需要额外的安装。 依赖环境配置配置Maven3.5.41234567cd /usr/local/src/wget http://apache.mirrors.lucidnetworks.net/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz tar xf apache-maven-3.5.4-bin.tar.gz -C /usr/local/vim /etc/profileexport MAVEN_HOME=/usr/local/apache-maven-3.5.4export PATH=$PATH:$MAVEN_HOME/binsource /etc/profile python 版本2.6.6+12python -VPython 2.7.5 其他依赖工具和包1yum -y install ant asciidoc krb5-devel cyrus-sasl-gssapi cyrus-sasl-devel libxml2-devel libxslt-devel libtidy mysql mysql-devel openldap-devel python-devel python-simplejson python-setuptools sqlite-devel gcc gcc-c++ rsync saslwrapper-devel pycrypto gmp-devel libyaml-devel cyrus-sasl-plain cyrus-sasl-devel cyrus-sasl-gssapi libssl-devel libffi-devel libsasl2-dev libsasl2-modules-gssapi-mit libkrb5-dev python模块依赖安装1234pip install --upgrade pippip install ipdbpip install psycopg2pip install psycopg2-binary 编译安装123456789git clone https://github.com/cloudera/hue.gitmake apps（这一步可能遇到很多问题，比如某个包无法下载等，多执行几次就可以通过了）make locales（编译多语言版本）#注：若只编译简体中文版，需修改$HUE/desktop/core/src/desktop/settings.py文件中：LANGUAGE_CODE = &apos;zh_CN&apos;，并删除LANGUAGES中的其它语言项。make install #（make install PREFIX=/usr/hdp/2.3.4.0-3485/hue HADOOP_HOME=/usr/hdp/current/hadoop-client）$HUE/build/env/bin/hue test all #测试ln -s /usr/local/hue/desktop/libs/hadoop/java-lib/hue-plugins-3.9.0-SNAPSHOT.jar /opt/hadoop/hadoop-2.6.0/libuseradd huechown -R hue:hue /usr/local/hue #必须新建hue用户，且hue存在home目录，并赋hue目录权限，否则启动报错 修改/usr/local/hue/desktop/conf/pseudo-distributed.ini配置123456[desktop]secret_key=qwertyuiopasdfghjklzxcvbnm1234567890 #key随便写一串就行http_host=bigdata05.islocal.cchttp_port=8888time_zone=Asia/Shanghaiapp_blacklist = search,indexer,security #黑名单：如果不安装oozie的话，jobsub和oozie需同时加入黑名单才能禁用oozie,因为jobsub依赖oozie，否则启动会报错。 启动hue$HUE/build/env/bin/supervisor &amp; #在生产环境中使用这个命令$HUE/build/env/bin/hue runcpserver &amp; #用于development模式打开web页面：http://bigdata05.islocal.cc:8888 #第一次输入的用户名密码为超级管理员的用户密码。启动访问没有问题，即可将/usr/local/hue打成tar包，使用ambari进行集成安装 Ambari 集成安装HUE制作hue tar包12345678910111213tar cvzf hue-3.11.0.tgz 、/usr/local/hue/cp hue-3.11.0.tgz /var/www/html/hdp/HDP/centos7/2.6.5.0-292/hue/hue-3.11.0.tgzcat /etc/yum.repos.d/HDP.repo[HDP-2.6-repo-1]name=HDP-2.6-repo-1baseurl=http://192.168.6.157/hdp/HDP/centos7/2.6.5.0-292/path=/enabled=1gpgcheck=0vim /usr/lib/ambari-agent/lib/resource_management/core/sudo.py +142fp.write(content.encode(&quot;utf-8&quot;)) 版本说明Github中提供了两个版本的Ambari-Hue：v1.0.0和v2.0.0release-1.0.0 Ambari: 2.1.0~2.2.2 Hue: 3.9.0 release-2.0.0 Ambari: 2.4.0+ Hue: 3.10.0+ 下载ambari-hue到Ambari组件服务目录1234567VERSION=`hdp-select status hadoop-client | sed &apos;s/hadoop-client - \([0-9]\.[0-9]\).*/\1/&apos;`rm -rf /var/lib/ambari-server/resources/stacks/HDP/$VERSION/services/HUE # 我们这里使用hue 3.11版本，手动下载v2.0.0wget https://github.com/EsharEditor/ambari-hue-service/archive/v2.0.0.tar.gzmkdir -p /var/lib/ambari-server/resources/stacks/HDP/$VERSION/services/HUEtar xf v2.0.0.tar.gz -C /var/lib/ambari-server/resources/stacks/HDP/$VERSION/services/HUErm -fr /usr/hdp/current/hadoop-client/lib/hue-plugins-3.11.0-SNAPSHOT.jar 重启ambari-server1ambari-server restart 通过Ambari安装HueOn bottom left -&gt; Actions -&gt; Add service -&gt; check Hue server -&gt; Next -&gt; Next -&gt; Change any config you like (e.g. install dir, port) -&gt; Next -&gt; Deploy数据库使用默认的SqlLite即可，改成postgresql未安装成功！ Q&amp;AQ1：编译报错信息：error: ffi.h: No such file or directory (HUE 3.10.0编译时报此错误)A1：解决办法：yum -y install libssl-devel libffi-devel Q2：启动运行报错：UnicodeDecodeError: ‘ascii’ codec can’t decode byte 0xef in position 166: ordinal not in range(128)A2:问题分析：编码问题,Python的str默认是ascii编码，和unicode编码冲突解决办法：在出现问题的python文件或者页面添加如下3行信息：123import sysreload(sys)sys.setdefaultencoding(&apos;utf-8&apos;) Q3: Hue提交Oozie任务，任务一直处于运行状态，Log日志报错信息如下：org.apache.oozie.action.ActionExecutorException: JA009: Cannot initialize Cluster. Please check your configuration for mapreduce.framework.name and the correspond server addressesA3: 解决办法：在HDFS是ha模式下，需要配置hue-hadoop中配置信息为：logical_name= hdfs://nncluster Q4: NoteBook中提交spark shell任务：报错：The Spark session could not be created in the cluster: at org.apache.hadoop.hdfs.protocolPB.ClientNamenodeProtocolTranslatorPB.mkdirs(ClientNamenodeProtocolTranslatorPB.java:558) at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57) at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) at java.lang.reflect.Method.invoke(Method.java:606) at org.apache.hadoop.io.retry.RetryInvocationHandler.invokeMethod(RetryInvocationHandler.java:252) at org.apache.hadoop.io.retry.RetryInvocationHandler.invoke(RetryInvocationHandler.java:104) at com.sun.proxy.$Proxy28.mkdirs(Unknown Source) at org.apache.hadoop.hdfs.DFSClient.primitiveMkdir(DFSClient.java:3018) … 28 moreA4: 解决办法：在hadoop的core-site.xml文件中添加spark用户的授权信息：12345678&lt;property&gt; &lt;name&gt;hadoop.proxyuser.spark.groups&lt;/name&gt; &lt;value&gt;*&lt;/value&gt;&lt;/property&gt;&lt;property&gt; &lt;name&gt;hadoop.proxyuser.spark.hosts&lt;/name&gt; &lt;value&gt;*&lt;/value&gt;&lt;/property&gt; Q5: Hue中确认配置好hive以及在hive中添加了相关配置后，发现依旧无法连接Hiveserver2,无Kerberos认证Hue中的报错信息： Could not start SASL: Error in sasl_client_start (-4) SASL(-4): no mechanism available: No worthy mechs foundHiveserver2日志中的报错信息： ERROR [HiveServer2-Handler-Pool: Thread-31]: server.TThreadPoolServer (TThreadPoolServer.java:run(296)) - Error occurred during processing of message. java.lang.RuntimeException: org.apache.thrift.transport.TSaslTransportException: No data or no sasl data in the streamA5: 问题分析：Hue连接Hiveserver2使用的是Python，在Centos操作系统上丢失了一些依赖：cyrus-sasl-plain cyrus-sasl-devel cyrus-sasl-gssapi解决办法：yum -y install cyrus-sasl-plain cyrus-sasl-devel cyrus-sasl-gssapi设置以下配置像为NOSASL或None1234567&lt;property&gt; &lt;name&gt;hive.server2.authentication&lt;/name&gt; &lt;value&gt;NOSASL&lt;/value&gt; &lt;!--或者设置为 &lt;value&gt;None&lt;/value&gt; --&gt;&lt;/property&gt; Q6 报错信息：django.core.exceptions.ImproperlyConfigured: psycopg2_version 2.5.4 or newer is required; you have 2.5.1 (dt dec pq3 ext)A6: 解决方法123pip install --upgrade pippip upgrade psycopg2pip install psycopg2-binary Q7报错信息：RuntimeError: Model class beeswax.models.QueryHistory doesn’t declare an explicit app_label and isn’t in an application in INSTALLED_APPS.A7: 解决方法，修改配置文件/usr/local/hue/desktop/core/src/desktop/settings.py1234INSTALLED_APPS = [ &apos;beeswax&apos;, &apos;oozie&apos;,] Q8 web也没访问报错信息：Invalid HTTP_HOST header:’bigdata05.islocal.cc:8888’.You may need to add u’bigdata05.islocal.cc’ to ALLOWED_HOSTS.A8： 解决方法，修改配置文件/usr/local/hue/desktop/core/src/desktop/settings.py1ALLOWED_HOSTS = [&apos;*&apos;] 参考文档https://eshareditor.github.io/2016/09/14/Hue-编译安装/https://eshareditor.github.io/2016/10/11/Ambari-Hue-Service/SDK文档：http://cloudera.github.io/hue/docs-3.7.0/sdk/sdk.html#introduction-and-overviewHue配置信息说明(中文):2018/7/26 http://www.cloudera.com/content/www/zh-CN/documentation/enterprise/5-3-x/topics/cdh_ig_hue_config.html(英文)http://archive.cloudera.com/cdh5/cdh/5/hue/user-guide/index.html]]></content>
@@ -27,7 +51,7 @@
   <entry>
     <title><![CDATA[自建KMS服务器，激活Windows & Office]]></title>
     <url>%2Farlo%2F8566e00c%2F</url>
-    <content type="text"><![CDATA[全文转自：https://lolico.moe/tutorial/linux-kms-server.html One key KMSLinux 快速搭建 KMS 激活服务器，让 PC 激活 Windows 和 Office 并自动续期，告别网上的来路不明的激活工具，防止意外中毒。虽然目前已经有各种 PC 用的 KMS 激活程序，例如KMSAuto或者KMS VL ALL之类的，但是他们都会被 Windows Defender 或者普通的杀毒软件认为是病毒。虽然你“相信”这些软件被报毒是很正常的，直接加入白名单了事，然而你确实不知道你从网上搜索下载的这些激活程序是不是真的经过别人的改造植入了病毒……因此，我们可以利用自己的 Linux VPS 搭建 KMS 激活服务器给自己的 PC 使用，这样既安全无毒又不怕激活丢失。只能激活 VL 版本（即“团体批量许可证”版）的 Windows，Office 则有办法从零售版转成 VL 版所以不用担心 一键搭建 KMS 服务下载脚本并运行，根据提示键入y开始安装CentOS / Redhat / Fedora1wget https://raw.githubusercontent.com/dakkidaze/one-key-kms/master/one-key-kms-centos.sh &amp;&amp; chmod +x one-key-kms-centos.sh &amp;&amp;./one-key-kms-centos.sh Debian / Ubuntu / Mint1wget https://raw.githubusercontent.com/dakkidaze/one-key-kms/master/one-key-kms-debian.sh &amp;&amp; chmod +x one-key-kms-debian.sh &amp;&amp; ./one-key-kms-debian.sh 下载这个作者写的配套脚本来控制启动/停止/重启等123456#下载脚本wget https://raw.githubusercontent.com/dakkidaze/one-key-kms/master/kms.sh &amp;&amp; chmod +x kms.sh#启动 KMS 服务./kms.sh start#这个脚本可以使用的参数：# start | stop | restart | status 如果你的防火墙默认 DROP，那么需要手动放行1688端口CentOS / Redhat / Fedora1iptables -I INPUT -p tcp --dport 1688 -j ACCEPT Debian / Ubuntu / Mint123#如果有 ufw 的话ufw allow 1688#如果没有的话，这么方便的防火墙工具为啥不装一个嘞~ 激活 Windows再次提醒，只能激活 VL 版的系统以管理员身份运行命令提示符或者PowerShell，然后输入以下命令：12345cd /d &quot;%SystemRoot%\system32&quot;slmgr /skms 你的KMS服务端主机的IP或者域名slmgr /atoslmgr /xpr成功的话你应该会看到这样的提示： 这样，每过 180 天，系统都会自动与你的 KMS 服务器通信来激活 Windows，只要到时候你的 KMS 服务器还在，Windows 就能继续激活;当然，你也可以随时通过slmgr /skms这条命令来更换你的 KMS 服务器地址 激活 Office只能激活 VL 版的 Office，如果是零售版，百度一下有很多将零售版转换为 VL 版的方法和批处理脚本；如果你比较懒，也可以直接利用KMSAuto工具来转换首先确定你的 Office 版本所对应的目录名称： 版本 目录名称 2016 Office16 2013 Office15 2010 Office14 如果你的 Office 是 32 位的，那么目录就在C:\Program Files (x86)\Microsoft Office\目录名称如果是 64 位，那么在C:\Program Files\Microsoft Office\目录名称接下来以管理员身份运行命令提示符或者PowerShell，然后输入以下命令：1234#以 64 位的 Office2016 为例，进入 Office 目录cd &quot;C:\Program Files\Microsoft Office\Office16&quot;cscript ospp.vbs /sethst:你的KMS服务端主机的IP或者域名cscript ospp.vbs /act 其他说明开机自启如果只是想简单的让 KMS 服务在 Linux 上开机自启，那么编辑/etc/rc.local文件，在exit 0（如果有）前面加上一句 假设之前下载的那个 kms.sh 脚本位于 /root/kms.sh/root/kms.sh start然后保存即可 守护进程如果你有很高的要求，想让 KMS 服务以守护进程的方式运行，防止服务意外终止12345678910#Debian / Ubuntu / Mint 使用 apt-get 来安装 supervisor#CentOS / Redhat / Fedora 使用 yum 来安装 supervisor#这里以 Debian 系统为例apt-get install supervisor -yecho &quot;[program:kms]command=/usr/local/kms/vlmcsd -L 0.0.0.0:1688autorestart=trueautostart=trueuser=root&quot; &gt; /etc/supervisor/conf.d/kms.conf/etc/init.d/supervisor restart 如果你使用守护进程方式运行 KMS 服务，那么就不需要在/etc/rc.local中写入开机启动命令 相关链接：https://lolico.moe/tutorial/linux-kms-server.htmlhttps://hub.docker.com/r/ilemonrain/vlmcsd/https://github.com/Wind4/vlmcsdhttps://github.com/SystemRage/py-kms]]></content>
+    <content type="text"><![CDATA[全文转自：https://lolico.moe/tutorial/linux-kms-server.html One key KMSLinux 快速搭建 KMS 激活服务器，让 PC 激活 Windows 和 Office 并自动续期，告别网上的来路不明的激活工具，防止意外中毒。虽然目前已经有各种 PC 用的 KMS 激活程序，例如KMSAuto或者KMS VL ALL之类的，但是他们都会被 Windows Defender 或者普通的杀毒软件认为是病毒。虽然你“相信”这些软件被报毒是很正常的，直接加入白名单了事，然而你确实不知道你从网上搜索下载的这些激活程序是不是真的经过别人的改造植入了病毒……因此，我们可以利用自己的 Linux VPS 搭建 KMS 激活服务器给自己的 PC 使用，这样既安全无毒又不怕激活丢失。只能激活 VL 版本（即“团体批量许可证”版）的 Windows，Office 则有办法从零售版转成 VL 版所以不用担心 一键搭建 KMS 服务下载脚本并运行，根据提示键入y开始安装CentOS / Redhat / Fedora1wget https://raw.githubusercontent.com/dakkidaze/one-key-kms/master/one-key-kms-centos.sh &amp;&amp; chmod +x one-key-kms-centos.sh &amp;&amp;./one-key-kms-centos.sh Debian / Ubuntu / Mint1wget https://raw.githubusercontent.com/dakkidaze/one-key-kms/master/one-key-kms-debian.sh &amp;&amp; chmod +x one-key-kms-debian.sh &amp;&amp; ./one-key-kms-debian.sh 下载这个作者写的配套脚本来控制启动/停止/重启等123456#下载脚本wget https://raw.githubusercontent.com/dakkidaze/one-key-kms/master/kms.sh &amp;&amp; chmod +x kms.sh#启动 KMS 服务./kms.sh start#这个脚本可以使用的参数：# start | stop | restart | status 如果你的防火墙默认 DROP，那么需要手动放行1688端口CentOS / Redhat / Fedora1iptables -I INPUT -p tcp --dport 1688 -j ACCEPT Debian / Ubuntu / Mint123#如果有 ufw 的话ufw allow 1688#如果没有的话，这么方便的防火墙工具为啥不装一个嘞~ 激活 Windows再次提醒，只能激活 VL 版的系统以管理员身份运行命令提示符或者PowerShell，然后输入以下命令：1234cd /d &quot;%SystemRoot%\system32&quot;slmgr /skms 你的KMS服务端主机的IP或者域名slmgr /atoslmgr /xpr 这样，每过 180 天，系统都会自动与你的 KMS 服务器通信来激活 Windows，只要到时候你的 KMS 服务器还在，Windows 就能继续激活;当然，你也可以随时通过slmgr /skms这条命令来更换你的 KMS 服务器地址 激活 Office只能激活 VL 版的 Office，如果是零售版，百度一下有很多将零售版转换为 VL 版的方法和批处理脚本；如果你比较懒，也可以直接利用KMSAuto工具来转换首先确定你的 Office 版本所对应的目录名称： 版本 目录名称 2016 Office16 2013 Office15 2010 Office14 如果你的 Office 是 32 位的，那么目录就在C:\Program Files (x86)\Microsoft Office\目录名称如果是 64 位，那么在C:\Program Files\Microsoft Office\目录名称接下来以管理员身份运行命令提示符或者PowerShell，然后输入以下命令：1234#以 64 位的 Office2016 为例，进入 Office 目录cd &quot;C:\Program Files\Microsoft Office\Office16&quot;cscript ospp.vbs /sethst:你的KMS服务端主机的IP或者域名cscript ospp.vbs /act 其他说明开机自启如果只是想简单的让 KMS 服务在 Linux 上开机自启，那么编辑/etc/rc.local文件，在exit 0（如果有）前面加上一句 假设之前下载的那个 kms.sh 脚本位于 /root/kms.sh/root/kms.sh start然后保存即可 守护进程如果你有很高的要求，想让 KMS 服务以守护进程的方式运行，防止服务意外终止12345678910#Debian / Ubuntu / Mint 使用 apt-get 来安装 supervisor#CentOS / Redhat / Fedora 使用 yum 来安装 supervisor#这里以 Debian 系统为例apt-get install supervisor -yecho &quot;[program:kms]command=/usr/local/kms/vlmcsd -L 0.0.0.0:1688autorestart=trueautostart=trueuser=root&quot; &gt; /etc/supervisor/conf.d/kms.conf/etc/init.d/supervisor restart 如果你使用守护进程方式运行 KMS 服务，那么就不需要在/etc/rc.local中写入开机启动命令 相关链接：https://lolico.moe/tutorial/linux-kms-server.htmlhttps://hub.docker.com/r/ilemonrain/vlmcsd/https://github.com/Wind4/vlmcsdhttps://github.com/SystemRage/py-kms]]></content>
       <categories>
         <category>服务器搭建</category>
       </categories>
@@ -127,9 +151,9 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>zabbix</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
+        <tag>zabbix</tag>
       </tags>
   </entry>
   <entry>
@@ -140,10 +164,10 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>zabbix</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
+        <tag>zabbix</tag>
       </tags>
   </entry>
   <entry>
@@ -201,9 +225,9 @@
         <category>大气模型</category>
       </categories>
       <tags>
+        <tag>mysql</tag>
         <tag>wgrib2</tag>
         <tag>GFS</tag>
-        <tag>mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -214,9 +238,9 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -227,8 +251,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Sonar</tag>
       </tags>
   </entry>
@@ -240,8 +264,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>bginfo</tag>
         <tag>windows</tag>
+        <tag>bginfo</tag>
       </tags>
   </entry>
   <entry>
@@ -266,10 +290,10 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Scp</tag>
-        <tag>MTU</tag>
         <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Scp</tag>
+        <tag>MTU</tag>
       </tags>
   </entry>
   <entry>
@@ -368,8 +392,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -394,9 +418,9 @@
         <category>监控</category>
       </categories>
       <tags>
+        <tag>tomcat</tag>
         <tag>zabbix</tag>
         <tag>监控</tag>
-        <tag>tomcat</tag>
       </tags>
   </entry>
   <entry>
@@ -508,8 +532,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
         <tag>tomcat</tag>
       </tags>
@@ -535,8 +559,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -548,8 +572,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -675,8 +699,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -688,8 +712,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -701,8 +725,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -714,8 +738,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -727,8 +751,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>expect</tag>
         <tag>脚本</tag>
       </tags>
@@ -741,9 +765,9 @@
         <category>数据库</category>
       </categories>
       <tags>
+        <tag>Windows</tag>
         <tag>数据库</tag>
         <tag>Oracle</tag>
-        <tag>Windows</tag>
       </tags>
   </entry>
   <entry>
@@ -782,8 +806,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>shell</tag>
         <tag>脚本</tag>
+        <tag>shell</tag>
         <tag>linux常识</tag>
       </tags>
   </entry>
@@ -853,8 +877,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -866,8 +890,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Cobbler</tag>
       </tags>
   </entry>
@@ -987,9 +1011,9 @@
         <category>常识</category>
       </categories>
       <tags>
+        <tag>xshell</tag>
         <tag>Linux</tag>
         <tag>常识</tag>
-        <tag>xshell</tag>
       </tags>
   </entry>
   <entry>
