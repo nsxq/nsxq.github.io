@@ -271,6 +271,124 @@
             
               
                 
+                <a class="post-title-link" href="/arlo/42c94ca5/" itemprop="url">
+                  使用阿里云Docker镜像库加速
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-11-02T09:25:40+08:00" content="2016-11-02">
+              2016-11-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/DevOps/" itemprop="url" rel="index">
+                    <span itemprop="name">DevOps</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="开发者账号"><a href="#开发者账号" class="headerlink" title="开发者账号"></a>开发者账号</h1><p>由于docker官方的镜像下载太慢了，于是开通了阿里云的开发者账号；<br><strong>申请开发者账号</strong><br><a href="http://console.d.aliyun.com/join.htm?spm=0.0.0.0.Xx1dX0#/docker/booster" target="_blank" rel="external">http://console.d.aliyun.com/join.htm?spm=0.0.0.0.Xx1dX0#/docker/booster</a><br><strong>本人的专属加速器地址</strong><br><a href="https://4c2kkvb9.mirror.aliyuncs.com" target="_blank" rel="external">https://4c2kkvb9.mirror.aliyuncs.com</a><br><strong>阿里云docker镜像搜索地址：</strong><br><a href="https://cr.console.aliyun.com/#/imageSearch" target="_blank" rel="external">https://cr.console.aliyun.com/#/imageSearch</a><br><strong>阿里云docker加速器</strong><br>使用加速器将会提升您在国内获取Docker官方镜像的速度！<br><a href="https://cr.console.aliyun.com/#/accelerator" target="_blank" rel="external">https://cr.console.aliyun.com/#/accelerator</a></p>
+<h1 id="加速器操作文档"><a href="#加速器操作文档" class="headerlink" title="加速器操作文档"></a>加速器操作文档</h1><p>安装或升级Docker<br>您可以通过阿里云的镜像仓库下载：<strong><a href="http://mirrors.aliyun.com/help/docker-engine" target="_blank" rel="external">mirrors.aliyun.com/help/docker-engine</a></strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">curl -sSL http://acs-public-mirror.oss-cn-hangzhou.aliyuncs.com/docker-engine/internet | sh -</div></pre></td></tr></table></figure></p>
+<p>配置Docker加速器</p>
+<p>您可以使用如下的脚本将mirror的配置添加到docker daemon的启动参数中。<br>系统要求 CentOS 7 以上，Docker 1.9 以上。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cp -n /lib/systemd/system/docker.service /etc/systemd/system/docker.service   </div><div class="line">sed -i &quot;s|ExecStart=/usr/bin/dockerd|ExecStart=/usr/bin/docker daemon --registry-mirror=https://4c2kkvb9.mirror.aliyuncs.com|g&quot; /etc/systemd/system/docker.service    </div><div class="line">systemctl daemon-reload </div><div class="line">systemctl restart docker</div></pre></td></tr></table></figure></p>
+<h1 id="QA"><a href="#QA" class="headerlink" title="QA"></a>QA</h1><p>Q: docker pull 时候报错“ x509: certificate has expired or is not yet valid”<br>A: 此问题是由于主机的时间不同步造成的，使用ntpdate cn.ntp.org.cn 同步网络时间即可。</p>
+<hr>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/arlo/f9f5730/" itemprop="url">
                   使用kubernetes 1.4 新特性kubeadm创建集群
                 </a>
@@ -1204,7 +1322,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">88</span>
+              <span class="site-state-item-count">89</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

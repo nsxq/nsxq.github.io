@@ -61,7 +61,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="windows,bginfo," />
+  <meta name="keywords" content="Mariadb,Mysql,Troubleshooting," />
 
 
 
@@ -77,19 +77,16 @@
 
 
 
-<meta name="description" content="经常维护多台Windows服务器，在服务器之间来回切换，经常容易搞混，为大家推荐一个维护利器BGinfo。">
+<meta name="description" content="拿到手的服务器大量空间在/home分区下，没有在/下，考虑到后期数据库增长量，/分区空间可能不够，决定把Mariadb数据库数据存储路径修改到/home分区下；以下为修改过程">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Bginfo--Windows系统信息显示工具">
-<meta property="og:url" content="http://islocal.cc/arlo/ea6f862b/index.html">
+<meta property="og:title" content="修改Mariadb数据库存储路径">
+<meta property="og:url" content="http://islocal.cc/arlo/1b10686d/index.html">
 <meta property="og:site_name" content="南山居">
-<meta property="og:description" content="经常维护多台Windows服务器，在服务器之间来回切换，经常容易搞混，为大家推荐一个维护利器BGinfo。">
-<meta property="og:image" content="http://islocal.cc/images/2018/0122/01.png">
-<meta property="og:image" content="http://islocal.cc/images/2018/0122/02.png">
-<meta property="og:updated_time" content="2018-03-15T07:17:45.962Z">
+<meta property="og:description" content="拿到手的服务器大量空间在/home分区下，没有在/下，考虑到后期数据库增长量，/分区空间可能不够，决定把Mariadb数据库数据存储路径修改到/home分区下；以下为修改过程">
+<meta property="og:updated_time" content="2018-09-21T06:46:32.264Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Bginfo--Windows系统信息显示工具">
-<meta name="twitter:description" content="经常维护多台Windows服务器，在服务器之间来回切换，经常容易搞混，为大家推荐一个维护利器BGinfo。">
-<meta name="twitter:image" content="http://islocal.cc/images/2018/0122/01.png">
+<meta name="twitter:title" content="修改Mariadb数据库存储路径">
+<meta name="twitter:description" content="拿到手的服务器大量空间在/home分区下，没有在/下，考虑到后期数据库增长量，/分区空间可能不够，决定把Mariadb数据库数据存储路径修改到/home分区下；以下为修改过程">
 
 
 
@@ -110,9 +107,9 @@
 
 
 
-  <link rel="canonical" href="http://islocal.cc/arlo/ea6f862b/"/>
+  <link rel="canonical" href="http://islocal.cc/arlo/1b10686d/"/>
 
-  <title> Bginfo--Windows系统信息显示工具 | 南山居 </title>
+  <title> 修改Mariadb数据库存储路径 | 南山居 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -275,7 +272,7 @@
             
             
               
-                Bginfo--Windows系统信息显示工具
+                修改Mariadb数据库存储路径
               
             
           </h1>
@@ -287,8 +284,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2018-01-22T14:01:43+08:00" content="2018-01-22">
-              2018-01-22
+            <time itemprop="dateCreated" datetime="2018-09-21T14:30:50+08:00" content="2018-09-21">
+              2018-09-21
             </time>
           </span>
 
@@ -301,8 +298,8 @@
               <span class="post-meta-item-text">分类于</span>
               
                 <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/常识/" itemprop="url" rel="index">
-                    <span itemprop="name">常识</span>
+                  <a href="/categories/Troubleshooting/" itemprop="url" rel="index">
+                    <span itemprop="name">Troubleshooting</span>
                   </a>
                 </span>
 
@@ -339,16 +336,16 @@
       
 
       
-        <p>经常维护多台Windows服务器，在服务器之间来回切换，经常容易搞混，为大家推荐一个维护利器BGinfo。<br><a id="more"></a></p>
-<h1 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h1><p>下载地址：<a href="https://download.sysinternals.com/files/BGInfo.zip" target="_blank" rel="external">https://download.sysinternals.com/files/BGInfo.zip</a><br>下载、解压完成后，双击Bginfo64,同意即可价值默认信息；这里是我觉得平时会用到的参数信息。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">主机名称:	&lt;Host Name&gt;</div><div class="line">系统版本:	&lt;OS Version&gt;</div><div class="line">服务补丁包:	&lt;Service Pack&gt;</div><div class="line">系统启动时间:	&lt;Boot Time&gt;</div><div class="line">当前用户名:	&lt;User Name&gt;</div><div class="line">------------------------------</div><div class="line">CPU:	&lt;CPU&gt;</div><div class="line">内存:	&lt;Memory&gt;</div><div class="line">磁盘可用空间:	&lt;Free Space&gt;</div><div class="line">------------------------------</div><div class="line">IP Address:	&lt;IP Address&gt;</div><div class="line">MAC Address:	&lt;MAC Address&gt;</div><div class="line">Subnet Mask:	&lt;Subnet Mask&gt;</div><div class="line">Default Gateway:	&lt;Default Gateway&gt;</div><div class="line">DNS Server:	&lt;DNS Server&gt;</div></pre></td></tr></table></figure></p>
-<p>点击file-save as 保存D:\BGInfo为名为systeminfo.cgi<br><img src="/images/2018/0122/01.png" alt="bginfo"><br>Background：可以定义直接在当前壁纸上显示、指定一个壁纸路径或纯色显示。<br>Position：可配置信息输出位置（9个选项）以及多显示器输出支持<em>(偏爱右上)</em><br>Desktops：用于配置用户远程登录、控制台登录时的显示方式<br>Preview：预览配置效果<br><img src="/images/2018/0122/02.png" alt="bginfo"></p>
-<h1 id="配置开机启动"><a href="#配置开机启动" class="headerlink" title="配置开机启动"></a>配置开机启动</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">1. </div><div class="line">在windows资源管理器输入shell:startup 快速打开当前用户的「启动」文件夹</div><div class="line">2. </div><div class="line">新建一个.bat文件，内容为D:\BGInfo\Bginfo64.exe systeminfo.bgi /timer:0 /nolicprompt /silent</div></pre></td></tr></table></figure>
-<p>PS:</p>
-<ol>
-<li>此工具很方便，但是不能根据系统信息，自行刷新，可以添加计划任务进行刷新。</li>
-<li>此工具大规模部署建议使用域环境操作。</li>
-</ol>
-<p>参考链接：<br><a href="https://docs.microsoft.com/en-us/sysinternals/downloads/bginfo" target="_blank" rel="external">https://docs.microsoft.com/en-us/sysinternals/downloads/bginfo</a><br><a href="https://www.sysgeek.cn/bginfo/" target="_blank" rel="external">https://www.sysgeek.cn/bginfo/</a></p>
+        <p>拿到手的服务器大量空间在/home分区下，没有在/下，考虑到后期数据库增长量，/分区空间可能不够，决定把Mariadb数据库数据存储路径修改到/home分区下；以下为修改过程<br><a id="more"></a></p>
+<h1 id="关闭数据库服务"><a href="#关闭数据库服务" class="headerlink" title="关闭数据库服务"></a>关闭数据库服务</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">systemctl stop mariadb.service</div></pre></td></tr></table></figure>
+<h1 id="新建新的存储路径，并移动之前的文件"><a href="#新建新的存储路径，并移动之前的文件" class="headerlink" title="新建新的存储路径，并移动之前的文件"></a>新建新的存储路径，并移动之前的文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">mkdir /home/data</div><div class="line">mv /var/lib/mysql/ /home/data/</div></pre></td></tr></table></figure>
+<h1 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h1><blockquote>
+<p>cp /usr/share/mysql/my-medium.cnf /etc/my.cnf    #如果是新装的数据库，可以复制一个模板配置文件过来<br><em>注：datadir上面的五行是设置默认字符集为utf8mb4，否则emoji表情是无法正确存储的。</em></p>
+</blockquote>
+<p><code>vim /etc/my.cnf</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[client]</div><div class="line">socket          = /home/data/mysql/mysql.sock</div><div class="line">[mysqld]</div><div class="line"></div><div class="line">init_connect=&apos;SET collation_connection = utf8mb4_unicode_ci&apos;</div><div class="line">init_connect=&apos;SET NAMES utf8mb4&apos;</div><div class="line">character_set_server=utf8mb4</div><div class="line">collation-server=utf8mb4_unicode_ci</div><div class="line">skip-character-set-client-handshake=true</div><div class="line"></div><div class="line">datadir=/home/data/mysql/</div></pre></td></tr></table></figure></p>
+<h1 id="报错"><a href="#报错" class="headerlink" title="报错"></a>报错</h1><p>报错:“[Warning] Can’t create test file /home/data/mysql/sthbb_rwdcdb_36_123.lower-test”.<br>解决方式: 修改/usr/lib/systemd/system/mariadb.service中配置项<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ProtectHome=false</div></pre></td></tr></table></figure></p>
+<h1 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">[root@sthbb_rwdcdb_36_123 data]# mysql -uroot -p</div><div class="line">Enter password: </div><div class="line">Welcome to the MariaDB monitor.  Commands end with ; or \g.</div><div class="line">Your MariaDB connection id is 3</div><div class="line">Server version: 10.1.36-MariaDB MariaDB Server</div><div class="line"></div><div class="line">Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.</div><div class="line"></div><div class="line">Type &apos;help;&apos; or &apos;\h&apos; for help. Type &apos;\c&apos; to clear the current input statement.</div><div class="line"></div><div class="line">MariaDB [(none)]&gt; show global variables like &quot;%datadir%&quot;;</div><div class="line">+---------------+-------------------+</div><div class="line">| Variable_name | Value             |</div><div class="line">+---------------+-------------------+</div><div class="line">| datadir       | /home/data/mysql/ |</div><div class="line">+---------------+-------------------+</div><div class="line">1 row in set (0.00 sec)</div><div class="line"></div><div class="line">MariaDB [(none)]&gt; status</div><div class="line">--------------</div><div class="line">mysql  Ver 15.1 Distrib 10.1.36-MariaDB, for Linux (x86_64) using readline 5.1</div><div class="line"></div><div class="line">Connection id:		3</div><div class="line">Current database:	</div><div class="line">Current user:		root@localhost</div><div class="line">SSL:			Not in use</div><div class="line">Current pager:		stdout</div><div class="line">Using outfile:		&apos;&apos;</div><div class="line">Using delimiter:	;</div><div class="line">Server:			MariaDB</div><div class="line">Server version:		10.1.36-MariaDB MariaDB Server</div><div class="line">Protocol version:	10</div><div class="line">Connection:		Localhost via UNIX socket</div><div class="line">Server characterset:	utf8mb4</div><div class="line">Db     characterset:	utf8mb4</div><div class="line">Client characterset:	utf8mb4</div><div class="line">Conn.  characterset:	utf8mb4</div><div class="line">UNIX socket:		/home/data/mysql/mysql.sock</div><div class="line">Uptime:			2 min 29 sec</div><div class="line"></div><div class="line">Threads: 1  Questions: 5  Slow queries: 0  Opens: 17  Flush tables: 1  Open tables: 11  Queries per second avg: 0.033</div><div class="line">--------------</div></pre></td></tr></table></figure>
+<p>参考链接：<a href="https://stackoverflow.com/questions/38529205/mariadb-cannot-start-after-update-warning-cant-create-test-file-home-mysql" target="_blank" rel="external">https://stackoverflow.com/questions/38529205/mariadb-cannot-start-after-update-warning-cant-create-test-file-home-mysql</a></p>
 
       
     </div>
@@ -387,9 +384,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/windows/" rel="tag">#windows</a>
+            <a href="/tags/Mariadb/" rel="tag">#Mariadb</a>
           
-            <a href="/tags/bginfo/" rel="tag">#bginfo</a>
+            <a href="/tags/Mysql/" rel="tag">#Mysql</a>
+          
+            <a href="/tags/Troubleshooting/" rel="tag">#Troubleshooting</a>
           
         </div>
       
@@ -398,17 +397,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/arlo/5b552504/" rel="next" title="部署office在线预览服务器(Office Web Apps Server)">
-                <i class="fa fa-chevron-left"></i> 部署office在线预览服务器(Office Web Apps Server)
+              <a href="/arlo/cb23bc66/" rel="next" title="Oracle 12c远程连接报ORA28040和ORA01017错误">
+                <i class="fa fa-chevron-left"></i> Oracle 12c远程连接报ORA28040和ORA01017错误
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/arlo/96c3f480/" rel="prev" title="Sonar代码质量管理工具安装">
-                Sonar代码质量管理工具安装 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -528,7 +523,7 @@
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#修改配置文件"><span class="nav-number">1.</span> <span class="nav-text">修改配置文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置开机启动"><span class="nav-number">2.</span> <span class="nav-text">配置开机启动</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#关闭数据库服务"><span class="nav-number">1.</span> <span class="nav-text">关闭数据库服务</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#新建新的存储路径，并移动之前的文件"><span class="nav-number">2.</span> <span class="nav-text">新建新的存储路径，并移动之前的文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改配置文件"><span class="nav-number">3.</span> <span class="nav-text">修改配置文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#报错"><span class="nav-number">4.</span> <span class="nav-text">报错</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#验证"><span class="nav-number">5.</span> <span class="nav-text">验证</span></a></li></ol></div>
             
           </div>
         </section>

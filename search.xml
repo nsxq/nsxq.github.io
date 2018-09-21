@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[修改Mariadb数据库存储路径]]></title>
+    <url>%2Farlo%2F1b10686d%2F</url>
+    <content type="text"><![CDATA[拿到手的服务器大量空间在/home分区下，没有在/下，考虑到后期数据库增长量，/分区空间可能不够，决定把Mariadb数据库数据存储路径修改到/home分区下；以下为修改过程 关闭数据库服务1systemctl stop mariadb.service 新建新的存储路径，并移动之前的文件12mkdir /home/datamv /var/lib/mysql/ /home/data/ 修改配置文件 cp /usr/share/mysql/my-medium.cnf /etc/my.cnf #如果是新装的数据库，可以复制一个模板配置文件过来注：datadir上面的五行是设置默认字符集为utf8mb4，否则emoji表情是无法正确存储的。 vim /etc/my.cnf1234567891011[client]socket = /home/data/mysql/mysql.sock[mysqld]init_connect=&apos;SET collation_connection = utf8mb4_unicode_ci&apos;init_connect=&apos;SET NAMES utf8mb4&apos;character_set_server=utf8mb4collation-server=utf8mb4_unicode_ciskip-character-set-client-handshake=truedatadir=/home/data/mysql/ 报错报错:“[Warning] Can’t create test file /home/data/mysql/sthbb_rwdcdb_36_123.lower-test”.解决方式: 修改/usr/lib/systemd/system/mariadb.service中配置项1ProtectHome=false 验证123456789101112131415161718192021222324252627282930313233343536373839404142[root@sthbb_rwdcdb_36_123 data]# mysql -uroot -pEnter password: Welcome to the MariaDB monitor. Commands end with ; or \g.Your MariaDB connection id is 3Server version: 10.1.36-MariaDB MariaDB ServerCopyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.Type &apos;help;&apos; or &apos;\h&apos; for help. Type &apos;\c&apos; to clear the current input statement.MariaDB [(none)]&gt; show global variables like &quot;%datadir%&quot;;+---------------+-------------------+| Variable_name | Value |+---------------+-------------------+| datadir | /home/data/mysql/ |+---------------+-------------------+1 row in set (0.00 sec)MariaDB [(none)]&gt; status--------------mysql Ver 15.1 Distrib 10.1.36-MariaDB, for Linux (x86_64) using readline 5.1Connection id: 3Current database: Current user: root@localhostSSL: Not in useCurrent pager: stdoutUsing outfile: &apos;&apos;Using delimiter: ;Server: MariaDBServer version: 10.1.36-MariaDB MariaDB ServerProtocol version: 10Connection: Localhost via UNIX socketServer characterset: utf8mb4Db characterset: utf8mb4Client characterset: utf8mb4Conn. characterset: utf8mb4UNIX socket: /home/data/mysql/mysql.sockUptime: 2 min 29 secThreads: 1 Questions: 5 Slow queries: 0 Opens: 17 Flush tables: 1 Open tables: 11 Queries per second avg: 0.033-------------- 参考链接：https://stackoverflow.com/questions/38529205/mariadb-cannot-start-after-update-warning-cant-create-test-file-home-mysql]]></content>
+      <categories>
+        <category>Troubleshooting</category>
+      </categories>
+      <tags>
+        <tag>Mariadb</tag>
+        <tag>Mysql</tag>
+        <tag>Troubleshooting</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Oracle 12c远程连接报ORA28040和ORA01017错误]]></title>
     <url>%2Farlo%2Fcb23bc66%2F</url>
     <content type="text"><![CDATA[ORA-28040: 没有匹配的验证协议修改$ORACLE_HOME\NETWORK\ADMIN\sqlnet.ora文件，添加以下两行12SQLNET.ALLOWED_LOGON_VERSION_SERVER=9SQLNET.ALLOWED_LOGON_VERSION_CLIENT=9 ORA-01017的错误的解决方法：sqlplus / as sysdba1ALTER USER username IDENTIFIED BY password 参考链接：http://blog.itpub.net/28612416/viewspace-2138896/https://m.aliyun.com/yunqi/articles/415260]]></content>
@@ -776,9 +789,9 @@
         <category>数据库</category>
       </categories>
       <tags>
+        <tag>Windows</tag>
         <tag>数据库</tag>
         <tag>Oracle</tag>
-        <tag>Windows</tag>
       </tags>
   </entry>
   <entry>
