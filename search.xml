@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[nginx反向代理Jenkins问题]]></title>
+    <url>%2Farlo%2F57829448%2F</url>
+    <content type="text"><![CDATA[由于只开放了一个端口，要使用jenkins发布业务的话，需要使用nginx把jenkins的端口反向代理出来；关于jenkins搭建参加本博客之前文章 修改nginx配置文件，server下添加location12345678location /jenkins &#123; proxy_pass http://127.0.0.1:7999/jenkins; proxy_redirect off; proxy_set_header Host $host:$server_port; proxy_set_header X-Real-IP $remote_addr; proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header X-Forwarded-Proto $scheme;&#125; 修改jenkins配置文件vim /etc/sysconfig/jenkins1234# 由于我这里把8080端口占用了，把jenkins修改为7999端口JENKINS_PORT=&quot;7999&quot;# 为jenkins添加一个上下文对象JENKINS_ARGS=&quot;--prefix=/jenkins&quot; 重启nginx、jenkins12systemctl restart jenkins.servicenginx -s reload 参考文档：https://www.jianshu.com/p/8315657465ac]]></content>
+      <categories>
+        <category>Troubleshooting</category>
+      </categories>
+      <tags>
+        <tag>Jenkins</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[修改Mariadb数据库存储路径]]></title>
     <url>%2Farlo%2F1b10686d%2F</url>
     <content type="text"><![CDATA[拿到手的服务器大量空间在/home分区下，没有在/下，考虑到后期数据库增长量，/分区空间可能不够，决定把Mariadb数据库数据存储路径修改到/home分区下；以下为修改过程 关闭数据库服务1systemctl stop mariadb.service 新建新的存储路径，并移动之前的文件12mkdir /home/datamv /var/lib/mysql/ /home/data/ 修改配置文件 cp /usr/share/mysql/my-medium.cnf /etc/my.cnf #如果是新装的数据库，可以复制一个模板配置文件过来注：datadir上面的五行是设置默认字符集为utf8mb4，否则emoji表情是无法正确存储的。 vim /etc/my.cnf1234567891011[client]socket = /home/data/mysql/mysql.sock[mysqld]init_connect=&apos;SET collation_connection = utf8mb4_unicode_ci&apos;init_connect=&apos;SET NAMES utf8mb4&apos;character_set_server=utf8mb4collation-server=utf8mb4_unicode_ciskip-character-set-client-handshake=truedatadir=/home/data/mysql/ 报错报错:“[Warning] Can’t create test file /home/data/mysql/sthbb_rwdcdb_36_123.lower-test”.解决方式: 修改/usr/lib/systemd/system/mariadb.service中配置项1ProtectHome=false 验证123456789101112131415161718192021222324252627282930313233343536373839404142[root@sthbb_rwdcdb_36_123 data]# mysql -uroot -pEnter password: Welcome to the MariaDB monitor. Commands end with ; or \g.Your MariaDB connection id is 3Server version: 10.1.36-MariaDB MariaDB ServerCopyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.Type &apos;help;&apos; or &apos;\h&apos; for help. Type &apos;\c&apos; to clear the current input statement.MariaDB [(none)]&gt; show global variables like &quot;%datadir%&quot;;+---------------+-------------------+| Variable_name | Value |+---------------+-------------------+| datadir | /home/data/mysql/ |+---------------+-------------------+1 row in set (0.00 sec)MariaDB [(none)]&gt; status--------------mysql Ver 15.1 Distrib 10.1.36-MariaDB, for Linux (x86_64) using readline 5.1Connection id: 3Current database: Current user: root@localhostSSL: Not in useCurrent pager: stdoutUsing outfile: &apos;&apos;Using delimiter: ;Server: MariaDBServer version: 10.1.36-MariaDB MariaDB ServerProtocol version: 10Connection: Localhost via UNIX socketServer characterset: utf8mb4Db characterset: utf8mb4Client characterset: utf8mb4Conn. characterset: utf8mb4UNIX socket: /home/data/mysql/mysql.sockUptime: 2 min 29 secThreads: 1 Questions: 5 Slow queries: 0 Opens: 17 Flush tables: 1 Open tables: 11 Queries per second avg: 0.033-------------- 参考链接：https://stackoverflow.com/questions/38529205/mariadb-cannot-start-after-update-warning-cant-create-test-file-home-mysql]]></content>

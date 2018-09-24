@@ -61,7 +61,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Jenkins," />
 
 
 
@@ -77,12 +77,19 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="南山居">
-<meta property="og:url" content="http://islocal.cc/tags/Linux/index.html">
+<meta name="description" content="由于只开放了一个端口，要使用jenkins发布业务的话，需要使用nginx把jenkins的端口反向代理出来；关于jenkins搭建参加本博客之前文章
+修改nginx配置文件，server下添加location12345678location /jenkins &amp;#123;    proxy_pass   http://127.0.0.1:7999/jenkins;    proxy_redire">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nginx反向代理Jenkins问题">
+<meta property="og:url" content="http://islocal.cc/arlo/57829448/index.html">
 <meta property="og:site_name" content="南山居">
+<meta property="og:description" content="由于只开放了一个端口，要使用jenkins发布业务的话，需要使用nginx把jenkins的端口反向代理出来；关于jenkins搭建参加本博客之前文章
+修改nginx配置文件，server下添加location12345678location /jenkins &amp;#123;    proxy_pass   http://127.0.0.1:7999/jenkins;    proxy_redire">
+<meta property="og:updated_time" content="2018-09-24T05:44:05.452Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="南山居">
+<meta name="twitter:title" content="nginx反向代理Jenkins问题">
+<meta name="twitter:description" content="由于只开放了一个端口，要使用jenkins发布业务的话，需要使用nginx把jenkins的端口反向代理出来；关于jenkins搭建参加本博客之前文章
+修改nginx配置文件，server下添加location12345678location /jenkins &amp;#123;    proxy_pass   http://127.0.0.1:7999/jenkins;    proxy_redire">
 
 
 
@@ -103,9 +110,9 @@
 
 
 
-  <link rel="canonical" href="http://islocal.cc/tags/Linux/"/>
+  <link rel="canonical" href="http://islocal.cc/arlo/57829448/"/>
 
-  <title> 标签: Linux | 南山居 </title>
+  <title> nginx反向代理Jenkins问题 | 南山居 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -126,7 +133,7 @@
     
   
 
-  <div class="container one-collumn sidebar-position-left  ">
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -247,270 +254,165 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        Linux
-        <small>标签</small>
-      </h2>
-    </div>
-
+  <div id="posts" class="posts-expand">
     
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/arlo/f49b27ae/" itemprop="url">
-              
-                <span itemprop="name">SSH隧道实现Yum等代理</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-06-01T10:06:14+08:00"
-              content="2018-06-01" >
-          06-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/arlo/d9547628/" itemprop="url">
-              
-                <span itemprop="name">安装rlwrap，使SqlPlus工具支持上下左右键</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-03-13T16:11:49+08:00"
-              content="2018-03-13" >
-          03-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/arlo/8954c4ab/" itemprop="url">
-              
-                <span itemprop="name">Scp拷贝大文件出现stalled故障解决方法</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-01-18T17:56:00+08:00"
-              content="2018-01-18" >
-          01-18
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/arlo/3f60947a/" itemprop="url">
-              
-                <span itemprop="name">JDK环境变量配置</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-09-27T14:23:03+08:00"
-              content="2017-09-27" >
-          09-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/arlo/350a96fc/" itemprop="url">
-              
-                <span itemprop="name">Linux下如何拨VPN</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-08-23T15:57:28+08:00"
-              content="2017-08-23" >
-          08-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/arlo/1a27e5da/" itemprop="url">
-              
-                <span itemprop="name">Linux下多线程下载工具Axel</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-07-25T15:34:17+08:00"
-              content="2017-07-25" >
-          07-25
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/arlo/ef6f2f28/" itemprop="url">
-              
-                <span itemprop="name">yum 安装epel扩展后报错</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-04-06T10:09:46+08:00"
-              content="2017-04-06" >
-          04-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/arlo/da9b9fcb/" itemprop="url">
-              
-                <span itemprop="name">SSH 奇淫技巧之隧道模式</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-01-16T09:02:06+08:00"
-              content="2017-01-16" >
-          01-16
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/arlo/d1d8517a/" itemprop="url">
-              
-                <span itemprop="name">Xshell 使用技巧</span>
-              
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2016-08-19T14:17:46+08:00"
-              content="2016-08-19" >
-          08-19
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-  </div>
 
   
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                nginx反向代理Jenkins问题
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-09-24T13:35:01+08:00" content="2018-09-24">
+              2018-09-24
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Troubleshooting/" itemprop="url" rel="index">
+                    <span itemprop="name">Troubleshooting</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+              &nbsp; | &nbsp;
+              <span class="page-pv">本文总阅读量
+              <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>次
+              </span>
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>由于只开放了一个端口，要使用jenkins发布业务的话，需要使用nginx把jenkins的端口反向代理出来；关于jenkins搭建参加<a href="http://islocal.cc/arlo/c0b31722/">本博客之前文章</a></p>
+<h1 id="修改nginx配置文件，server下添加location"><a href="#修改nginx配置文件，server下添加location" class="headerlink" title="修改nginx配置文件，server下添加location"></a>修改nginx配置文件，server下添加location</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">location /jenkins &#123;</div><div class="line">    proxy_pass   http://127.0.0.1:7999/jenkins;</div><div class="line">    proxy_redirect off;</div><div class="line">    proxy_set_header Host $host:$server_port;</div><div class="line">    proxy_set_header X-Real-IP $remote_addr;</div><div class="line">    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;</div><div class="line">    proxy_set_header X-Forwarded-Proto $scheme;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h1 id="修改jenkins配置文件"><a href="#修改jenkins配置文件" class="headerlink" title="修改jenkins配置文件"></a>修改jenkins配置文件</h1><p><code>vim /etc/sysconfig/jenkins</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># 由于我这里把8080端口占用了，把jenkins修改为7999端口</div><div class="line">JENKINS_PORT=&quot;7999&quot;</div><div class="line"># 为jenkins添加一个上下文对象</div><div class="line">JENKINS_ARGS=&quot;--prefix=/jenkins&quot;</div></pre></td></tr></table></figure></p>
+<h1 id="重启nginx、jenkins"><a href="#重启nginx、jenkins" class="headerlink" title="重启nginx、jenkins"></a>重启nginx、jenkins</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">systemctl restart jenkins.service</div><div class="line">nginx -s reload</div></pre></td></tr></table></figure>
+<h2 id="参考文档：https-www-jianshu-com-p-8315657465ac"><a href="#参考文档：https-www-jianshu-com-p-8315657465ac" class="headerlink" title="参考文档：https://www.jianshu.com/p/8315657465ac"></a>参考文档：<a href="https://www.jianshu.com/p/8315657465ac" target="_blank" rel="external">https://www.jianshu.com/p/8315657465ac</a></h2>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+  <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+    <div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div>
+    <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+      <span>赏</span>
+    </button>
+    <div id="QR" style="display: none;">
+      
+      
+        <div id="alipay" style="display: inline-block">
+          <img id="alipay_qr" src="/images/01/alipay.jpg" alt="南山小樵 Alipay"/>
+          <p>支付宝打赏</p>
+        </div>
+      
+    </div>
+  </div>
+
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Jenkins/" rel="tag">#Jenkins</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/arlo/1b10686d/" rel="next" title="修改Mariadb数据库存储路径">
+                <i class="fa fa-chevron-left"></i> 修改Mariadb数据库存储路径
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -518,6 +420,17 @@
 
 
           
+<div id="cloud-tie-wrapper" class="cloud-tie-wrapper"></div>
+<script>
+  var cloudTieConfig = {
+    url: document.location.href, 
+    sourceId: "���� page.path ����",
+    productKey: "0df311b624f44726a84b2b6249d64c11",
+    target: "cloud-tie-wrapper"
+  };
+</script>
+<script src="https://img1.cache.netease.com/f2e/tie/yun/sdk/loader.js"></script>
+
         </div>
         
           
@@ -536,8 +449,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel  sidebar-panel-active ">
+      <section class="site-overview sidebar-panel ">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/01/psir.jpg"
@@ -587,6 +509,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#修改nginx配置文件，server下添加location"><span class="nav-number">1.</span> <span class="nav-text">修改nginx配置文件，server下添加location</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改jenkins配置文件"><span class="nav-number">2.</span> <span class="nav-text">修改jenkins配置文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#重启nginx、jenkins"><span class="nav-number">3.</span> <span class="nav-text">重启nginx、jenkins</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考文档：https-www-jianshu-com-p-8315657465ac"><span class="nav-number">3.1.</span> <span class="nav-text">参考文档：https://www.jianshu.com/p/8315657465ac</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
       
 
     </div>
@@ -699,6 +632,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
 
   
 

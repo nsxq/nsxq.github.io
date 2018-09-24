@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://islocal.cc/arlo/57829448/</loc>
+    <lastmod>2018-09-24T05:44:05.452Z</lastmod>
+    <data>
+        <display>
+        <title>nginx反向代理Jenkins问题</title>
+        <pubTime>2018-09-24T05:35:01.000Z</pubTime>
+        
+        <tag>Jenkins</tag>
+         
+         
+           
+             
+              <breadCrumb title="Troubleshooting" url="http://islocal.cc/categories/Troubleshooting/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/arlo/1b10686d/</loc>
     <lastmod>2018-09-21T06:46:32.264Z</lastmod>
     <data>
@@ -1861,6 +1881,23 @@
 
     
   <url>
+    <loc>http://islocal.cc/arlo/e5e5519a/</loc>
+    <lastmod>2018-03-15T07:17:45.788Z</lastmod>
+    <data>
+        <display>
+        <title>Hexo博客搭建简记</title>
+        <pubTime>2016-08-08T02:11:23.000Z</pubTime>
+        
+        <tag>hexo</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/arlo/3b439eff/</loc>
     <lastmod>2018-03-15T07:17:45.788Z</lastmod>
     <data>
@@ -1875,23 +1912,6 @@
              
               <breadCrumb title="Troubleshooting" url="http://islocal.cc/categories/Troubleshooting/"/>
           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://islocal.cc/arlo/e5e5519a/</loc>
-    <lastmod>2018-03-15T07:17:45.788Z</lastmod>
-    <data>
-        <display>
-        <title>Hexo博客搭建简记</title>
-        <pubTime>2016-08-08T02:11:23.000Z</pubTime>
-        
-        <tag>hexo</tag>
-         
-         
-           
         </display>
     </data>
     </url>
