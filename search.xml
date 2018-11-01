@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[Centos7关闭IPv6]]></title>
     <url>%2Farlo%2F244042e3%2F</url>
-    <content type="text"><![CDATA[#验证ipv6是否关闭cat /proc/sys/net/ipv6/conf/all/disable_ipv60：开启状态1：关闭状态 方法一： 开机不加载IPv6模块修改grub文件12vi /etc/default/grub GRUB_CMDLINE_LINUX=&quot;ipv6.disable=1 crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet&quot; 1grub2-mkconfig -o /boot/grub2/grub.cfg 重启服务器，查看模块12rebootlsmod |grep ipv6 方法二：命令行修改（推荐）修改内核参数12vi /etc/sysctl.confnet.ipv6.conf.all.disable_ipv6=1 修改网络配置文件12vi /etc/sysconfig/networkNETWORKING_IPV6=no 修改网卡配置文件12vi /etc/sysconfig/network-scripts/ifcfg-XXIPV6INIT=no 加载内核参数，使其生效sysctl -p]]></content>
+    <content type="text"><![CDATA[验证ipv6是否关闭cat /proc/sys/net/ipv6/conf/all/disable_ipv60：开启状态1：关闭状态 方法一： 开机不加载IPv6模块修改grub文件12vi /etc/default/grub GRUB_CMDLINE_LINUX=&quot;ipv6.disable=1 crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet&quot; 1grub2-mkconfig -o /boot/grub2/grub.cfg 重启服务器，查看模块12rebootlsmod |grep ipv6 方法二：命令行修改（推荐）修改内核参数12vi /etc/sysctl.confnet.ipv6.conf.all.disable_ipv6=1 修改网络配置文件12vi /etc/sysconfig/networkNETWORKING_IPV6=no 修改网卡配置文件12vi /etc/sysconfig/network-scripts/ifcfg-XXIPV6INIT=no 加载内核参数，使其生效sysctl -p]]></content>
       <categories>
         <category>常识</category>
       </categories>
@@ -30,8 +30,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -197,8 +197,8 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>zabbix</tag>
       </tags>
   </entry>
@@ -210,10 +210,10 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
-        <tag>zabbix</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
+        <tag>zabbix</tag>
       </tags>
   </entry>
   <entry>
@@ -297,8 +297,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Sonar</tag>
       </tags>
   </entry>
@@ -438,8 +438,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -464,9 +464,9 @@
         <category>监控</category>
       </categories>
       <tags>
+        <tag>tomcat</tag>
         <tag>zabbix</tag>
         <tag>监控</tag>
-        <tag>tomcat</tag>
       </tags>
   </entry>
   <entry>
@@ -578,8 +578,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
         <tag>tomcat</tag>
       </tags>
@@ -605,8 +605,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -618,8 +618,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -669,8 +669,8 @@
       <tags>
         <tag>集群</tag>
         <tag>数据库</tag>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -682,8 +682,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -695,8 +695,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -745,8 +745,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -758,8 +758,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -771,8 +771,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -784,8 +784,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -797,8 +797,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>expect</tag>
         <tag>脚本</tag>
       </tags>
@@ -852,8 +852,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>shell</tag>
         <tag>脚本</tag>
+        <tag>shell</tag>
         <tag>linux常识</tag>
       </tags>
   </entry>
@@ -923,8 +923,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -936,8 +936,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Cobbler</tag>
       </tags>
   </entry>
