@@ -271,6 +271,126 @@
             
               
                 
+                <a class="post-title-link" href="/arlo/244042e3/" itemprop="url">
+                  Centos7关闭IPv6
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-11-01T09:11:57+08:00" content="2018-11-01">
+              2018-11-01
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/常识/" itemprop="url" rel="index">
+                    <span itemprop="name">常识</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>#验证ipv6是否关闭<br>cat /proc/sys/net/ipv6/conf/all/disable_ipv6<br>0：开启状态<br>1：关闭状态</p>
+<h1 id="方法一：-开机不加载IPv6模块"><a href="#方法一：-开机不加载IPv6模块" class="headerlink" title="方法一： 开机不加载IPv6模块"></a>方法一： 开机不加载IPv6模块</h1><h2 id="修改grub文件"><a href="#修改grub文件" class="headerlink" title="修改grub文件"></a>修改grub文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">vi /etc/default/grub </div><div class="line">GRUB_CMDLINE_LINUX=&quot;ipv6.disable=1 crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet&quot;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">grub2-mkconfig -o /boot/grub2/grub.cfg</div></pre></td></tr></table></figure>
+<h2 id="重启服务器，查看模块"><a href="#重启服务器，查看模块" class="headerlink" title="重启服务器，查看模块"></a>重启服务器，查看模块</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">reboot</div><div class="line">lsmod |grep ipv6</div></pre></td></tr></table></figure>
+<h1 id="方法二：命令行修改（推荐）"><a href="#方法二：命令行修改（推荐）" class="headerlink" title="方法二：命令行修改（推荐）"></a>方法二：命令行修改（推荐）</h1><h2 id="修改内核参数"><a href="#修改内核参数" class="headerlink" title="修改内核参数"></a>修改内核参数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">vi /etc/sysctl.conf</div><div class="line">net.ipv6.conf.all.disable_ipv6=1</div></pre></td></tr></table></figure>
+<h2 id="修改网络配置文件"><a href="#修改网络配置文件" class="headerlink" title="修改网络配置文件"></a>修改网络配置文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">vi /etc/sysconfig/network</div><div class="line">NETWORKING_IPV6=no</div></pre></td></tr></table></figure>
+<h2 id="修改网卡配置文件"><a href="#修改网卡配置文件" class="headerlink" title="修改网卡配置文件"></a>修改网卡配置文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">vi /etc/sysconfig/network-scripts/ifcfg-XX</div><div class="line">IPV6INIT=no</div></pre></td></tr></table></figure>
+<h2 id="加载内核参数，使其生效"><a href="#加载内核参数，使其生效" class="headerlink" title="加载内核参数，使其生效"></a>加载内核参数，使其生效</h2><p><code>sysctl -p</code></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/arlo/57829448/" itemprop="url">
                   nginx反向代理Jenkins问题
                 </a>
@@ -1143,7 +1263,7 @@
       
         
           <p>全文转自：<a href="https://lolico.moe/tutorial/linux-kms-server.html">https://lolico.moe/tutorial/linux-kms-server.html</a></p>
-<h1 id="One-key-KMS"><a href="#One-key-KMS" class="headerlink" title="One key KMS"></a>One key KMS</h1><p>Linux 快速搭建 KMS 激活服务器，让 PC 激活 Windows 和 Office 并自动续期，告别网上的来路不明的激活工具，防止意外中毒。虽然目前已经有各种 PC 用的 KMS 激活程序，例如KMSAuto或者KMS VL ALL之类的，但是他们都会被 Windows Defender 或者普通的杀毒软件认为是病毒。虽然你“相信”这些软件被报毒是很正常的，直接加入白名单了事，然而你确实不知道你从网上搜索下载的这些激活程序是不是真的经过别人的改造植入了病毒……<br>因此，我们可以利用自己的 Linux VPS 搭建 KMS 激活服务器给自己的 PC 使用，这样既安全无毒又不怕激活丢失。<br>只能激活 VL 版本（即“<a href="https://baike.baidu.com/item/VOL%E7%89%88">团体批量许可证</a>”版）的 Windows，Office 则有办法从零售版转成 VL 版所以不用担心<br>
+<h1 id="One-key-KMS"><a href="#One-key-KMS" class="headerlink" title="One key KMS"></a>One key KMS</h1><p>Linux 快速搭建 KMS 激活服务器，让 PC 激活 Windows 和 Office 并自动续期，告别网上的来路不明的激活工具，防止意外中毒。虽然目前已经有各种 PC 用的 KMS 激活程序，例如KMSAuto或者KMS VL ALL之类的，但是他们都会被 Windows Defender 或者普通的杀毒软件认为是病毒。虽然你“相信”这些软件被报毒是很正常的，直接加入白名单了事，然而你确实不知道你从网上搜索下载的这些激活程序是不是真的经过别人的改造植入了病毒……<br>因此，我们可以利用自己的 Linux VPS 搭建 KMS 激活服务器给自己的 PC 使用，这样既安全无毒又不怕激活丢失。<br>只能激活<strong>VL 版本</strong>（即“<a href="https://baike.baidu.com/item/VOL%E7%89%88">团体批量许可证</a>”版）的 Windows，Office 则有办法从零售版转成 VL 版所以不用担心<br>
           <div class="post-more-link text-center">
             <a class="btn" href="/arlo/8566e00c/#more" rel="contents">
               阅读全文 &raquo;
@@ -1290,126 +1410,11 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/arlo/8656017b/" itemprop="url">
-                  Shell版俄罗斯方块(转)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2018-06-14T13:34:42+08:00" content="2018-06-14">
-              2018-06-14
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Interesting/" itemprop="url" rel="index">
-                    <span itemprop="name">Interesting</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>在网上看到一篇shell版本的俄罗斯方块游戏，很有趣，转过来记录一下。<br>地址：<a href="http://www.ywnds.com/?p=12325">http://www.ywnds.com/?p=12325</a><br>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/arlo/8656017b/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1449,7 +1454,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">90</span>
+              <span class="site-state-item-count">91</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

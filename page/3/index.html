@@ -271,6 +271,122 @@
             
               
                 
+                <a class="post-title-link" href="/arlo/d56aba68/" itemprop="url">
+                  Oracle RAC手动启动与关闭及常用命令
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2018-04-02T15:14:26+08:00" content="2018-04-02">
+              2018-04-02
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/数据库/" itemprop="url" rel="index">
+                    <span itemprop="name">数据库</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>在经历了几次服务器意外断电，启动rac报错；觉得之前直接“shutdown -h now”这种方式还是太“粗暴”，需要一种“温柔”的方式来操作她。</p>
+<h1 id="查看一下RAC节点的服务状态"><a href="#查看一下RAC节点的服务状态" class="headerlink" title="查看一下RAC节点的服务状态"></a>查看一下RAC节点的服务状态</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">[grid@rac1 ~]$ crs_stat -t -v</div><div class="line">Name           Type           R/RA   F/FT   Target    State     Host        </div><div class="line">----------------------------------------------------------------------</div><div class="line">ora.DATA.dg    ora....up.type 0/5    0/     ONLINE    ONLINE    rac1        </div><div class="line">ora....ER.lsnr ora....er.type 0/5    0/     ONLINE    ONLINE    rac1        </div><div class="line">ora....N1.lsnr ora....er.type 0/5    0/0    ONLINE    ONLINE    rac1        </div><div class="line">ora.OCR.dg     ora....up.type 0/5    0/     ONLINE    ONLINE    rac1        </div><div class="line">ora....DISK.dg ora....up.type 0/5    0/     ONLINE    ONLINE    rac1        </div><div class="line">ora.asm        ora.asm.type   0/5    0/     ONLINE    ONLINE    rac1        </div><div class="line">ora.cvu        ora.cvu.type   0/5    0/0    ONLINE    ONLINE    rac1        </div><div class="line">ora.gsd        ora.gsd.type   0/5    0/     OFFLINE   OFFLINE               </div><div class="line">ora....network ora....rk.type 0/5    0/     ONLINE    ONLINE    rac1        </div><div class="line">ora.oc4j       ora.oc4j.type  0/1    0/2    ONLINE    ONLINE    rac2        </div><div class="line">ora.ons        ora.ons.type   0/3    0/     ONLINE    ONLINE    rac1        </div><div class="line">ora.orcl.db    ora....se.type 0/2    0/1    ONLINE    ONLINE    rac1        </div><div class="line">ora....SM1.asm application    0/5    0/0    ONLINE    ONLINE    rac1        </div><div class="line">ora....C1.lsnr application    0/5    0/0    ONLINE    ONLINE    rac1        </div><div class="line">ora.rac1.gsd   application    0/5    0/0    OFFLINE   OFFLINE               </div><div class="line">ora.rac1.ons   application    0/3    0/0    ONLINE    ONLINE    rac1        </div><div class="line">ora.rac1.vip   ora....t1.type 0/0    0/0    ONLINE    ONLINE    rac1        </div><div class="line">ora....SM2.asm application    0/5    0/0    ONLINE    ONLINE    rac2        </div><div class="line">ora....C2.lsnr application    0/5    0/0    OFFLINE   OFFLINE               </div><div class="line">ora.rac2.gsd   application    0/5    0/0    OFFLINE   OFFLINE               </div><div class="line">ora.rac2.ons   application    0/3    0/0    ONLINE    ONLINE    rac2        </div><div class="line">ora.rac2.vip   ora....t1.type 0/0    0/0    ONLINE    ONLINE    rac2        </div><div class="line">ora.scan1.vip  ora....ip.type 0/0    0/0    ONLINE    ONLINE    rac1        </div><div class="line">ora.sx21.db    ora....se.type 0/2    0/1    ONLINE    ONLINE    rac1</div></pre></td></tr></table></figure>
+          <div class="post-more-link text-center">
+            <a class="btn" href="/arlo/d56aba68/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/arlo/1b263496/" itemprop="url">
                   记录一次oracle rac数据库启动故障修复过程
                 </a>
@@ -1287,129 +1403,11 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/arlo/143cd09f/" itemprop="url">
-                  枚举卷期间出错: 客户端无法连接到请求中指定的目标……
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2017-12-06T18:55:25+08:00" content="2017-12-06">
-              2017-12-06
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Troubleshooting/" itemprop="url" rel="index">
-                    <span itemprop="name">Troubleshooting</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>存储：华为/OceanStor 2600 V3<br>网络：FC<br>服务器：Windows Server 2012 R2<br>更新系统补丁重启后连接存储提示以下错误：</p>
-<blockquote>
-<p>枚举存储期间出错。枚举卷期间出错: 客户端无法连接到请求中指定的目标。 请验证该目标上的服务是否正在运行以及是否正在接受请求。 有关目标(通常是 IIS 或 WinRM)上运行的 WS 管理服务，请查阅日志和文档。 如果目标是 WinRM 服务，则在目标上运行以下命令来分析和配置 WinRM 服务: “winrm quickconfig”。</p>
-</blockquote>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/arlo/143cd09f/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/9/">9</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/page/2/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/10/">10</a><a class="extend next" rel="next" href="/page/4/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1449,7 +1447,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">90</span>
+              <span class="site-state-item-count">91</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

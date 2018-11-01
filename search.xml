@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Centos7关闭IPv6]]></title>
+    <url>%2Farlo%2F244042e3%2F</url>
+    <content type="text"><![CDATA[#验证ipv6是否关闭cat /proc/sys/net/ipv6/conf/all/disable_ipv60：开启状态1：关闭状态 方法一： 开机不加载IPv6模块修改grub文件12vi /etc/default/grub GRUB_CMDLINE_LINUX=&quot;ipv6.disable=1 crashkernel=auto rd.lvm.lv=centos/root rd.lvm.lv=centos/swap rhgb quiet&quot; 1grub2-mkconfig -o /boot/grub2/grub.cfg 重启服务器，查看模块12rebootlsmod |grep ipv6 方法二：命令行修改（推荐）修改内核参数12vi /etc/sysctl.confnet.ipv6.conf.all.disable_ipv6=1 修改网络配置文件12vi /etc/sysconfig/networkNETWORKING_IPV6=no 修改网卡配置文件12vi /etc/sysconfig/network-scripts/ifcfg-XXIPV6INIT=no 加载内核参数，使其生效sysctl -p]]></content>
+      <categories>
+        <category>常识</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[nginx反向代理Jenkins问题]]></title>
     <url>%2Farlo%2F57829448%2F</url>
     <content type="text"><![CDATA[由于只开放了一个端口，要使用jenkins发布业务的话，需要使用nginx把jenkins的端口反向代理出来；关于jenkins搭建参加本博客之前文章 修改jenkins配置文件vim /etc/sysconfig/jenkins1234# 由于我这里把8080端口占用了，把jenkins修改为7999端口JENKINS_PORT=&quot;7999&quot;# 为jenkins添加一个上下文对象JENKINS_ARGS=&quot;--prefix=/jenkins&quot; 修改nginx配置文件1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586worker_processes 1;events &#123; worker_connections 1024;&#125;http &#123; include mime.types; default_type application/octet-stream; sendfile on; keepalive_timeout 65; client_max_body_size 60M; client_body_buffer_size 512k; upstream jenkins &#123; keepalive 32; server 127.0.0.1:7999 ; &#125; server &#123; listen 8080; server_name localhost; ignore_invalid_headers off; #project config file location /esp-web &#123; root html; index index.html index.htm; &#125; location /file &#123; root html; &#125; location /esp &#123; proxy_pass http://127.0.0.1:8081/esp; &#125;#jenkins config file location ~ &quot;^/static/[0-9a-fA-F]&#123;8&#125;\/(.*)$&quot; &#123; #rewrite all static files into requests to the root #E.g /static/12345678/css/something.css will become /css/something.css rewrite &quot;^/static/[0-9a-fA-F]&#123;8&#125;\/(.*)&quot; /$1 last; &#125; location /userContent &#123; #have nginx handle all the static requests to the userContent folder files #note : This is the $JENKINS_HOME dir root /var/lib/jenkins/; if (!-f $request_filename)&#123; #this file does not exist, might be a directory or a /**view** url rewrite (.*) /$1 last; break; &#125; sendfile on; &#125; location @jenkins &#123; sendfile off; proxy_pass http://jenkins; proxy_redirect default; proxy_http_version 1.1; proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; proxy_set_header X-Forwarded-Proto $scheme; proxy_max_temp_file_size 0; #this is the maximum upload size client_max_body_size 10m; client_body_buffer_size 128k; proxy_connect_timeout 90; proxy_send_timeout 90; proxy_read_timeout 90; proxy_buffering off; proxy_request_buffering off; # Required for HTTP CLI commands in Jenkins &gt; 2.54 proxy_set_header Connection &quot;&quot;; # Clear for keepalive &#125; location / &#123; # Optional configuration to detect and redirect iPhones if ($http_user_agent ~* &apos;(iPhone|iPod)&apos;) &#123; rewrite ^/$ /view/iphone/ redirect; &#125; try_files $uri @jenkins; &#125; error_page 500 502 503 504 /50x.html; location = /50x.html &#123; root html; &#125; &#125;&#125; 重启nginx、jenkins12systemctl restart jenkins.servicenginx -s reload 参考文档：https://wiki.jenkins.io/display/JENKINS/Jenkins+says+my+reverse+proxy+setup+is+broken https://www.jianshu.com/p/8315657465ac]]></content>
@@ -19,8 +30,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -86,7 +97,7 @@
   <entry>
     <title><![CDATA[自建KMS服务器，激活Windows & Office]]></title>
     <url>%2Farlo%2F8566e00c%2F</url>
-    <content type="text"><![CDATA[全文转自：https://lolico.moe/tutorial/linux-kms-server.html One key KMSLinux 快速搭建 KMS 激活服务器，让 PC 激活 Windows 和 Office 并自动续期，告别网上的来路不明的激活工具，防止意外中毒。虽然目前已经有各种 PC 用的 KMS 激活程序，例如KMSAuto或者KMS VL ALL之类的，但是他们都会被 Windows Defender 或者普通的杀毒软件认为是病毒。虽然你“相信”这些软件被报毒是很正常的，直接加入白名单了事，然而你确实不知道你从网上搜索下载的这些激活程序是不是真的经过别人的改造植入了病毒……因此，我们可以利用自己的 Linux VPS 搭建 KMS 激活服务器给自己的 PC 使用，这样既安全无毒又不怕激活丢失。只能激活 VL 版本（即“团体批量许可证”版）的 Windows，Office 则有办法从零售版转成 VL 版所以不用担心 一键搭建 KMS 服务下载脚本并运行，根据提示键入y开始安装CentOS / Redhat / Fedora1wget https://raw.githubusercontent.com/dakkidaze/one-key-kms/master/one-key-kms-centos.sh &amp;&amp; chmod +x one-key-kms-centos.sh &amp;&amp;./one-key-kms-centos.sh Debian / Ubuntu / Mint1wget https://raw.githubusercontent.com/dakkidaze/one-key-kms/master/one-key-kms-debian.sh &amp;&amp; chmod +x one-key-kms-debian.sh &amp;&amp; ./one-key-kms-debian.sh 下载这个作者写的配套脚本来控制启动/停止/重启等123456#下载脚本wget https://raw.githubusercontent.com/dakkidaze/one-key-kms/master/kms.sh &amp;&amp; chmod +x kms.sh#启动 KMS 服务./kms.sh start#这个脚本可以使用的参数：# start | stop | restart | status 如果你的防火墙默认 DROP，那么需要手动放行1688端口CentOS / Redhat / Fedora1iptables -I INPUT -p tcp --dport 1688 -j ACCEPT Debian / Ubuntu / Mint123#如果有 ufw 的话ufw allow 1688#如果没有的话，这么方便的防火墙工具为啥不装一个嘞~ 激活 Windows再次提醒，只能激活 VL 版的系统以管理员身份运行命令提示符或者PowerShell，然后输入以下命令：1234cd /d &quot;%SystemRoot%\system32&quot;slmgr /skms 你的KMS服务端主机的IP或者域名slmgr /atoslmgr /xpr 这样，每过 180 天，系统都会自动与你的 KMS 服务器通信来激活 Windows，只要到时候你的 KMS 服务器还在，Windows 就能继续激活;当然，你也可以随时通过slmgr /skms这条命令来更换你的 KMS 服务器地址 激活 Office只能激活 VL 版的 Office，如果是零售版，百度一下有很多将零售版转换为 VL 版的方法和批处理脚本；如果你比较懒，也可以直接利用KMSAuto工具来转换首先确定你的 Office 版本所对应的目录名称： 版本 目录名称 2016 Office16 2013 Office15 2010 Office14 如果你的 Office 是 32 位的，那么目录就在C:\Program Files (x86)\Microsoft Office\目录名称如果是 64 位，那么在C:\Program Files\Microsoft Office\目录名称接下来以管理员身份运行命令提示符或者PowerShell，然后输入以下命令：1234#以 64 位的 Office2016 为例，进入 Office 目录cd &quot;C:\Program Files\Microsoft Office\Office16&quot;cscript ospp.vbs /sethst:你的KMS服务端主机的IP或者域名cscript ospp.vbs /act 其他说明开机自启如果只是想简单的让 KMS 服务在 Linux 上开机自启，那么编辑/etc/rc.local文件，在exit 0（如果有）前面加上一句 假设之前下载的那个 kms.sh 脚本位于 /root/kms.sh/root/kms.sh start然后保存即可 守护进程如果你有很高的要求，想让 KMS 服务以守护进程的方式运行，防止服务意外终止12345678910#Debian / Ubuntu / Mint 使用 apt-get 来安装 supervisor#CentOS / Redhat / Fedora 使用 yum 来安装 supervisor#这里以 Debian 系统为例apt-get install supervisor -yecho &quot;[program:kms]command=/usr/local/kms/vlmcsd -L 0.0.0.0:1688autorestart=trueautostart=trueuser=root&quot; &gt; /etc/supervisor/conf.d/kms.conf/etc/init.d/supervisor restart 如果你使用守护进程方式运行 KMS 服务，那么就不需要在/etc/rc.local中写入开机启动命令 相关链接：https://lolico.moe/tutorial/linux-kms-server.htmlhttps://hub.docker.com/r/ilemonrain/vlmcsd/https://github.com/Wind4/vlmcsdhttps://github.com/SystemRage/py-kms]]></content>
+    <content type="text"><![CDATA[全文转自：https://lolico.moe/tutorial/linux-kms-server.html One key KMSLinux 快速搭建 KMS 激活服务器，让 PC 激活 Windows 和 Office 并自动续期，告别网上的来路不明的激活工具，防止意外中毒。虽然目前已经有各种 PC 用的 KMS 激活程序，例如KMSAuto或者KMS VL ALL之类的，但是他们都会被 Windows Defender 或者普通的杀毒软件认为是病毒。虽然你“相信”这些软件被报毒是很正常的，直接加入白名单了事，然而你确实不知道你从网上搜索下载的这些激活程序是不是真的经过别人的改造植入了病毒……因此，我们可以利用自己的 Linux VPS 搭建 KMS 激活服务器给自己的 PC 使用，这样既安全无毒又不怕激活丢失。只能激活VL 版本（即“团体批量许可证”版）的 Windows，Office 则有办法从零售版转成 VL 版所以不用担心 一键搭建 KMS 服务下载脚本并运行，根据提示键入y开始安装CentOS / Redhat / Fedora1wget https://raw.githubusercontent.com/dakkidaze/one-key-kms/master/one-key-kms-centos.sh &amp;&amp; chmod +x one-key-kms-centos.sh &amp;&amp;./one-key-kms-centos.sh Debian / Ubuntu / Mint1wget https://raw.githubusercontent.com/dakkidaze/one-key-kms/master/one-key-kms-debian.sh &amp;&amp; chmod +x one-key-kms-debian.sh &amp;&amp; ./one-key-kms-debian.sh 下载这个作者写的配套脚本来控制启动/停止/重启等123456#下载脚本wget https://raw.githubusercontent.com/dakkidaze/one-key-kms/master/kms.sh &amp;&amp; chmod +x kms.sh#启动 KMS 服务./kms.sh start#这个脚本可以使用的参数：# start | stop | restart | status 如果你的防火墙默认 DROP，那么需要手动放行1688端口CentOS / Redhat / Fedora1iptables -I INPUT -p tcp --dport 1688 -j ACCEPT Debian / Ubuntu / Mint123#如果有 ufw 的话ufw allow 1688#如果没有的话，这么方便的防火墙工具为啥不装一个嘞~ 激活 Windows再次提醒，只能激活 VL 版的系统以管理员身份运行命令提示符或者PowerShell，然后输入以下命令：1234cd /d &quot;%SystemRoot%\system32&quot;slmgr /skms 你的KMS服务端主机的IP或者域名slmgr /atoslmgr /xpr 这样，每过 180 天，系统都会自动与你的 KMS 服务器通信来激活 Windows，只要到时候你的 KMS 服务器还在，Windows 就能继续激活;当然，你也可以随时通过slmgr /skms这条命令来更换你的 KMS 服务器地址 激活 Office只能激活 VL 版的 Office，如果是零售版，百度一下有很多将零售版转换为 VL 版的方法和批处理脚本；如果你比较懒，也可以直接利用KMSAuto工具来转换首先确定你的 Office 版本所对应的目录名称： 版本 目录名称 2016 Office16 2013 Office15 2010 Office14 如果你的 Office 是 32 位的，那么目录就在C:\Program Files (x86)\Microsoft Office\目录名称如果是 64 位，那么在C:\Program Files\Microsoft Office\目录名称接下来以管理员身份运行命令提示符或者PowerShell，然后输入以下命令：1234#以 64 位的 Office2016 为例，进入 Office 目录cd &quot;C:\Program Files\Microsoft Office\Office16&quot;cscript ospp.vbs /sethst:你的KMS服务端主机的IP或者域名cscript ospp.vbs /act 其他说明开机自启如果只是想简单的让 KMS 服务在 Linux 上开机自启，那么编辑/etc/rc.local文件，在exit 0（如果有）前面加上一句 假设之前下载的那个 kms.sh 脚本位于 /root/kms.sh/root/kms.sh start然后保存即可 守护进程如果你有很高的要求，想让 KMS 服务以守护进程的方式运行，防止服务意外终止12345678910#Debian / Ubuntu / Mint 使用 apt-get 来安装 supervisor#CentOS / Redhat / Fedora 使用 yum 来安装 supervisor#这里以 Debian 系统为例apt-get install supervisor -yecho &quot;[program:kms]command=/usr/local/kms/vlmcsd -L 0.0.0.0:1688autorestart=trueautostart=trueuser=root&quot; &gt; /etc/supervisor/conf.d/kms.conf/etc/init.d/supervisor restart 如果你使用守护进程方式运行 KMS 服务，那么就不需要在/etc/rc.local中写入开机启动命令 windows各版本简洁介绍Retail版RTL版Retail正式零售版，供市面上架零售。另外，在安装盘的i386文件夹里有一个eula.txt文件，最后有一行EULAID，就是你的版本标识。简体中文正式版是EULAID:WX.4_PRO_RTL_CN；繁体中文正式版是WX.4_PRO_RTL_TW；其中：WX.开头是正式版，WB.开头是测试版；_PRE代表家庭版，_PRO代表专业版； VOL版Volume OR Volume Licensing for Organizations 翻译过来就是组织团体批量许可，也就是大客户版，比如ZF部门、大型商业机构等统一购买的一般都是大客户版本，一般根据购买数量又可细分为开放式许可( Open License)、选择式许可(Select License)、企业许可协议(Enterprise Agreement)、教育科研许可(Academic Volume Licensing)等5种版本。 OEM版Original Equipment Manufacturer 计算机厂商随机版，只能随计算机一对一出货，不可以单独零售。只能全新安不能从旧有操作系统升级，包装也不像零售版那样精美（反正是随机子打包的，穿的再好也没用_），通常只有一面CD盘和使用授权说明书。比如联想、DELL等出售的WINDOWS操作系统计算机一般都是。 Alpha版Alpha内部测试版，一般不会向外部发布，会有很多Bug，只供测试人员使用，如果您看到Alpha版本了，一般来讲对于微软来讲可能是个不好的消息。Beta版Beta也是测试版，是继Alpha之后推出，这个阶段的版本会不断加入新的功能，改动也会较大，也会面向市场测试。 RC版ReleaseCandidate 测试候选版本，WINDOWS RC版不会再加入新功能，主要测试软件内的BUG。 RTM版Release to Manufacture或者Resin Transfer Molding 供给生产工厂大量压片的版本，内容跟正式版是一样的，不过RTM版也会在时间上再次划分出限制版和评估版的。再次进行市场验证。 EVAL版Evaluation 与“评估版”类似，功能上和零售版没有区别，需要激活。 CTP版Community Test Preview 社区测试试用版 相关链接：https://lolico.moe/tutorial/linux-kms-server.htmlhttps://hub.docker.com/r/ilemonrain/vlmcsd/https://github.com/Wind4/vlmcsdhttps://github.com/SystemRage/py-kms]]></content>
       <categories>
         <category>服务器搭建</category>
       </categories>
@@ -186,8 +197,8 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>zabbix</tag>
       </tags>
   </entry>
@@ -199,10 +210,10 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
-        <tag>Ansible</tag>
+        <tag>自动化</tag>
         <tag>zabbix</tag>
+        <tag>Ansible</tag>
       </tags>
   </entry>
   <entry>
@@ -286,8 +297,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Sonar</tag>
       </tags>
   </entry>
@@ -427,8 +438,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -453,9 +464,9 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>tomcat</tag>
         <tag>zabbix</tag>
         <tag>监控</tag>
+        <tag>tomcat</tag>
       </tags>
   </entry>
   <entry>
@@ -567,8 +578,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
         <tag>tomcat</tag>
       </tags>
@@ -594,8 +605,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -607,8 +618,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -658,8 +669,8 @@
       <tags>
         <tag>集群</tag>
         <tag>数据库</tag>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
       </tags>
   </entry>
   <entry>
@@ -671,8 +682,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
       </tags>
   </entry>
   <entry>
@@ -684,8 +695,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
       </tags>
   </entry>
   <entry>
@@ -734,8 +745,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -747,8 +758,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -760,8 +771,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -773,8 +784,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -786,8 +797,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>expect</tag>
         <tag>脚本</tag>
       </tags>
@@ -841,8 +852,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>脚本</tag>
         <tag>shell</tag>
+        <tag>脚本</tag>
         <tag>linux常识</tag>
       </tags>
   </entry>
@@ -912,8 +923,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -925,8 +936,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Cobbler</tag>
       </tags>
   </entry>
@@ -980,7 +991,7 @@
   <entry>
     <title><![CDATA[SSH 奇淫技巧之隧道模式]]></title>
     <url>%2Farlo%2Fda9b9fcb%2F</url>
-    <content type="text"><![CDATA[用了ssh这么久，今天才知道ssh还有这么强大的功能，穿透内外网，来去自如；其实最重要的还是方便平时工作中的调试，在此简单的记录一下。 使用条件一台拥有ssh端口连接的外网linux服务器 本地转发场景：公网有一台服务器的公网ip，ssh端口(已修改为2012)没有对外开放，本地想直接连接此端口，可以通过公网一台开放ssh端口的服务器跳转过去1ssh -p 2012 -CNg -L 2222:namenode:2012 nsxq@1.2.3.4 将namenode服务器的2012端口通过1.2.3.4服务器映射到本地2222端口 ssh -p 2222 localhost 即可连接-p 指定跳转机端口—L 本地转发 远程转发场景：本地开发环境需要被外网访问，之前一直使用花生壳，ngrok之类的程序；现在只需要本地执行一条ssh命令，将本地的端口映射到一台外网的服务器上去1ssh -p 2012 -CNfg -R 0.0.0.0:8888:192.168.1.5:80 nsxq@1.2.3.4 将本地内网192.168.1.5:80 映射到1.2.3.4服务器的8888端口，访问1.2.3.4:8888 即可访问192.168.1.5:80 内容 打开1.2.3.4服务器需要sshd_config 配置中的GatewayPorts yes记得顺手打开防火墙端口-p 指定跳转机端口-R 远程转发 动态转发场景：相对于上边两种单一端口转发，此功能就是在本地启动一个端口，其他机器可以设置代理，通过此端口进行流量转发（俗称翻墙）。1ssh -D 5000 nsxq@1.2.3.4 我这里没有能上google的服务器，没法测试，按道理来说，其他机器就可以将代理设置为1.2.3.4:5000 进行商上网了 参考资料[实战ssh端口转发]http://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/[SSH的三种端口转发（Port forwarding）/ 隧道协议概要]https://blog.twofei.com/528/]]></content>
+    <content type="text"><![CDATA[用了ssh这么久，今天才知道ssh还有这么强大的功能，穿透内外网，来去自如；其实最重要的还是方便平时工作中的调试，在此简单的记录一下。 使用条件一台拥有ssh端口连接的外网linux服务器 本地转发场景：公网有一台服务器的公网ip，ssh端口(已修改为2012)没有对外开放，本地想直接连接此端口，可以通过公网一台开放ssh端口的服务器跳转过去ssh -p 2012 -CNg -L 2222:namenode:2012 nsxq@1.2.3.4将namenode服务器的2012端口通过1.2.3.4服务器映射到本地2222端口 ssh -p 2222 localhost 即可连接-p 指定跳转机端口-L 本地转发 远程转发场景：本地开发环境需要被外网访问，之前一直使用花生壳，ngrok之类的程序；现在只需要本地执行一条ssh命令，将本地的端口映射到一台外网的服务器上去将本地内网192.168.1.5:80 映射到1.2.3.4服务器的8888端口，访问1.2.3.4:8888 即可访问192.168.1.5:80 内容ssh -p 2012 -CNfg -R 0.0.0.0:8888:192.168.1.5:80 nsxq@1.2.3.4 打开1.2.3.4服务器需要sshd_config 配置中的GatewayPorts yes记得顺手打开防火墙端口-p 指定跳转机端口-R 远程转发ssh -CNfg -R 0.0.0.0:3306:10.71.36.123:3306 dczf@10.71.36.121在10.71.36.123上执行此命令，将10.71.36.123的3306映射到10.71.36.121的3306端口 动态转发场景：相对于上边两种单一端口转发，此功能就是在本地启动一个端口，其他机器可以设置代理，通过此端口进行流量转发（俗称翻墙）。ssh -D 5000 nsxq@1.2.3.4我这里没有能上google的服务器，没法测试，按道理来说，其他机器就可以将代理设置为1.2.3.4:5000 进行商上网了 参考资料[实战ssh端口转发]http://www.ibm.com/developerworks/cn/linux/l-cn-sshforward/[SSH的三种端口转发（Port forwarding）/ 隧道协议概要]https://blog.twofei.com/528/]]></content>
       <categories>
         <category>常识</category>
       </categories>
