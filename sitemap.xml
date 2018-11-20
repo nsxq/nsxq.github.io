@@ -2,6 +2,41 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://islocal.cc/categories/index.html</loc>
+    
+    <lastmod>2018-11-20T02:19:14.380Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://islocal.cc/about/index.html</loc>
+    
+    <lastmod>2018-11-20T01:39:04.593Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://islocal.cc/arlo/e5e5519a/</loc>
+    
+    <lastmod>2018-11-19T09:53:27.155Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://islocal.cc/arlo/81ca458a/</loc>
+    
+    <lastmod>2018-11-19T08:37:26.040Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://islocal.cc/arlo/d9547628/</loc>
+    
+    <lastmod>2018-11-02T03:34:57.932Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://islocal.cc/arlo/244042e3/</loc>
     
     <lastmod>2018-11-01T01:31:12.913Z</lastmod>
@@ -264,13 +299,6 @@
     <loc>http://islocal.cc/arlo/1b263496/</loc>
     
     <lastmod>2018-04-02T03:20:18.213Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://islocal.cc/arlo/d9547628/</loc>
-    
-    <lastmod>2018-03-15T07:17:45.969Z</lastmod>
     
   </url>
   
@@ -597,13 +625,6 @@
   </url>
   
   <url>
-    <loc>http://islocal.cc/arlo/e5e5519a/</loc>
-    
-    <lastmod>2018-03-15T07:17:45.788Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://islocal.cc/arlo/f9f5730/</loc>
     
     <lastmod>2018-03-15T07:17:45.787Z</lastmod>
@@ -632,23 +653,9 @@
   </url>
   
   <url>
-    <loc>http://islocal.cc/about/index.html</loc>
-    
-    <lastmod>2017-08-03T06:32:32.233Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://islocal.cc/arlo/undefined/</loc>
     
     <lastmod>2017-04-21T07:30:17.363Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://islocal.cc/categories/index.html</loc>
-    
-    <lastmod>2016-08-08T09:58:55.651Z</lastmod>
     
   </url>
   
