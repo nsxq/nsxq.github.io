@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://islocal.cc/tags/index.html</loc>
+    
+    <lastmod>2018-11-20T02:32:27.968Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://islocal.cc/categories/index.html</loc>
     
-    <lastmod>2018-11-20T02:19:14.380Z</lastmod>
+    <lastmod>2018-11-20T02:31:25.068Z</lastmod>
     
   </url>
   
@@ -656,13 +663,6 @@
     <loc>http://islocal.cc/arlo/undefined/</loc>
     
     <lastmod>2017-04-21T07:30:17.363Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://islocal.cc/tags/index.html</loc>
-    
-    <lastmod>2016-08-08T09:14:10.961Z</lastmod>
     
   </url>
   
