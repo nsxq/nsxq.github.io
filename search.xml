@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[ksuapc : ORA-1033 foreground process starts before PMON]]></title>
+    <url>%2Farlo%2F1c37e249%2F</url>
+    <content type="text"><![CDATA[开发人员反馈，数据库没有做什么操作，突然连不上了！ 查看数据库日志12345SQL&gt; select VALUE from v$diag_info where name =&apos;Diag Trace&apos;; VALUE--------------------------------------------------------------------------------/home/u01/app/oracle/diag/rdbms/orcl/ORCL/trace 12cd /home/u01/app/oracle/diag/rdbms/orcl/ORCL/tracetail -200 alert_ORCL.log 发现日志里大量的报错ksuapc : ORA-1033 foreground process starts before PMON 网上搜了下，这是个bug，,该现象是数据库bug 8991997,该bug影响版本为:11.2.0.1/11.1.0.7,在11.2.0.1.1开始修复。大概意思就是监听起来了，数据库还没起来，有大量的外部应用在连接数据库，导致数据库无法正常启动；将数据库监听停止掉，先启动数据库，然后启动监听即可。lsnrctl stop 无法正常停止监听程序，我这里使用ps -ef|grep lsnrctl查看监听的进程id,然后使用kill -9 pid杀掉监听，然后安装正常流程启动就可以了。 启动数据库sqlplus / as sysdbaSQL&gt; startup 启动监听lsnrctl start 参考：http://www.xifenfei.com/2013/05/ksuapc-ora-1033-foreground-process-starts-before-pmon.html]]></content>
+      <categories>
+        <category>Troubleshooting</category>
+      </categories>
+      <tags>
+        <tag>Oracle</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[IDM+油猴脚本实现百度云不限速下载]]></title>
     <url>%2Farlo%2F94c43a11%2F</url>
     <content type="text"><![CDATA[上周从JimV(http://template.iit.im/) 上下载了一个系统镜像模板用了两天，为解决这一问题，我使用了IDM下载工具和油猴脚本（chrome插件），测试了一下，速度基本上可以保持在300k左右，这里简单记录一下实现方法。 安装IDM下载工具官网：https://www.internetdownloadmanager.com/也可以自己在网上找破解版，安装完成后会监测本机上的浏览器，根据提示安装浏览器插件。 安装油猴脚本在chrome应用市场搜索“Tampermonkey”，安装油猴脚本管理器添加“EX-百度云盘”脚本打开百度云盘，刷新页面，可以看到多了一个“EX-下载”的按钮 分享百度云文件链接，实现下载 必须把要下载的文件分享出去，在隐身窗口或者退出登录后，打开分享链接，再使用脚本，方才有效！ 现在账户已登录的情况下使用脚本没有效果！！！]]></content>
@@ -827,9 +838,9 @@
         <category>数据库</category>
       </categories>
       <tags>
+        <tag>Windows</tag>
         <tag>数据库</tag>
         <tag>Oracle</tag>
-        <tag>Windows</tag>
       </tags>
   </entry>
   <entry>
