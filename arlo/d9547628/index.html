@@ -112,7 +112,7 @@
 <meta property="og:url" content="http://islocal.cc/arlo/d9547628/index.html">
 <meta property="og:site_name" content="南山居">
 <meta property="og:description" content="SqlPlus 工具中默认不支持上下左右键调出历史命令，很不方便；需安装rlwrap。">
-<meta property="og:updated_time" content="2018-11-02T03:34:57.932Z">
+<meta property="og:updated_time" content="2018-12-03T09:04:22.587Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="安装rlwrap，使SqlPlus工具支持上下左右键">
 <meta name="twitter:description" content="SqlPlus 工具中默认不支持上下左右键调出历史命令，很不方便；需安装rlwrap。">
@@ -438,7 +438,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-11-02 11:34:57" itemprop="dateModified" datetime="2018-11-02T11:34:57+08:00">2018-11-02</time>
+                <time title="修改时间：2018-12-03 17:04:22" itemprop="dateModified" datetime="2018-12-03T17:04:22+08:00">2018-12-03</time>
               
             
           </span>
@@ -496,7 +496,7 @@
 <h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">su - oracle</div><div class="line">vim .bash_profile</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">alias sqlplus=&apos;rlwrap sqlplus&apos;</div><div class="line">alias rman=&apos;rlwrap rman&apos;</div><div class="line">alias asmcmd=&apos;rlwrap asmcmd&apos;</div></pre></td></tr></table></figure>
 <p><code>source .bash_profile</code></p>
-<h1 id="扩展，设置sqlplus登录提示符"><a href="#扩展，设置sqlplus登录提示符" class="headerlink" title="扩展，设置sqlplus登录提示符"></a>扩展，设置sqlplus登录提示符</h1><p>vim $ORACLE_HOME/sqlplus/admin/glogin.sql<br>set linesize 120 pagesize 9999<br>SET SQLPROMPT “_USER@’@’_CONNECT_IDENTIFIER&gt; “</p>
+<h1 id="扩展，设置sqlplus登录提示符"><a href="#扩展，设置sqlplus登录提示符" class="headerlink" title="扩展，设置sqlplus登录提示符"></a>扩展，设置sqlplus登录提示符</h1><p><code>vim $ORACLE_HOME/sqlplus/admin/glogin.sql</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">set linesize 120 pagesize 9999</div><div class="line">SET SQLPROMPT &quot;_USER@&apos;@&apos;_CONNECT_IDENTIFIER&gt; &quot;</div></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -544,9 +544,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Linux/" rel="tag"># Linux</a>
-          
             <a href="/tags/常识/" rel="tag"># 常识</a>
+          
+            <a href="/tags/Linux/" rel="tag"># Linux</a>
           
             <a href="/tags/Oracle/" rel="tag"># Oracle</a>
           
@@ -647,7 +647,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">94</span>
+                    <span class="site-state-item-count">95</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -853,7 +853,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">77</span>
+                      
+                    
+                    <span class="site-state-item-count">78</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

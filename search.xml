@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[N2N内网穿透(打洞)软件使用]]></title>
+    <url>%2Farlo%2F1d2bb16a%2F</url>
+    <content type="text"><![CDATA[背景首先说一下这个N2N软件的背景，这个是培训oracle的时候，安装rac需要多块网卡，云服务器不像本地服务器或者虚拟机那边方便，可以随便随便添加网口，使用到N2N这款软件模拟出多块网卡；其实N2N软件的主要功能是内网穿透，就是将服务器的网段可以和本地环境打穿到一个网段里；这个软件如果用在服务器上还是挺可怕的，类似windows下的teamviewer，类似linux下的ssh隧道模式;只要服务器可以上外网(严格说是连接到supermode)，就可以打通，慎用！ 概述N2N 是一款开源的P2P VPN 软件，其作者是著名的开源网管软件ntop的作者Luca Deri。N2N 是一个双层架构的VPN ，它让用户可以在网络层上开发P2P应用的典型功能，而不是在应用层上开发。这意味着用户可以获取本地IP一样的可见度（比如说，同一个n2n网络内的两台PC机可以相互ping通），并且可以通过n2n虚拟网内的IP地址相互访问，而不必关心当前所属的物理网络地址。可以这样说，OpenVPN是把SSL从应用层转移到网络层实现（比如说实现https协议），而n2n则是把P2P的实现从应用层转移到网络层。 N2N 设计的主要功能 N2N 是基于P2P 协议之上的两个私有网络间的加密层 加密是在edge 节点上执行的，使用开放的协议，用户自己定义密钥：你自己控制自己的安全，不需要委托给第三方公司 每个n2n 用户可以同时隶属于多个网络 有NAT和穿越防火墙的功能，即使n2n节点位于私网中，也能够访问，防火墙不再是在 IP 层的直接沟通和交流的障碍 N2N 网络不是独立的，它是能够跨越N2N 和非N2N网络路由的 N2N 架构组件 Edge 节点：用户PC 机上安装的用于建立n2n网络的软件。几乎每个edge节点都会建立一个tun/tap设备，作为接入n2n网络的入口。 Supernode 超级节点：它在edge 节点间建立握手，或为位于防火墙之后的节点中转数据。它的基础作用是注册节点的网络路径，并为不能直通的节点做路由，能够直通的节点间通信，是P2P的。Edge 节点间通过虚拟的tap 网卡交互。每个tap网卡都是一个n2n edge节点。每台PC机可以有多个tap网卡，所以，在n2n网络中，同一台PC机可以属于多个网络。 搭建N2N环境首先我们需要一个公网IP地址，一个可以访问的公网端口(UDP), 我这里刚好有一个华为云的服务器可以用IP: 114.116.xx.xxPort: 6666 安装软件12345678yum install -y subversion gcc-c++ openssl-devel git cmakecd /usr/srcsvn co https://svn.ntop.org/svn/ntop/trunk/n2ncd n2n/n2n_v2makemake PREFIX=/opt/n2n installcp supernode /usr/sbin/cp edge /usr/sbin/ 搭建中心服务器(supermode节点)1234#创建一个端口为6666的supermode服务，用于建立握手/usr/sbin/supernode -l 6666#查看6666端口是否存在，可以看到是udp端口ss -tnulp |grep 6666 12#新建一个虚拟设备edge0，用于测试edge -d edge0 -a 10.10.10.101 -s 255.255.255.0 -c fff -k fff -l 114.116.xxx.xxx:6666 -E -r 创建客户端(egdg节点)12#新建一个虚拟设备edge0，用于测试edge -d edge0 -a 10.10.10.102 -s 255.255.255.0 -c fff -k fff -l 114.116.xxx.xxx:6666 -E -r 参数：123456789-d &lt;接口名&gt; 选项指定了由 edge 命令创建的 TAP 接口的名字; 创建一个虚拟的网卡设备，edge0 就是它的名称-a &lt;IP 地址&gt; 选项（静态地）指定了分配给 TAP 接口的 VPN 的 IP 地址。如果你想要使用 DHCP，你需要在其中一台边缘节点上配置一台 DHCP 服务器，然后使用“-a dhcp:0.0.0.0”选项来代替。-s &lt;子网掩码&gt;-c &lt;组名&gt; 选项指定了 VPN 组的名字（最大长度为 16 个字节）。这个选项可以被用来在同样一组节点中创建多个 VPN。-k &lt;密钥&gt; 选项指定了一个由 twofish 加密的密钥来使用。如果你想要将密钥从命令行中隐藏，你可以使用 N2N_KEY 环境变量。-u 和 -g选项被用来在创建一个 TAP 接口后降权放弃 root 权限。edge 守护进程将会作为指定的用户/组 ID 运行。-l &lt;IP 地址:端口&gt; 选项指定了超级节点的监听 IP 地址和端口号。为了冗余，你可以指定最多两个不同的超级节点（比如 -l &lt;超级节点 A&gt; -l &lt;超级节点 B&gt;）。-m 给 TAP 接口分配了一个静态的 MAC 地址。不使用这个参数的话，edge 命令将会随机生成一个 MAC地址。事实上，为一个 VPN 接口强制指定一个静态的 MAC 地址是被强烈推荐的做法。否则，比如当你在一个节点上重启了 edge 守护程序的时候，其它节点的 ARP 缓存将会由于新生成的 MAC 地址而遭到污染，它们将不能向这个节点发送数据，直到被污染的 ARP 记录被消除。在使用过程中不免遇到一些奇葩的事，调试是个关键，开启调试模式，可以使用参数“-v -f”。记住先kill 掉之前的 edge 或 supernode 进程再进行调试以免冲突。 PS:如果想让新建的虚拟网卡开机后依然生效，需要将以上创建命令写入到/etc/rc.local 文件中，另外centos7操作系统需要chmod +x /etc/rc.d/rc.local]]></content>
+      <categories>
+        <category>服务器搭建</category>
+      </categories>
+      <tags>
+        <tag>vpn</tag>
+        <tag>n2n</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[ksuapc : ORA-1033 foreground process starts before PMON]]></title>
     <url>%2Farlo%2F1c37e249%2F</url>
     <content type="text"><![CDATA[开发人员反馈，数据库没有做什么操作，突然连不上了！ 查看数据库日志12345SQL&gt; select VALUE from v$diag_info where name =&apos;Diag Trace&apos;; VALUE--------------------------------------------------------------------------------/home/u01/app/oracle/diag/rdbms/orcl/ORCL/trace 12cd /home/u01/app/oracle/diag/rdbms/orcl/ORCL/tracetail -200 alert_ORCL.log 发现日志里大量的报错ksuapc : ORA-1033 foreground process starts before PMON 网上搜了下，这是个bug，,该现象是数据库bug 8991997,该bug影响版本为:11.2.0.1/11.1.0.7,在11.2.0.1.1开始修复。大概意思就是监听起来了，数据库还没起来，有大量的外部应用在连接数据库，导致数据库无法正常启动；将数据库监听停止掉，先启动数据库，然后启动监听即可。lsnrctl stop 无法正常停止监听程序，我这里使用ps -ef|grep lsnrctl查看监听的进程id,然后使用kill -9 pid杀掉监听，然后安装正常流程启动就可以了。 启动数据库sqlplus / as sysdbaSQL&gt; startup 启动监听lsnrctl start 参考：http://www.xifenfei.com/2013/05/ksuapc-ora-1033-foreground-process-starts-before-pmon.html]]></content>
@@ -57,8 +69,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -81,8 +93,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -93,8 +105,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -117,8 +129,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -177,8 +189,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -200,8 +212,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -224,9 +236,9 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
-        <tag>运维</tag>
         <tag>zabbix</tag>
+        <tag>运维</tag>
+        <tag>自动化</tag>
       </tags>
   </entry>
   <entry>
@@ -237,10 +249,10 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
-        <tag>运维</tag>
-        <tag>Ansible</tag>
         <tag>zabbix</tag>
+        <tag>运维</tag>
+        <tag>自动化</tag>
+        <tag>Ansible</tag>
       </tags>
   </entry>
   <entry>
@@ -274,8 +286,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -286,8 +298,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -306,13 +318,13 @@
   <entry>
     <title><![CDATA[安装rlwrap，使SqlPlus工具支持上下左右键]]></title>
     <url>%2Farlo%2Fd9547628%2F</url>
-    <content type="text"><![CDATA[SqlPlus 工具中默认不支持上下左右键调出历史命令，很不方便；需安装rlwrap。 安装依赖包yum -y install gcc libtermcap-devel readline readline-devel 获取安装文件wget https://fossies.org/linux/privat/rlwrap-0.43.tar.gz 安装rlwrap123tar xf rlwrap-0.43.tar.gzcd rlwrap-0.43/./configure &amp;&amp; make install 配置12su - oraclevim .bash_profile 123alias sqlplus=&apos;rlwrap sqlplus&apos;alias rman=&apos;rlwrap rman&apos;alias asmcmd=&apos;rlwrap asmcmd&apos; source .bash_profile 扩展，设置sqlplus登录提示符vim $ORACLE_HOME/sqlplus/admin/glogin.sqlset linesize 120 pagesize 9999SET SQLPROMPT “_USER@’@’_CONNECT_IDENTIFIER&gt; “]]></content>
+    <content type="text"><![CDATA[SqlPlus 工具中默认不支持上下左右键调出历史命令，很不方便；需安装rlwrap。 安装依赖包yum -y install gcc libtermcap-devel readline readline-devel 获取安装文件wget https://fossies.org/linux/privat/rlwrap-0.43.tar.gz 安装rlwrap123tar xf rlwrap-0.43.tar.gzcd rlwrap-0.43/./configure &amp;&amp; make install 配置12su - oraclevim .bash_profile 123alias sqlplus=&apos;rlwrap sqlplus&apos;alias rman=&apos;rlwrap rman&apos;alias asmcmd=&apos;rlwrap asmcmd&apos; source .bash_profile 扩展，设置sqlplus登录提示符vim $ORACLE_HOME/sqlplus/admin/glogin.sql12set linesize 120 pagesize 9999SET SQLPROMPT &quot;_USER@&apos;@&apos;_CONNECT_IDENTIFIER&gt; &quot;]]></content>
       <categories>
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>Oracle</tag>
       </tags>
   </entry>
@@ -324,8 +336,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Sonar</tag>
       </tags>
   </entry>
@@ -363,8 +375,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>Scp</tag>
         <tag>MTU</tag>
       </tags>
@@ -377,8 +389,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -389,8 +401,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -422,14 +434,14 @@
   <entry>
     <title><![CDATA[Oracle RAC环境搭建(Oracle Linux 6.9+Oracle 11g R2+FreeNas)]]></title>
     <url>%2Farlo%2Fe07eb088%2F</url>
-    <content type="text"><![CDATA[捣腾Oracle RAC环境已经半月有余，从对RAC一无所知到环境搭建成功，期间遇到很多坑，填了很多坑；特写此篇，记录一下搭建的过程，以备忘！话不多说，开干！网络环境：网络分为三个部分，Public网络用于访问业务应用，Priv网络用于检测心跳，Storge网络用于连接存储；VIP，rac-scan网络应与Public网络在同一网段12345主机名 Public网络 Priv网络 Storge网络 VIPrac1 192.168.100.11 172.16.10.11 172.16.20.11 92.168.100.21rac2 192.168.100.12 172.16.10.12 172.16.20.12 192.168.100.22rac-scan 192.168.100.23freenas 172.16.20.13 软件环境：Oracle Linux6.9GridOracle Database 11gASMlibFreeNas RAC搭建分为五个部分： 基础环境准备 共享存储搭建 网络搭建 Grid 安装 Database 安装 基础环境准备基础环境如无特别指明，都是需要在两台机器上操作的。 虚拟机环境搭建虚拟机资源配置rac1:4核/8G/200Grac2:4核/8G/200Gfreenas:2核/2G/100G+(200G+200G+20G+20G) 网络环境配置1234567虚拟机名称 网卡1 网卡2 网卡3rac1 VMnet1(NAT模式) VMnet2(仅主机模式) VMnet3(仅主机模式)rac2 VMnet1(NAT模式) VMnet2(仅主机模式) VMnet3(仅主机模式)freenas VMnet1(NAT模式)VMnet1:192.168.100.0/24VMnet2:172.16.10.0/24VMnet3:172.16.20.0/24 操作系统安装安装图形界面环境(过程略……) 操作系统配置修改主机名rac112vim /etc/sysconfig/networkHOSTNAME=rac1 rac212vim /etc/sysconfig/networkHOSTNAME=rac2 配置hosts123456789101112131415127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4########public#######192.168.100.11 rac1192.168.100.12 rac2#######priv#########172.16.10.11 rac1-priv172.16.10.12 rac2-priv######vip###########192.168.100.21 rac1-vip192.168.100.22 rac2-vip192.168.100.23 rac-scan172.16.20.13 freenas 配置时间同步关闭ntpd服务，使用oracle自身的集群时间同步12345678cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtimentpdate cn.ntp.org.cnvim /etc/sysconfig/ntpdSYNC_HWCLOCK=yesOPTIONS=&quot;-x -u ntp:ntp -p /var/run/ntpd.pid&quot;/etc/init.d/ntpd stopchkconfig ntpd offmv /etc/ntp.conf /etc/ntp.conf.bak 基础软件安装1234567891011121314151617181920212223242526#默认是不安装32位软件包的，添加此选项echo &apos;multilib_policy=all&apos; &gt;&gt; /etc/yum.confyum -y install binutils-* compat-libstdc++-* elfutils-libelf-* elfutils-libelf-devel-* gcc-* gcc-c++-* glibc-* glibc-common-* glibc-devel-* glibc-headers-* libaio-* libaio-devel-* libgcc-* libstdc++* libstdc++-devel* make-* sysstat-* unixODBC-* unixODBC-devel-* ksh-* mksh pdksh#监测一下软件是否安装全rpm -q \binutils \compat-libstdc++-33 \elfutils-libelf \elfutils-libelf-devel \expat \gcc \gcc-c++ \glibc \glibc-common \glibc-devel \glibc-headers \libaio \libaio-devel \libgcc \libstdc++ \libstdc++-devel \make \pdksh \sysstat \unixODBC \unixODBC-devel | grep &quot;not installed&quot; 修改PAM配置文件12vi /etc/pam.d/loginsession required /lib64/security/pam_limits.so 设置内核参数1234567891011121314vi /etc/sysctl.conffs.aio-max-nr = 1048576 fs.file-max = 6815744 kernel.shmmni = 4096 kernel.sem = 250 32000 100 128 net.ipv4.ip_local_port_range = 9000 65500 net.core.rmem_default = 262144 net.core.rmem_max = 4194304 net.core.wmem_default = 262144 net.core.wmem_max = 1048586重新加载生效sysctl –p 创建用户grid1234567groupadd -g 1000 oinstall groupadd -g 1001 asmadmin groupadd -g 1002 asmdba groupadd -g 1003 asmoperuseradd -u 1100 -g oinstall -G asmadmin,asmdba,asmoper -d /home/grid -s /bin/bash grid#设置密码grid用户密码为oracleecho oracle|passwd --stdin grid 配置grid用户环境变量RAC1：123456789101112131415161718su - grid#vi .bash_profile#export PS1=&quot;`/bin/hostname -s`-&gt;&quot;export TMP=/tmpexport TMPDIR=$TMPexport ORACLE_SID=+ASM1export ORACLE_BASE=/u01/app/gridexport ORACLE_HOME=/u01/app/11.2.0/gridexport TNS_ADMIN=$ORACLE_HOME/network/adminexport PATH=/usr/sbin:$PATHexport PATH=$PATH:$ORACLE_HOME/binexport LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/libexport LANG=en_US.UTF-8export NLS_LANG=AMERICAN_AMERICA.ZHS16GBK#使配置文件生效source .bash_profile RAC2：123456789101112131415161718su - grid#vi .bash_profile#export PS1=&quot;`/bin/hostname -s`-&gt;&quot;export TMP=/tmpexport TMPDIR=$TMPexport ORACLE_SID=+ASM2export ORACLE_BASE=/u01/app/gridexport ORACLE_HOME=/u01/app/11.2.0/gridexport TNS_ADMIN=$ORACLE_HOME/network/adminexport PATH=/usr/sbin:$PATHexport PATH=$PATH:$ORACLE_HOME/binexport LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/libexport LANG=en_US.UTF-8export NLS_LANG=AMERICAN_AMERICA.ZHS16GBK#使配置文件生效source .bash_profile 创建用户oracle123456su - rootgroupadd -g 1200 dbagroupadd -g 1201 operuseradd -u 1101 -g oinstall -G dba,oper,asmdba -d /home/oracle -s /bin/bash oracle#设置密码grid用户密码为oracleecho oracle|passwd --stdin oracle 配置oracle用户环境变量RAC1：1234567891011121314151617181920su - oracle#vi .bash_profile#export PS1=&quot;`/bin/hostname -s`-&gt;&quot;export TMP=/tmpexport TMPDIR=$TMPexport ORACLE_HOSTNAME=rac1export ORACLE_SID=orcl1export ORACLE_UNQNAME=orclexport ORACLE_BASE=/u01/app/oracleexport ORACLE_HOME=$ORACLE_BASE/11gexport TNS_ADMIN=$ORACLE_HOME/network/adminexport PATH=/usr/sbin:$PATHexport PATH=$PATH:$ORACLE_HOME/binexport LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/libexport LANG=en_US.UTF-8export NLS_LANG=AMERICAN_AMERICA.ZHS16GBK#使配置文件生效source .bash_profile RAC2：1234567891011121314151617181920su - oracle#vi .bash_profile#export PS1=&quot;`/bin/hostname -s`-&gt;&quot;export TMP=/tmpexport TMPDIR=$TMPexport ORACLE_HOSTNAME=rac2export ORACLE_SID=orcl2export ORACLE_UNQNAME=orclexport ORACLE_BASE=/u01/app/oracleexport ORACLE_HOME=$ORACLE_BASE/11gexport TNS_ADMIN=$ORACLE_HOME/network/adminexport PATH=/usr/sbin:$PATHexport PATH=$PATH:$ORACLE_HOME/binexport LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/libexport LANG=en_US.UTF-8export NLS_LANG=AMERICAN_AMERICA.ZHS16GBK#使配置文件生效source .bash_profile 创建目录，修改权限12345678910su - rootmkdir -p /u01/app/grid mkdir -p /u01/app/11.2.0/gridchown -R grid:oinstall /u01chown -R grid:oinstall /u01/app/11.2.0/gridmkdir -p /u01/app/oraclechown -R oracle:oinstall /u01/app/oraclechmod -R 775 /u01export LANG=en_US.UTF-8export NLS_LANG=AMERICAN_AMERICA.ZHS16GBK 配置profile12345678910vim /etc/profileif [ \$USER = &quot;oracle&quot; ] || [ \$USER = &quot;grid&quot; ];then if [ \$SHELL = &quot;/bin/ksh&quot; ];then ulimit -p 16384 ulimit -n 65536 else ulimit -u 16384 -n 65536 fi umask 022 fi 修改Oracle用户限制1234567891011121314vi /etc/security/limits.conforacle soft nproc 2047oracle hard nproc 16384oracle soft nofile 1024oracle hard nofile 65536oracle soft stack 10240oracle hard stack 32768grid soft nproc 2047grid hard nproc 16384grid soft nofile 1024grid hard nofile 65536grid soft stack 10240grid hard stack 32768 ssh 互信1234su - gridssh-keygen (一路回车)ssh-copy-id -i rac2ssh-copy-id -i rac1 1234su - oraclessh-keygen (一路回车)ssh-copy-id -i rac2ssh-copy-id -i rac1 测试一下1234ssh rac1 dateThu Nov 23 14:00:03 CST 2017ssh rac2 dateThu Nov 23 14:00:24 CST 2017 使用FreeNas搭建iscsi存储安装操作系统使用FreeNAS-9.2.1.7-RELEASE-x64.iso镜像搭建NAS存储，一块系统磁盘，四块存储盘选择1 Install/Upgrade 安装FreeNAS选择第一块系统磁盘全新安装(虚拟机环境之前安装过，新环境应该没有这一步)安装警告，例行问候，选择Yes安装完成重启系统 配置网络提示是否删除现有的配置，输入n是否配置DHCP，输入n；是否配置IPv4,输入y；输入ip地址、子网掩码；是否配置IPv6,输入n配置完成后，即可通过url来管理freenas，访问地址为http://172.16.20.13新版本第一次登录会让修改密码ps:如果密码忘记，可以在刚才的步骤里选择7）Reset WebGUI login credentials，在此步骤可以输入新密码 配置iscsi设置中文语言，上海时区开启iSCSI服务配置全局目标，设置iSCSI名称iqn.2017-11.cc.islocal.istgt配置Portals配置初始的授权配置授权用户grid添加iscsi目标设备依次添加4块存储磁盘关联添加的存储设备为LUN 安装Grid Infrastructure 如果使用Centos6.x操作系统安装rac，建议使用UEK内核;uek内核是Oracle Linux、Oracle Database、中间件和硬件工程师团队合作的结果，是一个快速、现代、可靠的内核，专门针对Oracle软件和硬件进行了优化。随着硬件的快速发展，为了更好的兼容并支持快速发展的硬件，Linux系统版本及内核也在不断的更新，uek正是在这样的环境下应运而生的产物。安装uek内核可以参考以下文档https://docs.oracle.com/cd/E37670_01/E37355/html/ol_obtain_uek.htmlhttps://docs.oracle.com/cd/E52668_01/E39381/html/ol_import_gpg.htmlhttp://www.oracle.com/technetwork/server-storage/linux/asmlib/index-101839.html ASM 分区创建方法一：使用ASMlib创建ASM分区12yum -y install oracleasm-support oracle-rdbms-server-11gR2-preinstallrpm -ivh http://download.oracle.com/otn_software/asmlib/oracleasmlib-2.0.12-1.el6.x86_64.rpm 上传linux.x64_11gR2_grid.zip到/usr/local/src目录下1234cd /usr/local/src/unzip linux.x64_11gR2_grid.zip/usr/local/src/grid/rpmrpm -ivh cvuqdisk-1.0.7-1.rpm 初始化asmRAC112345678910111213141516[root@rac1 rpm]# /etc/init.d/oracleasm configure -iConfiguring the Oracle ASM library driver.This will configure the on-boot properties of the Oracle ASM librarydriver. The following questions will determine whether the driver isloaded on boot and what permissions it will have. The current valueswill be shown in brackets (&apos;[]&apos;). Hitting &lt;ENTER&gt; without typing ananswer will keep that current value. Ctrl-C will abort.Default user to own the driver interface [grid]: gridDefault group to own the driver interface [oinstall]: oinstallStart Oracle ASM library driver on boot (y/n) [y]: yScan for Oracle ASM disks on boot (y/n) [y]: yWriting Oracle ASM library driver configuration: doneInitializing the Oracle ASMLib driver: [ OK ]Scanning the system for Oracle ASMLib disks: [ OK ] 1/usr/sbin/oracleasm init RAC212345678910111213141516[root@rac2 src]# /etc/init.d/oracleasm configure -iConfiguring the Oracle ASM library driver.This will configure the on-boot properties of the Oracle ASM librarydriver. The following questions will determine whether the driver isloaded on boot and what permissions it will have. The current valueswill be shown in brackets (&apos;[]&apos;). Hitting &lt;ENTER&gt; without typing ananswer will keep that current value. Ctrl-C will abort.Default user to own the driver interface [grid]: gridDefault group to own the driver interface [oinstall]: oinstallStart Oracle ASM library driver on boot (y/n) [y]: yScan for Oracle ASM disks on boot (y/n) [y]: yWriting Oracle ASM library driver configuration: doneInitializing the Oracle ASMLib driver: [ OK ]Scanning the system for Oracle ASMLib disks: [ OK ] 配置iscsi客户端1yum -y install iscsi-initiator-utils 12[root@rac1 rpm]# iscsiadm -m discovery -t sendtargets -p 172.16.20.13172.16.20.13:3260,1 iqn.2017-11.cc.islocal.istgt:iscsi 123[root@rac1 rpm]# /etc/init.d/iscsi restartStopping iscsi: [ OK ]Starting iscsi: [ OK ] iscsi命令拓展查看iscsi target信息123iscsiadm -m node -p ip_addriscsiadm -m node session -p ip_addriscsiadm -m node discovery -P ip_addr 登录target连接1iscsiadm -m node -T iqn.2017-11.cc.islocal.istgt:iscsi -p ip_addr -l 登出target连接1iscsiadm -m node -T iqn.2017-11.cc.islocal.istgt:iscsi -p ip_addr -u 删除target条目记录1iscsiadm -m node -o delete -T iqn.2017-11.cc.islocal.istgt:iscsi -p ip_addr 磁盘分区fdisk -l 可以发现已经识别到4个磁盘sdb,sdc,sdd,sde,对磁盘进行分区“n/p/1/回车/回车/w” 创建ASM分区1234/etc/init.d/oracleasm createdisk ASMDATA /dev/sdb1/etc/init.d/oracleasm createdisk BACKUP /dev/sdc1/etc/init.d/oracleasm createdisk OCR /dev/sdd1/etc/init.d/oracleasm createdisk VOTINGDISK /dev/sde1 1234567[root@rac1 rpm]# /etc/init.d/oracleasm scandisksScanning the system for Oracle ASMLib disks: [ OK ][root@rac1 rpm]# /etc/init.d/oracleasm listdisksASMDATABACKUPOCRVOTINGDISK 在rac2上发现asm磁盘1yum -y install iscsi-initiator-utils 12[root@rac2 rpm]# iscsiadm -m discovery -t sendtargets -p 172.16.20.13172.16.20.13:3260,1 iqn.2017-11.cc.islocal.istgt:iscsi 123[root@rac2 rpm]# /etc/init.d/iscsi restartStopping iscsi: [ OK ]Starting iscsi: [ OK ] 123456789[root@rac2 ~]# start_udev Starting udev: [ OK ][root@rac2 src]# /etc/init.d/oracleasm scandisksScanning the system for Oracle ASMLib disks: [ OK ][root@rac2 src]# /etc/init.d/oracleasm listdisksASMDATABACKUPOCRVOTINGDISK 方法二：使用udev方式创建ASM分区配置iscsi客户端1yum -y install iscsi-initiator-utils 12[root@rac1 rpm]# iscsiadm -m discovery -t sendtargets -p 172.16.20.13172.16.20.13:3260,1 iqn.2017-11.cc.islocal.istgt:iscsi 123[root@rac1 rpm]# /etc/init.d/iscsi restartStopping iscsi: [ OK ]Starting iscsi: [ OK ] 将ASM磁盘添加到udev，防止开始发现磁盘顺序不一致导致的异常问题12345678[root@rac1 ~]# /sbin/scsi_id --whitelisted --replace-whitespace --device=/dev/sdb13300000007a38757b[root@rac1 ~]# /sbin/scsi_id --whitelisted --replace-whitespace --device=/dev/sdc13300000008853f678[root@rac1 ~]# /sbin/scsi_id --whitelisted --replace-whitespace --device=/dev/sdd13300000009b03058c[root@rac1 ~]# /sbin/scsi_id --whitelisted --replace-whitespace --device=/dev/sde13300000006968868f 12345[root@rac1 rules.d]# vim 99-iscsi-asm.rulesKERNEL==&quot;sd*&quot;, BUS==&quot;scsi&quot;, PROGRAM==&quot;/sbin/scsi_id --whitelisted --replace-whitespace --device=/dev/$name&quot;, RESULT==&quot;3300000007a38757b&quot;, NAME=&quot;asm-data&quot;, OWNER=&quot;grid&quot;, GROUP=&quot;oinstall&quot;, MODE=&quot;660&quot;KERNEL==&quot;sd*&quot;, BUS==&quot;scsi&quot;, PROGRAM==&quot;/sbin/scsi_id --whitelisted --replace-whitespace --device=/dev/$name&quot;, RESULT==&quot;3300000008853f678&quot;, NAME=&quot;asm-backup&quot;, OWNER=&quot;grid&quot;, GROUP=&quot;oinstall&quot;, MODE=&quot;660&quot;KERNEL==&quot;sd*&quot;, BUS==&quot;scsi&quot;, PROGRAM==&quot;/sbin/scsi_id --whitelisted --replace-whitespace --device=/dev/$name&quot;, RESULT==&quot;3300000009b03058c&quot;, NAME=&quot;asm-ocr&quot;, OWNER=&quot;grid&quot;, GROUP=&quot;oinstall&quot;, MODE=&quot;660&quot;KERNEL==&quot;sd*&quot;, BUS==&quot;scsi&quot;, PROGRAM==&quot;/sbin/scsi_id --whitelisted --replace-whitespace --device=/dev/$name&quot;, RESULT==&quot;3300000006968868f&quot;, NAME=&quot;asm-vdisk&quot;, OWNER=&quot;grid&quot;, GROUP=&quot;oinstall&quot;, MODE=&quot;660&quot; 123[root@rac1 rules.d]# scp 99-iscsi-asm.rules rac2:/etc/udev/rules.d/99-iscsi-asm.rules[root@rac1 rules.d]# start_udev Starting udev: [ OK ] 12345[root@rac1 rules.d]# ll /dev/asm-*brw-rw---- 1 grid asmadmin 8, 33 Nov 23 17:48 /dev/asm-backupbrw-rw---- 1 grid asmadmin 8, 17 Nov 23 17:48 /dev/asm-databrw-rw---- 1 grid asmadmin 8, 49 Nov 23 17:48 /dev/asm-ocrbrw-rw---- 1 grid asmadmin 8, 65 Nov 23 17:48 /dev/asm-vdisk 在rac2上发现asm磁盘1yum -y install iscsi-initiator-utils 12[root@rac2 rpm]# iscsiadm -m discovery -t sendtargets -p 172.16.20.13172.16.20.13:3260,1 iqn.2017-11.cc.islocal.istgt:iscsi 123[root@rac2 rpm]# /etc/init.d/iscsi restartStopping iscsi: [ OK ]Starting iscsi: [ OK ] 12[root@rac2 ~]# start_udev Starting udev: [ OK ] 12345[root@rac2 ~]# ll /dev/asm-*brw-rw---- 1 grid asmadmin 8, 33 Nov 23 17:54 /dev/asm-backupbrw-rw---- 1 grid asmadmin 8, 17 Nov 23 17:54 /dev/asm-databrw-rw---- 1 grid asmadmin 8, 49 Nov 23 17:54 /dev/asm-ocrbrw-rw---- 1 grid asmadmin 8, 65 Nov 23 17:54 /dev/asm-vdisk 安装Grid建议直接用grid用户登录图形桌面，而不是root登录su - grid切换过去。12rac1-&gt;cd /usr/local/src/gridrac1-&gt;./runcluvfy.sh stage -pre crsinst -n rac1,rac2 -fixup -verbose 安装前监测一下环境，如果有failed，按照要求去修复，我这里有几个软件包太新，不是太影响，我们就开始安装吧。执行./runInstaller，开始安装安装和配置一个GI集群高级安装添加中文支持取消GNS选项，保持SCAN Name和hosts里配置的一样添加rac2根据之前配置的网络，配置网络类型选择ASM存储这里遇到几个几个坑，详细说一下吧；1.如果默认没有在候选磁盘(Candidate Disks)里,选择所有磁盘(All disks),看看是否可以显示出来；2.如果还是没有发现，点一下改变其他路径(Change Discovery Path),rhel系列系统默认路径是/dev/raw/\, 我这里是/dev/asm-*;3.如果磁盘显示出来是灰色，不能选择，可能是练习的时候，之前已经使用过磁盘做过asm了，可以执行“dd if=/dev/zero of=/dev/rhdisk2 bs=1024 count=100”，然后重新开始安装试试，如果还不行，请从存储方面开始排查；4.我这里配置的udev方式发现保证磁盘的唯一性，现在发现一个问题，start_udev后可以发现磁盘，/dev/asm-*都生成了；执行oraclescandisk后发现不了ASM磁盘，/dev/oracleasm/disks/目录下是空的，但是安装时候找到了，是可用状态，有点小疑惑。*ASM提供三种冗余模式，我们使用External；ASM三种模式后期学习了，在单独写一篇吧。选择Yes默认默认的三个组默认安装路径忽略ALL所有的配置信息安装完成，使用root账号依次在rac1，rac2上执行脚本;如果你执行root.sh出现以下错误，恭喜你！这个问题折磨了我太久，后来在网上看到这是一个bug！1234CRS-4124: Oracle High Availability Services startup failed.CRS-4000: Command Start failed, or completed with errors.ohasd failed to start: Inappropriate ioctl for deviceohasd failed to start at /opt/app/11.2.0/grid/crs/install/rootcrs.pl line 443. 此错误解决方法123删除之前的配置：/u01/app/11.2.0/grid/crs/install/roothas.pl -deconfig -force -verbose窗口1：/u01/app/11.2.0/grid/root.sh窗口2：/bin/dd if=/var/tmp/.oracle/npohasd of=/dev/null bs=1024 count=1 （刚开始执行root.sh时候，还没生成npohash文件，等日志出现“Adding daemon to inittab”的时候，在窗口2中使用root用户执行此命令，等root.sh执行成功后，ctrl+c结束此命令即可） 出现以下提示，方为脚本执行成功。1234567Configure Oracle Grid Infrastructure for a Cluster ... succeededUpdating inventory properties for clusterwareStarting Oracle Universal Installer...Checking swap space: must be greater than 500 MB. Actual 7999 MB PassedThe inventory pointer is located at /etc/oraInst.locThe inventory is located at /u01/app/oraInventory 这个错误没事，直接点击Next完成安装 验证安装状态123456789su - gridcrs_stat -tcrsctl check cluster -allolsnodes -s -n -tcrsctl check crssrvctl status asmsrvctl status scansrvctl status vip -n rac1srvctl status scan_listener 创建ASM磁盘组在grid 用户下，执行 asmca，启动 asm 磁盘组创建向导DATA组，存放数据文件，包括/dev/asm-data,/dev/asm-backup;VOTINGDISK组，存放闪回文件，包含/dev/asm-vdiskDisk Groups，点击create 按钮，在弹出的创建界面中填写磁盘组名称，选择external(none)，并勾选成员，选择完毕后点击 ok；确认stat为2 of 2时,退出asmca 安装oracle11gr2 database 软件建议直接用oracle用户登录图形桌面，而不是root登录su - oracle切换过去。这个安装过程也很简单，基本上和单机版的一样；12rac1-&gt;cd /usr/local/src/databaserac1-&gt;./runInstaller 创建和配置一个数据库服务器模式选择rac集群中的节点高级安装添加中文支持服务器版本默认安装路径一般用途实例名称，SID名称(ps:这里的截图稍微有点问题，sid应该是orcl，不是orcl1)自动分配内存选择中文字符集连接asm存储的密码不备份选择DATA磁盘组设置sys/system密码默认管理组监测依赖配置信息安装完成依次执行脚本12345Entries will be added to the /etc/oratab file as needed byDatabase Configuration Assistant when a database is createdFinished running generic part of root.sh script.Now product-specific root actions will be performed.Finished product-specific root actions. 12sqlplus system/oracle@orclselect inst_id,instance_number,instance_name from gv$instance; 参考资料：http://v.qq.com/vplus/91c845f5c21fd8a6a25e9827b38c171ehttp://www.dba-oracle.com/t_reset_an_asm_diskgroup.htmhttp://www.oracle.com/technetwork/cn/articles/hunter-rac11gr2-iscsi-083834-zhs.htmlhttp://blog.csdn.net/u010098331/article/details/50767353https://docs.oracle.com/cd/E11882_01/doc.112/e28441/require.htm#CDMIG110http://blog.sina.com.cn/s/blog_563c17780102ux53.htmlhttps://blogs.oracle.com/database4cn/11gr2-crsgrid-scansingle-client-access-name]]></content>
+    <content type="text"><![CDATA[捣腾Oracle RAC环境已经半月有余，从对RAC一无所知到环境搭建成功，期间遇到很多坑，填了很多坑；特写此篇，记录一下搭建的过程，以备忘！话不多说，开干！网络环境：网络分为三个部分，Public网络用于访问业务应用，Priv网络用于检测心跳，Storge网络用于连接存储；VIP，rac-scan网络应与Public网络在同一网段12345主机名 Public网络 Priv网络 Storge网络 VIPrac1 192.168.100.11 172.16.10.11 172.16.20.11 92.168.100.21rac2 192.168.100.12 172.16.10.12 172.16.20.12 192.168.100.22rac-scan 192.168.100.23freenas 172.16.20.13 软件环境：Oracle Linux6.9GridOracle Database 11gASMlibFreeNas RAC搭建分为五个部分： 基础环境准备 共享存储搭建 网络搭建 Grid 安装 Database 安装 基础环境准备基础环境如无特别指明，都是需要在两台机器上操作的。 虚拟机环境搭建虚拟机资源配置rac1:4核/8G/200Grac2:4核/8G/200Gfreenas:2核/2G/100G+(200G+200G+20G+20G) 网络环境配置1234567虚拟机名称 网卡1 网卡2 网卡3rac1 VMnet1(NAT模式) VMnet2(仅主机模式) VMnet3(仅主机模式)rac2 VMnet1(NAT模式) VMnet2(仅主机模式) VMnet3(仅主机模式)freenas VMnet1(NAT模式)VMnet1:192.168.100.0/24VMnet2:172.16.10.0/24VMnet3:172.16.20.0/24 操作系统安装安装图形界面环境(过程略……) 操作系统配置修改主机名rac112vim /etc/sysconfig/networkHOSTNAME=rac1 rac212vim /etc/sysconfig/networkHOSTNAME=rac2 配置hosts123456789101112131415127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4########public#######192.168.100.11 rac1192.168.100.12 rac2#######priv#########172.16.10.11 rac1-priv172.16.10.12 rac2-priv######vip###########192.168.100.21 rac1-vip192.168.100.22 rac2-vip192.168.100.23 rac-scan172.16.20.13 freenas 配置时间同步关闭ntpd服务，使用oracle自身的集群时间同步12345678cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtimentpdate cn.ntp.org.cnvim /etc/sysconfig/ntpdSYNC_HWCLOCK=yesOPTIONS=&quot;-x -u ntp:ntp -p /var/run/ntpd.pid&quot;/etc/init.d/ntpd stopchkconfig ntpd offmv /etc/ntp.conf /etc/ntp.conf.bak 基础软件安装1234567891011121314151617181920212223242526#默认是不安装32位软件包的，添加此选项echo &apos;multilib_policy=all&apos; &gt;&gt; /etc/yum.confyum -y install binutils-* compat-libstdc++-* elfutils-libelf-* elfutils-libelf-devel-* gcc-* gcc-c++-* glibc-* glibc-common-* glibc-devel-* glibc-headers-* libaio-* libaio-devel-* libgcc-* libstdc++* libstdc++-devel* make-* sysstat-* unixODBC-* unixODBC-devel-* ksh-* mksh pdksh#监测一下软件是否安装全rpm -q \binutils \compat-libstdc++-33 \elfutils-libelf \elfutils-libelf-devel \expat \gcc \gcc-c++ \glibc \glibc-common \glibc-devel \glibc-headers \libaio \libaio-devel \libgcc \libstdc++ \libstdc++-devel \make \pdksh \sysstat \unixODBC \unixODBC-devel | grep &quot;not installed&quot; 修改PAM配置文件12vi /etc/pam.d/loginsession required /lib64/security/pam_limits.so 设置内核参数1234567891011121314vi /etc/sysctl.conffs.aio-max-nr = 1048576 fs.file-max = 6815744 kernel.shmmni = 4096 kernel.sem = 250 32000 100 128 net.ipv4.ip_local_port_range = 9000 65500 net.core.rmem_default = 262144 net.core.rmem_max = 4194304 net.core.wmem_default = 262144 net.core.wmem_max = 1048586重新加载生效sysctl –p 创建用户grid1234567groupadd -g 1000 oinstall groupadd -g 1001 asmadmin groupadd -g 1002 asmdba groupadd -g 1003 asmoperuseradd -u 1100 -g oinstall -G asmadmin,asmdba,asmoper -d /home/grid -s /bin/bash grid#设置密码grid用户密码为oracleecho oracle|passwd --stdin grid 配置grid用户环境变量RAC1：123456789101112131415161718su - grid#vi .bash_profile#export PS1=&quot;`/bin/hostname -s`-&gt;&quot;export TMP=/tmpexport TMPDIR=$TMPexport ORACLE_SID=+ASM1export ORACLE_BASE=/u01/app/gridexport ORACLE_HOME=/u01/app/11.2.0/gridexport TNS_ADMIN=$ORACLE_HOME/network/adminexport PATH=/usr/sbin:$PATHexport PATH=$PATH:$ORACLE_HOME/binexport LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/libexport LANG=en_US.UTF-8export NLS_LANG=AMERICAN_AMERICA.ZHS16GBK#使配置文件生效source .bash_profile RAC2：123456789101112131415161718su - grid#vi .bash_profile#export PS1=&quot;`/bin/hostname -s`-&gt;&quot;export TMP=/tmpexport TMPDIR=$TMPexport ORACLE_SID=+ASM2export ORACLE_BASE=/u01/app/gridexport ORACLE_HOME=/u01/app/11.2.0/gridexport TNS_ADMIN=$ORACLE_HOME/network/adminexport PATH=/usr/sbin:$PATHexport PATH=$PATH:$ORACLE_HOME/binexport LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/libexport LANG=en_US.UTF-8export NLS_LANG=AMERICAN_AMERICA.ZHS16GBK#使配置文件生效source .bash_profile 创建用户oracle123456su - rootgroupadd -g 1200 dbagroupadd -g 1201 operuseradd -u 1101 -g oinstall -G dba,oper,asmdba -d /home/oracle -s /bin/bash oracle#设置密码grid用户密码为oracleecho oracle|passwd --stdin oracle 配置oracle用户环境变量RAC1：1234567891011121314151617181920su - oracle#vi .bash_profile#export PS1=&quot;`/bin/hostname -s`-&gt;&quot;export TMP=/tmpexport TMPDIR=$TMPexport ORACLE_HOSTNAME=rac1export ORACLE_SID=orcl1export ORACLE_UNQNAME=orclexport ORACLE_BASE=/u01/app/oracleexport ORACLE_HOME=$ORACLE_BASE/11gexport TNS_ADMIN=$ORACLE_HOME/network/adminexport PATH=/usr/sbin:$PATHexport PATH=$PATH:$ORACLE_HOME/binexport LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/libexport LANG=en_US.UTF-8export NLS_LANG=AMERICAN_AMERICA.ZHS16GBK#使配置文件生效source .bash_profile RAC2：1234567891011121314151617181920su - oracle#vi .bash_profile#export PS1=&quot;`/bin/hostname -s`-&gt;&quot;export TMP=/tmpexport TMPDIR=$TMPexport ORACLE_HOSTNAME=rac2export ORACLE_SID=orcl2export ORACLE_UNQNAME=orclexport ORACLE_BASE=/u01/app/oracleexport ORACLE_HOME=$ORACLE_BASE/11gexport TNS_ADMIN=$ORACLE_HOME/network/adminexport PATH=/usr/sbin:$PATHexport PATH=$PATH:$ORACLE_HOME/binexport LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/libexport LANG=en_US.UTF-8export NLS_LANG=AMERICAN_AMERICA.ZHS16GBK#使配置文件生效source .bash_profile 创建目录，修改权限12345678910su - rootmkdir -p /u01/app/grid mkdir -p /u01/app/11.2.0/gridchown -R grid:oinstall /u01chown -R grid:oinstall /u01/app/11.2.0/gridmkdir -p /u01/app/oraclechown -R oracle:oinstall /u01/app/oraclechmod -R 775 /u01export LANG=en_US.UTF-8export NLS_LANG=AMERICAN_AMERICA.ZHS16GBK 配置profile12345678910vim /etc/profileif [ \$USER = &quot;oracle&quot; ] || [ \$USER = &quot;grid&quot; ];then if [ \$SHELL = &quot;/bin/ksh&quot; ];then ulimit -p 16384 ulimit -n 65536 else ulimit -u 16384 -n 65536 fi umask 022 fi 修改Oracle用户限制1234567891011121314vi /etc/security/limits.conforacle soft nproc 2047oracle hard nproc 16384oracle soft nofile 1024oracle hard nofile 65536oracle soft stack 10240oracle hard stack 32768grid soft nproc 2047grid hard nproc 16384grid soft nofile 1024grid hard nofile 65536grid soft stack 10240grid hard stack 32768 ssh 互信1234su - gridssh-keygen (一路回车)ssh-copy-id -i rac2ssh-copy-id -i rac1 1234su - oraclessh-keygen (一路回车)ssh-copy-id -i rac2ssh-copy-id -i rac1 测试一下1234ssh rac1 dateThu Nov 23 14:00:03 CST 2017ssh rac2 dateThu Nov 23 14:00:24 CST 2017 使用FreeNas搭建iscsi存储安装操作系统使用FreeNAS-9.2.1.7-RELEASE-x64.iso镜像搭建NAS存储，一块系统磁盘，四块存储盘选择1 Install/Upgrade 安装FreeNAS选择第一块系统磁盘全新安装(虚拟机环境之前安装过，新环境应该没有这一步)安装警告，例行问候，选择Yes安装完成重启系统 配置网络提示是否删除现有的配置，输入n是否配置DHCP，输入n；是否配置IPv4,输入y；输入ip地址、子网掩码；是否配置IPv6,输入n配置完成后，即可通过url来管理freenas，访问地址为http://172.16.20.13新版本第一次登录会让修改密码ps:如果密码忘记，可以在刚才的步骤里选择7）Reset WebGUI login credentials，在此步骤可以输入新密码 配置iscsi设置中文语言，上海时区开启iSCSI服务配置全局目标，设置iSCSI名称iqn.2017-11.cc.islocal.istgt配置Portals配置初始的授权配置授权用户grid添加iscsi目标设备依次添加4块存储磁盘关联添加的存储设备为LUN 安装Grid Infrastructure 如果使用Centos6.x操作系统安装rac，建议使用UEK内核;uek内核是Oracle Linux、Oracle Database、中间件和硬件工程师团队合作的结果，是一个快速、现代、可靠的内核，专门针对Oracle软件和硬件进行了优化。随着硬件的快速发展，为了更好的兼容并支持快速发展的硬件，Linux系统版本及内核也在不断的更新，uek正是在这样的环境下应运而生的产物。安装uek内核可以参考以下文档https://docs.oracle.com/cd/E37670_01/E37355/html/ol_obtain_uek.htmlhttps://docs.oracle.com/cd/E52668_01/E39381/html/ol_import_gpg.htmlhttp://www.oracle.com/technetwork/server-storage/linux/asmlib/index-101839.html ASM 分区创建方法一：使用ASMlib创建ASM分区12yum -y install oracleasm-support oracle-rdbms-server-11gR2-preinstallrpm -ivh http://download.oracle.com/otn_software/asmlib/oracleasmlib-2.0.12-1.el6.x86_64.rpm 上传linux.x64_11gR2_grid.zip到/usr/local/src目录下1234cd /usr/local/src/unzip linux.x64_11gR2_grid.zip/usr/local/src/grid/rpmrpm -ivh cvuqdisk-1.0.7-1.rpm 初始化asmRAC112345678910111213141516[root@rac1 rpm]# /etc/init.d/oracleasm configure -iConfiguring the Oracle ASM library driver.This will configure the on-boot properties of the Oracle ASM librarydriver. The following questions will determine whether the driver isloaded on boot and what permissions it will have. The current valueswill be shown in brackets (&apos;[]&apos;). Hitting &lt;ENTER&gt; without typing ananswer will keep that current value. Ctrl-C will abort.Default user to own the driver interface [grid]: gridDefault group to own the driver interface [oinstall]: oinstallStart Oracle ASM library driver on boot (y/n) [y]: yScan for Oracle ASM disks on boot (y/n) [y]: yWriting Oracle ASM library driver configuration: doneInitializing the Oracle ASMLib driver: [ OK ]Scanning the system for Oracle ASMLib disks: [ OK ] 1/usr/sbin/oracleasm init RAC212345678910111213141516[root@rac2 src]# /etc/init.d/oracleasm configure -iConfiguring the Oracle ASM library driver.This will configure the on-boot properties of the Oracle ASM librarydriver. The following questions will determine whether the driver isloaded on boot and what permissions it will have. The current valueswill be shown in brackets (&apos;[]&apos;). Hitting &lt;ENTER&gt; without typing ananswer will keep that current value. Ctrl-C will abort.Default user to own the driver interface [grid]: gridDefault group to own the driver interface [oinstall]: oinstallStart Oracle ASM library driver on boot (y/n) [y]: yScan for Oracle ASM disks on boot (y/n) [y]: yWriting Oracle ASM library driver configuration: doneInitializing the Oracle ASMLib driver: [ OK ]Scanning the system for Oracle ASMLib disks: [ OK ] 配置iscsi客户端1yum -y install iscsi-initiator-utils 12[root@rac1 rpm]# iscsiadm -m discovery -t sendtargets -p 172.16.20.13172.16.20.13:3260,1 iqn.2017-11.cc.islocal.istgt:iscsi 123[root@rac1 rpm]# /etc/init.d/iscsi restartStopping iscsi: [ OK ]Starting iscsi: [ OK ] iscsi命令拓展查看iscsi target信息123iscsiadm -m node -p ip_addriscsiadm -m node session -p ip_addriscsiadm -m node discovery -P ip_addr 登录target连接1iscsiadm -m node -T iqn.2017-11.cc.islocal.istgt:iscsi -p ip_addr -l 登出target连接1iscsiadm -m node -T iqn.2017-11.cc.islocal.istgt:iscsi -p ip_addr -u 删除target条目记录1iscsiadm -m node -o delete -T iqn.2017-11.cc.islocal.istgt:iscsi -p ip_addr 磁盘分区fdisk -l 可以发现已经识别到4个磁盘sdb,sdc,sdd,sde,对磁盘进行分区“n/p/1/回车/回车/w” 创建ASM分区1234/etc/init.d/oracleasm createdisk ASMDATA /dev/sdb1/etc/init.d/oracleasm createdisk BACKUP /dev/sdc1/etc/init.d/oracleasm createdisk OCR /dev/sdd1/etc/init.d/oracleasm createdisk VOTINGDISK /dev/sde1 1234567[root@rac1 rpm]# /etc/init.d/oracleasm scandisksScanning the system for Oracle ASMLib disks: [ OK ][root@rac1 rpm]# /etc/init.d/oracleasm listdisksASMDATABACKUPOCRVOTINGDISK 在rac2上发现asm磁盘1yum -y install iscsi-initiator-utils 12[root@rac2 rpm]# iscsiadm -m discovery -t sendtargets -p 172.16.20.13172.16.20.13:3260,1 iqn.2017-11.cc.islocal.istgt:iscsi 123[root@rac2 rpm]# /etc/init.d/iscsi restartStopping iscsi: [ OK ]Starting iscsi: [ OK ] 123456789[root@rac2 ~]# start_udev Starting udev: [ OK ][root@rac2 src]# /etc/init.d/oracleasm scandisksScanning the system for Oracle ASMLib disks: [ OK ][root@rac2 src]# /etc/init.d/oracleasm listdisksASMDATABACKUPOCRVOTINGDISK 方法二：使用udev方式创建ASM分区配置iscsi客户端1yum -y install iscsi-initiator-utils 12[root@rac1 rpm]# iscsiadm -m discovery -t sendtargets -p 172.16.20.13172.16.20.13:3260,1 iqn.2017-11.cc.islocal.istgt:iscsi 123[root@rac1 rpm]# /etc/init.d/iscsi restartStopping iscsi: [ OK ]Starting iscsi: [ OK ] 将ASM磁盘添加到udev，防止开始发现磁盘顺序不一致导致的异常问题12345678[root@rac1 ~]# /sbin/scsi_id --whitelisted --replace-whitespace --device=/dev/sdb13300000007a38757b[root@rac1 ~]# /sbin/scsi_id --whitelisted --replace-whitespace --device=/dev/sdc13300000008853f678[root@rac1 ~]# /sbin/scsi_id --whitelisted --replace-whitespace --device=/dev/sdd13300000009b03058c[root@rac1 ~]# /sbin/scsi_id --whitelisted --replace-whitespace --device=/dev/sde13300000006968868f 12345[root@rac1 rules.d]# vim 99-iscsi-asm.rulesKERNEL==&quot;sd*&quot;, BUS==&quot;scsi&quot;, PROGRAM==&quot;/sbin/scsi_id --whitelisted --replace-whitespace --device=/dev/$name&quot;, RESULT==&quot;3300000007a38757b&quot;, NAME=&quot;asm-data&quot;, OWNER=&quot;grid&quot;, GROUP=&quot;oinstall&quot;, MODE=&quot;0660&quot;KERNEL==&quot;sd*&quot;, BUS==&quot;scsi&quot;, PROGRAM==&quot;/sbin/scsi_id --whitelisted --replace-whitespace --device=/dev/$name&quot;, RESULT==&quot;3300000008853f678&quot;, NAME=&quot;asm-backup&quot;, OWNER=&quot;grid&quot;, GROUP=&quot;oinstall&quot;, MODE=&quot;0660&quot;KERNEL==&quot;sd*&quot;, BUS==&quot;scsi&quot;, PROGRAM==&quot;/sbin/scsi_id --whitelisted --replace-whitespace --device=/dev/$name&quot;, RESULT==&quot;3300000009b03058c&quot;, NAME=&quot;asm-ocr&quot;, OWNER=&quot;grid&quot;, GROUP=&quot;oinstall&quot;, MODE=&quot;0660&quot;KERNEL==&quot;sd*&quot;, BUS==&quot;scsi&quot;, PROGRAM==&quot;/sbin/scsi_id --whitelisted --replace-whitespace --device=/dev/$name&quot;, RESULT==&quot;3300000006968868f&quot;, NAME=&quot;asm-vdisk&quot;, OWNER=&quot;grid&quot;, GROUP=&quot;oinstall&quot;, MODE=&quot;0660&quot; 123[root@rac1 rules.d]# scp 99-iscsi-asm.rules rac2:/etc/udev/rules.d/99-iscsi-asm.rules[root@rac1 rules.d]# start_udev Starting udev: [ OK ] 12345[root@rac1 rules.d]# ll /dev/asm-*brw-rw---- 1 grid asmadmin 8, 33 Nov 23 17:48 /dev/asm-backupbrw-rw---- 1 grid asmadmin 8, 17 Nov 23 17:48 /dev/asm-databrw-rw---- 1 grid asmadmin 8, 49 Nov 23 17:48 /dev/asm-ocrbrw-rw---- 1 grid asmadmin 8, 65 Nov 23 17:48 /dev/asm-vdisk 在rac2上发现asm磁盘1yum -y install iscsi-initiator-utils 12[root@rac2 rpm]# iscsiadm -m discovery -t sendtargets -p 172.16.20.13172.16.20.13:3260,1 iqn.2017-11.cc.islocal.istgt:iscsi 123[root@rac2 rpm]# /etc/init.d/iscsi restartStopping iscsi: [ OK ]Starting iscsi: [ OK ] 12[root@rac2 ~]# start_udev Starting udev: [ OK ] 12345[root@rac2 ~]# ll /dev/asm-*brw-rw---- 1 grid asmadmin 8, 33 Nov 23 17:54 /dev/asm-backupbrw-rw---- 1 grid asmadmin 8, 17 Nov 23 17:54 /dev/asm-databrw-rw---- 1 grid asmadmin 8, 49 Nov 23 17:54 /dev/asm-ocrbrw-rw---- 1 grid asmadmin 8, 65 Nov 23 17:54 /dev/asm-vdisk 安装Grid建议直接用grid用户登录图形桌面，而不是root登录su - grid切换过去。12rac1-&gt;cd /usr/local/src/gridrac1-&gt;./runcluvfy.sh stage -pre crsinst -n rac1,rac2 -fixup -verbose 安装前监测一下环境，如果有failed，按照要求去修复，我这里有几个软件包太新，不是太影响，我们就开始安装吧。执行./runInstaller，开始安装安装和配置一个GI集群高级安装添加中文支持取消GNS选项，保持SCAN Name和hosts里配置的一样添加rac2根据之前配置的网络，配置网络类型选择ASM存储这里遇到几个几个坑，详细说一下吧；1.如果默认没有在候选磁盘(Candidate Disks)里,选择所有磁盘(All disks),看看是否可以显示出来；2.如果还是没有发现，点一下改变其他路径(Change Discovery Path),rhel系列系统默认路径是/dev/raw/\, 我这里是/dev/asm-*;3.如果磁盘显示出来是灰色，不能选择，可能是练习的时候，之前已经使用过磁盘做过asm了，可以执行“dd if=/dev/zero of=/dev/rhdisk2 bs=1024 count=100”，然后重新开始安装试试，如果还不行，请从存储方面开始排查；4.我这里配置的udev方式发现保证磁盘的唯一性，现在发现一个问题，start_udev后可以发现磁盘，/dev/asm-*都生成了；执行oraclescandisk后发现不了ASM磁盘，/dev/oracleasm/disks/目录下是空的，但是安装时候找到了，是可用状态，有点小疑惑。*ASM提供三种冗余模式，我们使用External；ASM三种模式后期学习了，在单独写一篇吧。选择Yes默认默认的三个组默认安装路径忽略ALL所有的配置信息安装完成，使用root账号依次在rac1，rac2上执行脚本;如果你执行root.sh出现以下错误，恭喜你！这个问题折磨了我太久，后来在网上看到这是一个bug！1234CRS-4124: Oracle High Availability Services startup failed.CRS-4000: Command Start failed, or completed with errors.ohasd failed to start: Inappropriate ioctl for deviceohasd failed to start at /opt/app/11.2.0/grid/crs/install/rootcrs.pl line 443. 此错误解决方法123删除之前的配置：/u01/app/11.2.0/grid/crs/install/roothas.pl -deconfig -force -verbose窗口1：/u01/app/11.2.0/grid/root.sh窗口2：/bin/dd if=/var/tmp/.oracle/npohasd of=/dev/null bs=1024 count=1 （刚开始执行root.sh时候，还没生成npohash文件，等日志出现“Adding daemon to inittab”的时候，在窗口2中使用root用户执行此命令，等root.sh执行成功后，ctrl+c结束此命令即可） 出现以下提示，方为脚本执行成功。1234567Configure Oracle Grid Infrastructure for a Cluster ... succeededUpdating inventory properties for clusterwareStarting Oracle Universal Installer...Checking swap space: must be greater than 500 MB. Actual 7999 MB PassedThe inventory pointer is located at /etc/oraInst.locThe inventory is located at /u01/app/oraInventory 这个错误没事，直接点击Next完成安装 验证安装状态123456789su - gridcrs_stat -tcrsctl check cluster -allolsnodes -s -n -tcrsctl check crssrvctl status asmsrvctl status scansrvctl status vip -n rac1srvctl status scan_listener 创建ASM磁盘组在grid 用户下，执行 asmca，启动 asm 磁盘组创建向导DATA组，存放数据文件，包括/dev/asm-data,/dev/asm-backup;VOTINGDISK组，存放闪回文件，包含/dev/asm-vdiskDisk Groups，点击create 按钮，在弹出的创建界面中填写磁盘组名称，选择external(none)，并勾选成员，选择完毕后点击 ok；确认stat为2 of 2时,退出asmca 安装oracle11gr2 database 软件建议直接用oracle用户登录图形桌面，而不是root登录su - oracle切换过去。这个安装过程也很简单，基本上和单机版的一样；12rac1-&gt;cd /usr/local/src/databaserac1-&gt;./runInstaller 创建和配置一个数据库服务器模式选择rac集群中的节点高级安装添加中文支持服务器版本默认安装路径一般用途实例名称，SID名称(ps:这里的截图稍微有点问题，sid应该是orcl，不是orcl1)自动分配内存选择中文字符集连接asm存储的密码不备份选择DATA磁盘组设置sys/system密码默认管理组监测依赖配置信息安装完成依次执行脚本12345Entries will be added to the /etc/oratab file as needed byDatabase Configuration Assistant when a database is createdFinished running generic part of root.sh script.Now product-specific root actions will be performed.Finished product-specific root actions. 12sqlplus system/oracle@orclselect inst_id,instance_number,instance_name from gv$instance; 参考资料：http://v.qq.com/vplus/91c845f5c21fd8a6a25e9827b38c171ehttp://www.dba-oracle.com/t_reset_an_asm_diskgroup.htmhttp://www.oracle.com/technetwork/cn/articles/hunter-rac11gr2-iscsi-083834-zhs.htmlhttp://blog.csdn.net/u010098331/article/details/50767353https://docs.oracle.com/cd/E11882_01/doc.112/e28441/require.htm#CDMIG110http://blog.sina.com.cn/s/blog_563c17780102ux53.htmlhttps://blogs.oracle.com/database4cn/11gr2-crsgrid-scansingle-client-access-name]]></content>
       <categories>
         <category>数据库</category>
       </categories>
       <tags>
         <tag>集群</tag>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
         <tag>RAC</tag>
       </tags>
   </entry>
@@ -465,8 +477,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -491,9 +503,9 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>tomcat</tag>
         <tag>zabbix</tag>
         <tag>监控</tag>
+        <tag>tomcat</tag>
       </tags>
   </entry>
   <entry>
@@ -504,8 +516,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -517,8 +529,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -579,9 +591,9 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
         <tag>Windows</tag>
+        <tag>Linux</tag>
         <tag>jdk</tag>
       </tags>
   </entry>
@@ -605,8 +617,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
         <tag>tomcat</tag>
       </tags>
@@ -619,8 +631,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>vpn</tag>
       </tags>
   </entry>
@@ -632,8 +644,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -645,8 +657,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -696,8 +708,8 @@
       <tags>
         <tag>集群</tag>
         <tag>数据库</tag>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
       </tags>
   </entry>
   <entry>
@@ -709,8 +721,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
       </tags>
   </entry>
   <entry>
@@ -722,8 +734,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
       </tags>
   </entry>
   <entry>
@@ -734,8 +746,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>下载</tag>
         <tag>axel</tag>
       </tags>
@@ -772,8 +784,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -785,8 +797,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -798,8 +810,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -811,8 +823,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -824,8 +836,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>expect</tag>
         <tag>脚本</tag>
       </tags>
@@ -839,8 +851,8 @@
       </categories>
       <tags>
         <tag>Windows</tag>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -867,8 +879,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -879,8 +891,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>脚本</tag>
         <tag>shell</tag>
+        <tag>脚本</tag>
         <tag>linux常识</tag>
       </tags>
   </entry>
@@ -892,8 +904,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -904,8 +916,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -950,8 +962,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -963,8 +975,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Cobbler</tag>
       </tags>
   </entry>
@@ -987,8 +999,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>epel</tag>
       </tags>
   </entry>
@@ -1084,9 +1096,9 @@
         <category>常识</category>
       </categories>
       <tags>
+        <tag>常识</tag>
         <tag>xshell</tag>
         <tag>Linux</tag>
-        <tag>常识</tag>
       </tags>
   </entry>
   <entry>
@@ -1097,8 +1109,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>linux</tag>
+        <tag>常识</tag>
       </tags>
   </entry>
   <entry>
