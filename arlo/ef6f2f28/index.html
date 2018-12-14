@@ -112,7 +112,7 @@
 <meta property="og:url" content="http://islocal.cc/arlo/ef6f2f28/index.html">
 <meta property="og:site_name" content="南山居">
 <meta property="og:description" content="安装epel扩展后出现的几个问题">
-<meta property="og:updated_time" content="2018-03-15T07:17:45.953Z">
+<meta property="og:updated_time" content="2018-12-14T03:37:00.437Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="yum 安装epel扩展后报错">
 <meta name="twitter:description" content="安装epel扩展后出现的几个问题">
@@ -438,7 +438,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-03-15 15:17:45" itemprop="dateModified" datetime="2018-03-15T15:17:45+08:00">2018-03-15</time>
+                <time title="修改时间：2018-12-14 11:37:00" itemprop="dateModified" datetime="2018-12-14T11:37:00+08:00">2018-12-14</time>
               
             
           </span>
@@ -493,6 +493,7 @@
 <h1 id="A1："><a href="#A1：" class="headerlink" title="A1："></a>A1：</h1><p>Error: Cannot retrieve metalink for repository: epel. Please verify its path and try again<br>编辑/etc/yum.repo/epel.repo文件,<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#baseurl</div><div class="line">mirrorlist</div><div class="line">改成</div><div class="line">baseurl</div><div class="line">#mirrorlist</div></pre></td></tr></table></figure></p>
 <h1 id="A2"><a href="#A2" class="headerlink" title="A2:"></a>A2:</h1><p>PYCURL ERROR 7 - “Failed to connect to 2001:4178:5:200::10: Network is unreachable”<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">vim /etc/yum.conf</div><div class="line">[main]</div><div class="line">ip_resolve=4</div></pre></td></tr></table></figure></p>
 <h1 id="A3"><a href="#A3" class="headerlink" title="A3:"></a>A3:</h1><p>[Errno 14] problem making ssl connection<br>[Errno 14] PYCURL ERROR 7 - Failed to connect to 2605:bc80:3010:600:dead:beef:cafe:fed9: Network is unreachable<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">yum install ca-certificates -y</div><div class="line">yum clean all</div><div class="line">yum list</div></pre></td></tr></table></figure></p>
+<p>A4：<br>There are unfinished transactions remaining. You might consider running yum-complete-transaction, or “yum-complete-transaction –cleanup-only” and “yum history redo last”, first to finish them. If those don’t work you’ll have to try removing/installing packages by hand (maybe package-cleanup can help).<br>The program yum-complete-transaction is found in the yum-utils package.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">yum install yum-utils</div><div class="line">yum-complete-transaction --cleanup-only</div><div class="line">package-cleanup --dupes</div><div class="line">package-cleanup --problems</div></pre></td></tr></table></figure></p>
 
       
     </div>

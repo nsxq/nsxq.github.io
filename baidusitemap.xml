@@ -4,6 +4,52 @@
 
     
   <url>
+    <loc>http://islocal.cc/arlo/6dacbf16/</loc>
+    <lastmod>2018-12-14T07:02:40.323Z</lastmod>
+    <data>
+        <display>
+        <title>CentOS6.9环境静默安装Oracle11g</title>
+        <pubTime>2017-12-27T03:19:50.000Z</pubTime>
+        
+        <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
+         
+         
+           
+             
+              <breadCrumb title="数据库" url="http://islocal.cc/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://islocal.cc/arlo/ef6f2f28/</loc>
+    <lastmod>2018-12-14T03:37:00.437Z</lastmod>
+    <data>
+        <display>
+        <title>yum 安装epel扩展后报错</title>
+        <pubTime>2017-04-06T02:09:46.000Z</pubTime>
+        
+        <tag>Linux</tag>
+         
+        <tag>常识</tag>
+         
+        <tag>epel</tag>
+         
+         
+           
+             
+              <breadCrumb title="Troubleshooting" url="http://islocal.cc/categories/Troubleshooting/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/arlo/f82f70f8/</loc>
     <lastmod>2018-12-14T03:18:26.674Z</lastmod>
     <data>
@@ -316,28 +362,6 @@
            
              
               <breadCrumb title="Troubleshooting" url="http://islocal.cc/categories/Troubleshooting/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://islocal.cc/arlo/6dacbf16/</loc>
-    <lastmod>2018-09-17T01:52:02.247Z</lastmod>
-    <data>
-        <display>
-        <title>CentOS6.9环境静默安装Oracle11g</title>
-        <pubTime>2017-12-27T03:19:50.000Z</pubTime>
-        
-        <tag>数据库</tag>
-         
-        <tag>Oracle</tag>
-         
-         
-           
-             
-              <breadCrumb title="数据库" url="http://islocal.cc/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
           
         </display>
     </data>
@@ -1156,30 +1180,6 @@
            
              
               <breadCrumb title="自动化运维" url="http://islocal.cc/categories/%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://islocal.cc/arlo/ef6f2f28/</loc>
-    <lastmod>2018-03-15T07:17:45.953Z</lastmod>
-    <data>
-        <display>
-        <title>yum 安装epel扩展后报错</title>
-        <pubTime>2017-04-06T02:09:46.000Z</pubTime>
-        
-        <tag>Linux</tag>
-         
-        <tag>常识</tag>
-         
-        <tag>epel</tag>
-         
-         
-           
-             
-              <breadCrumb title="Troubleshooting" url="http://islocal.cc/categories/Troubleshooting/"/>
           
         </display>
     </data>
