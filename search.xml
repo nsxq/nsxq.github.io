@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[记一次oracle故障排查记录]]></title>
+    <url>%2Farlo%2Ff82f70f8%2F</url>
+    <content type="text"><![CDATA[故障现象window操作系统，oracle 11.2.0.1.0版本，意外断电后计算机服务中可以启动oracle服务和监听服务，但是无法连接；使用sqlplus连接上去发现数据库未启动，尝试手动starup启动数据库，提示”ORA-03113:通信通道的文件结尾，进程id:7776 会话 ID: 322 序列号：25”的错误。进入到oracle 日志目录下，在alter_yangquan123.log发现有明显报错“ORA-00338: log 1 of thread 1 is more recent than control file”，该错误意思是redo日志中的记录比控制文件新。 ORA-00338: log 1 of thread 1 is more recent than control file手动创建控制文件1234oradebug setmypidoradebug tracefile_namealter database backup controlfile to trace;select value from v$diag_info where name =&apos;Diag Trace&apos;; 查看错误日志在alert_yangquan123.log日志中，我们可以看到以下这段123alter database backup controlfile to traceBackup controlfile written to trace file e:\app\adminsilu\diag\rdbms\yangquan123\trace\yangquan123_ora_20768.trcCompleted: alter database backup controlfile to trace 打开e:\app\adminsilu\diag\rdbms\yangquan123\trace\yangquan123_ora_20768.trc文件，复制一下这段，在sql窗口执行 手动运行sql语句启动sqlplus / as sysdba123456789101112131415161718192021SQL&gt; STARTUP NOMOUNT #在sql窗口执行以下命令CREATE CONTROLFILE REUSE DATABASE &quot;YANGQUAN&quot; NORESETLOGS NOARCHIVELOG MAXLOGFILES 16 MAXLOGMEMBERS 3 MAXDATAFILES 100 MAXINSTANCES 8 MAXLOGHISTORY 292LOGFILE GROUP 1 &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\REDO01.LOG&apos; SIZE 50M BLOCKSIZE 512, GROUP 2 &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\REDO02.LOG&apos; SIZE 50M BLOCKSIZE 512, GROUP 3 &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\REDO03.LOG&apos; SIZE 50M BLOCKSIZE 512-- STANDBY LOGFILEDATAFILE &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\SYSTEM01.DBF&apos;, &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\SYSAUX01.DBF&apos;, &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\UNDOTBS01.DBF&apos;, &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\USERS01.DBF&apos;, &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\EXAMPLE01.DBF&apos;, &apos;E:\ORACLE_DATABASEFILES\AIR_DATA.DBF&apos;CHARACTER SET ZHS16GBK; 启动之后查看数据库状态12select name,open_mode from v$database; #数据库状态已经Open了select * from dual; 但是，但是几秒钟之后实例就宕掉了 ORA-00600: internal error code, arguments: [4194], [], [], [], [], [], [], [], [], [], [], []再次查看alter日志，发现有新的报错了ORA-00600: internal error code, arguments: [4194], [], [], [], [], [], [], [], [], [], [], [] 通过spfile创建生成pfile1SQL&gt; create pfile from spfile; #创建出来的文件windows在$ORACLE_HOME/database目录下，Linux在$ORACLE_HOME/dbs目录下，格式为initORACLE_SID.ora 关闭数据库1SQL&gt; shutdown immediate 修改pfile打开inityangquan123.ora文件，修改其中的两行内容12*.undo_management=&apos;MANUAL&apos;*.undo_tablespace=&apos;UNDOTBS&apos; 使用pfile启动数据库1startup restrict pfile=&apos;E:\app\adminsilu\product\11.2.0\dbhome_1\database\inityangquan123.ora&apos; 查看undo文件12345SQL&gt; select tablespace_name, status, segment_name from dba_rollback_segs where status != &apos;OFFLINE&apos;; TABLESPACE_NAME STATUS SEGMENT_NAME------------------------------ ---------------- ------------------------------SYSTEM ONLINE SYSTEM 新建一个UNDO表空间1SQL&gt; create undo tablespace UNDOTBS1 datafile &apos;/u04/epps/oradata/undotbs_01.dbf&apos; size 4G; 删除旧的UNDO表空间1SQL&gt; drop tablespace UNDOTBS including contents and datafiles; 关闭数据库实例1SQL&gt; shutdownimmediate; 启动数据库实例到NOMOUNT状态1SQL&gt; startup nomount; 修改spfile中的undo_tablespace参数1SQL&gt; alter system set undo_tablespace=&apos;UNDOTBS1&apos; scope=spfile; 启动数据库实例（使用spfile）12SQL&gt; startup;SQL&gt; select name,open_mode from v$database; #查看数据库状态并监测 几分钟后发现数据库未关闭，但是日志中依然有报错 ORA-08102: index key not found，obj#289，file 1，block 2025(2);删除索引123456789SQL&gt; col object_name format a15;SQL&gt; col owner format a10;SQL&gt; select o.owner, o.object_name, o.object_id, o.object_type from dba_objects o where o.object_id = 289;OWNER OBJECT_NAME OBJECT_ID OBJECT_TYPE---------- --------------- ---------- -------------------SYS I_JOB_NEXT 289 INDEXSQL&gt; drop index i_job_next; 重建索引1SQL&gt; create index i_job_next on job$ (next_date); 数据库实例未能加到监听中检查了各种文件都正常，手动alter system register也不行，无奈之下，使用netca重新配置了监听。]]></content>
+      <categories>
+        <category>Troubleshooting</category>
+      </categories>
+      <tags>
+        <tag>Oracle</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[N2N内网穿透(打洞)软件使用]]></title>
     <url>%2Farlo%2F1d2bb16a%2F</url>
     <content type="text"><![CDATA[背景首先说一下这个N2N软件的背景，这个是培训oracle的时候，安装rac需要多块网卡，云服务器不像本地服务器或者虚拟机那边方便，可以随便随便添加网口，使用到N2N这款软件模拟出多块网卡；其实N2N软件的主要功能是内网穿透，就是将服务器的网段可以和本地环境打穿到一个网段里；这个软件如果用在服务器上还是挺可怕的，类似windows下的teamviewer，类似linux下的ssh隧道模式;只要服务器可以上外网(严格说是连接到supermode)，就可以打通，慎用！ 概述N2N 是一款开源的P2P VPN 软件，其作者是著名的开源网管软件ntop的作者Luca Deri。N2N 是一个双层架构的VPN ，它让用户可以在网络层上开发P2P应用的典型功能，而不是在应用层上开发。这意味着用户可以获取本地IP一样的可见度（比如说，同一个n2n网络内的两台PC机可以相互ping通），并且可以通过n2n虚拟网内的IP地址相互访问，而不必关心当前所属的物理网络地址。可以这样说，OpenVPN是把SSL从应用层转移到网络层实现（比如说实现https协议），而n2n则是把P2P的实现从应用层转移到网络层。 N2N 设计的主要功能 N2N 是基于P2P 协议之上的两个私有网络间的加密层 加密是在edge 节点上执行的，使用开放的协议，用户自己定义密钥：你自己控制自己的安全，不需要委托给第三方公司 每个n2n 用户可以同时隶属于多个网络 有NAT和穿越防火墙的功能，即使n2n节点位于私网中，也能够访问，防火墙不再是在 IP 层的直接沟通和交流的障碍 N2N 网络不是独立的，它是能够跨越N2N 和非N2N网络路由的 N2N 架构组件 Edge 节点：用户PC 机上安装的用于建立n2n网络的软件。几乎每个edge节点都会建立一个tun/tap设备，作为接入n2n网络的入口。 Supernode 超级节点：它在edge 节点间建立握手，或为位于防火墙之后的节点中转数据。它的基础作用是注册节点的网络路径，并为不能直通的节点做路由，能够直通的节点间通信，是P2P的。Edge 节点间通过虚拟的tap 网卡交互。每个tap网卡都是一个n2n edge节点。每台PC机可以有多个tap网卡，所以，在n2n网络中，同一台PC机可以属于多个网络。 搭建N2N环境首先我们需要一个公网IP地址，一个可以访问的公网端口(UDP), 我这里刚好有一个华为云的服务器可以用IP: 114.116.xx.xxPort: 6666 安装软件12345678yum install -y subversion gcc-c++ openssl-devel git cmakecd /usr/srcsvn co https://svn.ntop.org/svn/ntop/trunk/n2ncd n2n/n2n_v2makemake PREFIX=/opt/n2n installcp supernode /usr/sbin/cp edge /usr/sbin/ 搭建中心服务器(supermode节点)1234#创建一个端口为6666的supermode服务，用于建立握手/usr/sbin/supernode -l 6666#查看6666端口是否存在，可以看到是udp端口ss -tnulp |grep 6666 12#新建一个虚拟设备edge0，用于测试edge -d edge0 -a 10.10.10.101 -s 255.255.255.0 -c fff -k fff -l 114.116.xxx.xxx:6666 -E -r 创建客户端(egdg节点)12#新建一个虚拟设备edge0，用于测试edge -d edge0 -a 10.10.10.102 -s 255.255.255.0 -c fff -k fff -l 114.116.xxx.xxx:6666 -E -r 参数：123456789-d &lt;接口名&gt; 选项指定了由 edge 命令创建的 TAP 接口的名字; 创建一个虚拟的网卡设备，edge0 就是它的名称-a &lt;IP 地址&gt; 选项（静态地）指定了分配给 TAP 接口的 VPN 的 IP 地址。如果你想要使用 DHCP，你需要在其中一台边缘节点上配置一台 DHCP 服务器，然后使用“-a dhcp:0.0.0.0”选项来代替。-s &lt;子网掩码&gt;-c &lt;组名&gt; 选项指定了 VPN 组的名字（最大长度为 16 个字节）。这个选项可以被用来在同样一组节点中创建多个 VPN。-k &lt;密钥&gt; 选项指定了一个由 twofish 加密的密钥来使用。如果你想要将密钥从命令行中隐藏，你可以使用 N2N_KEY 环境变量。-u 和 -g选项被用来在创建一个 TAP 接口后降权放弃 root 权限。edge 守护进程将会作为指定的用户/组 ID 运行。-l &lt;IP 地址:端口&gt; 选项指定了超级节点的监听 IP 地址和端口号。为了冗余，你可以指定最多两个不同的超级节点（比如 -l &lt;超级节点 A&gt; -l &lt;超级节点 B&gt;）。-m 给 TAP 接口分配了一个静态的 MAC 地址。不使用这个参数的话，edge 命令将会随机生成一个 MAC地址。事实上，为一个 VPN 接口强制指定一个静态的 MAC 地址是被强烈推荐的做法。否则，比如当你在一个节点上重启了 edge 守护程序的时候，其它节点的 ARP 缓存将会由于新生成的 MAC 地址而遭到污染，它们将不能向这个节点发送数据，直到被污染的 ARP 记录被消除。在使用过程中不免遇到一些奇葩的事，调试是个关键，开启调试模式，可以使用参数“-v -f”。记住先kill 掉之前的 edge 或 supernode 进程再进行调试以免冲突。 PS:如果想让新建的虚拟网卡开机后依然生效，需要将以上创建命令写入到/etc/rc.local 文件中，另外centos7操作系统需要chmod +x /etc/rc.d/rc.local]]></content>
@@ -93,8 +104,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -105,8 +116,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -129,8 +140,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -189,8 +200,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -212,8 +223,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -236,9 +247,9 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>zabbix</tag>
         <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>zabbix</tag>
       </tags>
   </entry>
   <entry>
@@ -249,9 +260,9 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>zabbix</tag>
         <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>zabbix</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -286,8 +297,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -298,8 +309,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -323,8 +334,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>Oracle</tag>
       </tags>
   </entry>
@@ -375,8 +386,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>Scp</tag>
         <tag>MTU</tag>
       </tags>
@@ -389,8 +400,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -401,8 +412,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -440,8 +451,8 @@
       </categories>
       <tags>
         <tag>集群</tag>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
         <tag>RAC</tag>
       </tags>
   </entry>
@@ -516,8 +527,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -529,8 +540,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -591,9 +602,9 @@
         <category>常识</category>
       </categories>
       <tags>
+        <tag>Linux</tag>
         <tag>常识</tag>
         <tag>Windows</tag>
-        <tag>Linux</tag>
         <tag>jdk</tag>
       </tags>
   </entry>
@@ -631,8 +642,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>vpn</tag>
       </tags>
   </entry>
@@ -746,8 +757,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>下载</tag>
         <tag>axel</tag>
       </tags>
@@ -851,8 +862,8 @@
       </categories>
       <tags>
         <tag>Windows</tag>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -879,8 +890,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -904,8 +915,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -916,8 +927,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -999,8 +1010,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>epel</tag>
       </tags>
   </entry>
@@ -1096,9 +1107,9 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>xshell</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
       </tags>
   </entry>
   <entry>
@@ -1109,8 +1120,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>常识</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
