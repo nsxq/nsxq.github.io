@@ -115,7 +115,7 @@
 <meta property="og:image" content="http://islocal.cc/images/2018/1214/01.png">
 <meta property="og:image" content="http://islocal.cc/images/2018/1214/02.png">
 <meta property="og:image" content="http://islocal.cc/images/2018/1214/03.png">
-<meta property="og:updated_time" content="2018-12-14T03:08:33.885Z">
+<meta property="og:updated_time" content="2018-12-14T03:18:26.674Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="记一次oracle故障排查记录">
 <meta name="twitter:description" content="故障现象window操作系统，oracle 11.2.0.1.0版本，意外断电后计算机服务中可以启动oracle服务和监听服务，但是无法连接；使用sqlplus连接上去发现数据库未启动，尝试手动starup启动数据库，提示”ORA-03113:通信通道的文件结尾，进程id:7776 会话  ID: 322 序列号：25”的错误。进入到oracle 日志目录下，在alter_yangquan123.">
@@ -425,7 +425,7 @@
                 
               
 
-              <time title="创建时间：2018-12-14 10:59:35 / 修改时间：11:08:33" itemprop="dateCreated datePublished" datetime="2018-12-14T10:59:35+08:00">2018-12-14</time>
+              <time title="创建时间：2018-12-14 10:59:35 / 修改时间：11:18:26" itemprop="dateCreated datePublished" datetime="2018-12-14T10:59:35+08:00">2018-12-14</time>
             
 
             
@@ -505,6 +505,7 @@
 <h1 id="ORA-08102-index-key-not-found，obj-289，file-1，block-2025-2"><a href="#ORA-08102-index-key-not-found，obj-289，file-1，block-2025-2" class="headerlink" title="ORA-08102: index key not found，obj#289，file 1，block 2025(2);"></a>ORA-08102: index key not found，obj#289，file 1，block 2025(2);</h1><h2 id="删除索引"><a href="#删除索引" class="headerlink" title="删除索引"></a>删除索引</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">SQL&gt; col object_name format a15;</div><div class="line">SQL&gt; col owner format a10;</div><div class="line">SQL&gt; select o.owner, o.object_name, o.object_id, o.object_type from dba_objects o where o.object_id = 289;</div><div class="line"></div><div class="line">OWNER      OBJECT_NAME      OBJECT_ID OBJECT_TYPE</div><div class="line">----------    ---------------           ----------      -------------------</div><div class="line">SYS           I_JOB_NEXT             289              INDEX</div><div class="line"></div><div class="line">SQL&gt; drop index i_job_next;</div></pre></td></tr></table></figure>
 <h2 id="重建索引"><a href="#重建索引" class="headerlink" title="重建索引"></a>重建索引</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SQL&gt; create index i_job_next on job$ (next_date);</div></pre></td></tr></table></figure>
 <h1 id="数据库实例未能加到监听中"><a href="#数据库实例未能加到监听中" class="headerlink" title="数据库实例未能加到监听中"></a>数据库实例未能加到监听中</h1><p>检查了各种文件都正常，手动<code>alter system register</code>也不行，无奈之下，使用netca重新配置了监听。</p>
+<p>参考链接：<br><a href="https://blog.csdn.net/zwk626542417/article/details/39667999" target="_blank" rel="external">https://blog.csdn.net/zwk626542417/article/details/39667999</a><br><a href="http://www.cnblogs.com/kerrycode/p/6085447.html" target="_blank" rel="external">http://www.cnblogs.com/kerrycode/p/6085447.html</a><br><a href="https://blog.csdn.net/lwei_998/article/details/5920133" target="_blank" rel="external">https://blog.csdn.net/lwei_998/article/details/5920133</a></p>
 
       
     </div>
