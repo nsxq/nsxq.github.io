@@ -4,6 +4,30 @@
 
     
   <url>
+    <loc>http://islocal.cc/arlo/c0b31722/</loc>
+    <lastmod>2018-12-18T11:35:22.606Z</lastmod>
+    <data>
+        <display>
+        <title>jenkins 持续集成环境搭建</title>
+        <pubTime>2017-04-27T06:04:11.000Z</pubTime>
+        
+        <tag>运维</tag>
+         
+        <tag>自动化</tag>
+         
+        <tag>Jenkins</tag>
+         
+         
+           
+             
+              <breadCrumb title="自动化运维" url="http://islocal.cc/categories/%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/arlo/6dacbf16/</loc>
     <lastmod>2018-12-14T07:09:31.898Z</lastmod>
     <data>
@@ -1751,30 +1775,6 @@
         <display>
         <title>Jenkins使用Publish Over CIFS插件实现静态页面部署到Windows服务器</title>
         <pubTime>2017-10-24T01:42:19.000Z</pubTime>
-        
-        <tag>运维</tag>
-         
-        <tag>自动化</tag>
-         
-        <tag>Jenkins</tag>
-         
-         
-           
-             
-              <breadCrumb title="自动化运维" url="http://islocal.cc/categories/%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://islocal.cc/arlo/c0b31722/</loc>
-    <lastmod>2018-03-15T07:17:45.893Z</lastmod>
-    <data>
-        <display>
-        <title>jenkins 持续集成环境搭建</title>
-        <pubTime>2017-04-27T06:04:11.000Z</pubTime>
         
         <tag>运维</tag>
          
