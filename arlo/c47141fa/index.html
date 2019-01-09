@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next muse" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="APM，全称：Application Performance Management （应用程序性能管理）。 在应用服务各节点相互调用的时候，从中记录并传递一个应用级别的标记，这个标记可以用来关联各个服务节点之间的关系。比如两个应用服务节点之间使用 HTTP 作为传输协议的话，那么这些标记就会被加入到 HTTP 头中。这样就可以更加精细化的分析应用性能，也就是计量应用程序在执行不同区域的代码已经完成">
+<meta property="og:type" content="article">
+<meta property="og:title" content="开源APM工具pinpoint搭建使用">
+<meta property="og:url" content="http://islocal.cc/arlo/c47141fa/index.html">
+<meta property="og:site_name" content="南山居">
+<meta property="og:description" content="APM，全称：Application Performance Management （应用程序性能管理）。 在应用服务各节点相互调用的时候，从中记录并传递一个应用级别的标记，这个标记可以用来关联各个服务节点之间的关系。比如两个应用服务节点之间使用 HTTP 作为传输协议的话，那么这些标记就会被加入到 HTTP 头中。这样就可以更加精细化的分析应用性能，也就是计量应用程序在执行不同区域的代码已经完成">
+<meta property="og:image" content="http://islocal.cc/images/2019/0108/01.png">
+<meta property="og:image" content="http://islocal.cc/images/2019/0108/02.png">
+<meta property="og:image" content="http://islocal.cc/images/2019/0108/03.png">
+<meta property="og:image" content="http://islocal.cc/images/2019/0108/04.png">
+<meta property="og:image" content="http://islocal.cc/images/2019/0108/05.png">
+<meta property="og:image" content="http://islocal.cc/images/2019/0108/06.png">
+<meta property="og:image" content="http://islocal.cc/images/2019/0108/07.png">
+<meta property="og:image" content="http://islocal.cc/images/2019/0108/08.png">
+<meta property="og:image" content="http://islocal.cc/images/2019/0108/09.png">
+<meta property="og:image" content="http://islocal.cc/images/2019/0108/10.png">
+<meta property="og:image" content="http://islocal.cc/images/2019/0108/11.png">
+<meta property="og:image" content="http://islocal.cc/images/2019/0108/12.png">
+<meta property="og:updated_time" content="2019-01-09T03:25:41.287Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="开源APM工具pinpoint搭建使用">
+<meta name="twitter:description" content="APM，全称：Application Performance Management （应用程序性能管理）。 在应用服务各节点相互调用的时候，从中记录并传递一个应用级别的标记，这个标记可以用来关联各个服务节点之间的关系。比如两个应用服务节点之间使用 HTTP 作为传输协议的话，那么这些标记就会被加入到 HTTP 头中。这样就可以更加精细化的分析应用性能，也就是计量应用程序在执行不同区域的代码已经完成">
+<meta name="twitter:image" content="http://islocal.cc/images/2019/0108/01.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://islocal.cc/arlo/c47141fa/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>开源APM工具pinpoint搭建使用 | 南山居</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">南山居</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://islocal.cc/arlo/c47141fa/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="南山小樵">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/32269?v=3&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南山居">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">开源APM工具pinpoint搭建使用
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-01-08 20:38:18" itemprop="dateCreated datePublished" datetime="2019-01-08T20:38:18+08:00">2019-01-08</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-01-09 11:25:41" itemprop="dateModified" datetime="2019-01-09T11:25:41+08:00">2019-01-09</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/监控/" itemprop="url" rel="index"><span itemprop="name">监控</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>APM，全称：Application Performance Management （应用程序性能管理）。 在应用服务各节点相互调用的时候，从中记录并传递一个应用级别的标记，这个标记可以用来关联各个服务节点之间的关系。比如两个应用服务节点之间使用 HTTP 作为传输协议的话，那么这些标记就会被加入到 HTTP 头中。这样就可以更加精细化的分析应用性能，也就是计量应用程序在执行不同区域的代码已经完成事务过程找那个所消耗的具体时长，耗费资源情况。<br><strong>商用软件：OneAPM，听云，透视宝，Oracle的EMCC等</strong><br><strong>开源软件：<a href="https://www.infoq.cn/article/apm-Pinpoint-practice" target="_blank" rel="external">Pinpoint，SkyWalking，Zipkin，CAT</a>等</strong></p>
+<p>Pinpoint是开源在github（项目地址：<a href="https://github.com/naver/pinpoint" target="_blank" rel="external">https://github.com/naver/pinpoint</a> ）上的一款APM监控工具，它是用Java编写的，用于大规模分布式系统监控。它对性能的影响最小（只增加约3％资源利用率），安装agent是无侵入式的，只需要在被测试的Tomcat中加上3行内容，添加探针，就可以监控整套程序了。<br><a id="more"></a></p>
+<h1 id="软件环境"><a href="#软件环境" class="headerlink" title="软件环境"></a>软件环境</h1><p>官方给的<a href="http://naver.github.io/pinpoint/quickstart.html" target="_blank" rel="external">快速安装教程</a>，是使用git clone代码，然后build编译安装，这样时间比较慢，而且容易出错，不方便排查，所以我们这里直接从<a href="https://github.com/naver/pinpoint/releases/" target="_blank" rel="external">https://github.com/naver/pinpoint/releases/</a> 下载war包，进行部署！</p>
+<p><em>ps：如果hbase和pinpoint-collector、pinpoint-web部署在同一台机器，不用单独部署zookeeper；如果是下载war包部署，也不用安装maven</em></p>
+<table>
+<thead>
+<tr>
+<th>组件</th>
+<th>版本</th>
+<th>功能</th>
+<th>下载路径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>zookeeper</td>
+<td>3.4.12</td>
+<td>应用程序协调</td>
+<td><a href="http://mirror.bit.edu.cn/apache/zookeeper/stable/zookeeper-3.4.12.tar.gz" target="_blank" rel="external">http://mirror.bit.edu.cn/apache/zookeeper/stable/zookeeper-3.4.12.tar.gz</a></td>
+</tr>
+<tr>
+<td>hbase</td>
+<td>1.2.9</td>
+<td>存储收集的数据</td>
+<td><a href="http://mirror.bit.edu.cn/apache/hbase/hbase-1.2.9/hbase-1.2.9-bin.tar.gz" target="_blank" rel="external">http://mirror.bit.edu.cn/apache/hbase/hbase-1.2.9/hbase-1.2.9-bin.tar.gz</a></td>
+</tr>
+<tr>
+<td>pinpoint-collector</td>
+<td>1.8.1</td>
+<td>收集各种性能数据</td>
+<td><a href="https://github.com/naver/pinpoint/releases/download/1.8.1/pinpoint-collector-1.8.1.war" target="_blank" rel="external">https://github.com/naver/pinpoint/releases/download/1.8.1/pinpoint-collector-1.8.1.war</a></td>
+</tr>
+<tr>
+<td>pinpoint-web</td>
+<td>1.8.1</td>
+<td>数据WEB网页展示</td>
+<td><a href="https://github.com/naver/pinpoint/releases/download/1.8.1/pinpoint-web-1.8.1.war" target="_blank" rel="external">https://github.com/naver/pinpoint/releases/download/1.8.1/pinpoint-web-1.8.1.war</a></td>
+</tr>
+<tr>
+<td>pinpoint-agent</td>
+<td>1.8.1</td>
+<td>应用关联探针</td>
+<td><a href="https://github.com/naver/pinpoint/releases/download/1.8.1/pinpoint-agent-1.8.1.tar.gz" target="_blank" rel="external">https://github.com/naver/pinpoint/releases/download/1.8.1/pinpoint-agent-1.8.1.tar.gz</a></td>
+</tr>
+<tr>
+<td>Oracle JDK</td>
+<td>1.8</td>
+<td>JAVA运行环境</td>
+<td><a href="https://www.oracle.com/technetwork/java/archive-139210.html" target="_blank" rel="external">https://www.oracle.com/technetwork/java/archive-139210.html</a></td>
+</tr>
+<tr>
+<td>apache-tomcat</td>
+<td>8.5.37</td>
+<td>web容器</td>
+<td><a href="http://mirror.bit.edu.cn/apache/tomcat/tomcat-8/v8.5.37/bin/apache-tomcat-8.5.37.tar.gz" target="_blank" rel="external">http://mirror.bit.edu.cn/apache/tomcat/tomcat-8/v8.5.37/bin/apache-tomcat-8.5.37.tar.gz</a></td>
+</tr>
+<tr>
+<td>apache-maven</td>
+<td>3.3.9</td>
+<td>编译环境</td>
+<td><a href="http://apache.mirrors.lucidnetworks.net/maven/maven-3/" target="_blank" rel="external">http://apache.mirrors.lucidnetworks.net/maven/maven-3/</a></td>
+</tr>
+</tbody>
+</table>
+<h1 id="架构"><a href="#架构" class="headerlink" title="架构"></a>架构</h1><p><img src="/images/2019/0108/01.png" alt="pinpoint"></p>
+<h1 id="支持的模块"><a href="#支持的模块" class="headerlink" title="支持的模块"></a>支持的模块</h1><ul>
+<li>JDK 6+</li>
+<li>Tomcat 6/7/8/9, Jetty 8/9, JBoss EAP 6/7, Resin 4, Websphere 6/7/8, Vertx 3.3/3.4/3.5, Weblogic 10/11g/12c, Undertow</li>
+<li>Spring, Spring Boot (Embedded Tomcat, Jetty), Spring asynchronous communication</li>
+<li>Apache HTTP Client 3.x/4.x, JDK HttpConnector, GoogleHttpClient, OkHttpClient, NingAsyncHttpClient, Akka-http, Apache CXF</li>
+<li>Thrift Client, Thrift Service, DUBBO PROVIDER, DUBBO CONSUMER, GRPC</li>
+<li>ActiveMQ, RabbitMQ, Kafka</li>
+<li>MySQL, Oracle, MSSQL(jtds), CUBRID, POSTGRESQL, MARIA</li>
+<li>Arcus, Memcached, Redis(Jedis, Lettuce), CASSANDRA, MongoDB, Hbase</li>
+<li>iBATIS, MyBatis</li>
+<li>DBCP, DBCP2, HIKARICP, DRUID</li>
+<li>gson, Jackson, Json Lib, Fastjson</li>
+<li>log4j, Logback</li>
+</ul>
+<h1 id="组件兼容性"><a href="#组件兼容性" class="headerlink" title="组件兼容性"></a>组件兼容性</h1><p><img src="/images/2019/0108/02.png" alt="pinpoint"></p>
+<h1 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h1><h2 id="查看主机名"><a href="#查看主机名" class="headerlink" title="查看主机名"></a>查看主机名</h2><p><code>cat /etc/hostname</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pinpoint_server</div></pre></td></tr></table></figure></p>
+<h2 id="添加主机名解析"><a href="#添加主机名解析" class="headerlink" title="添加主机名解析"></a>添加主机名解析</h2><p><code>cat /etc/hosts</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4</div><div class="line">::1         localhost localhost.localdomain localhost6 localhost6.localdomain6</div><div class="line">127.0.0.1 pinpoint_server</div></pre></td></tr></table></figure></p>
+<h2 id="准备所需的软件包"><a href="#准备所需的软件包" class="headerlink" title="准备所需的软件包"></a>准备所需的软件包</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">[root@pinpoint_server ~]# cd /usr/local/src/pinpoint</div><div class="line">[root@pinpoint_server pinpoint]# ll</div><div class="line">total 499488</div><div class="line">-rw-r--r-- 1 root root   9584807 Jan  9 08:52 apache-tomcat-8.5.32.tar.gz</div><div class="line">-rw-r--r-- 1 root root 105514702 Jan  9 08:52 hbase-1.2.9-bin.tar.gz</div><div class="line">-rw-r--r-- 1 root root     16984 Jan  9 08:52 hbase-create.hbase</div><div class="line">-rw-r--r-- 1 root root 183212596 Jan  9 09:03 jdk-8u112-linux-x64.tar.gz</div><div class="line">-rw-r--r-- 1 root root  16507792 Jan  9 08:52 pinpoint-agent-1.8.1.tar.gz</div><div class="line">-rw-r--r-- 1 root root  62644974 Jan  9 08:52 pinpoint-collector-1.8.1.war</div><div class="line">-rw-r--r-- 1 root root  97301169 Jan  9 08:52 pinpoint-web-1.8.1.war</div><div class="line">-rw-r--r-- 1 root root  36667596 Jan  9 08:52 zookeeper-3.4.12.tar.gz</div></pre></td></tr></table></figure>
+<h1 id="安装JDK"><a href="#安装JDK" class="headerlink" title="安装JDK"></a>安装JDK</h1><p><code>tar xf jdk-8u112-linux-x64.tar.gz -C /usr/local/</code><br><code>vim /etc/profile</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">export HISTSIZE=10000</div><div class="line">export HISTTIMEFORMAT=&quot;%F %T &quot;</div><div class="line">export JAVA_HOME=/usr/local/jdk1.8.0_112/</div><div class="line">export JAVA_8_HOME=/usr/local/jdk1.8.0_112/</div><div class="line">export CLASSPATH=.:$JAVA_HOME/lib/:$JAVA_HOME/jre/lib/</div><div class="line">export PATH=$JAVA_HOME/bin:$PATH</div></pre></td></tr></table></figure></p>
+<p><code>source /etc/profile</code></p>
+<h1 id="安装hbase"><a href="#安装hbase" class="headerlink" title="安装hbase"></a>安装hbase</h1><h2 id="解压软件包"><a href="#解压软件包" class="headerlink" title="解压软件包"></a>解压软件包</h2><p><code>tar xf hbase-1.2.9-bin.tar.gz -C /usr/local/</code><br><code>cd /usr/local/hbase-1.2.9/conf/</code></p>
+<h2 id="修改配置文件"><a href="#修改配置文件" class="headerlink" title="修改配置文件"></a>修改配置文件</h2><p><code>vim hbase-env.sh</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#在27行左右配置JAVA_HOME</div><div class="line">export JAVA_HOME=/usr/local/jdk1.8.0_112/</div></pre></td></tr></table></figure></p>
+<p><code>vim hbase-site.xml</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">&lt;configuration&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;hbase.rootdir&lt;/name&gt;</div><div class="line">        &lt;value&gt;file:///data/pinpoint/hbase&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;hbase.zookeeper.property.dataDir&lt;/name&gt;</div><div class="line">        &lt;value&gt;/data/pinpoint/zookeeper&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;hbase.master.port&lt;/name&gt;</div><div class="line">        &lt;value&gt;60000&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">    &lt;property&gt;</div><div class="line">        &lt;name&gt;hbase.regionserver.port&lt;/name&gt;</div><div class="line">        &lt;value&gt;60020&lt;/value&gt;</div><div class="line">    &lt;/property&gt;</div><div class="line">&lt;/configuration&gt;</div></pre></td></tr></table></figure></p>
+<h2 id="新建数据目录"><a href="#新建数据目录" class="headerlink" title="新建数据目录"></a>新建数据目录</h2><p><code>mkdir -p /data/pinpoint/hbase</code><br><code>mkdir -p /data/pinpoint/zookeeper</code></p>
+<h2 id="启动hbase服务"><a href="#启动hbase服务" class="headerlink" title="启动hbase服务"></a>启动hbase服务</h2><p><code>cd /usr/local/hbase-1.2.9/bin</code><br> <code>./start-hbase.sh</code><br>查看启动日志<br><code>tailf /usr/local/hbase-1.2.9/bin/../logs/hbase-root-master-pinpoint_server.log</code><br>也可以通过web控制台 <a href="http://192.168.6.140:16010/" target="_blank" rel="external">http://192.168.6.140:16010/</a> 来访问hbase<br><img src="/images/2019/0108/03.png" alt="pinpoint"></p>
+<h2 id="导入hbase数据"><a href="#导入hbase数据" class="headerlink" title="导入hbase数据"></a>导入hbase数据</h2><p>下载这个hbase数据 <a href="https://github.com/naver/pinpoint/tree/master/hbase/scripts/hbase-create.hbase" target="_blank" rel="external">https://github.com/naver/pinpoint/tree/master/hbase/scripts/hbase-create.hbase</a><br><em>$HBASE_HOME/bin/hbase shell $PATH_TO_SCRIPTS/hbase-create.hbase</em><br><code>/usr/local/hbase-1.2.9/bin/hbase shell /usr/local/src/pinpoint/hbase-create.hbase</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line">2019-01-09 09:20:19,016 WARN  [main] util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable</div><div class="line">0 row(s) in 1.5720 seconds</div><div class="line"></div><div class="line">0 row(s) in 2.2760 seconds</div><div class="line"></div><div class="line">0 row(s) in 4.3110 seconds</div><div class="line"></div><div class="line">0 row(s) in 1.2430 seconds</div><div class="line"></div><div class="line">0 row(s) in 1.2840 seconds</div><div class="line"></div><div class="line">0 row(s) in 1.2550 seconds</div><div class="line"></div><div class="line">0 row(s) in 1.2400 seconds</div><div class="line"></div><div class="line">0 row(s) in 1.2540 seconds</div><div class="line"></div><div class="line">0 row(s) in 2.2630 seconds</div><div class="line"></div><div class="line">0 row(s) in 4.2830 seconds</div><div class="line"></div><div class="line">0 row(s) in 18.4010 seconds</div><div class="line"></div><div class="line">0 row(s) in 2.2570 seconds</div><div class="line"></div><div class="line">0 row(s) in 2.2760 seconds</div><div class="line"></div><div class="line">0 row(s) in 2.2510 seconds</div><div class="line"></div><div class="line">0 row(s) in 2.2520 seconds</div><div class="line"></div><div class="line">0 row(s) in 1.2370 seconds</div><div class="line"></div><div class="line">TABLE                                                                                                                                  </div><div class="line">AgentEvent                                                                                                                             </div><div class="line">AgentInfo                                                                                                                              </div><div class="line">AgentLifeCycle                                                                                                                         </div><div class="line">AgentStat                                                                                                                              </div><div class="line">AgentStatV2                                                                                                                            </div><div class="line">ApiMetaData                                                                                                                            </div><div class="line">ApplicationIndex                                                                                                                       </div><div class="line">ApplicationMapStatisticsCallee_Ver2                                                                                                    </div><div class="line">ApplicationMapStatisticsCaller_Ver2                                                                                                    </div><div class="line">ApplicationMapStatisticsSelf_Ver2                                                                                                      </div><div class="line">ApplicationTraceIndex                                                                                                                  </div><div class="line">HostApplicationMap_Ver2                                                                                                                </div><div class="line">SqlMetaData_Ver2                                                                                                                       </div><div class="line">StringMetaData                                                                                                                         </div><div class="line">TraceV2                                                                                                                                </div><div class="line">Traces                                                                                                                                 </div><div class="line">16 row(s) in 0.0400 seconds</div></pre></td></tr></table></figure></p>
+<p><code>./hbase shell</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">2019-01-09 10:55:54,792 WARN  [main] util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable</div><div class="line">HBase Shell; enter &apos;help&lt;RETURN&gt;&apos; for list of supported commands.</div><div class="line">Type &quot;exit&lt;RETURN&gt;&quot; to leave the HBase Shell</div><div class="line">Version 1.2.9, rfd0d55b1e5ef54eb9bf60cce1f0a8e4c1da073ef, Sat Nov 17 21:43:34 CST 2018</div><div class="line"></div><div class="line">hbase(main):001:0&gt; status &apos;detailed&apos;</div><div class="line">version 1.2.9</div><div class="line">0 regionsInTransition</div><div class="line">active master:  localhost:44182 1546996425069</div><div class="line">0 backup masters</div><div class="line">master coprocessors: []</div><div class="line">1 live servers</div><div class="line">    localhost:33288 1546996426037</div><div class="line">        requestsPerSecond=0.0, numberOfOnlineRegions=498, usedHeapMB=456, maxHeapMB=931, numberOfStores=626, numberOfStorefiles=3, storefileUncompressedSizeMB=0, storefileSizeMB=0, memstoreSizeMB=0, storefileIndexSizeMB=0, readRequestsCount=16623, writeRequestsCount=8095, rootIndexSizeKB=6, totalStaticIndexSizeKB=4, totalStaticBloomSizeKB=0, totalCompactingKVs=0, currentCompactedKVs=0, compactionProgressPct=NaN, coprocessors=[MultiRowMutationEndpoint]</div><div class="line">……</div></pre></td></tr></table></figure></p>
+<p>当然也可以通过web控制台查看数据初始化是否成功！</p>
+<h1 id="安装pinpoint-collector"><a href="#安装pinpoint-collector" class="headerlink" title="安装pinpoint-collector"></a>安装pinpoint-collector</h1><p>部署过程很简单，起一个web容器（tomcat），把下载的war包扔进去就可以了</p>
+<h2 id="解压tomcat"><a href="#解压tomcat" class="headerlink" title="解压tomcat"></a>解压tomcat</h2><p><code>tar xf apache-tomcat-8.5.32.tar.gz -C /usr/local/</code><br><code>cd /usr/local/</code><br><code>mv apache-tomcat-8.5.32/ tomcat_pinpoint-collector</code><br><code>cd tomcat_pinpoint-collector/</code></p>
+<h2 id="删除默认的应用"><a href="#删除默认的应用" class="headerlink" title="删除默认的应用"></a>删除默认的应用</h2><p><code>rm -fr webapps/*</code></p>
+<h2 id="部署-pinpoint-collector-1-8-1-war"><a href="#部署-pinpoint-collector-1-8-1-war" class="headerlink" title="部署 pinpoint-collector-1.8.1.war"></a>部署 pinpoint-collector-1.8.1.war</h2><p>拷贝pinpoint-collector-1.8.1.war到webapps目录下，重命名为ROOT.war,改名只是为了访问的时候不用加上下文对象名称，就是懒~~~<br><code>cp /usr/local/src/pinpoint/pinpoint-collector-1.8.1.war webapps/ROOT.war</code></p>
+<h2 id="启动tomcat服务"><a href="#启动tomcat服务" class="headerlink" title="启动tomcat服务"></a>启动tomcat服务</h2><p><code>bin/startup.sh</code></p>
+<h1 id="安装pinpoint-web"><a href="#安装pinpoint-web" class="headerlink" title="安装pinpoint-web"></a>安装pinpoint-web</h1><h2 id="解压tomcat-1"><a href="#解压tomcat-1" class="headerlink" title="解压tomcat"></a>解压tomcat</h2><p><code>tar xf apache-tomcat-8.5.32.tar.gz -C /usr/local/</code><br><code>cd /usr/local/</code><br><code>mv apache-tomcat-8.5.32 tomcat_pinpoint-web</code></p>
+<h2 id="修改tomcat端口"><a href="#修改tomcat端口" class="headerlink" title="修改tomcat端口"></a>修改tomcat端口</h2><p>由于已经有一个tomcat把默认的端口都占用了，我们这里修改一下tomcat使用到的端口<br><code>cd tomcat_pinpoint-web/conf</code><br><code>sed -i &#39;s/port=&quot;8005&quot;/port=&quot;18005&quot;/g&#39; server.xml</code><br><code>sed -i &#39;s/port=&quot;8080&quot;/port=&quot;18080&quot;/g&#39; server.xml</code><br><code>sed -i &#39;s/port=&quot;8443&quot;/port=&quot;18443&quot;/g&#39; server.xml</code><br><code>sed -i &#39;s/port=&quot;8009&quot;/port=&quot;18009&quot;/g&#39; server.xml</code><br><code>sed -i &#39;s/redirectPort=&quot;8443&quot;/redirectPort=&quot;18443&quot;/g&#39; server.xml</code><br><code>sed -i &quot;s/localhost/192.168.6.140/g&quot; server.xml</code></p>
+<h2 id="删除默认的应用-1"><a href="#删除默认的应用-1" class="headerlink" title="删除默认的应用"></a>删除默认的应用</h2><p><code>rm -fr ../webapps/*</code><br><code>cp /usr/local/src/pinpoint/pinpoint-web-1.8.1.war /usr/local/tomcat_pinpoint-web/webapps/ROOT.war</code><br><code>bin/startup.sh</code><br>访问web控制台<a href="http://192.168.6.140:18080" target="_blank" rel="external">http://192.168.6.140:18080</a><br><img src="/images/2019/0108/04.png" alt="pinpoint"></p>
+<h1 id="安装pinpoint-agent"><a href="#安装pinpoint-agent" class="headerlink" title="安装pinpoint-agent"></a>安装pinpoint-agent</h1><p>部署探针也很简单，就是在tomcat的启动配置文件中添加以下三行内容即可</p>
+<h2 id="添加linux探针"><a href="#添加linux探针" class="headerlink" title="添加linux探针"></a>添加linux探针</h2><p><code>mkdir -p /usr/local/pinpoint-agent</code><br><code>tar xf pinpoint-agent-1.8.1.tar.gz -C  /usr/local/pinpoint-agent</code><br><code>/usr/local/pinpoint-agent</code><br><code>vim pinpoint.config</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">profiler.collector.ip=192.168.6.140</div></pre></td></tr></table></figure></p>
+<h3 id="检测一下agent和服务端的通信情况"><a href="#检测一下agent和服务端的通信情况" class="headerlink" title="检测一下agent和服务端的通信情况"></a>检测一下agent和服务端的通信情况</h3><p>如果有问题，大部分情况下是pinpoint和hbase之间的连通性问题<br><code>sh script/networktest.sh</code><br><img src="/images/2019/0108/05.png" alt="pinpoint"></p>
+<p><code>tar xf apache-tomcat-8.5.32.tar.gz -C /usr/local/</code><br><code>mv apache-tomcat-8.5.32/ tomcat_test</code><br><code>cd tomcat_test/conf/</code><br>和之前一样，因为本机的tomcat端口被占用，我们修改一下相关端口<br><code>sed -i &#39;s/port=&quot;8005&quot;/port=&quot;28005&quot;/g&#39; server.xml</code><br><code>sed -i &#39;s/port=&quot;8080&quot;/port=&quot;28080&quot;/g&#39; server.xml</code><br><code>sed -i &#39;s/port=&quot;8443&quot;/port=&quot;28443&quot;/g&#39; server.xml</code><br><code>sed -i &#39;s/port=&quot;8009&quot;/port=&quot;28009&quot;/g&#39; server.xml</code><br><code>sed -i &#39;s/redirectPort=&quot;8443&quot;/redirectPort=&quot;28443&quot;/g&#39; server.xml</code><br><code>sed -i &quot;s/localhost/192.168.6.140/g&quot; server.xml</code></p>
+<p><code>vim catalina.sh</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"># for pinpoint agent</div><div class="line">AGENT_PATH=/usr/local/pinpoint-agent</div><div class="line">AGENT_VERSION=1.8.1</div><div class="line">AGENT_ID=&quot;agent001&quot;</div><div class="line">APPLICATION_NAME=&quot;test_140_28080&quot;</div><div class="line">CATALINA_OPTS=&quot;$CATALINA_OPTS -javaagent:$AGENT_PATH/pinpoint-bootstrap-$AGENT_VERSION.jar&quot;</div><div class="line">CATALINA_OPTS=&quot;$CATALINA_OPTS -Dpinpoint.agentId=$AGENT_ID&quot;</div><div class="line">CATALINA_OPTS=&quot;$CATALINA_OPTS -Dpinpoint.applicationName=$APPLICATION_NAME&quot;</div></pre></td></tr></table></figure>
+<p><img src="/images/2019/0108/06.png" alt="pinpoint"><br><code>bin/startup.sh</code><br><img src="/images/2019/0108/07.png" alt="pinpoint"></p>
+<h2 id="添加windows探针"><a href="#添加windows探针" class="headerlink" title="添加windows探针"></a>添加windows探针</h2><p>由于我这边目前大部分项目都是在windows跑的，我们添加两个windows探针看一下真实的效果<br>解压pinpoint-agent-1.8.1.tar.gz到D:/pinpoint-agent/<br>修改配置文件pinpoint.config<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">profiler.collector.ip=192.168.6.140</div></pre></td></tr></table></figure></p>
+<p>修改D:\apache-tomcat-8082\bin\catalina.bat文件，添加到最前边即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">set CATALINA_OPTS=%CATALINA_OPTS% -javaagent:D:/pinpoint-agent/pinpoint-bootstrap-1.8.1.jar</div><div class="line">set CATALINA_OPTS=%CATALINA_OPTS% -Dpinpoint.agentId=agent002</div><div class="line">set CATALINA_OPTS=%CATALINA_OPTS% -Dpinpoint.applicationName=172_8082</div></pre></td></tr></table></figure></p>
+<p><img src="/images/2019/0108/08.png" alt="pinpoint"><br>修改D:\apache-tomcat-ou\bin\catalina.bat文件，添加到最前边即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">set CATALINA_OPTS=%CATALINA_OPTS% -javaagent:D:/pinpoint-agent/pinpoint-bootstrap-1.8.1.jar</div><div class="line">set CATALINA_OPTS=%CATALINA_OPTS% -Dpinpoint.agentId=agent003</div><div class="line">set CATALINA_OPTS=%CATALINA_OPTS% -Dpinpoint.applicationName=172_8081</div></pre></td></tr></table></figure></p>
+<p>启动tomcat后，我们打开pinpoint-web控制台<br><img src="/images/2019/0108/09.png" alt="pinpoint"></p>
+<h1 id="web控制台简单应用"><a href="#web控制台简单应用" class="headerlink" title="web控制台简单应用"></a>web控制台简单应用</h1><p>通过这个图，我们就能看到项目应用直接的依赖关系<br><img src="/images/2019/0108/10.png" alt="pinpoint"><br><img src="/images/2019/0108/11.png" alt="pinpoint"><br><img src="/images/2019/0108/12.png" alt="pinpoint"></p>
+<p>参考链接；<br><a href="https://www.infoq.cn/article/apm-Pinpoint-practice" target="_blank" rel="external">https://www.infoq.cn/article/apm-Pinpoint-practice</a><br><a href="https://www.cnblogs.com/yyhh/p/6106472.html" target="_blank" rel="external">https://www.cnblogs.com/yyhh/p/6106472.html</a><br><a href="https://github.com/naver/pinpoint/releases" target="_blank" rel="external">https://github.com/naver/pinpoint/releases</a><br><a href="https://blog.csdn.net/wh211212/article/details/80437696" target="_blank" rel="external">https://blog.csdn.net/wh211212/article/details/80437696</a></p>
+<hr>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/01/alipay.jpg" alt="南山小樵 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/监控/" rel="tag"># 监控</a>
+          
+            <a href="/tags/pinpoint/" rel="tag"># pinpoint</a>
+          
+            <a href="/tags/APM/" rel="tag"># APM</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/arlo/f82f70f8/" rel="next" title="记一次oracle故障排查记录">
+                <i class="fa fa-chevron-left"></i> 记一次oracle故障排查记录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars1.githubusercontent.com/u/32269?v=3&s=460"
+                alt="南山小樵" />
+            
+              <p class="site-author-name" itemprop="name">南山小樵</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">97</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">80</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://music.163.com/playlist?id=17812772&userid=20000278" title="http://music.163.com/playlist?id=17812772&userid=20000278" rel="noopener" target="_blank">网易云音乐</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jimv.iit.im/login" title="http://jimv.iit.im/login" rel="noopener" target="_blank">Jimv虚拟机管理平台</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://man.linuxde.net/" title="http://man.linuxde.net/" rel="noopener" target="_blank">Linux命令大全</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.codecp.org/" title="http://blog.codecp.org/" rel="noopener" target="_blank">勇敢的心</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://msdn.itellyou.cn/" title="http://msdn.itellyou.cn/" rel="noopener" target="_blank">Msdn下载站</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#软件环境"><span class="nav-number">1.</span> <span class="nav-text">软件环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#架构"><span class="nav-number">2.</span> <span class="nav-text">架构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#支持的模块"><span class="nav-number">3.</span> <span class="nav-text">支持的模块</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#组件兼容性"><span class="nav-number">4.</span> <span class="nav-text">组件兼容性</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#准备工作"><span class="nav-number">5.</span> <span class="nav-text">准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#查看主机名"><span class="nav-number">5.1.</span> <span class="nav-text">查看主机名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加主机名解析"><span class="nav-number">5.2.</span> <span class="nav-text">添加主机名解析</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备所需的软件包"><span class="nav-number">5.3.</span> <span class="nav-text">准备所需的软件包</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装JDK"><span class="nav-number">6.</span> <span class="nav-text">安装JDK</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装hbase"><span class="nav-number">7.</span> <span class="nav-text">安装hbase</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#解压软件包"><span class="nav-number">7.1.</span> <span class="nav-text">解压软件包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改配置文件"><span class="nav-number">7.2.</span> <span class="nav-text">修改配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建数据目录"><span class="nav-number">7.3.</span> <span class="nav-text">新建数据目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动hbase服务"><span class="nav-number">7.4.</span> <span class="nav-text">启动hbase服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导入hbase数据"><span class="nav-number">7.5.</span> <span class="nav-text">导入hbase数据</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装pinpoint-collector"><span class="nav-number">8.</span> <span class="nav-text">安装pinpoint-collector</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#解压tomcat"><span class="nav-number">8.1.</span> <span class="nav-text">解压tomcat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除默认的应用"><span class="nav-number">8.2.</span> <span class="nav-text">删除默认的应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署-pinpoint-collector-1-8-1-war"><span class="nav-number">8.3.</span> <span class="nav-text">部署 pinpoint-collector-1.8.1.war</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#启动tomcat服务"><span class="nav-number">8.4.</span> <span class="nav-text">启动tomcat服务</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装pinpoint-web"><span class="nav-number">9.</span> <span class="nav-text">安装pinpoint-web</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#解压tomcat-1"><span class="nav-number">9.1.</span> <span class="nav-text">解压tomcat</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改tomcat端口"><span class="nav-number">9.2.</span> <span class="nav-text">修改tomcat端口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除默认的应用-1"><span class="nav-number">9.3.</span> <span class="nav-text">删除默认的应用</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装pinpoint-agent"><span class="nav-number">10.</span> <span class="nav-text">安装pinpoint-agent</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#添加linux探针"><span class="nav-number">10.1.</span> <span class="nav-text">添加linux探针</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#检测一下agent和服务端的通信情况"><span class="nav-number">10.1.1.</span> <span class="nav-text">检测一下agent和服务端的通信情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加windows探针"><span class="nav-number">10.2.</span> <span class="nav-text">添加windows探针</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#web控制台简单应用"><span class="nav-number">11.</span> <span class="nav-text">web控制台简单应用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南山小樵</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.2.2</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v6.5.0</div>
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
