@@ -3,6 +3,33 @@
   
     
     <entry>
+      <title>Oracle 11.2.0.4.0打PSU24006111(11.2.0.4.161018)</title>
+      <link href="/arlo/582decea/"/>
+      <url>/arlo/582decea/</url>
+      
+        <content type="html"><![CDATA[<p>系统环境：CentOS 6.9 / Oracle 11.2.0.4 x64<br><strong> 软件链接: <a href="https://pan.baidu.com/s/16dlRzILi7p3LTd6lXVQy_g" target="_blank" rel="external">https://pan.baidu.com/s/16dlRzILi7p3LTd6lXVQy_g</a> 提取码: fkrj </strong></p><h1 id="Oracle补丁术语介绍"><a href="#Oracle补丁术语介绍" class="headerlink" title="Oracle补丁术语介绍"></a>Oracle补丁术语介绍</h1><p>补丁概念请参考：<a href="https://blog.csdn.net/DBDeep/article/details/72904608" target="_blank" rel="external">https://blog.csdn.net/DBDeep/article/details/72904608</a><br>我们今天安装的是打PSU补丁，就是DBA&amp;DMA们常论道的PSU。Oracle 选取在每个季度用户下载数量最多，并且得到验证具有较低风险的补丁放入到每个季度的PSU中，修复比较严重的一些问题，包含每个季度的CPU，是累积型的。虽然在描述PSU的时候会用到数据库版本第5位，比如Database PSU 11.2.0.3.5，但实际上打完PSU后并不会真正改变数据库的版本，从v$version中看到的版本还是4位的(11.2.0.3.0)，第5位仍然是0。<br>(1)Windows上没有CPU和PSU，对于Windows和Exadata，Oracle使用Bundle Patch代替PSU，Bundle Patch会包含PSU的内容<br>(2)从11.2.0.2版本开始，一个新的补丁策略被引入，11.2.0.1之后发布的Patch Set本身就是一个完整的安装包，不再需要基础的Release 版本安装。</p><p><em>Note 2118136.2 psu补丁号快速查询Quick Reference to Patch Numbers for Database PSU, SPU(CPU), Bundle Patches and Patchsets (文档 ID 1454618.1)</em></p><a id="more"></a><h1 id="查看当前补丁状态"><a href="#查看当前补丁状态" class="headerlink" title="查看当前补丁状态"></a>查看当前补丁状态</h1><h2 id="检查环境变量"><a href="#检查环境变量" class="headerlink" title="检查环境变量"></a>检查环境变量</h2><p>确保$PATH中包含以下可执行文件:make,ar,ld和nm<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[oracle@ora1 ~]$ which make</div><div class="line">/usr/bin/make</div><div class="line">[oracle@ora1 ~]$ which ar</div><div class="line">/usr/bin/ar</div><div class="line">[oracle@ora1 ~]$ which ld</div><div class="line">/usr/bin/ld</div><div class="line">[oracle@ora1 ~]$ which nm</div><div class="line">/usr/bin/nm</div></pre></td></tr></table></figure></p><h2 id="检查-amp-升级OPatch版本"><a href="#检查-amp-升级OPatch版本" class="headerlink" title="检查&amp;升级OPatch版本"></a>检查&amp;升级OPatch版本</h2><p>必须使用OPatch实用程序版本11.2.0.3.6或更高版本<br><code>$ORACLE_HOME/OPatch/opatch version</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">OPatch Version: 11.2.0.3.4</div></pre></td></tr></table></figure></p><p>这个版本不满足我们的要求，我们需要下载p6880880_112000_Linux-x86-64.zip，替换当前的OPatch<br><code>cd $ORACLE_HOME</code><br><code>mv OPatch OPatch_bak</code><br><code>unzip p6880880_112000_Linux-x86-64.zip -d $ORACLE_HOME</code><br><code>$ORACLE_HOME/OPatch/opatch version</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">OPatch Version: 11.2.0.3.19</div></pre></td></tr></table></figure></p><h2 id="查看当前补丁状态-1"><a href="#查看当前补丁状态-1" class="headerlink" title="查看当前补丁状态"></a>查看当前补丁状态</h2><p><code>opatch lsinventory</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">[oracle@ora1 sf]$ opatch lsinventory</div><div class="line">Oracle Interim Patch Installer version 11.2.0.3.19</div><div class="line">Copyright (c) 2019, Oracle Corporation.  All rights reserved.</div><div class="line"></div><div class="line"></div><div class="line">Oracle Home       : /u01/app/oracle/product/11.2.0.4/db_1</div><div class="line">Central Inventory : /u01/app/oraInventory</div><div class="line">   from           : /u01/app/oracle/product/11.2.0.4/db_1/oraInst.loc</div><div class="line">OPatch version    : 11.2.0.3.19</div><div class="line">OUI version       : 11.2.0.4.0</div><div class="line">Log file location : /u01/app/oracle/product/11.2.0.4/db_1/cfgtoollogs/opatch/opatch2019-01-24_22-21-59PM_1.log</div><div class="line"></div><div class="line">Lsinventory Output file location : /u01/app/oracle/product/11.2.0.4/db_1/cfgtoollogs/opatch/lsinv/lsinventory2019-01-24_22-21-59PM.txt</div><div class="line"></div><div class="line">--------------------------------------------------------------------------------</div><div class="line">Local Machine Information::</div><div class="line">Hostname: localhost</div><div class="line">ARU platform id: 226</div><div class="line">ARU platform description:: Linux x86-64</div><div class="line"></div><div class="line">Installed Top-level Products (1): </div><div class="line"></div><div class="line">Oracle Database 11g                                                  11.2.0.4.0</div><div class="line">There are 1 products installed in this Oracle Home.</div><div class="line"></div><div class="line"></div><div class="line">There are no Interim patches installed in this Oracle Home.</div><div class="line"></div><div class="line"></div><div class="line">--------------------------------------------------------------------------------</div><div class="line"></div><div class="line">OPatch succeeded.</div></pre></td></tr></table></figure></p><h1 id="检测补丁兼容性"><a href="#检测补丁兼容性" class="headerlink" title="检测补丁兼容性"></a>检测补丁兼容性</h1><h2 id="检查补丁是否冲突"><a href="#检查补丁是否冲突" class="headerlink" title="检查补丁是否冲突"></a>检查补丁是否冲突</h2><p>首先我们上传补丁文件p24006111_112040_Linux-x86-64.zip到数据库服务器上<br><code>unzip p24006111_112040_Linux-x86-64.zip</code><br><code>cd 24006111</code><br><code>opatch prereq CheckConflictAgainstOHWithDetail -ph ./</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">[oracle@ora1 24006111]$ opatch prereq CheckConflictAgainstOHWithDetail -ph ./</div><div class="line">Oracle Interim Patch Installer version 11.2.0.3.19</div><div class="line">Copyright (c) 2019, Oracle Corporation.  All rights reserved.</div><div class="line"></div><div class="line">PREREQ session</div><div class="line"></div><div class="line">Oracle Home       : /u01/app/oracle/product/11.2.0.4/db_1</div><div class="line">Central Inventory : /u01/app/oraInventory</div><div class="line">   from           : /u01/app/oracle/product/11.2.0.4/db_1/oraInst.loc</div><div class="line">OPatch version    : 11.2.0.3.19</div><div class="line">OUI version       : 11.2.0.4.0</div><div class="line">Log file location : /u01/app/oracle/product/11.2.0.4/db_1/cfgtoollogs/opatch/opatch2019-01-24_22-22-48PM_1.log</div><div class="line"></div><div class="line">Invoking prereq &quot;checkconflictagainstohwithdetail&quot;</div><div class="line"></div><div class="line">Prereq &quot;checkConflictAgainstOHWithDetail&quot; passed.</div><div class="line"></div><div class="line">OPatch succeeded.</div></pre></td></tr></table></figure></p><h2 id="查看组件信息"><a href="#查看组件信息" class="headerlink" title="查看组件信息"></a>查看组件信息</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">set linesize 150;</div><div class="line">set pagesize 9999;</div><div class="line">col comp_name format a40;</div><div class="line">SELECT COMP_NAME, VERSION, STATUS FROM SYS.DBA_REGISTRY;</div></pre></td></tr></table></figure><h2 id="查看补丁状态"><a href="#查看补丁状态" class="headerlink" title="查看补丁状态"></a>查看补丁状态</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">set linesize 500 pagesize 600</div><div class="line">col ACTION_TIME for a30</div><div class="line">col COMMENTS for a30</div><div class="line">select ACTION_TIME, ACTION,version, COMMENTS from sys.DBA_REGISTRY_HISTORY;</div></pre></td></tr></table></figure><p><img src="/images/2019/0124/01.png" alt="psu"></p><h1 id="打补丁"><a href="#打补丁" class="headerlink" title="打补丁"></a>打补丁</h1><h2 id="关闭数据库和监听"><a href="#关闭数据库和监听" class="headerlink" title="关闭数据库和监听"></a>关闭数据库和监听</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[oracle@ora1 24006111]$ sqlplus / as sysdba</div><div class="line"></div><div class="line">SQL*Plus: Release 11.2.0.4.0 Production on Thu Jan 24 23:03:01 2019</div><div class="line"></div><div class="line">Copyright (c) 1982, 2013, Oracle.  All rights reserved.</div><div class="line">SYS@@orcl&gt; shutdown immediate</div><div class="line">Database closed.</div><div class="line">Database dismounted.</div><div class="line">ORACLE instance shut down.</div></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[oracle@ora1 24006111]$ lsnrctl stop</div><div class="line"></div><div class="line">LSNRCTL for Linux: Version 11.2.0.4.0 - Production on 24-JAN-2019 23:03:45</div><div class="line"></div><div class="line">Copyright (c) 1991, 2013, Oracle.  All rights reserved.</div><div class="line"></div><div class="line">Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=IPC)(KEY=EXTPROC1521)))</div><div class="line">The command completed successfully</div></pre></td></tr></table></figure><p>查看数据库和监听是否彻底关闭，如果未关闭，打补丁过程中会报错。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[oracle@ora1 24006111]$ ps -ef |grep ora_</div><div class="line">oracle    45322  42120  2 23:04 pts/0    00:00:00 grep ora_</div><div class="line">[oracle@ora1 24006111]$ ps -ef |grep tns</div><div class="line">root         21      2  0 16:29 ?        00:00:00 [netns]</div><div class="line">oracle    45324  42120  0 23:04 pts/0    00:00:00 grep tns</div></pre></td></tr></table></figure></p><h2 id="开始打补丁"><a href="#开始打补丁" class="headerlink" title="开始打补丁"></a>开始打补丁</h2><p>每个补丁包里都有Readme.html文件，文件中有很详细的说明和操作流程<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div></pre></td><td class="code"><pre><div class="line">[oracle@ora1 24006111]$ opatch apply</div><div class="line">Oracle Interim Patch Installer version 11.2.0.3.19</div><div class="line">Copyright (c) 2019, Oracle Corporation.  All rights reserved.</div><div class="line"></div><div class="line"></div><div class="line">Oracle Home       : /u01/app/oracle/product/11.2.0.4/db_1</div><div class="line">Central Inventory : /u01/app/oraInventory</div><div class="line">   from           : /u01/app/oracle/product/11.2.0.4/db_1/oraInst.loc</div><div class="line">OPatch version    : 11.2.0.3.19</div><div class="line">OUI version       : 11.2.0.4.0</div><div class="line">Log file location : /u01/app/oracle/product/11.2.0.4/db_1/cfgtoollogs/opatch/opatch2019-01-24_23-15-07PM_1.log</div><div class="line"></div><div class="line">Verifying environment and performing prerequisite checks...</div><div class="line">OPatch continues with these patches:   17478514  18031668  18522509  19121551  19769489  20299013  20760982  21352635  21948347  22502456  23054359  24006111  </div><div class="line"></div><div class="line">Do you want to proceed? [y|n]</div><div class="line">y</div><div class="line">User Responded with: Y</div><div class="line">All checks passed.</div><div class="line">Provide your email address to be informed of security issues, install and</div><div class="line">initiate Oracle Configuration Manager. Easier for you if you use your My</div><div class="line">Oracle Support Email address/User Name.</div><div class="line">Visit http://www.oracle.com/support/policies.html for details.</div><div class="line">Email address/User Name: </div><div class="line"></div><div class="line">You have not provided an email address for notification of security issues.</div><div class="line">Do you wish to remain uninformed of security issues ([Y]es, [N]o) [N]:  y</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">Please shutdown Oracle instances running out of this ORACLE_HOME on the local system.</div><div class="line">(Oracle Home = &apos;/u01/app/oracle/product/11.2.0.4/db_1&apos;)</div><div class="line"></div><div class="line"></div><div class="line">Is the local system ready for patching? [y|n]</div><div class="line">y</div><div class="line">User Responded with: Y</div><div class="line">Backing up files...</div><div class="line">Applying sub-patch &apos;17478514&apos; to OH &apos;/u01/app/oracle/product/11.2.0.4/db_1&apos;</div><div class="line"></div><div class="line">Patching component oracle.rdbms, 11.2.0.4.0...</div><div class="line"></div><div class="line">……</div><div class="line">Patching component oracle.rdbms.dbscripts, 11.2.0.4.0...</div><div class="line">Composite patch 24006111 successfully applied.</div><div class="line">Log file location: /u01/app/oracle/product/11.2.0.4/db_1/cfgtoollogs/opatch/opatch2019-01-24_23-15-07PM_1.log</div><div class="line"></div><div class="line">OPatch succeeded.</div></pre></td></tr></table></figure></p><h2 id="升级数据字典"><a href="#升级数据字典" class="headerlink" title="升级数据字典"></a>升级数据字典</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">cd $ORACLE_HOME/rdbms/admin</div><div class="line">sqlplus /nolog</div><div class="line">SQL&gt; CONNECT / AS SYSDBA</div><div class="line">SQL&gt; STARTUP</div><div class="line">SQL&gt; @catbundle.sql psu apply </div><div class="line">SQL&gt; QUIT</div></pre></td></tr></table></figure><h2 id="重新编译无效对象"><a href="#重新编译无效对象" class="headerlink" title="重新编译无效对象"></a>重新编译无效对象</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">cd $ORACLE_HOME/rdbms/admin</div><div class="line">sqlplus /nolog</div><div class="line">SQL&gt; CONNECT / AS SYSDBA</div><div class="line">SQL&gt; @utlrp.sql</div></pre></td></tr></table></figure><h1 id="验证升级结果"><a href="#验证升级结果" class="headerlink" title="验证升级结果"></a>验证升级结果</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div></pre></td><td class="code"><pre><div class="line">[oracle@ora1 24006111]$ opatch lsinventory</div><div class="line">Oracle Interim Patch Installer version 11.2.0.3.19</div><div class="line">Copyright (c) 2019, Oracle Corporation.  All rights reserved.</div><div class="line"></div><div class="line"></div><div class="line">Oracle Home       : /u01/app/oracle/product/11.2.0.4/db_1</div><div class="line">Central Inventory : /u01/app/oraInventory</div><div class="line">   from           : /u01/app/oracle/product/11.2.0.4/db_1/oraInst.loc</div><div class="line">OPatch version    : 11.2.0.3.19</div><div class="line">OUI version       : 11.2.0.4.0</div><div class="line">Log file location : /u01/app/oracle/product/11.2.0.4/db_1/cfgtoollogs/opatch/opatch2019-01-24_23-36-05PM_1.log</div><div class="line"></div><div class="line">Lsinventory Output file location : /u01/app/oracle/product/11.2.0.4/db_1/cfgtoollogs/opatch/lsinv/lsinventory2019-01-24_23-36-05PM.txt</div><div class="line"></div><div class="line">--------------------------------------------------------------------------------</div><div class="line">Local Machine Information::</div><div class="line">Hostname: localhost</div><div class="line">ARU platform id: 226</div><div class="line">ARU platform description:: Linux x86-64</div><div class="line"></div><div class="line">Installed Top-level Products (1): </div><div class="line"></div><div class="line">Oracle Database 11g                                                  11.2.0.4.0</div><div class="line">There are 1 products installed in this Oracle Home.</div><div class="line"></div><div class="line"></div><div class="line">Interim patches (1) :</div><div class="line"></div><div class="line">Patch  24006111     : applied on Thu Jan 24 23:29:17 CST 2019</div><div class="line">Unique Patch ID:  20508568</div><div class="line">Patch description:  &quot;Database Patch Set Update : 11.2.0.4.161018 (24006111)&quot;</div><div class="line">   Created on 26 Aug 2016, 05:54:48 hrs PST8PDT</div><div class="line">Sub-patch  23054359; &quot;Database Patch Set Update : 11.2.0.4.160719 (23054359)&quot;</div><div class="line">Sub-patch  22502456; &quot;Database Patch Set Update : 11.2.0.4.160419 (22502456)&quot;</div><div class="line">Sub-patch  21948347; &quot;Database Patch Set Update : 11.2.0.4.160119 (21948347)&quot;</div><div class="line">Sub-patch  21352635; &quot;Database Patch Set Update : 11.2.0.4.8 (21352635)&quot;</div><div class="line">Sub-patch  20760982; &quot;Database Patch Set Update : 11.2.0.4.7 (20760982)&quot;</div><div class="line">Sub-patch  20299013; &quot;Database Patch Set Update : 11.2.0.4.6 (20299013)&quot;</div><div class="line">Sub-patch  19769489; &quot;Database Patch Set Update : 11.2.0.4.5 (19769489)&quot;</div><div class="line">Sub-patch  19121551; &quot;Database Patch Set Update : 11.2.0.4.4 (19121551)&quot;</div><div class="line">Sub-patch  18522509; &quot;Database Patch Set Update : 11.2.0.4.3 (18522509)&quot;</div><div class="line">Sub-patch  18031668; &quot;Database Patch Set Update : 11.2.0.4.2 (18031668)&quot;</div><div class="line">Sub-patch  17478514; &quot;Database Patch Set Update : 11.2.0.4.1 (17478514)&quot;</div><div class="line">   Bugs fixed:</div><div class="line">     17184721, 21538558, 16091637, 18092127, 17381384, 15979965, 18441944</div><div class="line">     13837378, 16314254, 16731148, 17835048, 13558557, 17201159, 17853498</div><div class="line">     17246576, 18356166, 18440047, 18681862, 16875449, 19788842, 17296856</div><div class="line">     21330264, 14010183, 17648596, 17551063, 17025461, 17267114, 22507210</div><div class="line">     17912217, 17889583, 18202441, 17040764, 16524926, 17478145, 19358317</div><div class="line">     22148226, 18747196, 18641419, 17036973, 17811789, 14285317, 16542886</div><div class="line">     18009564, 16618694, 8322815, 16692232, 18247991, 22507234, 17570240</div><div class="line">     17848897, 17441661, 14034426, 17465741, 16596890, 17437634, 20506706</div><div class="line">     21343897, 21453153, 18339044, 22321741, 17951233, 18430495, 21787056</div><div class="line">     22380919, 20506715, 17811429, 19721304, 18230522, 19554106, 19458377</div><div class="line">     6599380, 17612828, 22092979, 22321756, 17040527, 17811438, 18641461</div><div class="line">     14657740, 13364795, 21387964, 17346671, 17588480, 18235390, 17889549</div><div class="line">     19309466, 16472716, 20596234, 18331850, 18641451, 17344412, 21179898</div><div class="line">     17546761, 18203835, 18964939, 18203838, 18203837, 17313525, 22195457</div><div class="line">     18139690, 22296366, 14106803, 16837842, 17842825, 22657942, 21352646</div><div class="line">     20657441, 16360112, 22195441, 17389192, 14565184, 17205719, 14354737</div><div class="line">     22195448, 14764829, 13944971, 16571443, 21868720, 17186905, 17080436</div><div class="line">     18673342, 17027426, 19972569, 19972568, 19972566, 17282229, 19972564</div><div class="line">     16870214, 19615136, 17390431, 18762750, 16613964, 18098207, 17957017</div><div class="line">     18471685, 19730508, 21538485, 18264060, 17323222, 17754782, 17600719</div><div class="line">     18317531, 17852463, 17596908, 17655634, 20074391, 16228604, 19972570</div><div class="line">     18996843, 19854503, 16042673, 17835627, 20334344, 18000422, 20861693</div><div class="line">     17393683, 17551709, 20506699, 19006849, 18456514, 18277454, 17258090</div><div class="line">     17174582, 17242746, 16399083, 17824637, 17762296, 17397545, 16450169</div><div class="line">     12364061, 20067212, 18856999, 19211724, 19463893, 21343775, 19463897</div><div class="line">     17853456, 18673304, 20004021, 21668627, 16194160, 17477958, 16538760</div><div class="line">     12982566, 20296213, 18293054, 17610798, 19699191, 18135678, 17311728</div><div class="line">     16785708, 10136473, 17786518, 18315328, 18334586, 12747740, 19032867</div><div class="line">     18096714, 17390160, 17232014, 16422541, 18673325, 18155762, 14015842</div><div class="line">     19827973, 22683225, 17726838, 18554871, 23177648, 18051556, 20803583</div><div class="line">     18282562, 17922254, 15990359, 21972320, 16855292, 16668584, 21343838</div><div class="line">     20299015, 17446237, 18093615, 17694209, 17288409, 17274537, 13955826</div><div class="line">     16934803, 17634921, 17501491, 16315398, 22683212, 17006183, 13829543</div><div class="line">     18191164, 17655240, 19393542, 18384391, 21538567, 16198143, 21847223</div><div class="line">     17892268, 20142975, 19584068, 17165204, 18508861, 21756699, 16901385</div><div class="line">     18554763, 18189036, 17443671, 17385178, 17936109, 14829250, 20925795</div><div class="line">     17478514, 16850630, 13951456, 16595641, 15861775, 14054676, 16912439</div><div class="line">     17299889, 17297939, 18619917, 16833527, 17798953, 17816865, 18607546</div><div class="line">     17571306, 21286665, 17341326, 17851160, 20558005, 17586955, 19049453</div><div class="line">     21051840, 17587063, 16956380, 18328509, 14133975, 18061914, 21051833</div><div class="line">     18522509, 18765602, 18199537, 17332800, 13609098, 18384537, 22502493</div><div class="line">     14338435, 17945983, 21067387, 16392068, 17752995, 21051862, 17237521</div><div class="line">     16863422, 18244962, 19544839, 24433711, 17156148, 18973907, 17877323</div><div class="line">     17449815, 18180390, 17088068, 17037130, 20004087, 19466309, 11733603</div><div class="line">     18084625, 21051858, 18674024, 21051852, 18091059, 16306373, 18306996</div><div class="line">     19915271, 18193833, 17787259, 20631274, 16344544, 14692762, 18614015</div><div class="line">     17346091, 18228645, 17721717, 18436307, 11883252, 21756677, 17891943</div><div class="line">     22353199, 16384983, 19121551, 12816846, 17982555, 17761775, 22243719</div><div class="line">     17265217, 17071721, 16721594, 21756661, 18262334, 15913355, 17891946</div><div class="line">     17672719, 17602269, 17239687, 17042658, 17238511, 17811456, 17284817</div><div class="line">     17752121, 17394950, 16579084, 17011832, 22195465, 14602788, 18325460</div><div class="line">     24476265, 24476274, 12611721, 16903536, 17006570, 16043574, 18783224</div><div class="line">     16494615, 21526048, 19197175, 16069901, 17811447, 17308789, 22195477</div><div class="line">     17865671, 19013183, 17343514, 18316692, 17325413, 16180763, 17348614</div><div class="line">     14368995, 21983325, 17393915, 16285691, 20331945, 17883081, 24316947</div><div class="line">     17705023, 17614227, 22195485, 14084247, 13645875, 16777840, 19727057</div><div class="line">     14852021, 18744139, 18674047, 17716305, 18482502, 19289642, 17622427</div><div class="line">     22195492, 14458214, 18723434, 17767676, 19258504, 17786278, 17082983</div><div class="line">     21351877, 13498382, 18331812, 16065166, 18031668, 22893153, 16943711</div><div class="line">     21517440, 17649265, 13866822, 18094246, 24528741, 14245531, 17783588</div><div class="line">     17082359, 20448824, 18280813, 23330119, 16268425, 17302277, 18018515</div><div class="line">     17215560, 19271443, 17016369, 20777150, 23330124, 20441797, 19769489</div><div class="line">     17545847, 18260550, 13853126, 23536835, 17227277, 9756271, 18868646</div><div class="line">     17614134, 17546973, 19680952, 18704244, 18828868, 18273830, 17050888</div><div class="line">     17360606, 16992075, 17375354, 12905058, 18362222, 17571039, 17468141</div><div class="line">     18436647, 17235750, 21168487, 16220077, 16929165</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line">--------------------------------------------------------------------------------</div><div class="line"></div><div class="line">OPatch succeeded.</div></pre></td></tr></table></figure><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">set linesize 150;</div><div class="line">set pagesize 9999;</div><div class="line">col comp_name format a40;</div><div class="line">SELECT COMP_NAME, VERSION, STATUS FROM SYS.DBA_REGISTRY;</div><div class="line">--</div><div class="line">set linesize 500 pagesize 600</div><div class="line">col ACTION_TIME for a30</div><div class="line">col COMMENTS for a30</div><div class="line">select ACTION_TIME, ACTION,version, COMMENTS from sys.DBA_REGISTRY_HISTORY;</div></pre></td></tr></table></figure><p><img src="/images/2019/0124/01.png" alt="psu"></p><h1 id="启动监听"><a href="#启动监听" class="headerlink" title="启动监听"></a>启动监听</h1><p><code>lsnrctl start</code></p><h1 id="补丁回退"><a href="#补丁回退" class="headerlink" title="补丁回退"></a>补丁回退</h1><p><code>opatch rollback -id 24006111</code></p><p>参考文档：<br><a href="http://blog.itpub.net/26736162/viewspace-2096650/" target="_blank" rel="external">http://blog.itpub.net/26736162/viewspace-2096650/</a><br><a href="https://blogs.oracle.com/database4cn/oracle-v4" target="_blank" rel="external">https://blogs.oracle.com/database4cn/oracle-v4</a><br><a href="http://blog.51cto.com/hbxztc/1884214" target="_blank" rel="external">http://blog.51cto.com/hbxztc/1884214</a></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> 数据库 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 数据库 </tag>
+            
+            <tag> Oracle </tag>
+            
+            <tag> PSU </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>开源APM工具pinpoint搭建使用</title>
       <link href="/arlo/c47141fa/"/>
       <url>/arlo/c47141fa/</url>
@@ -197,9 +224,9 @@
       
         <tags>
             
-            <tag> Mysql </tag>
-            
             <tag> Mariadb </tag>
+            
+            <tag> Mysql </tag>
             
             <tag> Troubleshooting </tag>
             
@@ -247,9 +274,9 @@
       
         <tags>
             
-            <tag> Oracle </tag>
-            
             <tag> 数据库 </tag>
+            
+            <tag> Oracle </tag>
             
         </tags>
       
@@ -272,9 +299,9 @@
       
         <tags>
             
-            <tag> Oracle </tag>
-            
             <tag> 数据库 </tag>
+            
+            <tag> Oracle </tag>
             
         </tags>
       
@@ -322,9 +349,9 @@
       
         <tags>
             
-            <tag> Oracle </tag>
-            
             <tag> 数据库 </tag>
+            
+            <tag> Oracle </tag>
             
         </tags>
       
@@ -447,9 +474,9 @@
       
         <tags>
             
-            <tag> Oracle </tag>
-            
             <tag> 数据库 </tag>
+            
+            <tag> Oracle </tag>
             
         </tags>
       
@@ -495,9 +522,9 @@
       
         <tags>
             
-            <tag> Oracle </tag>
-            
             <tag> 数据库 </tag>
+            
+            <tag> Oracle </tag>
             
         </tags>
       
@@ -545,9 +572,9 @@
       
         <tags>
             
-            <tag> 运维 </tag>
-            
             <tag> 自动化 </tag>
+            
+            <tag> 运维 </tag>
             
             <tag> zabbix </tag>
             
@@ -572,13 +599,13 @@
       
         <tags>
             
-            <tag> 运维 </tag>
-            
             <tag> 自动化 </tag>
             
-            <tag> zabbix </tag>
+            <tag> 运维 </tag>
             
             <tag> Ansible </tag>
+            
+            <tag> zabbix </tag>
             
         </tags>
       
@@ -601,9 +628,9 @@
       
         <tags>
             
-            <tag> zabbix </tag>
-            
             <tag> 监控 </tag>
+            
+            <tag> zabbix </tag>
             
         </tags>
       
@@ -649,9 +676,9 @@
       
         <tags>
             
-            <tag> Oracle </tag>
-            
             <tag> 数据库 </tag>
+            
+            <tag> Oracle </tag>
             
         </tags>
       
@@ -674,9 +701,9 @@
       
         <tags>
             
-            <tag> Oracle </tag>
-            
             <tag> 数据库 </tag>
+            
+            <tag> Oracle </tag>
             
         </tags>
       
@@ -726,9 +753,9 @@
       
         <tags>
             
-            <tag> 常识 </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> 常识 </tag>
             
             <tag> Oracle </tag>
             
@@ -753,9 +780,9 @@
       
         <tags>
             
-            <tag> 运维 </tag>
-            
             <tag> 自动化 </tag>
+            
+            <tag> 运维 </tag>
             
             <tag> Sonar </tag>
             
@@ -834,9 +861,9 @@
       
         <tags>
             
-            <tag> 常识 </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> 常识 </tag>
             
             <tag> Scp </tag>
             
@@ -863,9 +890,9 @@
       
         <tags>
             
-            <tag> Oracle </tag>
-            
             <tag> 数据库 </tag>
+            
+            <tag> Oracle </tag>
             
         </tags>
       
@@ -888,9 +915,9 @@
       
         <tags>
             
-            <tag> Oracle </tag>
-            
             <tag> 数据库 </tag>
+            
+            <tag> Oracle </tag>
             
         </tags>
       
@@ -969,9 +996,9 @@
             
             <tag> 集群 </tag>
             
-            <tag> Oracle </tag>
-            
             <tag> 数据库 </tag>
+            
+            <tag> Oracle </tag>
             
             <tag> RAC </tag>
             
@@ -1046,9 +1073,9 @@
       
         <tags>
             
-            <tag> 运维 </tag>
-            
             <tag> 自动化 </tag>
+            
+            <tag> 运维 </tag>
             
             <tag> Jenkins </tag>
             
@@ -1073,9 +1100,9 @@
       
         <tags>
             
-            <tag> zabbix </tag>
-            
             <tag> 监控 </tag>
+            
+            <tag> zabbix </tag>
             
             <tag> MSSQL </tag>
             
@@ -1100,11 +1127,11 @@
       
         <tags>
             
-            <tag> zabbix </tag>
-            
             <tag> 监控 </tag>
             
             <tag> tomcat </tag>
+            
+            <tag> zabbix </tag>
             
         </tags>
       
@@ -1127,9 +1154,9 @@
       
         <tags>
             
-            <tag> Oracle </tag>
-            
             <tag> 数据库 </tag>
+            
+            <tag> Oracle </tag>
             
             <tag> Troubleshooting </tag>
             
@@ -1154,9 +1181,9 @@
       
         <tags>
             
-            <tag> Oracle </tag>
-            
             <tag> 数据库 </tag>
+            
+            <tag> Oracle </tag>
             
             <tag> Troubleshooting </tag>
             
@@ -1181,11 +1208,11 @@
       
         <tags>
             
+            <tag> 监控 </tag>
+            
             <tag> Oracle </tag>
             
             <tag> zabbix </tag>
-            
-            <tag> 监控 </tag>
             
         </tags>
       
@@ -1208,9 +1235,9 @@
       
         <tags>
             
-            <tag> zabbix </tag>
-            
             <tag> 监控 </tag>
+            
+            <tag> zabbix </tag>
             
         </tags>
       
@@ -1233,9 +1260,9 @@
       
         <tags>
             
-            <tag> zabbix </tag>
-            
             <tag> 监控 </tag>
+            
+            <tag> zabbix </tag>
             
         </tags>
       
@@ -1258,9 +1285,9 @@
       
         <tags>
             
-            <tag> zabbix </tag>
-            
             <tag> 监控 </tag>
+            
+            <tag> zabbix </tag>
             
         </tags>
       
@@ -1283,9 +1310,9 @@
       
         <tags>
             
-            <tag> 常识 </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> 常识 </tag>
             
             <tag> Windows </tag>
             
@@ -1337,9 +1364,9 @@
       
         <tags>
             
-            <tag> 运维 </tag>
-            
             <tag> 自动化 </tag>
+            
+            <tag> 运维 </tag>
             
             <tag> Jenkins </tag>
             
@@ -1366,9 +1393,9 @@
       
         <tags>
             
-            <tag> 常识 </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> 常识 </tag>
             
             <tag> vpn </tag>
             
@@ -1393,9 +1420,9 @@
       
         <tags>
             
-            <tag> 运维 </tag>
-            
             <tag> 自动化 </tag>
+            
+            <tag> 运维 </tag>
             
             <tag> Jenkins </tag>
             
@@ -1420,9 +1447,9 @@
       
         <tags>
             
-            <tag> 运维 </tag>
-            
             <tag> 自动化 </tag>
+            
+            <tag> 运维 </tag>
             
             <tag> Jenkins </tag>
             
@@ -1526,9 +1553,9 @@
             
             <tag> 数据库 </tag>
             
-            <tag> Mysql </tag>
-            
             <tag> Mariadb </tag>
+            
+            <tag> Mysql </tag>
             
         </tags>
       
@@ -1553,9 +1580,9 @@
             
             <tag> 数据库 </tag>
             
-            <tag> Mysql </tag>
-            
             <tag> Mariadb </tag>
+            
+            <tag> Mysql </tag>
             
         </tags>
       
@@ -1580,9 +1607,9 @@
             
             <tag> 数据库 </tag>
             
-            <tag> Mysql </tag>
-            
             <tag> Mariadb </tag>
+            
+            <tag> Mysql </tag>
             
         </tags>
       
@@ -1605,9 +1632,9 @@
       
         <tags>
             
-            <tag> 常识 </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> 常识 </tag>
             
             <tag> 下载 </tag>
             
@@ -1684,9 +1711,9 @@
       
         <tags>
             
-            <tag> 运维 </tag>
-            
             <tag> 自动化 </tag>
+            
+            <tag> 运维 </tag>
             
             <tag> Ansible </tag>
             
@@ -1711,9 +1738,9 @@
       
         <tags>
             
-            <tag> 运维 </tag>
-            
             <tag> 自动化 </tag>
+            
+            <tag> 运维 </tag>
             
             <tag> Ansible </tag>
             
@@ -1738,9 +1765,9 @@
       
         <tags>
             
-            <tag> 运维 </tag>
-            
             <tag> 自动化 </tag>
+            
+            <tag> 运维 </tag>
             
             <tag> Ansible </tag>
             
@@ -1765,9 +1792,9 @@
       
         <tags>
             
-            <tag> 运维 </tag>
-            
             <tag> 自动化 </tag>
+            
+            <tag> 运维 </tag>
             
             <tag> Ansible </tag>
             
@@ -1792,9 +1819,9 @@
       
         <tags>
             
-            <tag> 运维 </tag>
-            
             <tag> 自动化 </tag>
+            
+            <tag> 运维 </tag>
             
             <tag> expect </tag>
             
@@ -1823,9 +1850,9 @@
             
             <tag> Windows </tag>
             
-            <tag> Oracle </tag>
-            
             <tag> 数据库 </tag>
+            
+            <tag> Oracle </tag>
             
         </tags>
       
@@ -1882,9 +1909,9 @@
       
         <tags>
             
-            <tag> Oracle </tag>
-            
             <tag> 数据库 </tag>
+            
+            <tag> Oracle </tag>
             
         </tags>
       
@@ -1907,9 +1934,9 @@
       
         <tags>
             
-            <tag> shell </tag>
-            
             <tag> 脚本 </tag>
+            
+            <tag> shell </tag>
             
             <tag> linux常识 </tag>
             
@@ -1934,9 +1961,9 @@
       
         <tags>
             
-            <tag> Oracle </tag>
-            
             <tag> 数据库 </tag>
+            
+            <tag> Oracle </tag>
             
         </tags>
       
@@ -1959,9 +1986,9 @@
       
         <tags>
             
-            <tag> Oracle </tag>
-            
             <tag> 数据库 </tag>
+            
+            <tag> Oracle </tag>
             
         </tags>
       
@@ -2055,9 +2082,9 @@
       
         <tags>
             
-            <tag> 运维 </tag>
-            
             <tag> 自动化 </tag>
+            
+            <tag> 运维 </tag>
             
             <tag> Jenkins </tag>
             
@@ -2082,9 +2109,9 @@
       
         <tags>
             
-            <tag> 运维 </tag>
-            
             <tag> 自动化 </tag>
+            
+            <tag> 运维 </tag>
             
             <tag> Cobbler </tag>
             
@@ -2132,9 +2159,9 @@
       
         <tags>
             
-            <tag> 常识 </tag>
-            
             <tag> Linux </tag>
+            
+            <tag> 常识 </tag>
             
             <tag> epel </tag>
             
@@ -2335,11 +2362,11 @@
       
         <tags>
             
-            <tag> 常识 </tag>
-            
             <tag> xshell </tag>
             
             <tag> Linux </tag>
+            
+            <tag> 常识 </tag>
             
         </tags>
       
@@ -2362,9 +2389,9 @@
       
         <tags>
             
-            <tag> linux </tag>
-            
             <tag> 常识 </tag>
+            
+            <tag> linux </tag>
             
         </tags>
       
