@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[使用sqlldr导入txt数据]]></title>
+    <url>%2Farlo%2F2d7abdb2%2F</url>
+    <content type="text"><![CDATA[将txt或者csv数据导入数据库最方便的方法就是使用sqlldr，使用sqlldr必须有一个控制文件，控制文件能把外部数据和数据库的表和列联系起来。 新建数据表12345678910111213141516171819CREATE TABLE &quot;TENVAIR&quot;.&quot;TEST&quot; (&quot;EMISS_GRIDID&quot; NUMBER(*,0) NOT NULL ENABLE,&quot;X&quot; NUMBER(*,0) NOT NULL ENABLE,&quot;Y&quot; NUMBER(*,0) NOT NULL ENABLE,&quot;EMISS_TYPE&quot; VARCHAR2(16) NOT NULL ENABLE,&quot;POLLUTION_TYPE&quot; VARCHAR2(16) NOT NULL ENABLE,&quot;JAN&quot; NUMBER(20,10),&quot;FEB&quot; NUMBER(20,10),&quot;MAR&quot; NUMBER(20,10),&quot;APR&quot; NUMBER(20,10),&quot;MAY&quot; NUMBER(20,10),&quot;JUN&quot; NUMBER(20,10),&quot;JUL&quot; NUMBER(20,10),&quot;AUG&quot; NUMBER(20,10),&quot;SEP&quot; NUMBER(20,10),&quot;OCT&quot; NUMBER(20,10),&quot;NOV&quot; NUMBER(20,10),&quot;DEC&quot; NUMBER(20,10),&quot;TOTAL&quot; NUMBER(20,10)); 数据格式12345EMISS_GRIDID,X,Y,EMISS_TYPE,POLLUTION_TYPE,JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC,TOTAL10398,158,33,agriculture,NH3,,,,,,,,,,,,,57.556552887010398,158,33,industry,ALD2,,,,,,,,,,,,,0.008129582710398,158,33,industry,ALDX,,,,,,,,,,,,,0.078255377710398,158,33,industry,BC,,,,,,,,,,,,,2.5780515671 编写控制文件t.ctl1234567891011121314151617181920212223load dataappend into table TENVAIR.TESTfields terminated by &apos;,&apos;TRAILING NULLCOLS(EMISS_GRIDID,X,Y,EMISS_TYPE,POLLUTION_TYPE,JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC,TOTAL) infile ‘EMISS_MEIC.txt’ 表示要导入的文本名为EMISS_MEIC.txt，也可以在执行sqlldr的时候加data=EMISS_MEIC.txtappend/insert/replace/truncate into table TABLE_NAME append表示使用追加的方式将数据写入表中；insert 表示导入空表，有数据则停止；replace表示原来表中如果有数据，则会被删除（用delete from table语句）;truncate表示原来表中如果有数据，则会被清除（用truncate table语句）fields terminated by ‘,’ 数据中每行记录用”,”分隔TRAILING NULLCOLS 表的字段没有对应的值时允许为空 使用sqlldr导入如果数据文件是从windows传到linux操作系统上的，需要转换一下文件格式dos2unix EMISS_MEIC.txtsqlldr userid=user/&#39;passwd&#39; control=t.ctl data=EMISS_MEIC.txt readsize=4194304 查看导入结果从日志文件中我们可以看到导入详情，导入1279319条数据，耗时33秒，效率还是非常高的！]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>Oracle</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[oracle开启归档日志模式]]></title>
     <url>%2Farlo%2F60a79bb7%2F</url>
     <content type="text"><![CDATA[在默认情况下，oracle数据库是在非归日志档模式中创建的，在非归档日志模式中，进行日志切换时会直接重写redo log，如果此时数据文件因为介质失败被损坏，则数据库恢复时会丢失掉被重写的数据；在归档日志模式下，数据库可以应用最近一次数据库备份开始生成的所有归档日志文件，保证数据无丢失；大部分的生产数据库以archivelog模式运行。oracle数据库在开启归档日志模式后，会自动启动新的进程：归档器ARCn。默认情况下是开启4个进程，在实际应用中最多可以启动30个归档器进程。 12345$ ps -ef |grep arcoracle 22248 1 0 11:35 ? 00:00:00 ora_arc0_airforecastoracle 22250 1 0 11:35 ? 00:00:00 ora_arc1_airforecastoracle 22252 1 0 11:35 ? 00:00:00 ora_arc2_airforecastoracle 22254 1 0 11:35 ? 00:00:00 ora_arc3_airforecast 新建归档模式目录1mkdir /u01/app/oracle/oradata/airforecast/archivelog 设置实例参数从9i开始后，oracle数据库可以指定10个归档目的地，但实例log_archive_dest_n中的n最大为30，通常情况下需要指定2个或者多个归档目的地来多路复用归档日志文件；在理想情况下，这些归档日志文件应当位于不同的磁盘存储上；实际应用中，一般还是指定一个，非常重要的数据库一般有data guard来保证高可用性。 变量 描述 %d 唯一的数据看标志符，如果多个数据库归档到同一目录，这是必须要的 %t 线程号，适用于RAC数据看，无实际意义 %r 场景（incarnation）号，在不完全恢复时需要用到 %s 日志切换序列号，保证同一个库中的归档日志不会彼此重写 修改操作步骤如下：123SYS@airforecast&gt; conn / as sysdbaSYS@airforecast&gt; alter system set log_archive_dest_1=&apos;location=/u01/app/oracle/oradata/airforecast/archivelog&apos; scope = spfile;SYS@airforecast&gt; alter system set log_archive_format=&apos;arch_%d_%t_%r_%s.log&apos; scope = spfile; 重启数据库并开启归档日志模式1234567891011121314151617181920SYS@airforecast&gt; shutdown immediateDatabase closed.Database dismounted.ORACLE instance shut down.SYS@airforecast&gt; startup mount;ORACLE instance started.Total System Global Area 4977278976 bytesFixed Size 2261768 bytesVariable Size 1006636280 bytesDatabase Buffers 3959422976 bytesRedo Buffers 8957952 bytesDatabase mounted.SYS@airforecast&gt; alter database archivelog;Database altered.SYS@airforecast&gt; alter database open;Database altered. 确认数据库是否为归档模式1234567891011SYS@airforecast&gt; select log_mode from v$database;LOG_MODE------------ARCHIVELOGSYS@airforecast&gt; select archiver from v$instance;ARCHIVE-------STARTED 切换日志检查归档日志是否正常12345678910SYS@airforecast&gt; alter system switch logfile;System altered.SYS@airforecast&gt; select name from v$archived_log;NAME------------------------------------------------------------------------------------------------------------------------/u01/app/oracle/oradata/airforecast/archivelog/arch_a9652e7f_1_1000805313_5.log/u01/app/oracle/oradata/airforecast/archivelog/arch_a9652e7f_1_1000805313_6.log 参考链接：https://www.jianshu.com/p/f8c0e9309ce2]]></content>
@@ -8,8 +19,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -32,8 +43,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
         <tag>PSU</tag>
       </tags>
   </entry>
@@ -53,7 +64,7 @@
   <entry>
     <title><![CDATA[记一次oracle故障排查记录]]></title>
     <url>%2Farlo%2Ff82f70f8%2F</url>
-    <content type="text"><![CDATA[故障现象window操作系统，oracle 11.2.0.1.0版本，意外断电后计算机服务中可以启动oracle服务和监听服务，但是无法连接；使用sqlplus连接上去发现数据库未启动，尝试手动starup启动数据库，提示”ORA-03113:通信通道的文件结尾，进程id:7776 会话 ID: 322 序列号：25”的错误。进入到oracle 日志目录下，在alter_yangquan123.log发现有明显报错“ORA-00338: log 1 of thread 1 is more recent than control file”，该错误意思是redo日志中的记录比控制文件新。 ORA-00338: log 1 of thread 1 is more recent than control file手动创建控制文件1234oradebug setmypidoradebug tracefile_namealter database backup controlfile to trace;select value from v$diag_info where name =&apos;Diag Trace&apos;; 查看错误日志在alert_yangquan123.log日志中，我们可以看到以下这段123alter database backup controlfile to traceBackup controlfile written to trace file e:\app\adminsilu\diag\rdbms\yangquan123\trace\yangquan123_ora_20768.trcCompleted: alter database backup controlfile to trace 打开e:\app\adminsilu\diag\rdbms\yangquan123\trace\yangquan123_ora_20768.trc文件，复制一下这段，在sql窗口执行 手动运行sql语句启动sqlplus / as sysdba123456789101112131415161718192021SQL&gt; STARTUP NOMOUNT #在sql窗口执行以下命令CREATE CONTROLFILE REUSE DATABASE &quot;YANGQUAN&quot; NORESETLOGS NOARCHIVELOG MAXLOGFILES 16 MAXLOGMEMBERS 3 MAXDATAFILES 100 MAXINSTANCES 8 MAXLOGHISTORY 292LOGFILE GROUP 1 &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\REDO01.LOG&apos; SIZE 50M BLOCKSIZE 512, GROUP 2 &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\REDO02.LOG&apos; SIZE 50M BLOCKSIZE 512, GROUP 3 &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\REDO03.LOG&apos; SIZE 50M BLOCKSIZE 512-- STANDBY LOGFILEDATAFILE &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\SYSTEM01.DBF&apos;, &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\SYSAUX01.DBF&apos;, &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\UNDOTBS01.DBF&apos;, &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\USERS01.DBF&apos;, &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\EXAMPLE01.DBF&apos;, &apos;E:\ORACLE_DATABASEFILES\AIR_DATA.DBF&apos;CHARACTER SET ZHS16GBK; 启动之后查看数据库状态12select name,open_mode from v$database; #数据库状态已经Open了select * from dual; 但是，但是几秒钟之后实例就宕掉了 ORA-00600: internal error code, arguments: [4194], [], [], [], [], [], [], [], [], [], [], []再次查看alter日志，发现有新的报错了ORA-00600: internal error code, arguments: [4194], [], [], [], [], [], [], [], [], [], [], [] 通过spfile创建生成pfile1SQL&gt; create pfile from spfile; #创建出来的文件windows在$ORACLE_HOME/database目录下，Linux在$ORACLE_HOME/dbs目录下，格式为initORACLE_SID.ora 关闭数据库1SQL&gt; shutdown immediate 修改pfile打开inityangquan123.ora文件，修改其中的两行内容12*.undo_management=&apos;MANUAL&apos;*.undo_tablespace=&apos;UNDOTBS&apos; 使用pfile启动数据库1startup restrict pfile=&apos;E:\app\adminsilu\product\11.2.0\dbhome_1\database\inityangquan123.ora&apos; 查看undo文件12345SQL&gt; select tablespace_name, status, segment_name from dba_rollback_segs where status != &apos;OFFLINE&apos;; TABLESPACE_NAME STATUS SEGMENT_NAME------------------------------ ---------------- ------------------------------SYSTEM ONLINE SYSTEM 新建一个UNDO表空间1SQL&gt; create undo tablespace UNDOTBS1 datafile &apos;/u04/epps/oradata/undotbs_01.dbf&apos; size 4G; 删除旧的UNDO表空间1SQL&gt; drop tablespace UNDOTBS including contents and datafiles; 关闭数据库实例1SQL&gt; shutdownimmediate; 启动数据库实例到NOMOUNT状态1SQL&gt; startup nomount; 修改spfile中的undo_tablespace参数1SQL&gt; alter system set undo_tablespace=&apos;UNDOTBS1&apos; scope=spfile; 启动数据库实例（使用spfile）12SQL&gt; startup;SQL&gt; select name,open_mode from v$database; #查看数据库状态并监测 几分钟后发现数据库未关闭，但是日志中依然有报错 ORA-08102: index key not found，obj#289，file 1，block 2025(2);删除索引123456789SQL&gt; col object_name format a15;SQL&gt; col owner format a10;SQL&gt; select o.owner, o.object_name, o.object_id, o.object_type from dba_objects o where o.object_id = 289;OWNER OBJECT_NAME OBJECT_ID OBJECT_TYPE---------- --------------- ---------- -------------------SYS I_JOB_NEXT 289 INDEXSQL&gt; drop index i_job_next; 重建索引1SQL&gt; create index i_job_next on job$ (next_date); 数据库实例未能加到监听中检查了各种文件都正常，手动alter system register也不行，无奈之下，使用netca重新配置了监听。 参考链接：https://blog.csdn.net/zwk626542417/article/details/39667999http://www.cnblogs.com/kerrycode/p/6085447.htmlhttps://blog.csdn.net/lwei_998/article/details/5920133]]></content>
+    <content type="text"><![CDATA[故障现象window操作系统，oracle 11.2.0.1.0版本，意外断电后计算机服务中可以启动oracle服务和监听服务，但是无法连接；使用sqlplus连接上去发现数据库未启动，尝试手动starup启动数据库，提示”ORA-03113:通信通道的文件结尾，进程id:7776 会话 ID: 322 序列号：25”的错误。进入到oracle 日志目录下，在alter_yangquan123.log发现有明显报错“ORA-00338: log 1 of thread 1 is more recent than control file”，该错误意思是redo日志中的记录比控制文件新。 ORA-00338: log 1 of thread 1 is more recent than control file手动创建控制文件1234oradebug setmypidoradebug tracefile_namealter database backup controlfile to trace;select value from v$diag_info where name =&apos;Diag Trace&apos;; 查看错误日志在alert_yangquan123.log日志中，我们可以看到以下这段123alter database backup controlfile to traceBackup controlfile written to trace file e:\app\adminsilu\diag\rdbms\yangquan123\trace\yangquan123_ora_20768.trcCompleted: alter database backup controlfile to trace 打开e:\app\adminsilu\diag\rdbms\yangquan123\trace\yangquan123_ora_20768.trc文件，复制一下这段，在sql窗口执行 手动运行sql语句启动sqlplus / as sysdba123456789101112131415161718192021SQL&gt; STARTUP NOMOUNT #在sql窗口执行以下命令CREATE CONTROLFILE REUSE DATABASE &quot;YANGQUAN&quot; NORESETLOGS NOARCHIVELOG MAXLOGFILES 16 MAXLOGMEMBERS 3 MAXDATAFILES 100 MAXINSTANCES 8 MAXLOGHISTORY 292LOGFILE GROUP 1 &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\REDO01.LOG&apos; SIZE 50M BLOCKSIZE 512, GROUP 2 &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\REDO02.LOG&apos; SIZE 50M BLOCKSIZE 512, GROUP 3 &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\REDO03.LOG&apos; SIZE 50M BLOCKSIZE 512-- STANDBY LOGFILEDATAFILE &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\SYSTEM01.DBF&apos;, &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\SYSAUX01.DBF&apos;, &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\UNDOTBS01.DBF&apos;, &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\USERS01.DBF&apos;, &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\EXAMPLE01.DBF&apos;, &apos;E:\ORACLE_DATABASEFILES\AIR_DATA.DBF&apos;CHARACTER SET ZHS16GBK; 启动之后查看数据库状态12select name,open_mode from v$database; #数据库状态已经Open了select * from dual; 但是，但是几秒钟之后实例就宕掉了 ORA-00600: internal error code, arguments: [4194], [], [], [], [], [], [], [], [], [], [], []再次查看alter日志，发现有新的报错了ORA-00600: internal error code, arguments: [4194], [], [], [], [], [], [], [], [], [], [], [] 通过spfile创建生成pfile1SQL&gt; create pfile from spfile; #创建出来的文件windows在$ORACLE_HOME/database目录下，Linux在$ORACLE_HOME/dbs目录下，格式为initORACLE_SID.ora 关闭数据库1SQL&gt; shutdown immediate 修改pfile打开inityangquan123.ora文件，修改其中的两行内容12*.undo_management=&apos;MANUAL&apos;*.undo_tablespace=&apos;UNDOTBS&apos; 使用pfile启动数据库1startup restrict pfile=&apos;E:\app\adminsilu\product\11.2.0\dbhome_1\database\inityangquan123.ora&apos; 查看undo文件12345SQL&gt; select tablespace_name, status, segment_name from dba_rollback_segs where status != &apos;OFFLINE&apos;; TABLESPACE_NAME STATUS SEGMENT_NAME------------------------------ ---------------- ------------------------------SYSTEM ONLINE SYSTEM 新建一个UNDO表空间1SQL&gt; create undo tablespace UNDOTBS1 datafile &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\UNDOTBS_01.dbf&apos; size 4G; 删除旧的UNDO表空间1SQL&gt; drop tablespace UNDOTBS including contents and datafiles; 关闭数据库实例1SQL&gt; shutdown immediate; 启动数据库实例到NOMOUNT状态1SQL&gt; startup nomount; 修改spfile中的undo_tablespace参数1SQL&gt; alter system set undo_tablespace=&apos;UNDOTBS1&apos; scope=spfile; 启动数据库实例（使用spfile）12SQL&gt; startup;SQL&gt; select name,open_mode from v$database; #查看数据库状态并监测 几分钟后发现数据库未关闭，但是日志中依然有报错 ORA-08102: index key not found，obj#289，file 1，block 2025(2);删除索引123456789SQL&gt; col object_name format a15;SQL&gt; col owner format a10;SQL&gt; select o.owner, o.object_name, o.object_id, o.object_type from dba_objects o where o.object_id = 289;OWNER OBJECT_NAME OBJECT_ID OBJECT_TYPE---------- --------------- ---------- -------------------SYS I_JOB_NEXT 289 INDEXSQL&gt; drop index i_job_next; 重建索引1SQL&gt; create index i_job_next on job$ (next_date); 数据库实例未能加到监听中检查了各种文件都正常，手动alter system register也不行，无奈之下，使用netca重新配置了监听。 参考链接：https://blog.csdn.net/zwk626542417/article/details/39667999http://www.cnblogs.com/kerrycode/p/6085447.htmlhttps://blog.csdn.net/lwei_998/article/details/5920133]]></content>
       <categories>
         <category>Troubleshooting</category>
       </categories>
@@ -130,8 +141,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -154,8 +165,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -166,8 +177,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -190,8 +201,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -250,8 +261,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -273,8 +284,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -297,9 +308,9 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
-        <tag>运维</tag>
         <tag>zabbix</tag>
+        <tag>运维</tag>
+        <tag>自动化</tag>
       </tags>
   </entry>
   <entry>
@@ -310,10 +321,10 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
-        <tag>运维</tag>
-        <tag>Ansible</tag>
         <tag>zabbix</tag>
+        <tag>运维</tag>
+        <tag>自动化</tag>
+        <tag>Ansible</tag>
       </tags>
   </entry>
   <entry>
@@ -347,8 +358,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -359,8 +370,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -397,8 +408,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Sonar</tag>
       </tags>
   </entry>
@@ -450,8 +461,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -462,8 +473,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -501,8 +512,8 @@
       </categories>
       <tags>
         <tag>集群</tag>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
         <tag>RAC</tag>
       </tags>
   </entry>
@@ -538,8 +549,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -564,9 +575,9 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>tomcat</tag>
         <tag>zabbix</tag>
         <tag>监控</tag>
+        <tag>tomcat</tag>
       </tags>
   </entry>
   <entry>
@@ -577,8 +588,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -590,8 +601,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -678,8 +689,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
         <tag>tomcat</tag>
       </tags>
@@ -705,8 +716,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -718,8 +729,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -769,8 +780,8 @@
       <tags>
         <tag>集群</tag>
         <tag>数据库</tag>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
       </tags>
   </entry>
   <entry>
@@ -782,8 +793,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
       </tags>
   </entry>
   <entry>
@@ -795,8 +806,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
       </tags>
   </entry>
   <entry>
@@ -845,8 +856,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -858,8 +869,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -871,8 +882,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -884,8 +895,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -897,8 +908,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>expect</tag>
         <tag>脚本</tag>
       </tags>
@@ -912,8 +923,8 @@
       </categories>
       <tags>
         <tag>Windows</tag>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -940,8 +951,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -952,8 +963,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>脚本</tag>
         <tag>shell</tag>
+        <tag>脚本</tag>
         <tag>linux常识</tag>
       </tags>
   </entry>
@@ -965,8 +976,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -977,8 +988,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -1023,8 +1034,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -1036,8 +1047,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Cobbler</tag>
       </tags>
   </entry>

@@ -115,7 +115,7 @@
 <meta property="og:image" content="http://islocal.cc/images/2018/1214/01.png">
 <meta property="og:image" content="http://islocal.cc/images/2018/1214/02.png">
 <meta property="og:image" content="http://islocal.cc/images/2018/1214/03.png">
-<meta property="og:updated_time" content="2018-12-14T03:18:26.674Z">
+<meta property="og:updated_time" content="2019-04-19T06:18:19.344Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="记一次oracle故障排查记录">
 <meta name="twitter:description" content="故障现象window操作系统，oracle 11.2.0.1.0版本，意外断电后计算机服务中可以启动oracle服务和监听服务，但是无法连接；使用sqlplus连接上去发现数据库未启动，尝试手动starup启动数据库，提示”ORA-03113:通信通道的文件结尾，进程id:7776 会话  ID: 322 序列号：25”的错误。进入到oracle 日志目录下，在alter_yangquan123.">
@@ -425,12 +425,24 @@
                 
               
 
-              <time title="创建时间：2018-12-14 10:59:35 / 修改时间：11:18:26" itemprop="dateCreated datePublished" datetime="2018-12-14T10:59:35+08:00">2018-12-14</time>
+              <time title="创建时间：2018-12-14 10:59:35" itemprop="dateCreated datePublished" datetime="2018-12-14T10:59:35+08:00">2018-12-14</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-04-19 14:18:19" itemprop="dateModified" datetime="2019-04-19T14:18:19+08:00">2019-04-19</time>
               
             
           </span>
@@ -495,9 +507,9 @@
 <h2 id="修改pfile"><a href="#修改pfile" class="headerlink" title="修改pfile"></a>修改pfile</h2><p>打开inityangquan123.ora文件，修改其中的两行内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">*.undo_management=&apos;MANUAL&apos;</div><div class="line">*.undo_tablespace=&apos;UNDOTBS&apos;</div></pre></td></tr></table></figure></p>
 <h2 id="使用pfile启动数据库"><a href="#使用pfile启动数据库" class="headerlink" title="使用pfile启动数据库"></a>使用pfile启动数据库</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">startup restrict pfile=&apos;E:\app\adminsilu\product\11.2.0\dbhome_1\database\inityangquan123.ora&apos;</div></pre></td></tr></table></figure>
 <h2 id="查看undo文件"><a href="#查看undo文件" class="headerlink" title="查看undo文件"></a>查看undo文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">SQL&gt; select tablespace_name, status, segment_name from dba_rollback_segs where status != &apos;OFFLINE&apos;;</div><div class="line"> </div><div class="line">TABLESPACE_NAME                STATUS           SEGMENT_NAME</div><div class="line">------------------------------ ---------------- ------------------------------</div><div class="line">SYSTEM                         ONLINE           SYSTEM</div></pre></td></tr></table></figure>
-<h2 id="新建一个UNDO表空间"><a href="#新建一个UNDO表空间" class="headerlink" title="新建一个UNDO表空间"></a>新建一个UNDO表空间</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SQL&gt; create undo tablespace UNDOTBS1 datafile &apos;/u04/epps/oradata/undotbs_01.dbf&apos; size 4G;</div></pre></td></tr></table></figure>
+<h2 id="新建一个UNDO表空间"><a href="#新建一个UNDO表空间" class="headerlink" title="新建一个UNDO表空间"></a>新建一个UNDO表空间</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SQL&gt; create undo tablespace UNDOTBS1 datafile &apos;E:\APP\ADMINSILU\ORADATA\YANGQUAN123\UNDOTBS_01.dbf&apos; size 4G;</div></pre></td></tr></table></figure>
 <h2 id="删除旧的UNDO表空间"><a href="#删除旧的UNDO表空间" class="headerlink" title="删除旧的UNDO表空间"></a>删除旧的UNDO表空间</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SQL&gt; drop tablespace UNDOTBS including contents and datafiles;</div></pre></td></tr></table></figure>
-<h2 id="关闭数据库实例"><a href="#关闭数据库实例" class="headerlink" title="关闭数据库实例"></a>关闭数据库实例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SQL&gt; shutdownimmediate;</div></pre></td></tr></table></figure>
+<h2 id="关闭数据库实例"><a href="#关闭数据库实例" class="headerlink" title="关闭数据库实例"></a>关闭数据库实例</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SQL&gt; shutdown immediate;</div></pre></td></tr></table></figure>
 <h2 id="启动数据库实例到NOMOUNT状态"><a href="#启动数据库实例到NOMOUNT状态" class="headerlink" title="启动数据库实例到NOMOUNT状态"></a>启动数据库实例到NOMOUNT状态</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SQL&gt; startup nomount;</div></pre></td></tr></table></figure>
 <h2 id="修改spfile中的undo-tablespace参数"><a href="#修改spfile中的undo-tablespace参数" class="headerlink" title="修改spfile中的undo_tablespace参数"></a>修改spfile中的undo_tablespace参数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">SQL&gt; alter system set undo_tablespace=&apos;UNDOTBS1&apos; scope=spfile;</div></pre></td></tr></table></figure>
 <h2 id="启动数据库实例（使用spfile）"><a href="#启动数据库实例（使用spfile）" class="headerlink" title="启动数据库实例（使用spfile）"></a>启动数据库实例（使用spfile）</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">SQL&gt; startup;</div><div class="line">SQL&gt; select name,open_mode from v$database;	 #查看数据库状态并监测</div></pre></td></tr></table></figure>
@@ -652,7 +664,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">100</span>
+                    <span class="site-state-item-count">101</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
