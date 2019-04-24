@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Typora 快捷键]]></title>
+    <url>%2Farlo%2Fe402bc62%2F</url>
+    <content type="text"><![CDATA[生成目录: [TOC] 无序列表：输入-之后输入空格 有序列表：输入数字+“.”之后输入空格 任务列表：-[空格]空格 文字 标题：Ctrl+数字[1-6] 字体加粗：Ctrl+B 字体倾斜：Ctrl+I 字体下划线：Ctrl+U 字体删除线：Alt+Shift+5 表格：Ctrl+T 代码：Ctrl+Shift+` 代码块：Ctrl+Shift+K 公式块：Ctrl+Shift+M 插入图片：直接拖动到指定位置即可或者Ctrl+Shift+I 插入超级链接: Ctrl+K]]></content>
+      <tags>
+        <tag>Hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[使用sqlldr导入txt数据]]></title>
     <url>%2Farlo%2F2d7abdb2%2F</url>
     <content type="text"><![CDATA[将txt或者csv数据导入数据库最方便的方法就是使用sqlldr，使用sqlldr必须有一个控制文件，控制文件能把外部数据和数据库的表和列联系起来。 新建数据表12345678910111213141516171819CREATE TABLE &quot;TENVAIR&quot;.&quot;TEST&quot; (&quot;EMISS_GRIDID&quot; NUMBER(*,0) NOT NULL ENABLE,&quot;X&quot; NUMBER(*,0) NOT NULL ENABLE,&quot;Y&quot; NUMBER(*,0) NOT NULL ENABLE,&quot;EMISS_TYPE&quot; VARCHAR2(16) NOT NULL ENABLE,&quot;POLLUTION_TYPE&quot; VARCHAR2(16) NOT NULL ENABLE,&quot;JAN&quot; NUMBER(20,10),&quot;FEB&quot; NUMBER(20,10),&quot;MAR&quot; NUMBER(20,10),&quot;APR&quot; NUMBER(20,10),&quot;MAY&quot; NUMBER(20,10),&quot;JUN&quot; NUMBER(20,10),&quot;JUL&quot; NUMBER(20,10),&quot;AUG&quot; NUMBER(20,10),&quot;SEP&quot; NUMBER(20,10),&quot;OCT&quot; NUMBER(20,10),&quot;NOV&quot; NUMBER(20,10),&quot;DEC&quot; NUMBER(20,10),&quot;TOTAL&quot; NUMBER(20,10)); 数据格式12345EMISS_GRIDID,X,Y,EMISS_TYPE,POLLUTION_TYPE,JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC,TOTAL10398,158,33,agriculture,NH3,,,,,,,,,,,,,57.556552887010398,158,33,industry,ALD2,,,,,,,,,,,,,0.008129582710398,158,33,industry,ALDX,,,,,,,,,,,,,0.078255377710398,158,33,industry,BC,,,,,,,,,,,,,2.5780515671 编写控制文件t.ctl1234567891011121314151617181920212223load dataappend into table TENVAIR.TESTfields terminated by &apos;,&apos;TRAILING NULLCOLS(EMISS_GRIDID,X,Y,EMISS_TYPE,POLLUTION_TYPE,JAN,FEB,MAR,APR,MAY,JUN,JUL,AUG,SEP,OCT,NOV,DEC,TOTAL) infile ‘EMISS_MEIC.txt’ 表示要导入的文本名为EMISS_MEIC.txt，也可以在执行sqlldr的时候加data=EMISS_MEIC.txtappend/insert/replace/truncate into table TABLE_NAME append表示使用追加的方式将数据写入表中；insert 表示导入空表，有数据则停止；replace表示原来表中如果有数据，则会被删除（用delete from table语句）;truncate表示原来表中如果有数据，则会被清除（用truncate table语句）fields terminated by ‘,’ 数据中每行记录用”,”分隔TRAILING NULLCOLS 表的字段没有对应的值时允许为空 使用sqlldr导入如果数据文件是从windows传到linux操作系统上的，需要转换一下文件格式dos2unix EMISS_MEIC.txtsqlldr userid=user/&#39;passwd&#39; control=t.ctl data=EMISS_MEIC.txt readsize=4194304 查看导入结果从日志文件中我们可以看到导入详情，导入1279319条数据，耗时33秒，效率还是非常高的！]]></content>
@@ -19,8 +27,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -43,8 +51,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
         <tag>PSU</tag>
       </tags>
   </entry>
@@ -141,8 +149,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -165,8 +173,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -177,8 +185,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -201,8 +209,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -261,8 +269,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -284,8 +292,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -308,9 +316,9 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>zabbix</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
+        <tag>zabbix</tag>
       </tags>
   </entry>
   <entry>
@@ -321,10 +329,10 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>zabbix</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
+        <tag>zabbix</tag>
       </tags>
   </entry>
   <entry>
@@ -358,8 +366,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -370,8 +378,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -395,8 +403,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>Oracle</tag>
       </tags>
   </entry>
@@ -408,8 +416,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Sonar</tag>
       </tags>
   </entry>
@@ -447,8 +455,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>Scp</tag>
         <tag>MTU</tag>
       </tags>
@@ -461,8 +469,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -473,8 +481,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -512,8 +520,8 @@
       </categories>
       <tags>
         <tag>集群</tag>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
         <tag>RAC</tag>
       </tags>
   </entry>
@@ -549,8 +557,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -575,9 +583,9 @@
         <category>监控</category>
       </categories>
       <tags>
+        <tag>tomcat</tag>
         <tag>zabbix</tag>
         <tag>监控</tag>
-        <tag>tomcat</tag>
       </tags>
   </entry>
   <entry>
@@ -588,8 +596,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -601,8 +609,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -663,9 +671,9 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
         <tag>Windows</tag>
+        <tag>Linux</tag>
         <tag>jdk</tag>
       </tags>
   </entry>
@@ -689,8 +697,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
         <tag>tomcat</tag>
       </tags>
@@ -703,8 +711,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>vpn</tag>
       </tags>
   </entry>
@@ -716,8 +724,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -729,8 +737,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -780,8 +788,8 @@
       <tags>
         <tag>集群</tag>
         <tag>数据库</tag>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -793,8 +801,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -806,8 +814,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -818,8 +826,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>下载</tag>
         <tag>axel</tag>
       </tags>
@@ -856,8 +864,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -869,8 +877,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -882,8 +890,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -895,8 +903,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -908,8 +916,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>expect</tag>
         <tag>脚本</tag>
       </tags>
@@ -923,8 +931,8 @@
       </categories>
       <tags>
         <tag>Windows</tag>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -951,8 +959,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -963,8 +971,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>shell</tag>
         <tag>脚本</tag>
+        <tag>shell</tag>
         <tag>linux常识</tag>
       </tags>
   </entry>
@@ -976,8 +984,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -988,8 +996,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -1034,8 +1042,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -1047,8 +1055,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Cobbler</tag>
       </tags>
   </entry>
@@ -1071,8 +1079,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>epel</tag>
       </tags>
   </entry>
@@ -1168,9 +1176,9 @@
         <category>常识</category>
       </categories>
       <tags>
+        <tag>常识</tag>
         <tag>xshell</tag>
         <tag>Linux</tag>
-        <tag>常识</tag>
       </tags>
   </entry>
   <entry>
@@ -1181,8 +1189,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>linux</tag>
+        <tag>常识</tag>
       </tags>
   </entry>
   <entry>
