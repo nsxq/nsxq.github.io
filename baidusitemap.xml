@@ -4,6 +4,21 @@
 
     
   <url>
+    <loc>http://islocal.cc/arlo/fd972502/</loc>
+    <lastmod>2019-04-29T09:58:45.471Z</lastmod>
+    <data>
+        <display>
+        <title>Centos7下OpenVpn服务器搭建</title>
+        <pubTime>2019-04-29T06:45:09.000Z</pubTime>
+        
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/arlo/687d8f2c/</loc>
     <lastmod>2019-04-27T03:43:16.060Z</lastmod>
     <data>
@@ -955,11 +970,11 @@
         <title>JDK环境变量配置</title>
         <pubTime>2017-09-27T06:23:03.000Z</pubTime>
         
+        <tag>Windows</tag>
+         
         <tag>Linux</tag>
          
         <tag>常识</tag>
-         
-        <tag>Windows</tag>
          
         <tag>jdk</tag>
          

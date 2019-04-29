@@ -1,0 +1,1445 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next muse" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="背景项目实施过程中，远程访问服务器方式有远程桌面、盗版teamviewer，向日葵、anydesk，甚至还有qq远程桌面的，错综复杂，杂乱无章，项目上有没有购置硬件vpn的预算，为了结束这一尴尬的局面，决定使用开源软件openvpn自建vpn环境。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Centos7下OpenVpn服务器搭建">
+<meta property="og:url" content="http://islocal.cc/arlo/fd972502/index.html">
+<meta property="og:site_name" content="南山居">
+<meta property="og:description" content="背景项目实施过程中，远程访问服务器方式有远程桌面、盗版teamviewer，向日葵、anydesk，甚至还有qq远程桌面的，错综复杂，杂乱无章，项目上有没有购置硬件vpn的预算，为了结束这一尴尬的局面，决定使用开源软件openvpn自建vpn环境。">
+<meta property="og:image" content="http://islocal.cc/\images\2019\0428\01.png">
+<meta property="og:image" content="http://islocal.cc/\images\2019\0428\02.png">
+<meta property="og:image" content="http://islocal.cc/\images\2019\0428\03.png">
+<meta property="og:image" content="http://islocal.cc/\images\2019\0428\04.png">
+<meta property="og:image" content="http://islocal.cc/\images\2019\0428\05.png">
+<meta property="og:image" content="http://islocal.cc/\images\2019\0428\06.png">
+<meta property="og:image" content="http://islocal.cc/\images\2019\0428\07.png">
+<meta property="og:image" content="http://islocal.cc/\images\2019\0428\08.png">
+<meta property="og:image" content="http://islocal.cc/\images\2019\0428\09.png">
+<meta property="og:image" content="http://islocal.cc/\images\2019\0428\10.png">
+<meta property="og:updated_time" content="2019-04-29T09:58:45.471Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Centos7下OpenVpn服务器搭建">
+<meta name="twitter:description" content="背景项目实施过程中，远程访问服务器方式有远程桌面、盗版teamviewer，向日葵、anydesk，甚至还有qq远程桌面的，错综复杂，杂乱无章，项目上有没有购置硬件vpn的预算，为了结束这一尴尬的局面，决定使用开源软件openvpn自建vpn环境。">
+<meta name="twitter:image" content="http://islocal.cc/\images\2019\0428\01.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://islocal.cc/arlo/fd972502/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Centos7下OpenVpn服务器搭建 | 南山居</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">南山居</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://islocal.cc/arlo/fd972502/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="南山小樵">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/32269?v=3&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南山居">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Centos7下OpenVpn服务器搭建
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-04-29 14:45:09 / 修改时间：17:58:45" itemprop="dateCreated datePublished" datetime="2019-04-29T14:45:09+08:00">2019-04-29</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h1><p>项目实施过程中，远程访问服务器方式有远程桌面、盗版teamviewer，向日葵、anydesk，甚至还有qq远程桌面的，错综复杂，杂乱无章，项目上有没有购置硬件vpn的预算，为了结束这一尴尬的局面，决定使用开源软件openvpn自建vpn环境。<br><a id="more"></a></p>
+<h1 id="系统环境"><a href="#系统环境" class="headerlink" title="系统环境"></a>系统环境</h1><p><strong>OS</strong>：CentOS Linux release 7.4.1708 (Core)<br><strong>SELinux</strong>：disabled<br><strong>firewalld</strong>：active<br><strong>openvpn</strong>：2.4.7<br><strong>easy-rsa</strong>：3.0.3</p>
+<h1 id="部署openvpn软件"><a href="#部署openvpn软件" class="headerlink" title="部署openvpn软件"></a>部署openvpn软件</h1><h2 id="安装openvpn-amp-easy-rsa-软件"><a href="#安装openvpn-amp-easy-rsa-软件" class="headerlink" title="安装openvpn &amp; easy-rsa 软件"></a>安装openvpn &amp; easy-rsa 软件</h2><p><code>yum install epel-release</code><br><code>yum install openvpn easy-rsa</code><br><code>cp -r /usr/share/easy-rsa/ /etc/openvpn/easy-rsa</code><br><code>cd /etc/openvpn/easy-rsa/3.0.3</code><br><code>cp /usr/share/doc/easy-rsa-3.0.3/vars.example vars</code></p>
+<h1 id="创建证书"><a href="#创建证书" class="headerlink" title="创建证书"></a>创建证书</h1><h2 id="创建ca证书"><a href="#创建ca证书" class="headerlink" title="创建ca证书"></a>创建ca证书</h2><h3 id="编辑vars文件，根据自己的环境配置"><a href="#编辑vars文件，根据自己的环境配置" class="headerlink" title="编辑vars文件，根据自己的环境配置"></a>编辑vars文件，根据自己的环境配置</h3><p><em>ps:这一步不是必须滴，不填写也可以</em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">set_var EASYRSA_REQ_COUNTRY    &quot;CN&quot;</div><div class="line">set_var EASYRSA_REQ_PROVINCE   &quot;ShaanXi&quot;</div><div class="line">set_var EASYRSA_REQ_CITY       &quot;Xi&apos;an&quot;</div><div class="line">set_var EASYRSA_REQ_ORG        &quot;islocal.cc&quot;</div><div class="line">set_var EASYRSA_REQ_EMAIL      &quot;xx@islocal.cc&quot;</div><div class="line">set_var EASYRSA_REQ_OU         &quot;My OpenVPN&quot;</div></pre></td></tr></table></figure></p>
+<p><code>source /vars</code><br>进入<em>/etc/openvpn/easy-rsa/3.0.3</em>目录<br><img src="\images\2019\0428\01.png" alt="01"></p>
+<h3 id="目录初始化"><a href="#目录初始化" class="headerlink" title="目录初始化"></a>目录初始化</h3><p><img src="\images\2019\0428\02.png" alt="02"></p>
+<h2 id="创建服务器证书和key"><a href="#创建服务器证书和key" class="headerlink" title="创建服务器证书和key"></a>创建服务器证书和key</h2><p><code>./easyrsa gen-req server nopass</code><br>生成一下两个文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">req: /etc/openvpn/easy-rsa/3.0.3/pki/reqs/server.req</div><div class="line">key: /etc/openvpn/easy-rsa/3.0.3/pki/private/server.key</div></pre></td></tr></table></figure></p>
+<p><img src="\images\2019\0428\03.png" alt="03"></p>
+<h2 id="签约服务端证书"><a href="#签约服务端证书" class="headerlink" title="签约服务端证书"></a>签约服务端证书</h2><p><code>./easyrsa sign server server</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/etc/openvpn/easy-rsa/3.0.3/pki/issued/server.crt</div></pre></td></tr></table></figure></p>
+<p><img src="\images\2019\0428\04.png" alt="04"></p>
+<h2 id="生成vpn密钥协议交换文件"><a href="#生成vpn密钥协议交换文件" class="headerlink" title="生成vpn密钥协议交换文件"></a>生成vpn密钥协议交换文件</h2><p><code>./easyrsa gen-dh</code><br>可以看到我们生成的是2048为的加密文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/etc/openvpn/easy-rsa/3.0.3/pki/dh.pem</div></pre></td></tr></table></figure></p>
+<p><img src="\images\2019\0428\05.png" alt="05"></p>
+<h2 id="创建客户端证书"><a href="#创建客户端证书" class="headerlink" title="创建客户端证书"></a>创建客户端证书</h2><p><code>cp -r /usr/share/easy-rsa/ /etc/openvpn/client/</code><br>初始化目录<br><code>./easyrsa init-pki</code><br><code>/etc/openvpn/client/easy-rsa/3.0.3/pki</code><br><code>./easyrsa gen-req ths nopass</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">req: /etc/openvpn/client/easy-rsa/3.0.3/pki/reqs/ths.req</div><div class="line">key: /etc/openvpn/client/easy-rsa/3.0.3/pki/private/ths.key</div></pre></td></tr></table></figure></p>
+<p><img src="\images\2019\0428\06.png" alt="06"></p>
+<h2 id="签约客户端证书"><a href="#签约客户端证书" class="headerlink" title="签约客户端证书"></a>签约客户端证书</h2><p><font color="#FF0000"><strong>注意：返回到服务器目录下操作！！！</strong></font><br><code>cd /etc/openvpn/easy-rsa/3.0.3</code><br><code>./easyrsa import-req /etc/openvpn/client/easy-rsa/3.0.3/pki/reqs/ths.req ths</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">/etc/openvpn/easy-rsa/3.0.3/pki/issued/ths.crt</div></pre></td></tr></table></figure></p>
+<p><img src="\images\2019\0428\07.png" alt="07"></p>
+<h2 id="整理一下所有证书"><a href="#整理一下所有证书" class="headerlink" title="整理一下所有证书"></a>整理一下所有证书</h2><h3 id="服务器端证书"><a href="#服务器端证书" class="headerlink" title="服务器端证书"></a>服务器端证书</h3><p><code>mkdir /etc/openvpn/certs</code><br><code>cd /etc/openvpn/certs</code><br><code>cp /etc/openvpn/easy-rsa/3.0.3/pki/ca.crt .</code><br><code>cp /etc/openvpn/easy-rsa/3.0.3/pki/dh.pem .</code><br><code>cp /etc/openvpn/easy-rsa/3.0.3/pki/issued/server.crt .</code><br><code>cp /etc/openvpn/easy-rsa/3.0.3/pki/private/server.key .</code></p>
+<h3 id="客户端证书"><a href="#客户端证书" class="headerlink" title="客户端证书"></a>客户端证书</h3><p><code>mkdir /etc/openvpn/client/ths</code><br><code>cd /etc/openvpn/client/ths</code><br><code>cp /etc/openvpn/easy-rsa/3.0.3/pki/ca.crt .</code><br><code>cp /etc/openvpn/easy-rsa/3.0.3/pki/issued/ths.crt .</code><br><code>cp /etc/openvpn/client/easy-rsa/3.0.3/pki/private/ths.key .</code></p>
+<h1 id="服务器端配置文件"><a href="#服务器端配置文件" class="headerlink" title="服务器端配置文件"></a>服务器端配置文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line">local 192.168.6.23		#填写自己的openvpn服务器ip地址，默认侦听服务器上所有的ip</div><div class="line">port 11094				#侦听端口，默认为1194，据说网上会过滤1194端口流量，我这里修改为11094</div><div class="line">proto tcp				#端口协议，默认udp，开启tcp方便映射转发</div><div class="line">dev tun					#创建一个路由ip隧道,路由模式有tun/tap</div><div class="line">ca /etc/openvpn/certs/ca.crt	#根证书路径</div><div class="line">cert /etc/openvpn/certs/server.crt	#证书</div><div class="line">key /etc/openvpn/certs/server.key	#私钥文件（保密）</div><div class="line">dh /etc/openvpn/certs/dh.pem		#协议交换文件</div><div class="line">ifconfig-pool-persist /etc/openvpn/ipp.txt #记录客户端和虚拟ip的对应关系。当重启OpenVPN时，再次连接的客户端将分配到与上一次分配相同的虚拟IP地址</div><div class="line">server 10.66.66.0 255.255.255.0		#设置服务器端模式，并提供一个VPN子网，以便于从中为客户端分配IP地址。服务器会获取10.66.66.1 </div><div class="line">push &quot;route 192.168.6.0 255.255.255.0&quot;	#推送路由信息到客户端，以允许客户端能够连接到服务器背后的其他私有子网。</div><div class="line">#push &quot;redirect-gateway def1 bypass-dhcp&quot; </div><div class="line"># 启用该指令，所有客户端的默认网关都将重定向到VPN，这将导致诸如web浏览器、DNS查询等所有客户端流量都经过VPN。</div><div class="line">push &quot;dhcp-option DNS 223.5.5.5&quot;	</div><div class="line">push &quot;dhcp-option DNS 223.6.6.6&quot;</div><div class="line">client-to-client		#允许拨号连接vpn的客户端之间相互通信</div><div class="line">keepalive 10 120	# 默认每10秒钟ping一次，如果120秒内都没有收到对方的回复，则表示远程连接已经关闭</div><div class="line">comp-lzo		# 在VPN连接上启用压缩。如果你在此处启用了该指令，那么也应该在每个客户端配置文件中启用它。</div><div class="line">#duplicate-cn	#打开后允许多个客户端使用同一个帐号连接</div><div class="line">user openvpn</div><div class="line">group openvpn</div><div class="line">max-clients 100</div><div class="line">persist-key		</div><div class="line">persist-tun		#通过keepalive检测vpn超时后，当重新启动vpn后，保持tun或者tap设备自动连接状态</div><div class="line">status openvpn-status.log	# 状态日志</div><div class="line">log-append  openvpn.log</div><div class="line">verb 1	#指定日志文件冗余</div><div class="line"># 为日志文件设置适当的冗余级别(0~9)。冗余级别越高，输出的信息越详细。</div><div class="line"># 0 表示静默运行，只记录致命错误。</div><div class="line"># 4 表示合理的常规用法。</div><div class="line"># 5 和 6 可以帮助调试连接错误。</div><div class="line"># 9 表示极度冗余，输出非常详细的日志信息。</div><div class="line">mute 20	#相同类别的信息只有前20条会输出到日志文件中。</div></pre></td></tr></table></figure>
+<h2 id="启动openvpn服务"><a href="#启动openvpn服务" class="headerlink" title="启动openvpn服务"></a>启动openvpn服务</h2><p><code>systemctl start openvpn@server</code></p>
+<h2 id="设置开机自启动服务"><a href="#设置开机自启动服务" class="headerlink" title="设置开机自启动服务"></a>设置开机自启动服务</h2><p><code>systemctl enable openvpn@server</code><br><img src="\images\2019\0428\08.png" alt="08"></p>
+<h1 id="防火墙策略"><a href="#防火墙策略" class="headerlink" title="防火墙策略"></a>防火墙策略</h1><h2 id="开启内核路由转发"><a href="#开启内核路由转发" class="headerlink" title="开启内核路由转发"></a>开启内核路由转发</h2><p><code>echo &quot;net.ipv4.ip_forward = 1&quot; &gt;&gt; /etc/sysctl.conf</code><br><code>sysctl -p</code></p>
+<h2 id="开放vpn监听端口"><a href="#开放vpn监听端口" class="headerlink" title="开放vpn监听端口"></a>开放vpn监听端口</h2><p><code>firewall-cmd --zone=public --add-port=11094/tcp --permanent</code><br><code>iptables -t nat -A POSTROUTING -s 10.66.66.0/24 -o enp2s0f1 -j MASQUERADE</code><br><code>firewall-cmd --reload</code></p>
+<h1 id="客户端测试"><a href="#客户端测试" class="headerlink" title="客户端测试"></a>客户端测试</h1><h2 id="安装Windows客户端"><a href="#安装Windows客户端" class="headerlink" title="安装Windows客户端"></a>安装Windows客户端</h2><p><code>https://build.openvpn.net/downloads/releases/openvpn-install-2.4.7-I607-Win7.exe</code><br><code>https://build.openvpn.net/downloads/releases/openvpn-install-2.4.7-I607-Win10.exe</code><br>将/etc/openvpn/client/ths目录下的ca.crt、ths.crt、ths.key复制到“C:\Program Files\OpenVPN\config”目录下<br>在此目录下新建一个client.ovpn文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">client   </div><div class="line">proto tcp  </div><div class="line">dev tun    </div><div class="line">remote 192.168.6.23 11094</div><div class="line">ca ca.crt   </div><div class="line">cert ths.crt</div><div class="line">key ths.key      </div><div class="line">resolv-retry infinite</div><div class="line">nobind</div><div class="line">mute-replay-warnings</div><div class="line">keepalive 20 120</div><div class="line">comp-lzo</div><div class="line">#user openvpn</div><div class="line">#group openvpn</div><div class="line">persist-key</div><div class="line">persist-tun</div><div class="line">status openvpn-status.log</div><div class="line">log-append openvpn.log</div><div class="line">verb 3</div><div class="line">mute 20</div></pre></td></tr></table></figure></p>
+<p>使用管理员权限启动“OpenVPN GUI”<br><img src="\images\2019\0428\09.png" alt="09"><br><img src="\images\2019\0428\10.png" alt="10"></p>
+<p>参考链接:<br><a href="https://build.openvpn.net/downloads/releases/" target="_blank" rel="external">https://build.openvpn.net/downloads/releases/</a><br><a href="https://www.cnblogs.com/irockcode/p/7587421.html" target="_blank" rel="external">https://www.cnblogs.com/irockcode/p/7587421.html</a><br><a href="https://www.cnblogs.com/tielemao/p/9603696.html" target="_blank" rel="external">https://www.cnblogs.com/tielemao/p/9603696.html</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/01/alipay.jpg" alt="南山小樵 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/arlo/687d8f2c/" rel="next" title="fio 存储性能测试">
+                <i class="fa fa-chevron-left"></i> fio 存储性能测试
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars1.githubusercontent.com/u/32269?v=3&s=460"
+                alt="南山小樵" />
+            
+              <p class="site-author-name" itemprop="name">南山小樵</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">104</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">86</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://music.163.com/playlist?id=17812772&userid=20000278" title="http://music.163.com/playlist?id=17812772&userid=20000278" rel="noopener" target="_blank">网易云音乐</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jimv.iit.im/login" title="http://jimv.iit.im/login" rel="noopener" target="_blank">Jimv虚拟机管理平台</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://man.linuxde.net/" title="http://man.linuxde.net/" rel="noopener" target="_blank">Linux命令大全</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.codecp.org/" title="http://blog.codecp.org/" rel="noopener" target="_blank">勇敢的心</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://msdn.itellyou.cn/" title="http://msdn.itellyou.cn/" rel="noopener" target="_blank">Msdn下载站</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#系统环境"><span class="nav-number">2.</span> <span class="nav-text">系统环境</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#部署openvpn软件"><span class="nav-number">3.</span> <span class="nav-text">部署openvpn软件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装openvpn-amp-easy-rsa-软件"><span class="nav-number">3.1.</span> <span class="nav-text">安装openvpn & easy-rsa 软件</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建证书"><span class="nav-number">4.</span> <span class="nav-text">创建证书</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#创建ca证书"><span class="nav-number">4.1.</span> <span class="nav-text">创建ca证书</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#编辑vars文件，根据自己的环境配置"><span class="nav-number">4.1.1.</span> <span class="nav-text">编辑vars文件，根据自己的环境配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#目录初始化"><span class="nav-number">4.1.2.</span> <span class="nav-text">目录初始化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建服务器证书和key"><span class="nav-number">4.2.</span> <span class="nav-text">创建服务器证书和key</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#签约服务端证书"><span class="nav-number">4.3.</span> <span class="nav-text">签约服务端证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成vpn密钥协议交换文件"><span class="nav-number">4.4.</span> <span class="nav-text">生成vpn密钥协议交换文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建客户端证书"><span class="nav-number">4.5.</span> <span class="nav-text">创建客户端证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#签约客户端证书"><span class="nav-number">4.6.</span> <span class="nav-text">签约客户端证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#整理一下所有证书"><span class="nav-number">4.7.</span> <span class="nav-text">整理一下所有证书</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#服务器端证书"><span class="nav-number">4.7.1.</span> <span class="nav-text">服务器端证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#客户端证书"><span class="nav-number">4.7.2.</span> <span class="nav-text">客户端证书</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#服务器端配置文件"><span class="nav-number">5.</span> <span class="nav-text">服务器端配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#启动openvpn服务"><span class="nav-number">5.1.</span> <span class="nav-text">启动openvpn服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置开机自启动服务"><span class="nav-number">5.2.</span> <span class="nav-text">设置开机自启动服务</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#防火墙策略"><span class="nav-number">6.</span> <span class="nav-text">防火墙策略</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#开启内核路由转发"><span class="nav-number">6.1.</span> <span class="nav-text">开启内核路由转发</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开放vpn监听端口"><span class="nav-number">6.2.</span> <span class="nav-text">开放vpn监听端口</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#客户端测试"><span class="nav-number">7.</span> <span class="nav-text">客户端测试</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装Windows客户端"><span class="nav-number">7.1.</span> <span class="nav-text">安装Windows客户端</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南山小樵</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.2.2</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v6.5.0</div>
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
