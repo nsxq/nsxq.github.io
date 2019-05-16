@@ -108,7 +108,7 @@
 
   <meta property="og:type" content="website">
 <meta property="og:title" content="南山居">
-<meta property="og:url" content="http://islocal.cc/tags/tomcat/index.html">
+<meta property="og:url" content="http://islocal.cc/tags/Tomcat/index.html">
 <meta property="og:site_name" content="南山居">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="南山居">
@@ -118,7 +118,7 @@
 
 
 
-  <link rel="canonical" href="http://islocal.cc/tags/tomcat/"/>
+  <link rel="canonical" href="http://islocal.cc/tags/Tomcat/"/>
 
 
 
@@ -128,7 +128,7 @@
   };
 </script>
 
-  <title>标签: tomcat | 南山居</title>
+  <title>标签: Tomcat | 南山居</title>
   
 
 
@@ -388,7 +388,7 @@
 
     <div id="posts" class="posts-collapse">
       <div class="collection-title">
-        <h1>tomcat<small>标签</small>
+        <h1>Tomcat<small>标签</small>
         </h1>
       </div>
 
@@ -400,9 +400,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/arlo/e35d6a2a/" itemprop="url">
+            <a class="post-title-link" href="/arlo/956f976/" itemprop="url">
               
-                <span itemprop="name">Zabbix(5)通过JMX监控Tomcat</span>
+                <span itemprop="name">将绿色版Tomcat/Nginx注册成服务，实现开机自启动</span>
               
             </a>
         
@@ -410,9 +410,9 @@
 
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-10T16:10:05+08:00"
-              content="2017-10-10" >
-          10-10
+              datetime="2018-04-26T10:28:13+08:00"
+              content="2018-04-26" >
+          04-26
         </time>
       </div>
 
@@ -428,37 +428,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/arlo/fd00fe8d/" itemprop="url">
+            <a class="post-title-link" href="/arlo/42b916ee/" itemprop="url">
               
-                <span itemprop="name">Jenkins持续集成发布时tomcat不能删除目录下文件</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-08-29T14:48:29+08:00"
-              content="2017-08-29" >
-          08-29
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/arlo/d8e5626d/" itemprop="url">
-              
-                <span itemprop="name">Tomcat启动慢原因排查</span>
+                <span itemprop="name">Tomcat多实例部署</span>
               
             </a>
         
@@ -466,9 +438,9 @@
 
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated"
-              datetime="2017-08-17T14:35:07+08:00"
-              content="2017-08-17" >
-          08-17
+              datetime="2017-05-02T13:59:00+08:00"
+              content="2017-05-02" >
+          05-02
         </time>
       </div>
 
@@ -529,7 +501,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">106</span>
+                    <span class="site-state-item-count">107</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1268,6 +1240,59 @@
 
     // handle and trigger popup window;
     $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+'.popup-trigger').click(function(e) {
       e.stopPropagation();
       if (isfetched === false) {
         searchFunc(path, 'local-search-input', 'local-search-result');

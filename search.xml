@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[持续检测端口连通性]]></title>
+    <url>%2Farlo%2F50806164%2F</url>
+    <content type="text"><![CDATA[一个地址端口有时候可以通，有时候不行，telnet只能检测某一时刻的连通状态；为了持续检测，我这边写了一个shell脚本，内容如下。 编写一个非交互式shell检测脚本vim check_port.sh 12345678910111213#!/bin/bashIP=&apos;192.168.100.130&apos;PORT_LIST=&quot;22 8080&quot;TIME_STAMP=`date &quot;+%Y-%m-%d %T&quot;`for PORT in $PORT_LISTdo RESULT=`echo &quot;&quot; | telnet $IP $PORT 2&gt;/dev/null | grep &quot;]&quot; | wc -l` if [ $RESULT -eq 1 ];then echo &quot;$TIME_STAMP $IP的$PORT端口可以连通&quot; &gt;&gt; /tmp/1.txt else echo &quot;$TIME_STAMP $IP的$PORT端口不能连通&quot; &gt;&gt; /tmp/1.txt fidone 添加执行权限chmod +x /opt/check_post.sh 使用crontab定时执行脚本crontab -l 1*/5 * * * * /opt/check_post.sh]]></content>
+      <categories>
+        <category>监控</category>
+      </categories>
+      <tags>
+        <tag>监控</tag>
+        <tag>shell</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[OpenVPN使用用户名密码验证登录]]></title>
     <url>%2Farlo%2Fb525080b%2F</url>
     <content type="text"><![CDATA[书接上文，咱们说到Centos7下OpenVpn服务器搭建 ，使用证书验证，如果偷懒多人使用同一个证书，感觉不是很安全，如果新建多个账号，也不是很方便，所以想着使用用户名密码去验证。使用用户名密码验证的常见做法有两种，一种是借助pam_mysql.so,另一种是使用checkpsw方式，本文使用第二种方式，比较简单。搭建过程和上文基本一样，只需要创建服务器端证书，不需要客户端证书。 修改服务端配置文件修改服务器端配置文件vim /etc/openvpn/server.conf123456789101112131415161718192021222324252627282930313233343536373839local 192.168.6.23port 11094proto tcpdev tunca /etc/openvpn/certs/ca.crtcert /etc/openvpn/certs/server.crtkey /etc/openvpn/certs/server.keydh /etc/openvpn/certs/dh.pemtls-auth ta.key 0cipher AES-256-GCMifconfig-pool-persist /etc/openvpn/ipp.txt#以下四行配置文件未新添加的的auth-user-pass-verify /etc/openvpn/checkpsw.sh via-envverify-client-cert noneusername-as-common-namescript-security 3server 10.66.66.0 255.255.255.0push &quot;route 192.168.6.0 255.255.255.0&quot;push &quot;route 192.168.10.0 255.255.255.0&quot;#push &quot;redirect-gateway def1 bypass-dhcp&quot;push &quot;dhcp-option DNS 223.5.5.5&quot;push &quot;dhcp-option DNS 223.6.6.6&quot;topology subnetclient-to-clientkeepalive 20 120comp-lzoduplicate-cnuser openvpngroup openvpnpersist-keypersist-tunstatus openvpn-status.loglog-append openvpn.logverb 3mute 20 新建一个keytls-auth 在 SSL/TLS 握手包的基础上增加了额外的签名，以提供更高的安全性1openvpn --genkey --secret /etc/openvpn/ta.key 新建shell脚本123456789101112131415161718192021222324252627#!/bin/sh############################################################ checkpsw.sh (C) 2004 Mathias Sundman &lt;mathias@openvpn.se&gt;## This script will authenticate OpenVPN users against# a plain text file. The passfile should simply contain# one row per user with the username first followed by# one or more space(s) or tab(s) and then the password.PASSFILE=&quot;/etc/openvpn/psw-file&quot;LOG_FILE=&quot;/etc/openvpn/openvpn-password.log&quot;TIME_STAMP=`date &quot;+%Y-%m-%d %T&quot;`###########################################################if [ ! -r &quot;$&#123;PASSFILE&#125;&quot; ]; then echo &quot;$&#123;TIME_STAMP&#125;: Could not open password file \&quot;$&#123;PASSFILE&#125;\&quot; for reading.&quot; &gt;&gt; $&#123;LOG_FILE&#125; exit 1fiCORRECT_PASSWORD=`awk &apos;!/^;/&amp;&amp;!/^#/&amp;&amp;$1==&quot;&apos;$&#123;username&#125;&apos;&quot;&#123;print $2;exit&#125;&apos; $&#123;PASSFILE&#125;`if [ &quot;$&#123;CORRECT_PASSWORD&#125;&quot; = &quot;&quot; ]; then echo &quot;$&#123;TIME_STAMP&#125;: User does not exist: username=\&quot;$&#123;username&#125;\&quot;, password=\&quot;$&#123;password&#125;\&quot;.&quot; &gt;&gt; $&#123;LOG_FILE&#125; exit 1fiif [ &quot;$&#123;password&#125;&quot; = &quot;$&#123;CORRECT_PASSWORD&#125;&quot; ]; then echo &quot;$&#123;TIME_STAMP&#125;: Successful authentication: username=\&quot;$&#123;username&#125;\&quot;.&quot; &gt;&gt; $&#123;LOG_FILE&#125; exit 0fiecho &quot;$&#123;TIME_STAMP&#125;: Incorrect password: username=\&quot;$&#123;username&#125;\&quot;, password=\&quot;$&#123;password&#125;\&quot;.&quot; &gt;&gt; $&#123;LOG_FILE&#125;exit 1 赋予脚本权限chmod 755 checkpsw.sh 新建用户密码配置文件psw-file1234#用户名 密码ths1 123456ths2 123456ths3 123456 chmod 600 /etc/openvpn/psw-filechown openvpn.openvpn /etc/openvpn/psw-filetouch /etc/openvpn/openvpn-password.logchown openvpn.openvpn /etc/openvpn/openvpn-password.logchmod 644 /etc/openvpn/openvpn-password.log 重启服务systemctl restart openvpn@serversystemctl enable openvpn@server 客户端测试编辑C:\Program Files\OpenVPN\config\sx3.ovpn12345678910111213141516171819202122232425262728293031323334353637client proto tcp dev tun remote 192.168.6.23 11094ca ca.crt auth-user-pass #使用密码验证，主要是这行tls-auth ta.key 1cipher AES-256-GCMresolv-retry infinitenobindmute-replay-warningskeepalive 20 120comp-lzo#user openvpn#group openvpnpersist-keypersist-tunstatus openvpn-status.loglog-append openvpn.logverb 3mute 20route-method exeroute-delay 2&lt;ca&gt;-----BEGIN CERTIFICATE-----……ABCDEFG……-----END CERTIFICATE-----&lt;/ca&gt;&lt;tls-auth&gt;## 2048 bit OpenVPN static key#-----BEGIN OpenVPN Static key V1-----……ABCDEFG……-----END OpenVPN Static key V1-----&lt;/tls-auth&gt; 客户端测试]]></content>
@@ -705,9 +717,9 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>Windows</tag>
         <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Windows</tag>
         <tag>jdk</tag>
       </tags>
   </entry>

@@ -4,6 +4,28 @@
 
     
   <url>
+    <loc>http://islocal.cc/arlo/50806164/</loc>
+    <lastmod>2019-05-16T06:41:20.880Z</lastmod>
+    <data>
+        <display>
+        <title>持续检测端口连通性</title>
+        <pubTime>2019-05-16T06:24:48.000Z</pubTime>
+        
+        <tag>监控</tag>
+         
+        <tag>shell</tag>
+         
+         
+           
+             
+              <breadCrumb title="监控" url="http://islocal.cc/categories/%E7%9B%91%E6%8E%A7/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/arlo/b525080b/</loc>
     <lastmod>2019-05-15T07:45:03.450Z</lastmod>
     <data>
@@ -1005,11 +1027,11 @@
         <title>JDK环境变量配置</title>
         <pubTime>2017-09-27T06:23:03.000Z</pubTime>
         
-        <tag>Windows</tag>
-         
         <tag>Linux</tag>
          
         <tag>常识</tag>
+         
+        <tag>Windows</tag>
          
         <tag>jdk</tag>
          
