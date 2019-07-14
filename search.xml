@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[jenkins插件“Publish Over SSH”拷贝文件到远程服务器并执行脚本]]></title>
+    <url>%2Farlo%2Fe68b6718%2F</url>
+    <content type="text"><![CDATA[之前的java项目打出来的是war包，通过插件”Deploy to container”部署到tomcat下，近期项目组使用到spring boot项目，打出来的是jar包，需要远程发布，网上找了下，基本上都是通过”Publish Over SSH”插件，将jar包拷贝到远程服务器上，然后通过执行shell脚本启动jar项目，这里记录一下过程。 安装 Publish Over SSH 插件Manage Jenkins –&gt;Manage Plugins–&gt;可选插件–&gt;Publish Over SSH–&gt;直接安装 添加Linux主机Manage Jenkins –&gt;Configure System –&gt;Publish Over SSH这这里我们需要设置远程主机相关信息，如主机名，用户，密码，远程主机目录；高级选项选项中，我们可以选择key和密码两种方式访问远程linux主机，还可以设置跳转机 构建项目构建一个maven项目，其他信息和之前的一样，配置好svn地址，相关用户获取代码。Build阶段参数设置为：-e clean package -Dmaven.test.skip=trueSource Files：需要发布的jar包位置，需要写相对（当前项目目录）路径；如：当前项目名称是monitor-cloud，jar包的位置是/var/lib/jenkins/workspace/monitor-cloud/monitor-gateway/target/monitor-gateway.jar，在Source Files填写 monitor-gateway/target/monitor-gateway.jar即可Remove prefix：表示需要移除的目录，比如这里填写monitor-gateway/target，则表示发布时，只把monitor-gateway.jar.jar发布到远程linux，而不包含monitor-gateway/target目录结构Remote directory：表示需要把编译好的war包发布到远程linux的哪个目录下 (我刚才在全局属性里设置了，这里就留空了)Exec command：需要执行的shell命令，shell命令在远程linux服务器上. 123456789101112131415echo &quot;deploy monitor-gateway.jar&quot; pid=`ps -ef|grep monitor-gateway|grep -v grep|awk &apos;&#123;print $2&#125;&apos;` if [ -n &quot;$pid&quot; ] then echo &apos;The pid: server&apos; $pid &apos; will be killed....&apos; kill -9 $pid echo &apos;The pid: server&apos; $pid &apos; will be start&apos; nohup /usr/local/jdk1.8.0_202/bin/java -jar /usr/local/ths/monitor-gateway.jar &gt; /dev/null &amp; else echo &apos;The pid: server&apos; $pid &apos; not exist , will be start&apos; nohup /usr/local/jdk1.8.0_202/bin/java -jar /usr/local/ths/monitor-gateway.jar &gt; /dev/null &amp;fi echo &apos;The pid: server&apos; $pid &apos; started&apos; 参考：https://blog.csdn.net/l848168/article/details/85261514]]></content>
+      <categories>
+        <category>自动化运维</category>
+      </categories>
+      <tags>
+        <tag>Jenkins</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[持续检测端口连通性]]></title>
     <url>%2Farlo%2F50806164%2F</url>
     <content type="text"><![CDATA[一个地址端口有时候可以通，有时候不行，telnet只能检测某一时刻的连通状态；为了持续检测，我这边写了一个shell脚本，内容如下。 编写一个非交互式shell检测脚本vim check_port.sh 12345678910111213#!/bin/bashIP=&apos;192.168.100.130&apos;PORT_LIST=&quot;22 8080&quot;TIME_STAMP=`date &quot;+%Y-%m-%d %T&quot;`for PORT in $PORT_LISTdo RESULT=`echo &quot;&quot; | telnet $IP $PORT 2&gt;/dev/null | grep &quot;]&quot; | wc -l` if [ $RESULT -eq 1 ];then echo &quot;$TIME_STAMP $IP的$PORT端口可以连通&quot; &gt;&gt; /tmp/1.txt else echo &quot;$TIME_STAMP $IP的$PORT端口不能连通&quot; &gt;&gt; /tmp/1.txt fidone 添加执行权限chmod +x /opt/check_post.sh 使用crontab定时执行脚本crontab -l 1*/5 * * * * /opt/check_post.sh 参考：https://www.jianshu.com/p/92adf516a62d]]></content>
@@ -8,8 +19,8 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>监控</tag>
         <tag>shell</tag>
+        <tag>监控</tag>
       </tags>
   </entry>
   <entry>
@@ -195,8 +206,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -345,7 +356,7 @@
   <entry>
     <title><![CDATA[将绿色版Tomcat/Nginx注册成服务，实现开机自启动]]></title>
     <url>%2Farlo%2F956f976%2F</url>
-    <content type="text"><![CDATA[我们常用的Tomcat，不管是在windows下还是linux下基本上都是绿色版本，解压、启动后直接使用。这就产生了一个问题，不能开机自自动，很不方便，linux下可以添加到/etc/rc.local实现开机自启，windows下也可以添加到开机启动项里；不过注册为系统服务更加方便一些，这里记录一下方法。 注册Tomcat服务检查系统环境确保64位的操作系统下是64位的Jdk1234F:\&gt;java -d64 -versionjava version &quot;1.7.0_80&quot;Java(TM) SE Runtime Environment (build 1.7.0_80-b15)Java HotSpot(TM) 64-Bit Server VM (build 24.80-b11, mixed mode) 使用tomcat自身工具注册服务进入到tomcat bin目录下，执行12345678910111213141516171819#注册服务service.bat install &apos;服务名&apos; #服务名中不能有&quot;-&quot;,&quot;_&quot;，否则在服务中看不到F:\apache-tomcat-7.0.70(zabbix)\bin&gt;service.bat install tomcat7070 Installing the service &apos;tomcat7070&apos; ...Using CATALINA_HOME: &quot;F:\apache-tomcat-7.0.70(zabbix)&quot;Using CATALINA_BASE: &quot;F:\apache-tomcat-7.0.70(zabbix)&quot;Using JAVA_HOME: &quot;C:\Program Files\Java\jdk1.7.0_80&quot;Using JRE_HOME: &quot;C:\Program Files\Java\jdk1.7.0_80\jre&quot;Using JVM: &quot;C:\Program Files\Java\jdk1.7.0_80\jre\bin\server\jvm.dll&quot;The service &apos;tomcat7070&apos; has been installed.#卸载服务service.bat remove &apos;服务名&apos; F:\apache-tomcat-7.0.70(zabbix)\bin&gt;service.bat remove tomcat7070Removing the service &apos;tomcat7070&apos; ...Using CATALINA_BASE: &quot;F:\apache-tomcat-7.0.70(zabbix)&quot;The service &apos;tomcat7070&apos; has been removed 设置服务依赖关系如果项目中有多个tomcat，有先后启动顺序的话，可以使用到服务里的依赖关系,比如tomcat8080启动时候监测tomcat8081是否启动（8080依赖8081），就可以按下边这种方法设置。1sc config &quot;tomcat8080&quot; depend= tomcat8081 注册Nginx服务下载Windows Server 2003 Resource Kit Tools其实我们只需要里边instsrv.exe、srvany.exe这两个工具https://www.microsoft.com/en-IE/download/details.aspx?id=17657 注册Nginx服务安装完上述工具，打开C:\Program Files (x86)\Windows Resource Kits\Tools， 复制srvany.exe到nginx.exe同级目录下。1sc create &quot;Nginx&quot; binPath=&quot;D:\deploy\nginx-1.12.1\srvany.exe&quot; start=auto 导入注册表复制一下内容，保存为.reg格式文件，双击导入到注册表12345Windows Registry Editor Version 5.00 [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Nginx\Parameters] &quot;Application&quot;=&quot;D:\\deploy\\nginx-1.12.1\\nginx.exe&quot; &quot;AppParameters&quot;=&quot;&quot; &quot;AppDirectory&quot;=&quot;D:\\deploy\\nginx-1.12.1&quot; 启动关闭服务1234567# 启动C:\&gt;net start NginxNginx 服务正在启动 .Nginx 服务已经启动成功。# 关闭windows下nginx默认会启动两个进程，如果使用net stop Nginx的话只能关闭一个nginx进程，不能完全关闭taskkill /F /IM nginx.exe 参考资料：http://www.cnblogs.com/xwdreamer/p/3411986.htmlhttp://wlbbswl.iteye.com/blog/840538https://blog.csdn.net/qq_16022261/article/details/53836004http://koda.iteye.com/blog/600725]]></content>
+    <content type="text"><![CDATA[我们常用的Tomcat，不管是在windows下还是linux下基本上都是绿色版本，解压、启动后直接使用。这就产生了一个问题，不能开机自自动，很不方便，linux下可以添加到/etc/rc.local实现开机自启，windows下也可以添加到开机启动项里；不过注册为系统服务更加方便一些，这里记录一下方法。 注册Tomcat服务检查系统环境确保64位的操作系统下是64位的Jdk1234F:\&gt;java -d64 -versionjava version &quot;1.7.0_80&quot;Java(TM) SE Runtime Environment (build 1.7.0_80-b15)Java HotSpot(TM) 64-Bit Server VM (build 24.80-b11, mixed mode) 使用tomcat自身工具注册服务进入到tomcat bin目录下，执行12345678910111213141516171819#注册服务service.bat install &apos;服务名&apos; #服务名中不能有&quot;-&quot;,&quot;_&quot;，否则在服务中看不到F:\apache-tomcat-7.0.70(zabbix)\bin&gt;service.bat install tomcat7070 Installing the service &apos;tomcat7070&apos; ...Using CATALINA_HOME: &quot;F:\apache-tomcat-7.0.70(zabbix)&quot;Using CATALINA_BASE: &quot;F:\apache-tomcat-7.0.70(zabbix)&quot;Using JAVA_HOME: &quot;C:\Program Files\Java\jdk1.7.0_80&quot;Using JRE_HOME: &quot;C:\Program Files\Java\jdk1.7.0_80\jre&quot;Using JVM: &quot;C:\Program Files\Java\jdk1.7.0_80\jre\bin\server\jvm.dll&quot;The service &apos;tomcat7070&apos; has been installed.#卸载服务service.bat remove &apos;服务名&apos; F:\apache-tomcat-7.0.70(zabbix)\bin&gt;service.bat remove tomcat7070Removing the service &apos;tomcat7070&apos; ...Using CATALINA_BASE: &quot;F:\apache-tomcat-7.0.70(zabbix)&quot;The service &apos;tomcat7070&apos; has been removed 设置服务依赖关系如果项目中有多个tomcat，有先后启动顺序的话，可以使用到服务里的依赖关系,比如tomcat8080启动时候监测tomcat8081是否启动（8080依赖8081），就可以按下边这种方法设置。1sc config &quot;tomcat8080&quot; depend= tomcat8081 设置访问自动启动1set autoconfig enabled=&#123;yes|no&#125; 注册Nginx服务下载Windows Server 2003 Resource Kit Tools其实我们只需要里边instsrv.exe、srvany.exe这两个工具https://www.microsoft.com/en-IE/download/details.aspx?id=17657 注册Nginx服务安装完上述工具，打开C:\Program Files (x86)\Windows Resource Kits\Tools， 复制srvany.exe到nginx.exe同级目录下。1sc create &quot;Nginx&quot; binPath=&quot;D:\deploy\nginx-1.12.1\srvany.exe&quot; start=auto 导入注册表复制一下内容，保存为.reg格式文件，双击导入到注册表12345Windows Registry Editor Version 5.00 [HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Nginx\Parameters] &quot;Application&quot;=&quot;D:\\deploy\\nginx-1.12.1\\nginx.exe&quot; &quot;AppParameters&quot;=&quot;&quot; &quot;AppDirectory&quot;=&quot;D:\\deploy\\nginx-1.12.1&quot; 启动关闭服务1234567# 启动C:\&gt;net start NginxNginx 服务正在启动 .Nginx 服务已经启动成功。# 关闭windows下nginx默认会启动两个进程，如果使用net stop Nginx的话只能关闭一个nginx进程，不能完全关闭taskkill /F /IM nginx.exe 参考资料：http://www.cnblogs.com/xwdreamer/p/3411986.htmlhttp://wlbbswl.iteye.com/blog/840538https://blog.csdn.net/qq_16022261/article/details/53836004http://koda.iteye.com/blog/600725]]></content>
       <categories>
         <category>常识</category>
       </categories>
@@ -362,8 +373,8 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>zabbix</tag>
       </tags>
   </entry>
@@ -375,10 +386,10 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
-        <tag>Ansible</tag>
+        <tag>自动化</tag>
         <tag>zabbix</tag>
+        <tag>Ansible</tag>
       </tags>
   </entry>
   <entry>
@@ -462,8 +473,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Sonar</tag>
       </tags>
   </entry>
@@ -547,7 +558,7 @@
   <entry>
     <title><![CDATA[搭建ftp服务器并配置虚拟用户登录]]></title>
     <url>%2Farlo%2F5cd2f164%2F</url>
-    <content type="text"><![CDATA[vsftpd 是“very secure FTP daemon”的缩写，安全性是它的一个最大的特点。本次搭建ftp服务器，采用虚拟用户登录；所谓虚拟用户就是没有使用真实的系统用户，只是通过映射到真实的账户和设置权限的目的。虚拟用户不能登录操作系统。 系统环境CentOS 6.9SELinux disabled 软件安装1yum -y install db4 db4-utils vsftpd 创建虚拟用户的宿主用户1useradd -u 600 -d /data/ftproot -s /sbin/nologin slvftp 创建用户名密码文件12345vim account.txtslftp1xxxxxxslftp2yyyyyy 生成虚拟用户认证文件1234db_load -T -t hash -f ./account.txt /etc/vsftpd/account.db#安全原因，修改认证文件权限chmod 600 /etc/vsftpd/account.db#执行完此操作，建议删除account.txt 配置认证文件1234vim /etc/pam.d/vsftpd.slauth required /lib64/security/pam_userdb.so db=/etc/vsftpd/accountaccount required /lib64/security/pam_userdb.so db=/etc/vsftpd/account#我这里是64位的操作系统，写的是/lib64,如果是32位的操作系统，写成/lib即可 修改配置文件123456789101112131415161718192021222324252627282930vim /etc/vsftpd/vsftpd.conf#虚拟用户权限与匿名用户权限相同，虚拟用户权限单独设定virtual_use_local_privs=NO#服务器独立运行listen=YES#设定不允许匿名访问anonymous_enable=NO#设定本地用户可以访问。注：如使用虚拟宿主用户，在该项目设定为NO的情况下所有虚拟用户将无法访问local_enable=YES#使用户不能离开主目录chroot_list_enable=YESchroot_list_enable=YESchroot_list_file=/etc/vsftpd/chroot_list#设定支持ASCII模式的上传和下载功能ascii_upload_enable=YESascii_download_enable=YES#PAM认证文件名。PAM将根据/etc/pam.d/vsftpd.sl进行认证pam_service_name=vsftpd.sl#设定启用虚拟用户功能guest_enable=YES#指定虚拟用户的宿主用户，CentOS中已经有内置的ftp用户了guest_username=slvftp#设定虚拟用户个人vsftp的CentOS FTP服务文件存放路径。存放虚拟用户个性的CentOS FTP服务文件(配置文件名=虚拟用户名)user_config_dir=/etc/vsftpd/user_config/#配置vsftpd日志（可选）xferlog_enable=YESxferlog_std_format=YESxferlog_file=/var/log/xferlogdual_log_enable=YESvsftpd_log_file=/var/log/vsftpd.log 新建chroot_list空文件1touch /etc/vsftpd/chroot_list 创建虚拟用户的配置目录文件1234567891011121314151617181920212223mkdir /etc/vsftpd/user_config/#虚拟用户配置文件名必须与用户名一致vim /etc/vsftpd/user_config/slftp1guest_username=slvftp #虚拟用户的宿主用户local_root=/data/ftproot/slftp1 #虚拟用户根目录local_enable=YESwrite_enable=YES #写权限anon_umask=022anon_world_readable_only=NOanon_upload_enable=YES #上传权限anon_mkdir_write_enable=YES #创建文件夹权限anon_other_write_enable=YES #其他权限##############vim /etc/vsftpd/user_config/slftp2guest_username=slvftplocal_root=/data/ftproot/slftp2local_enable=YESwrite_enable=YESanon_umask=022anon_world_readable_only=NOanon_upload_enable=YESanon_mkdir_write_enable=YESanon_other_write_enable=YES 创建ftp根目录123mkdir -pv /data/ftproot/slftp&#123;1,2&#125;chmod 700 -R /data/ftprootchown slvftp.slvftp -R /data/ftproot 重启vsftp服务1/etc/init.d/vsftpd restart 防火墙开放端口12iptables -A INPUT -m state --state NEW -m tcp -p tcp --dport 21 -j ACCEPTiptables -A INPUT -m state --state NEW -m tcp -p tcp --dport 20 -j ACCEPT 测试12yum -y install lftplftp user:passwd@127.0.0.1 参考文档：https://dumplings.cc/bu-shu-vsftpyu-pei-zhi-xu-ni-yong-hu-deng-lu/]]></content>
+    <content type="text"><![CDATA[vsftpd 是“very secure FTP daemon”的缩写，安全性是它的一个最大的特点。本次搭建ftp服务器，采用虚拟用户登录；所谓虚拟用户就是没有使用真实的系统用户，只是通过映射到真实的账户和设置权限的目的。虚拟用户不能登录操作系统。 系统环境CentOS 6.9SELinux disabled 软件安装1yum -y install db4 db4-utils vsftpd 创建虚拟用户的宿主用户1useradd -u 600 -d /data/ftproot -s /sbin/nologin slvftp 创建用户名密码文件12345vim account.txtslftp1xxxxxxslftp2yyyyyy 生成虚拟用户认证文件1234db_load -T -t hash -f ./account.txt /etc/vsftpd/account.db#安全原因，修改认证文件权限chmod 600 /etc/vsftpd/account.db#执行完此操作，建议删除account.txt 配置认证文件1234vim /etc/pam.d/vsftpd.slauth required /lib64/security/pam_userdb.so db=/etc/vsftpd/accountaccount required /lib64/security/pam_userdb.so db=/etc/vsftpd/account#我这里是64位的操作系统，写的是/lib64,如果是32位的操作系统，写成/lib即可 修改配置文件12345678910111213141516171819202122232425262728293031323334vim /etc/vsftpd/vsftpd.conf#虚拟用户权限与匿名用户权限相同，虚拟用户权限单独设定virtual_use_local_privs=NO#服务器独立运行listen=YES#设定不允许匿名访问anonymous_enable=NO#设定本地用户可以访问。注：如使用虚拟宿主用户，在该项目设定为NO的情况下所有虚拟用户将无法访问local_enable=YES#使用户不能离开主目录chroot_list_enable=YESchroot_list_enable=YESchroot_list_file=/etc/vsftpd/chroot_list#设定支持ASCII模式的上传和下载功能ascii_upload_enable=YESascii_download_enable=YES#PAM认证文件名。PAM将根据/etc/pam.d/vsftpd.sl进行认证pam_service_name=vsftpd.sl#设定启用虚拟用户功能guest_enable=YES#指定虚拟用户的宿主用户，CentOS中已经有内置的ftp用户了guest_username=slvftp#设定虚拟用户个人vsftp的CentOS FTP服务文件存放路径。存放虚拟用户个性的CentOS FTP服务文件(配置文件名=虚拟用户名)user_config_dir=/etc/vsftpd/user_config/#配置vsftpd日志（可选）xferlog_enable=YESxferlog_std_format=YESxferlog_file=/var/log/xferlogdual_log_enable=YESvsftpd_log_file=/var/log/vsftpd.log#开启被动(PASV)模式pasv_enable=yespasv_min_port=10240pasv_max_port=10250 新建chroot_list空文件1touch /etc/vsftpd/chroot_list 创建虚拟用户的配置目录文件1234567891011121314151617181920212223mkdir /etc/vsftpd/user_config/#虚拟用户配置文件名必须与用户名一致vim /etc/vsftpd/user_config/slftp1guest_username=slvftp #虚拟用户的宿主用户local_root=/data/ftproot/slftp1 #虚拟用户根目录local_enable=YESwrite_enable=YES #写权限anon_umask=022anon_world_readable_only=NOanon_upload_enable=YES #上传权限anon_mkdir_write_enable=YES #创建文件夹权限anon_other_write_enable=YES #其他权限##############vim /etc/vsftpd/user_config/slftp2guest_username=slvftplocal_root=/data/ftproot/slftp2local_enable=YESwrite_enable=YESanon_umask=022anon_world_readable_only=NOanon_upload_enable=YESanon_mkdir_write_enable=YESanon_other_write_enable=YES 创建ftp根目录123mkdir -pv /data/ftproot/slftp&#123;1,2&#125;chmod 700 -R /data/ftprootchown slvftp.slvftp -R /data/ftproot 重启vsftp服务1/etc/init.d/vsftpd restart 防火墙开放端口123456789iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT iptables -A INPUT -p icmp -j ACCEPT iptables -A INPUT -i lo -j ACCEPT iptables -A INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT#主要是下边这两条iptables -A INPUT -m state --state NEW -m tcp -p tcp --dport 21 -j ACCEPTiptables -A INPUT -m state --state NEW -m tcp -p tcp --dport 10240:10250 -j ACCEPT#所有允许规则应该在这条之前iptables -A INPUT -j REJECT --reject-with icmp-host-prohibited 测试12yum -y install lftplftp user:passwd@127.0.0.1 参考文档：https://dumplings.cc/bu-shu-vsftpyu-pei-zhi-xu-ni-yong-hu-deng-lu/]]></content>
       <categories>
         <category>服务器搭建</category>
       </categories>
@@ -603,8 +614,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -629,9 +640,9 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>tomcat</tag>
         <tag>zabbix</tag>
         <tag>监控</tag>
+        <tag>tomcat</tag>
       </tags>
   </entry>
   <entry>
@@ -712,7 +723,7 @@
   <entry>
     <title><![CDATA[JDK环境变量配置]]></title>
     <url>%2Farlo%2F3f60947a%2F</url>
-    <content type="text"><![CDATA[Windows我的jdk安装在 C:\Program Files\Java\jdk1.8.0_141 目录下，以下为配置过程：1.我的电脑-（右键）属性-高级系统设置-高级-环境变量2.系统变量-新建12变量名：JAVA_HOME变量值：C:\Program Files\Java\jdk1.8.0_141 12变量名：CLASSPATH变量值：%JAVA_HOME%\lib\tools.jar;%JAVA_HOME%\lib\dt.jar 12变量名：Path变量值：C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;E:\Program Files\TortoiseSVN\bin;%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin Linux编辑/etc/profile 文件，在文件最后添加以下内容123export JAVA_HOME=/usr/local/jdk1.8.0_112/export CLASSPATH=.:$JAVA_HOME/lib/:$JAVA_HOME/jre/lib/export PATH=$JAVA_HOME/bin:$PATH source /etc/profile 保留系统以前自己配置的项，不要动！]]></content>
+    <content type="text"><![CDATA[Windows我的jdk安装在 C:\Program Files\Java\jdk1.8.0_202 目录下，以下为配置过程：1.我的电脑-（右键）属性-高级系统设置-高级-环境变量2.系统变量-新建12变量名：JAVA_HOME变量值：C:\Program Files\Java\jdk1.8.0_202 12变量名：CLASSPATH变量值：%JAVA_HOME%\lib\tools.jar;%JAVA_HOME%\lib\dt.jar 12变量名：Path变量值：C:\Program Files (x86)\Intel\iCLS Client\;C:\Program Files\Intel\iCLS Client\;%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;%SYSTEMROOT%\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x86;C:\Program Files (x86)\Intel\OpenCL SDK\2.0\bin\x64;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;E:\Program Files\TortoiseSVN\bin;%JAVA_HOME%\bin;%JAVA_HOME%\jre\bin Linux编辑/etc/profile 文件，在文件最后添加以下内容123export JAVA_HOME=/usr/local/jdk1.8.0_202/export CLASSPATH=.:$JAVA_HOME/lib/:$JAVA_HOME/jre/lib/export PATH=$JAVA_HOME/bin:$PATH source /etc/profile 保留系统以前自己配置的项，不要动！]]></content>
       <categories>
         <category>常识</category>
       </categories>
@@ -743,8 +754,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
         <tag>tomcat</tag>
       </tags>
@@ -770,8 +781,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -783,8 +794,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -834,8 +845,8 @@
       <tags>
         <tag>集群</tag>
         <tag>数据库</tag>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
       </tags>
   </entry>
   <entry>
@@ -847,8 +858,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
       </tags>
   </entry>
   <entry>
@@ -860,8 +871,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
       </tags>
   </entry>
   <entry>
@@ -910,8 +921,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -923,8 +934,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -936,8 +947,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -949,8 +960,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -962,8 +973,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>expect</tag>
         <tag>脚本</tag>
       </tags>
@@ -1017,15 +1028,15 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>脚本</tag>
         <tag>shell</tag>
+        <tag>脚本</tag>
         <tag>linux常识</tag>
       </tags>
   </entry>
   <entry>
     <title><![CDATA[Oracle 多实例启动]]></title>
     <url>%2Farlo%2F6b9bbb19%2F</url>
-    <content type="text"><![CDATA[oracle 服务器上配置了两个实例，orcl和sx21，启动服务的时候需要手动修改一下环境变量ORACLE_SID,在此记录一下。 手动启动oracle 用户的环境变量.bash_profile12345678ORACLE_BASE=/u01/app/oracleORACLE_HOME=$ORACLE_BASE/product/11.1.0/db_1ORACLE_SID=orclPATH=$PATH:$ORACLE_HOME/bin:$HOME/binLD_LIBRARY_PATH=$ORACLE_HOME/libexport PATH ORACLE_BASE ORACLE_HOME ORACLE_SID PATH LD_LIBRARY_PATHexport LANG=zh_CN.UTF-8export NLS_LANG=AMERICAN_AMERICA.ZHS16GBK 查看环境变量1234[oracle@localhost ~]$ echo $ORACLE_HOME/u01/app/oracle/product/11.1.0/db_1[oracle@localhost ~]$ echo $ORACLE_SIDorcl 启动oracle服务12345su - oraclesqlplus /nologsql&gt; conn /as sysdbasql&gt; startupsql&gt; exit 修改ORACLE_SID环境变量，再次执行第3步的启动操作1export ORACLE_SID=SX21 启动监听服务1lsnrctl start 验证1[oracle@localhost ~]$ sqlplus sys/password@SX21 as sysdba 自动启动修改控制文件1234vim /etc/orataborcl:/u01/app/oracle/product/11.1.0/db_1:Ysx21:/u01/app/oracle/product/11.1.0/db_1:YCQ:/u01/app/oracle/product/11.1.0/db_1:Y 修改dbstart文件修改第80行: ORACLE_HOME_LISTNER=$1为ORACLE_HOME_LISTNER=$ORACLE_HOME1234vim /u01/app/oracle/product/11.1.0/db_1/bin/dbstart……ORACLE_HOME_LISTNER=$ORACLE_HOME …… 修改dbshut文件修改第50行: ORACLE_HOME_LISTNER=$1为ORACLE_HOME_LISTNER=$ORACLE_HOME1234vim /u01/app/oracle/product/11.1.0/db_1/bin/dbshut……ORACLE_HOME_LISTNER=$ORACLE_HOME…… 修改开机启动文件12vim /etc/rc.localsu - oracle -lc &quot;/u01/app/oracle/product/11.1.0/db_1/bin/dbstart&quot; 常用的三个图形控制如下启动em控制台123emctl start dbconsole#添加到开机启动文件中su - oracle -lc &quot;$ORACLE_HOME/bin/emctl start dbconsole&quot; 创建数据库1dbca 配置监听12netcanetmgr]]></content>
+    <content type="text"><![CDATA[oracle 服务器上配置了两个实例，orcl和sx21，启动服务的时候需要手动修改一下环境变量ORACLE_SID,在此记录一下。 手动启动oracle 用户的环境变量.bash_profile12345678ORACLE_BASE=/u01/app/oracleORACLE_HOME=$ORACLE_BASE/product/11.1.0/db_1ORACLE_SID=orclPATH=$PATH:$ORACLE_HOME/bin:$HOME/binLD_LIBRARY_PATH=$ORACLE_HOME/libexport PATH ORACLE_BASE ORACLE_HOME ORACLE_SID PATH LD_LIBRARY_PATHexport LANG=zh_CN.UTF-8export NLS_LANG=AMERICAN_AMERICA.ZHS16GBK 查看环境变量1234[oracle@localhost ~]$ echo $ORACLE_HOME/u01/app/oracle/product/11.1.0/db_1[oracle@localhost ~]$ echo $ORACLE_SIDorcl 启动oracle服务12345su - oraclesqlplus /nologsql&gt; conn /as sysdbasql&gt; startupsql&gt; exit 修改ORACLE_SID环境变量，再次执行第3步的启动操作1export ORACLE_SID=SX21 启动监听服务1lsnrctl start 验证1[oracle@localhost ~]$ sqlplus sys/password@SX21 as sysdba 自动启动修改控制文件1234vim /etc/orataborcl:/u01/app/oracle/product/11.1.0/db_1:Ysx21:/u01/app/oracle/product/11.1.0/db_1:YCQ:/u01/app/oracle/product/11.1.0/db_1:Y 修改dbstart文件修改第80行: ORACLE_HOME_LISTNER=$1为ORACLE_HOME_LISTNER=$ORACLE_HOME1234vim /u01/app/oracle/product/11.1.0/db_1/bin/dbstart……ORACLE_HOME_LISTNER=$ORACLE_HOME …… 修改dbshut文件修改第50行: ORACLE_HOME_LISTNER=$1为ORACLE_HOME_LISTNER=$ORACLE_HOME1234vim /u01/app/oracle/product/11.1.0/db_1/bin/dbshut……ORACLE_HOME_LISTNER=$ORACLE_HOME…… 修改开机启动文件123vim /etc/rc.localsu - oracle -lc &quot;/u01/app/oracle/product/11.1.0/db_1/bin/lsnrctl&quot;su - oracle -lc &quot;/u01/app/oracle/product/11.1.0/db_1/bin/dbstart&quot; 常用的三个图形控制如下启动em控制台123emctl start dbconsole#添加到开机启动文件中su - oracle -lc &quot;$ORACLE_HOME/bin/emctl start dbconsole&quot; 创建数据库1dbca 配置监听12netcanetmgr]]></content>
       <categories>
         <category>数据库</category>
       </categories>
@@ -1088,8 +1099,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -1101,8 +1112,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Cobbler</tag>
       </tags>
   </entry>

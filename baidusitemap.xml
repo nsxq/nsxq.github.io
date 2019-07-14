@@ -4,6 +4,120 @@
 
     
   <url>
+    <loc>http://islocal.cc/arlo/e68b6718/</loc>
+    <lastmod>2019-07-14T06:58:50.706Z</lastmod>
+    <data>
+        <display>
+        <title>jenkins插件“Publish Over SSH”拷贝文件到远程服务器并执行脚本</title>
+        <pubTime>2019-07-14T06:06:27.000Z</pubTime>
+        
+        <tag>Jenkins</tag>
+         
+         
+           
+             
+              <breadCrumb title="自动化运维" url="http://islocal.cc/categories/%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://islocal.cc/arlo/956f976/</loc>
+    <lastmod>2019-07-12T06:15:33.795Z</lastmod>
+    <data>
+        <display>
+        <title>将绿色版Tomcat/Nginx注册成服务，实现开机自启动</title>
+        <pubTime>2018-04-26T02:28:13.000Z</pubTime>
+        
+        <tag>Tomcat</tag>
+         
+        <tag>Nginx</tag>
+         
+         
+           
+             
+              <breadCrumb title="常识" url="http://islocal.cc/categories/%E5%B8%B8%E8%AF%86/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://islocal.cc/arlo/3f60947a/</loc>
+    <lastmod>2019-07-12T00:17:31.621Z</lastmod>
+    <data>
+        <display>
+        <title>JDK环境变量配置</title>
+        <pubTime>2017-09-27T06:23:03.000Z</pubTime>
+        
+        <tag>Linux</tag>
+         
+        <tag>常识</tag>
+         
+        <tag>Windows</tag>
+         
+        <tag>jdk</tag>
+         
+         
+           
+             
+              <breadCrumb title="常识" url="http://islocal.cc/categories/%E5%B8%B8%E8%AF%86/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://islocal.cc/arlo/6b9bbb19/</loc>
+    <lastmod>2019-05-25T12:28:37.304Z</lastmod>
+    <data>
+        <display>
+        <title>Oracle 多实例启动</title>
+        <pubTime>2017-05-18T07:51:16.000Z</pubTime>
+        
+        <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
+         
+         
+           
+             
+              <breadCrumb title="数据库" url="http://islocal.cc/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://islocal.cc/arlo/5cd2f164/</loc>
+    <lastmod>2019-05-20T08:46:24.501Z</lastmod>
+    <data>
+        <display>
+        <title>搭建ftp服务器并配置虚拟用户登录</title>
+        <pubTime>2017-12-06T07:32:21.000Z</pubTime>
+        
+        <tag>ftp</tag>
+         
+        <tag>vsftp</tag>
+         
+        <tag>服务器</tag>
+         
+         
+           
+             
+              <breadCrumb title="服务器搭建" url="http://islocal.cc/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/arlo/50806164/</loc>
     <lastmod>2019-05-16T06:47:30.305Z</lastmod>
     <data>
@@ -11,9 +125,9 @@
         <title>持续检测端口连通性</title>
         <pubTime>2019-05-16T06:24:48.000Z</pubTime>
         
-        <tag>监控</tag>
-         
         <tag>shell</tag>
+         
+        <tag>监控</tag>
          
          
            
@@ -295,28 +409,6 @@
 
     
   <url>
-    <loc>http://islocal.cc/arlo/956f976/</loc>
-    <lastmod>2018-12-25T02:59:58.635Z</lastmod>
-    <data>
-        <display>
-        <title>将绿色版Tomcat/Nginx注册成服务，实现开机自启动</title>
-        <pubTime>2018-04-26T02:28:13.000Z</pubTime>
-        
-        <tag>Tomcat</tag>
-         
-        <tag>Nginx</tag>
-         
-         
-           
-             
-              <breadCrumb title="常识" url="http://islocal.cc/categories/%E5%B8%B8%E8%AF%86/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://islocal.cc/arlo/9f698189/</loc>
     <lastmod>2018-12-19T02:18:55.916Z</lastmod>
     <data>
@@ -346,9 +438,9 @@
         <title>jenkins 持续集成环境搭建</title>
         <pubTime>2017-04-27T06:04:11.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Jenkins</tag>
          
@@ -647,9 +739,9 @@
         <title>修改Mariadb数据库存储路径</title>
         <pubTime>2018-09-21T06:30:50.000Z</pubTime>
         
-        <tag>Mariadb</tag>
-         
         <tag>Mysql</tag>
+         
+        <tag>Mariadb</tag>
          
         <tag>Troubleshooting</tag>
          
@@ -1020,32 +1112,6 @@
 
     
   <url>
-    <loc>http://islocal.cc/arlo/3f60947a/</loc>
-    <lastmod>2018-06-01T03:31:45.010Z</lastmod>
-    <data>
-        <display>
-        <title>JDK环境变量配置</title>
-        <pubTime>2017-09-27T06:23:03.000Z</pubTime>
-        
-        <tag>Linux</tag>
-         
-        <tag>常识</tag>
-         
-        <tag>Windows</tag>
-         
-        <tag>jdk</tag>
-         
-         
-           
-             
-              <breadCrumb title="常识" url="http://islocal.cc/categories/%E5%B8%B8%E8%AF%86/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://islocal.cc/arlo/f49b27ae/</loc>
     <lastmod>2018-06-01T03:08:26.472Z</lastmod>
     <data>
@@ -1110,28 +1176,6 @@
 
     
   <url>
-    <loc>http://islocal.cc/arlo/6b9bbb19/</loc>
-    <lastmod>2018-05-18T10:54:18.717Z</lastmod>
-    <data>
-        <display>
-        <title>Oracle 多实例启动</title>
-        <pubTime>2017-05-18T07:51:16.000Z</pubTime>
-        
-        <tag>数据库</tag>
-         
-        <tag>Oracle</tag>
-         
-         
-           
-             
-              <breadCrumb title="数据库" url="http://islocal.cc/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://islocal.cc/arlo/56125275/</loc>
     <lastmod>2018-05-04T10:21:16.216Z</lastmod>
     <data>
@@ -1161,9 +1205,9 @@
         <title>Zabbix(9)结合sensor监控cpu温度</title>
         <pubTime>2018-04-19T10:42:47.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>zabbix</tag>
          
@@ -1185,13 +1229,13 @@
         <title>Zabbix(8)使用ansible批量部署zabbix agent</title>
         <pubTime>2018-04-17T07:04:45.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
          
-        <tag>Ansible</tag>
+        <tag>自动化</tag>
          
         <tag>zabbix</tag>
+         
+        <tag>Ansible</tag>
          
          
            
@@ -1233,11 +1277,11 @@
         <title>Zabbix(5)通过JMX监控Tomcat</title>
         <pubTime>2017-10-10T08:10:05.000Z</pubTime>
         
-        <tag>tomcat</tag>
-         
         <tag>zabbix</tag>
          
         <tag>监控</tag>
+         
+        <tag>tomcat</tag>
          
          
            
@@ -1321,9 +1365,9 @@
         <title>Sonar代码质量管理工具安装</title>
         <pubTime>2018-02-02T09:54:03.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Sonar</tag>
          
@@ -1386,30 +1430,6 @@
 
     
   <url>
-    <loc>http://islocal.cc/arlo/5cd2f164/</loc>
-    <lastmod>2018-03-15T07:17:45.960Z</lastmod>
-    <data>
-        <display>
-        <title>搭建ftp服务器并配置虚拟用户登录</title>
-        <pubTime>2017-12-06T07:32:21.000Z</pubTime>
-        
-        <tag>ftp</tag>
-         
-        <tag>vsftp</tag>
-         
-        <tag>服务器</tag>
-         
-         
-           
-             
-              <breadCrumb title="服务器搭建" url="http://islocal.cc/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://islocal.cc/arlo/ffa6a879/</loc>
     <lastmod>2018-03-15T07:17:45.959Z</lastmod>
     <data>
@@ -1417,9 +1437,9 @@
         <title>在已存在的目录中增加一层路径</title>
         <pubTime>2017-05-25T09:02:45.000Z</pubTime>
         
-        <tag>脚本</tag>
-         
         <tag>shell</tag>
+         
+        <tag>脚本</tag>
          
         <tag>linux常识</tag>
          
@@ -1441,9 +1461,9 @@
         <title>使用 Cobbler 自动化和管理系统安装</title>
         <pubTime>2017-04-20T13:45:06.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Cobbler</tag>
          
@@ -1764,9 +1784,9 @@
          
         <tag>数据库</tag>
          
-        <tag>Mariadb</tag>
-         
         <tag>Mysql</tag>
+         
+        <tag>Mariadb</tag>
          
          
            
@@ -1788,9 +1808,9 @@
         
         <tag>数据库</tag>
          
-        <tag>Mariadb</tag>
-         
         <tag>Mysql</tag>
+         
+        <tag>Mariadb</tag>
          
          
            
@@ -1812,9 +1832,9 @@
         
         <tag>数据库</tag>
          
-        <tag>Mariadb</tag>
-         
         <tag>Mysql</tag>
+         
+        <tag>Mariadb</tag>
          
          
            
@@ -1927,9 +1947,9 @@
         <title>Jenkins邮件通知配置</title>
         <pubTime>2017-08-22T08:36:52.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Jenkins</tag>
          
@@ -1951,9 +1971,9 @@
         <title>Jenkins持续集成发布时tomcat不能删除目录下文件</title>
         <pubTime>2017-08-29T06:48:29.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Jenkins</tag>
          
@@ -1977,9 +1997,9 @@
         <title>Jenkins打包不能发现本地仓库包</title>
         <pubTime>2017-08-17T07:48:30.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Jenkins</tag>
          
@@ -2001,9 +2021,9 @@
         <title>Jenkins使用Publish Over CIFS插件实现静态页面部署到Windows服务器</title>
         <pubTime>2017-10-24T01:42:19.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Jenkins</tag>
          
@@ -2069,9 +2089,9 @@
         <title>Except实践之 修改主机密码&添加用户&ssh免密码验证</title>
         <pubTime>2017-06-18T08:35:04.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>expect</tag>
          
@@ -2117,9 +2137,9 @@
         <title>Ansible 模块篇</title>
         <pubTime>2017-06-21T06:22:00.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Ansible</tag>
          
@@ -2141,9 +2161,9 @@
         <title>Ansible 入门篇</title>
         <pubTime>2017-06-21T06:10:50.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Ansible</tag>
          
@@ -2165,9 +2185,9 @@
         <title>Ansible Playbook入门篇</title>
         <pubTime>2017-06-22T01:04:14.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Ansible</tag>
          
@@ -2189,9 +2209,9 @@
         <title>Aansible palybook 创建lvm并自动挂载</title>
         <pubTime>2017-06-27T10:03:12.000Z</pubTime>
         
-        <tag>自动化</tag>
-         
         <tag>运维</tag>
+         
+        <tag>自动化</tag>
          
         <tag>Ansible</tag>
          
