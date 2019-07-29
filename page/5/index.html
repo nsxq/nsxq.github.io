@@ -376,6 +376,186 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://islocal.cc/arlo/551cdbc9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="南山小樵">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/32269?v=3&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南山居">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/arlo/551cdbc9/" class="post-title-link" itemprop="http://islocal.cc/page/5/index.html">使用wgrib2将GFS数据导入到mysql</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-03-15 11:27:33" itemprop="dateCreated datePublished" datetime="2018-03-15T11:27:33+08:00">2018-03-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2018-08-08 10:44:44" itemprop="dateModified" datetime="2018-08-08T10:44:44+08:00">2018-08-08</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/大气模型/" itemprop="url" rel="index"><span itemprop="name">大气模型</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="GFS数据来源"><a href="#GFS数据来源" class="headerlink" title="GFS数据来源"></a>GFS数据来源</h1><blockquote>
+<p>数据来源采自美国国家环境预报中心的GFS(全球预报系统)，该系统每天发布4次全球范围的气象数据，分辨率最高可达到0.25° x 0.25°，精度还是比较可观的。<br>GFS数据提供FTP下载方式：<a href="http://www.ftp.ncep.noaa.gov/data/nccf/com/gfs/prod/">http://www.ftp.ncep.noaa.gov/data/nccf/com/gfs/prod/</a><br>每次发布的数据保存在命名为gfs.YYYYMMDDHH的文件夹中。本次需要的数据精度为0.25°（0p25），所以数据的文件名为：gfs.t{HH}z.pgrb2.0p25.f{XXX}<br>其中HH表示发布的时间，XXX表示未来几小时的预报数据。例如gfs.t00z.pgrb2.0p25.f001 表示0时发布的未来1小时气象数据信息。<br>那么问题来了，这个文件太大了，因为分辨率比较高，每个文件高达200多MB，不仅下载速度慢，处理慢，对存储空间也是一个考验。<br>于是找到了一个可以在线过滤要下载数据的地址：<br><a href="http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl">http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p25.pl</a><br>这个网站允许用户仅下载过滤后的文件，并提供下载网址，这样文件就会小很多。<br>例如，在本项目中，仅需要下载降雨数据（PWAT），并且经纬度范围为特定区域，每次发布的数据全部下载下来也才8M多点。<br>那么要想获得GRIB文件中的数据，则需要用到一个软件wgrib2,，该软件在ncep网站上提供源码下载。</p>
+</blockquote>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/arlo/551cdbc9/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://islocal.cc/arlo/d9547628/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1966,184 +2146,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://islocal.cc/arlo/e07eb088/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="南山小樵">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/32269?v=3&s=460">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="南山居">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/arlo/e07eb088/" class="post-title-link" itemprop="http://islocal.cc/page/5/index.html">Oracle RAC环境搭建(Oracle Linux 6.9+Oracle 11g R2+FreeNas)</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2017-11-23 08:51:44" itemprop="dateCreated datePublished" datetime="2017-11-23T08:51:44+08:00">2017-11-23</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2018-11-30 10:27:24" itemprop="dateModified" datetime="2018-11-30T10:27:24+08:00">2018-11-30</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>捣腾Oracle RAC环境已经半月有余，从对RAC一无所知到环境搭建成功，期间遇到很多坑，填了很多坑；特写此篇，记录一下搭建的过程，以备忘！话不多说，开干！<br><img src="/images/2017/1123/00.png" alt="rac"><br>网络环境：<br>网络分为三个部分，Public网络用于访问业务应用，Priv网络用于检测心跳，Storge网络用于连接存储；VIP，rac-scan网络应与Public网络在同一网段<br>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/arlo/e07eb088/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-         
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2195,7 +2197,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">108</span>
+                    <span class="site-state-item-count">109</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>

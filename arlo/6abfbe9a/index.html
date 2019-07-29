@@ -1,0 +1,1462 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next muse" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="IPMI介绍 IPMI（Intelligent Platform Management Interface）即智能平台管理接口是使硬件管理具备“智能化”的新一代通用接口标准。用户可以利用 IPMI 监视服务器的物理特征，如温度、电压、电扇工作状态、电源供应以及机箱入侵等。Ipmi 最大的优势在于它是独立于 CPU BIOS 和 OS 的，所以用户无论在开机还是关机的状态下，只要接通电源就可以实现对">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Zabbix(10)使用zabbix监控IPMI">
+<meta property="og:url" content="http://islocal.cc/arlo/6abfbe9a/index.html">
+<meta property="og:site_name" content="南山居">
+<meta property="og:description" content="IPMI介绍 IPMI（Intelligent Platform Management Interface）即智能平台管理接口是使硬件管理具备“智能化”的新一代通用接口标准。用户可以利用 IPMI 监视服务器的物理特征，如温度、电压、电扇工作状态、电源供应以及机箱入侵等。Ipmi 最大的优势在于它是独立于 CPU BIOS 和 OS 的，所以用户无论在开机还是关机的状态下，只要接通电源就可以实现对">
+<meta property="og:image" content="http://islocal.cc/\images\2019\0729\01.png">
+<meta property="og:image" content="http://islocal.cc/\images\2019\0729\02.png">
+<meta property="og:image" content="http://islocal.cc/\images\2019\0729\03.png">
+<meta property="og:image" content="http://islocal.cc/\images\2019\0729\04.png">
+<meta property="og:image" content="http://islocal.cc/\images\2019\0729\05.png">
+<meta property="og:image" content="http://islocal.cc/\images\2019\0729\06.png">
+<meta property="og:image" content="http://islocal.cc/\images\2019\0729\07.png">
+<meta property="og:image" content="http://islocal.cc/\images\2019\0729\08.png">
+<meta property="og:updated_time" content="2019-07-29T09:03:17.790Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Zabbix(10)使用zabbix监控IPMI">
+<meta name="twitter:description" content="IPMI介绍 IPMI（Intelligent Platform Management Interface）即智能平台管理接口是使硬件管理具备“智能化”的新一代通用接口标准。用户可以利用 IPMI 监视服务器的物理特征，如温度、电压、电扇工作状态、电源供应以及机箱入侵等。Ipmi 最大的优势在于它是独立于 CPU BIOS 和 OS 的，所以用户无论在开机还是关机的状态下，只要接通电源就可以实现对">
+<meta name="twitter:image" content="http://islocal.cc/\images\2019\0729\01.png">
+
+
+
+
+
+
+  <link rel="canonical" href="http://islocal.cc/arlo/6abfbe9a/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Zabbix(10)使用zabbix监控IPMI | 南山居</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">南山居</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://islocal.cc/arlo/6abfbe9a/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="南山小樵">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/32269?v=3&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南山居">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Zabbix(10)使用zabbix监控IPMI
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-29 13:54:38 / 修改时间：17:03:17" itemprop="dateCreated datePublished" datetime="2019-07-29T13:54:38+08:00">2019-07-29</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/监控/" itemprop="url" rel="index"><span itemprop="name">监控</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="IPMI介绍"><a href="#IPMI介绍" class="headerlink" title="IPMI介绍"></a>IPMI介绍</h1><p> IPMI（Intelligent Platform Management Interface）即智能平台管理接口是使硬件管理具备“智能化”的新一代通用接口标准。用户可以利用 IPMI 监视服务器的物理特征，如温度、电压、电扇工作状态、电源供应以及机箱入侵等。Ipmi 最大的优势在于它是独立于 CPU BIOS 和 OS 的，所以用户无论在开机还是关机的状态下，只要接通电源就可以实现对服务器的监控。Ipmi 是一种规范的标准，其中最重要的物理部件就是BMC(Baseboard Management Controller 如图1)，一种嵌入式管理微控制器，它相当于整个平台管理的“大脑”，通过它 ipmi 可以监控各个传感器的数据并记录各种事件的日志。 </p>
+<a id="more"></a>
+<h1 id="配置服务器IPMI"><a href="#配置服务器IPMI" class="headerlink" title="配置服务器IPMI"></a>配置服务器IPMI</h1><p>使用服务器默认的ipmi地址登录，然后进入到ipmi登录界面，修改规划的ip地址，我这里以浪潮服务器为例</p>
+<p><img src="\images\2019\0729\01.png" alt="01"></p>
+<h1 id="修改zabbix-server配置文件"><a href="#修改zabbix-server配置文件" class="headerlink" title="修改zabbix server配置文件"></a>修改zabbix server配置文件</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sed -i &apos;/# StartIPMIPollers=0/aStartIPMIPollers=3&apos; /etc/zabbix/zabbix_server.conf</div></pre></td></tr></table></figure>
+<p><code>/etc/init.d/zabbix-server restart</code></p>
+<h1 id="安装IPMI相关软件"><a href="#安装IPMI相关软件" class="headerlink" title="安装IPMI相关软件"></a>安装IPMI相关软件</h1><p><code>yum -y install OpenIPMI OpenIPMI-devel ipmitool freeipmi</code></p>
+<h1 id="获取IPMI传感器参数"><a href="#获取IPMI传感器参数" class="headerlink" title="获取IPMI传感器参数"></a>获取IPMI传感器参数</h1><p><code>ipmitool -I lanplus -H 10.206.2.52 -U admin -P passwd sensor</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div></pre></td><td class="code"><pre><div class="line">CPU0_Temp        | 55.000     | degrees C  | ok    | na        | na        | na        | 101.000   | 103.000   | na        </div><div class="line">CPU1_Temp        | 52.000     | degrees C  | ok    | na        | na        | na        | 101.000   | 103.000   | na        </div><div class="line">PCH_Temp         | 50.000     | degrees C  | ok    | na        | na        | na        | 95.000    | 100.000   | na        </div><div class="line">DIMMG0_Temp      | 45.000     | degrees C  | ok    | na        | na        | na        | 83.000    | 93.000    | na        </div><div class="line">DIMMG1_Temp      | 43.000     | degrees C  | ok    | na        | na        | na        | 83.000    | 93.000    | na        </div><div class="line">Inlet_Temp       | 25.000     | degrees C  | ok    | na        | na        | na        | 40.000    | 42.000    | na        </div><div class="line">Outlet_Temp      | 48.000     | degrees C  | ok    | na        | na        | na        | na        | na        | na        </div><div class="line">SYS0_Temp        | 42.000     | degrees C  | ok    | na        | na        | na        | na        | na        | na        </div><div class="line">SYS1_Temp        | 35.000     | degrees C  | ok    | na        | na        | na        | na        | na        | na        </div><div class="line">RAID_Temp        | na         | degrees C  | na    | na        | na        | na        | 105.000   | 115.000   | na        </div><div class="line">GPU0_Temp        | na         | degrees C  | na    | na        | na        | na        | 82.000    | 92.000    | na        </div><div class="line">GPU1_Temp        | na         | degrees C  | na    | na        | na        | na        | 82.000    | 92.000    | na        </div><div class="line">MIC0_Temp        | na         | degrees C  | na    | na        | na        | na        | 104.000   | 114.000   | na        </div><div class="line">MIC1_Temp        | na         | degrees C  | na    | na        | na        | na        | 104.000   | 114.000   | na        </div><div class="line">SYS_VCCIO        | 0.950      | Volts      | ok    | 0.690     | 0.770     | 0.850     | 1.170     | 1.250     | 1.330     </div><div class="line">SYS_12V          | 12.126     | Volts      | ok    | 9.024     | 9.776     | 10.528    | 13.536    | 14.288    | 15.040    </div><div class="line">SYS_3.3V         | 3.360      | Volts      | ok    | 2.660     | 2.800     | 2.940     | 3.658     | 3.798     | 3.938     </div><div class="line">SYS_5V           | 5.220      | Volts      | ok    | 3.888     | 4.176     | 4.464     | 5.544     | 5.832     | 6.120     </div><div class="line">PCH_P1V05        | 1.050      | Volts      | ok    | 0.770     | 0.850     | 0.930     | 1.170     | 1.250     | 1.330     </div><div class="line">PCH_P1V5         | 1.540      | Volts      | ok    | 1.180     | 1.260     | 1.340     | 1.670     | 1.750     | 1.830     </div><div class="line">CPU0_VCORE       | 1.770      | Volts      | ok    | 1.040     | 1.120     | 1.200     | 2.300     | 2.380     | 2.460     </div><div class="line">CPU1_VCORE       | 1.780      | Volts      | ok    | 1.040     | 1.120     | 1.200     | 2.300     | 2.380     | 2.460     </div><div class="line">CPU0_DDR_VDDQAB  | 1.210      | Volts      | ok    | 0.910     | 0.990     | 1.070     | 1.330     | 1.410     | 1.490     </div><div class="line">CPU0_DDR_VDDQCD  | 1.230      | Volts      | ok    | 0.910     | 0.990     | 1.070     | 1.330     | 1.410     | 1.490     </div><div class="line">CPU1_DDR_VDDQEF  | 1.230      | Volts      | ok    | 0.910     | 0.990     | 1.070     | 1.330     | 1.410     | 1.490     </div><div class="line">CPU1_DDR_VDDQGH  | 1.220      | Volts      | ok    | 0.910     | 0.990     | 1.070     | 1.330     | 1.410     | 1.490     </div><div class="line">FAN_0            | 5760.000   | RPM        | ok    | na        | 0.000     | na        | na        | na        | na        </div><div class="line">FAN_1            | na         | RPM        | na    | na        | 0.000     | na        | na        | na        | na        </div><div class="line">FAN_2            | 5760.000   | RPM        | ok    | na        | 0.000     | na        | na        | na        | na        </div><div class="line">FAN_3            | na         | RPM        | na    | na        | 0.000     | na        | na        | na        | na        </div><div class="line">FAN_4            | 5952.000   | RPM        | ok    | na        | 0.000     | na        | na        | na        | na        </div><div class="line">FAN_5            | na         | RPM        | na    | na        | 0.000     | na        | na        | na        | na        </div><div class="line">FAN_6            | 5952.000   | RPM        | ok    | na        | 0.000     | na        | na        | na        | na        </div><div class="line">FAN_7            | na         | RPM        | na    | na        | 0.000     | na        | na        | na        | na        </div><div class="line">CPU0_Status      | 0x0        | discrete   | 0x8080| na        | na        | na        | na        | na        | na        </div><div class="line">CPU1_Status      | 0x0        | discrete   | 0x8080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHA0_Status  | 0x0        | discrete   | 0x4080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHA1_Status  | 0x0        | discrete   | 0x4080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHA2_Status  | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHB0_Status  | 0x0        | discrete   | 0x4080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHB1_Status  | 0x0        | discrete   | 0x4080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHB2_Status  | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHC0_Status  | 0x0        | discrete   | 0x4080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHC1_Status  | 0x0        | discrete   | 0x4080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHC2_Status  | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHD0_Status  | 0x0        | discrete   | 0x4080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHD1_Status  | 0x0        | discrete   | 0x4080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHD2_Status  | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHE0_Status  | 0x0        | discrete   | 0x4080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHE1_Status  | 0x0        | discrete   | 0x4080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHE2_Status  | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHF0_Status  | 0x0        | discrete   | 0x4080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHF1_Status  | 0x0        | discrete   | 0x4080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHF2_Status  | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHG0_Status  | 0x0        | discrete   | 0x4080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHG1_Status  | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHG2_Status  | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHH0_Status  | 0x0        | discrete   | 0x4080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHH1_Status  | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">MEM_CHH2_Status  | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">HDD0_Status      | 0x0        | discrete   | 0x0180| na        | na        | na        | na        | na        | na        </div><div class="line">HDD1_Status      | 0x0        | discrete   | 0x0180| na        | na        | na        | na        | na        | na        </div><div class="line">HDD2_Status      | 0x0        | discrete   | 0x0180| na        | na        | na        | na        | na        | na        </div><div class="line">HDD3_Status      | 0x0        | discrete   | 0x0180| na        | na        | na        | na        | na        | na        </div><div class="line">HDD4_Status      | 0x0        | discrete   | 0x0180| na        | na        | na        | na        | na        | na        </div><div class="line">HDD5_Status      | 0x0        | discrete   | 0x0180| na        | na        | na        | na        | na        | na        </div><div class="line">HDD6_Status      | 0x0        | discrete   | 0x0180| na        | na        | na        | na        | na        | na        </div><div class="line">HDD7_Status      | 0x0        | discrete   | 0x0180| na        | na        | na        | na        | na        | na        </div><div class="line">HDD8_Status      | 0x0        | discrete   | 0x0180| na        | na        | na        | na        | na        | na        </div><div class="line">HDD9_Status      | 0x0        | discrete   | 0x0180| na        | na        | na        | na        | na        | na        </div><div class="line">HDD10_Status     | 0x0        | discrete   | 0x0180| na        | na        | na        | na        | na        | na        </div><div class="line">HDD11_Status     | 0x0        | discrete   | 0x0180| na        | na        | na        | na        | na        | na        </div><div class="line">HDD12_Status     | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">HDD13_Status     | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">HDD14_Status     | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">HDD15_Status     | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">HDD16_Status     | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">HDD17_Status     | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">HDD18_Status     | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">HDD19_Status     | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">HDD20_Status     | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">HDD21_Status     | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">HDD22_Status     | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">HDD23_Status     | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">HDD24_Status     | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">HDD0_Rear_Status | 0x0        | discrete   | 0x0180| na        | na        | na        | na        | na        | na        </div><div class="line">HDD1_Rear_Status | 0x0        | discrete   | 0x0180| na        | na        | na        | na        | na        | na        </div><div class="line">HDD2_Rear_Status | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">HDD3_Rear_Status | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">Total_Power      | 335.000    | Watts      | ok    | na        | na        | na        | na        | na        | na        </div><div class="line">PSU0_Supply      | 0x0        | discrete   | 0x0180| na        | na        | na        | na        | na        | na        </div><div class="line">PSU1_Supply      | 0x0        | discrete   | 0x0180| na        | na        | na        | na        | na        | na        </div><div class="line">PSU0_Unit        | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">PSU1_Unit        | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">EventLog         | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">ME_FW_Status     | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">BMC_Boot_Up      | 0x0        | discrete   | 0x0280| na        | na        | na        | na        | na        | na        </div><div class="line">IPMI_Watchdog    | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">RISER0_Temp      | 48.000     | degrees C  | ok    | na        | na        | na        | na        | na        | na        </div><div class="line">RISER1_Temp      | na         | degrees C  | na    | na        | na        | na        | na        | na        | na        </div><div class="line">HDD_REAR0_Temp   | 36.000     | degrees C  | ok    | na        | na        | na        | 60.000    | 70.000    | na        </div><div class="line">HDD_REAR1_Temp   | na         | degrees C  | na    | na        | na        | na        | 60.000    | 70.000    | na        </div><div class="line">NVME_0_Status    | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">NVME_1_Status    | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">NVME_2_Status    | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">NVME_3_Status    | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">NVME_4_Status    | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">NVME_5_Status    | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">NVME_6_Status    | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">NVME_7_Status    | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na        </div><div class="line">All_Unit_Status  | 0x0        | discrete   | 0x0080| na        | na        | na        | na        | na        | na</div></pre></td></tr></table></figure>
+<h1 id="Zabbix-web界面添加主机"><a href="#Zabbix-web界面添加主机" class="headerlink" title="Zabbix web界面添加主机"></a>Zabbix web界面添加主机</h1><p><img src="\images\2019\0729\02.png" alt="01"></p>
+<p><img src="\images\2019\0729\03.png" alt="01"></p>
+<p><img src="\images\2019\0729\04.png" alt="01"></p>
+<h1 id="修改模板，添加监控项"><a href="#修改模板，添加监控项" class="headerlink" title="修改模板，添加监控项"></a>修改模板，添加监控项</h1><p>由于默认自带的模板很多监控项获取不到数据，这里我手动监测一下传感器，自己把传感器能获取的数据添加到模板里去</p>
+<p><code>ipmitool -I lanplus -H 10.206.2.52 -U admin -P admin sensor list</code><br><img src="\images\2019\0729\05.png" alt="01"></p>
+<p><code>ipmitool -I lanplus -H 10.206.2.52 -U admin -P admin sensor get &quot;CPU0_Temp&quot;</code></p>
+<p><img src="\images\2019\0729\06.png" alt="01"></p>
+<p><img src="\images\2019\0729\07.png" alt="01"></p>
+<p><img src="\images\2019\0729\08.png" alt="01"></p>
+<p>参考资料: <a href="https://www.cnblogs.com/kaishirenshi/p/9703127.html" target="_blank" rel="external">https://www.cnblogs.com/kaishirenshi/p/9703127.html</a></p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/01/alipay.jpg" alt="南山小樵 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/zabbix/" rel="tag"># zabbix</a>
+          
+            <a href="/tags/监控/" rel="tag"># 监控</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/arlo/e68b6718/" rel="next" title="jenkins插件“Publish Over SSH”拷贝文件到远程服务器并执行脚本">
+                <i class="fa fa-chevron-left"></i> jenkins插件“Publish Over SSH”拷贝文件到远程服务器并执行脚本
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars1.githubusercontent.com/u/32269?v=3&s=460"
+                alt="南山小樵" />
+            
+              <p class="site-author-name" itemprop="name">南山小樵</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">109</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">86</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://music.163.com/playlist?id=17812772&userid=20000278" title="http://music.163.com/playlist?id=17812772&userid=20000278" rel="noopener" target="_blank">网易云音乐</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jimv.iit.im/login" title="http://jimv.iit.im/login" rel="noopener" target="_blank">Jimv虚拟机管理平台</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://man.linuxde.net/" title="http://man.linuxde.net/" rel="noopener" target="_blank">Linux命令大全</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.codecp.org/" title="http://blog.codecp.org/" rel="noopener" target="_blank">勇敢的心</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://msdn.itellyou.cn/" title="http://msdn.itellyou.cn/" rel="noopener" target="_blank">Msdn下载站</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IPMI介绍"><span class="nav-number">1.</span> <span class="nav-text">IPMI介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置服务器IPMI"><span class="nav-number">2.</span> <span class="nav-text">配置服务器IPMI</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改zabbix-server配置文件"><span class="nav-number">3.</span> <span class="nav-text">修改zabbix server配置文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装IPMI相关软件"><span class="nav-number">4.</span> <span class="nav-text">安装IPMI相关软件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#获取IPMI传感器参数"><span class="nav-number">5.</span> <span class="nav-text">获取IPMI传感器参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Zabbix-web界面添加主机"><span class="nav-number">6.</span> <span class="nav-text">Zabbix web界面添加主机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改模板，添加监控项"><span class="nav-number">7.</span> <span class="nav-text">修改模板，添加监控项</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南山小樵</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.2.2</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v6.5.0</div>
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
