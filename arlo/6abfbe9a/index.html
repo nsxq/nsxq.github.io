@@ -120,7 +120,7 @@
 <meta property="og:image" content="http://islocal.cc/\images\2019\0729\06.png">
 <meta property="og:image" content="http://islocal.cc/\images\2019\0729\07.png">
 <meta property="og:image" content="http://islocal.cc/\images\2019\0729\08.png">
-<meta property="og:updated_time" content="2019-07-29T09:03:17.790Z">
+<meta property="og:updated_time" content="2019-07-31T07:10:17.936Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Zabbix(10)使用zabbix监控IPMI">
 <meta name="twitter:description" content="IPMI介绍 IPMI（Intelligent Platform Management Interface）即智能平台管理接口是使硬件管理具备“智能化”的新一代通用接口标准。用户可以利用 IPMI 监视服务器的物理特征，如温度、电压、电扇工作状态、电源供应以及机箱入侵等。Ipmi 最大的优势在于它是独立于 CPU BIOS 和 OS 的，所以用户无论在开机还是关机的状态下，只要接通电源就可以实现对">
@@ -430,12 +430,24 @@
                 
               
 
-              <time title="创建时间：2019-07-29 13:54:38 / 修改时间：17:03:17" itemprop="dateCreated datePublished" datetime="2019-07-29T13:54:38+08:00">2019-07-29</time>
+              <time title="创建时间：2019-07-29 13:54:38" itemprop="dateCreated datePublished" datetime="2019-07-29T13:54:38+08:00">2019-07-29</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-31 15:10:17" itemprop="dateModified" datetime="2019-07-31T15:10:17+08:00">2019-07-31</time>
               
             
           </span>
@@ -504,6 +516,18 @@
 <p><img src="\images\2019\0729\06.png" alt="01"></p>
 <p><img src="\images\2019\0729\07.png" alt="01"></p>
 <p><img src="\images\2019\0729\08.png" alt="01"></p>
+<h1 id="扩展"><a href="#扩展" class="headerlink" title="扩展"></a>扩展</h1><p>打印当前 BMC 配置</p>
+<p><code>ipmitool lan print 1</code></p>
+<p>设置 IP</p>
+<p><code>ipmitool lan set 1 ipaddr 172.16.10.205</code>      </p>
+<p>设置掩码</p>
+<p><code>ipmitool lan set 1 netmask 255.255.0.0</code>  </p>
+<p><code>ipmitool lan set 1 access on</code></p>
+<p>配置网关</p>
+<p><code>ipmitool lan set 1 defgw ipaddr 172.16.10.1</code><br>列出当前用户列表</p>
+<p><code>ipmitool user list 1</code></p>
+<p>其中 2 为要设置密原的用户 ID 号，设置密码为 111.com</p>
+<p><code>ipmitool user set password 2 “111.com”</code></p>
 <p>参考资料: <a href="https://www.cnblogs.com/kaishirenshi/p/9703127.html" target="_blank" rel="external">https://www.cnblogs.com/kaishirenshi/p/9703127.html</a></p>
 
       
@@ -944,7 +968,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IPMI介绍"><span class="nav-number">1.</span> <span class="nav-text">IPMI介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置服务器IPMI"><span class="nav-number">2.</span> <span class="nav-text">配置服务器IPMI</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改zabbix-server配置文件"><span class="nav-number">3.</span> <span class="nav-text">修改zabbix server配置文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装IPMI相关软件"><span class="nav-number">4.</span> <span class="nav-text">安装IPMI相关软件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#获取IPMI传感器参数"><span class="nav-number">5.</span> <span class="nav-text">获取IPMI传感器参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Zabbix-web界面添加主机"><span class="nav-number">6.</span> <span class="nav-text">Zabbix web界面添加主机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改模板，添加监控项"><span class="nav-number">7.</span> <span class="nav-text">修改模板，添加监控项</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#IPMI介绍"><span class="nav-number">1.</span> <span class="nav-text">IPMI介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#配置服务器IPMI"><span class="nav-number">2.</span> <span class="nav-text">配置服务器IPMI</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改zabbix-server配置文件"><span class="nav-number">3.</span> <span class="nav-text">修改zabbix server配置文件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#安装IPMI相关软件"><span class="nav-number">4.</span> <span class="nav-text">安装IPMI相关软件</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#获取IPMI传感器参数"><span class="nav-number">5.</span> <span class="nav-text">获取IPMI传感器参数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Zabbix-web界面添加主机"><span class="nav-number">6.</span> <span class="nav-text">Zabbix web界面添加主机</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改模板，添加监控项"><span class="nav-number">7.</span> <span class="nav-text">修改模板，添加监控项</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#扩展"><span class="nav-number">8.</span> <span class="nav-text">扩展</span></a></li></ol></div>
             
 
           </div>
