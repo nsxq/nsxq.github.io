@@ -108,7 +108,7 @@
 
   <meta property="og:type" content="website">
 <meta property="og:title" content="南山居">
-<meta property="og:url" content="http://islocal.cc/tags/Mysql/index.html">
+<meta property="og:url" content="http://islocal.cc/tags/mysql/index.html">
 <meta property="og:site_name" content="南山居">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="南山居">
@@ -118,7 +118,7 @@
 
 
 
-  <link rel="canonical" href="http://islocal.cc/tags/Mysql/"/>
+  <link rel="canonical" href="http://islocal.cc/tags/mysql/"/>
 
 
 
@@ -128,7 +128,7 @@
   };
 </script>
 
-  <title>标签: Mysql | 南山居</title>
+  <title>标签: mysql | 南山居</title>
   
 
 
@@ -388,7 +388,7 @@
 
     <div id="posts" class="posts-collapse">
       <div class="collection-title">
-        <h1>Mysql<small>标签</small>
+        <h1>mysql<small>标签</small>
         </h1>
       </div>
 
@@ -400,9 +400,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/arlo/1b10686d/" itemprop="url">
+            <a class="post-title-link" href="/arlo/551cdbc9/" itemprop="url">
               
-                <span itemprop="name">修改Mariadb数据库存储路径</span>
+                <span itemprop="name">使用wgrib2将GFS数据导入到mysql</span>
               
             </a>
         
@@ -410,9 +410,9 @@
 
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated"
-              datetime="2018-09-21T14:30:50+08:00"
-              content="2018-09-21" >
-          09-21
+              datetime="2018-03-15T11:27:33+08:00"
+              content="2018-03-15" >
+          03-15
         </time>
       </div>
 
@@ -428,37 +428,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/arlo/49c257f9/" itemprop="url">
+            <a class="post-title-link" href="/arlo/3b439eff/" itemprop="url">
               
-                <span itemprop="name">Mariadb(MHA)高可用集群搭建</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-08-07T15:13:34+08:00"
-              content="2017-08-07" >
-          08-07
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/arlo/b48c6366/" itemprop="url">
-              
-                <span itemprop="name">Mariadb 读写分离集群搭建</span>
+                <span itemprop="name">升级mysql数据库字符集为utf8mb4</span>
               
             </a>
         
@@ -466,37 +438,9 @@
 
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated"
-              datetime="2017-08-01T17:24:42+08:00"
-              content="2017-08-01" >
-          08-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/arlo/fe63d61c/" itemprop="url">
-              
-                <span itemprop="name">Mariadb主从复制集群</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-07-26T16:02:01+08:00"
-              content="2017-07-26" >
-          07-26
+              datetime="2016-08-12T15:21:30+08:00"
+              content="2016-08-12" >
+          08-12
         </time>
       </div>
 
@@ -557,7 +501,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">111</span>
+                    <span class="site-state-item-count">112</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -1271,6 +1215,84 @@
               })
               searchResultList += "</ul>";
               resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+tList;
             }
           }
 
