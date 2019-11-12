@@ -4,8 +4,30 @@
 
     
   <url>
+    <loc>http://islocal.cc/arlo/956f976/</loc>
+    <lastmod>2019-11-12T07:41:32.421Z</lastmod>
+    <data>
+        <display>
+        <title>将绿色版Tomcat/Nginx注册成服务，实现开机自启动</title>
+        <pubTime>2018-04-26T02:28:13.000Z</pubTime>
+        
+        <tag>Tomcat</tag>
+         
+        <tag>Nginx</tag>
+         
+         
+           
+             
+              <breadCrumb title="常识" url="http://islocal.cc/categories/%E5%B8%B8%E8%AF%86/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/arlo/fba0cc3c/</loc>
-    <lastmod>2019-11-11T09:13:15.607Z</lastmod>
+    <lastmod>2019-11-12T01:58:29.942Z</lastmod>
     <data>
         <display>
         <title>没有PE的情况下，如何强行修改Windows Server 2012密码？</title>
@@ -191,28 +213,6 @@
            
              
               <breadCrumb title="自动化运维" url="http://islocal.cc/categories/%E8%87%AA%E5%8A%A8%E5%8C%96%E8%BF%90%E7%BB%B4/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://islocal.cc/arlo/956f976/</loc>
-    <lastmod>2019-07-12T06:15:33.795Z</lastmod>
-    <data>
-        <display>
-        <title>将绿色版Tomcat/Nginx注册成服务，实现开机自启动</title>
-        <pubTime>2018-04-26T02:28:13.000Z</pubTime>
-        
-        <tag>Tomcat</tag>
-         
-        <tag>Nginx</tag>
-         
-         
-           
-             
-              <breadCrumb title="常识" url="http://islocal.cc/categories/%E5%B8%B8%E8%AF%86/"/>
           
         </display>
     </data>
