@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html class="theme-next muse" lang="zh-CN">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.5.0" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.5.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.5.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.5.0" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '6.5.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Oracle日志的分类Alter log  files：警报日志Trace files：跟踪日志（用户和进程）redo log ：重做日志（记录数据库的更改）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Oracle自动删除归档日志">
+<meta property="og:url" content="http://islocal.cc/arlo/272be08f/index.html">
+<meta property="og:site_name" content="南山居">
+<meta property="og:description" content="Oracle日志的分类Alter log  files：警报日志Trace files：跟踪日志（用户和进程）redo log ：重做日志（记录数据库的更改）">
+<meta property="og:updated_time" content="2019-12-24T08:55:26.756Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Oracle自动删除归档日志">
+<meta name="twitter:description" content="Oracle日志的分类Alter log  files：警报日志Trace files：跟踪日志（用户和进程）redo log ：重做日志（记录数据库的更改）">
+
+
+
+
+
+
+  <link rel="canonical" href="http://islocal.cc/arlo/272be08f/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Oracle自动删除归档日志 | 南山居</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">南山居</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br />首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br />分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br />归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br />标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br />关于</a>
+
+  </li>
+
+      
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />搜索</a>
+        </li>
+      
+    </ul>
+  
+
+  
+    
+
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://islocal.cc/arlo/272be08f/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="南山小樵">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/32269?v=3&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南山居">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Oracle自动删除归档日志
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-12-16 09:47:44" itemprop="dateCreated datePublished" datetime="2019-12-16T09:47:44+08:00">2019-12-16</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-12-24 16:55:26" itemprop="dateModified" datetime="2019-12-24T16:55:26+08:00">2019-12-24</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Oracle日志的分类"><a href="#Oracle日志的分类" class="headerlink" title="Oracle日志的分类"></a>Oracle日志的分类</h1><p>Alter log  files：警报日志<br>Trace files：跟踪日志（用户和进程）<br>redo log ：重做日志（记录数据库的更改）<br><a id="more"></a></p>
+<h2 id="重做日志"><a href="#重做日志" class="headerlink" title="重做日志"></a>重做日志</h2><p>分为在线重做日志和归档重做日志<br><strong>在线重做日志</strong>：又称联机重做日志，指Oracle以SQL脚本的形式记录数据库的数据更新，换句话说，实时保存已执行的SQL脚本到在线日志文件中<br><strong>归档重做日志</strong>：简称归档日志，是指当条件满足时，Oracle将在线重做日志以文件形式保存到硬盘（持久化）<br>重做日志的简单原理：在数据更新操作commit前，将更改的SQL脚本写入重做日志。主要用于数据库的增量备份和增量恢复。<br>重做日志直接对应于硬盘的重做日志文件（有在线和归档俩种），重做日志文件以组的形式组织，一个重做日志组包括一个或多个日志文件。</p>
+<h2 id="归档重做日志"><a href="#归档重做日志" class="headerlink" title="归档重做日志"></a>归档重做日志</h2><p>其实，所谓的归档，就是指，将在线日志进行归档，持久化成固定的文件到硬盘，便于以后的恢复和查询。当然，前提条件是数据库要处于归档模式。<br>在线重做日志大小毕竟是有限的，当都写满了的时候，就面临着俩个选择，第一个就是把以前在线重做日志从头擦除开始继续写，第二种就是把以前的在线重做日志先进行备份，然后对被备份的日志擦除开始写新的在线Redo  File。这种备份的在线重做日志就是归档日志。而数据库如果采用这种生成归档日志的模式的话，就是归档日志模式（ARCHIVELOG模式），反之如果不生成归档日志，就是非归档日志模式（NOARCHIVELOG模式）。<br><strong>有了归档日志有什么好处？</strong><br>比如在这个月1号的时候备份了一次数据，然后过了10天，这个10天生成了很多在线重做日志，突然发现其中有一个数据磁盘出问题了，不能用了，那我该如何是好呢？<br>如果没有采用归档日志，那么实际上磁盘中只会有几个最新的在线重做日志。那么我只能把出问题的数据磁盘上所占据的表空间都删除掉。但是如果是SYSTEM表空间所设计的磁盘出错了，就没办法这么做了，只能用第二种方法。第二种方法就是把1号备份的数据拿出来恢复。那么1号到10号之间的10天的数据都丢了，如果是关键系统，比如证券金融什么的系统，就要让你赔钱赔死掉。<br>但是如果有了归档日志，那么你这10天的重做日志都会存放起来，那么DBA首先会把1号的备份数据恢复，然后再拿这10天的Redo日志来进行一次数据操作重放，那么就可以完全恢复最新的数据库，不会有什么后果了。<br>在软件开发的时候，由于测试服务器的配置有限，特别是磁盘空间有限，所以可能要限制Redo文件的大小，有可能把系统设置为NOARCHIVELOG模式了。但是在实际的生产环境下，基本上一定要使用ARCHIVELOG模式，否则万一出了问题，真是苦都来不及。<br>有人可能会怕归档日志造成性能损失。其实这个完全是杞人忧天的，归档日志只是做一个备份，其实也就是多耗一些磁盘空间而已。在当前的软件系统中，硬盘的存储容量成本已经属于低到可以忽略的地步，而最重要的是数据库的安全。DBA的任务本来就是确保数据的安全，如果连安全都保证不了，那点微乎其微的性能提高又有什么用呢。<br>归档日志（Archive Log）是非活动的重做日志备份。通过使用归档日志，可以保留所有重做历史记录，当数据库处于Archive Log模式并进行日志切换时，后台进程ARCH会将重做日志的内容保存到归档日志中，当数据库出现介质失败时，使用数据文件备份，归档日志和重做日志可以完全恢复数据库。</p>
+<h4 id="查看数据库当前是否为归档模式"><a href="#查看数据库当前是否为归档模式" class="headerlink" title="查看数据库当前是否为归档模式"></a>查看数据库当前是否为归档模式</h4><p><code>SELECT  LOG_MODE FROM  V$DATABASE;</code><br>ARCHIVELOG（归档模式）、NOARCHIVELOG（非归档模式）</p>
+<h4 id="切换数据库为归档模式"><a href="#切换数据库为归档模式" class="headerlink" title="切换数据库为归档模式"></a><a href="http://islocal.cc/arlo/60a79bb7/">切换数据库为归档模式</a></h4><p><code>shutdown   immediate             #关闭数据库</code><br><code>startup   mount                        #开启数据库到挂载状态</code><br><code>alter database archivelog;     #改变模式为ARCHIVELOG</code><br><code>archive log  start;                   #开启归档日志</code><br><code>alter datebase open;               #打开数据库</code></p>
+<h4 id="查找归档日志目录"><a href="#查找归档日志目录" class="headerlink" title="查找归档日志目录"></a>查找归档日志目录</h4><p><code>SELECT  destination  FROM  V$archive_dest;</code></p>
+<h3 id="在线重做日志的原理"><a href="#在线重做日志的原理" class="headerlink" title="在线重做日志的原理"></a>在线重做日志的原理</h3><p>对于在线重做日志，Oracle 11g默认对于每个数据库实例，建立3个在线日志组，每组一个日志文件，文件名称为REDO01.LOG,REDO02.LOG,REDO03.LOG。（用户可以通过视图操作添加/修改/删除日志组合日志文件来自定义在线重做日志）每组内的日志文件的内容完全相同，且保存在不同的位置，用于磁盘日志镜像，以做多次备份提高安全性。默认情况这3组通常只有一组处于活动状态，不断地同步写入已操作的脚本，当日志文件写满时（达到指定的空间配额），如果当前数据库处于归档模式，则将在线日志归档到硬盘，成为归档日志；若当前数据库处于非归档模式，则不进行归档操作，而当前在线日志的内容会被下一次重新写入覆盖而无法保存。因此，通常数据库在运行时，是处于归档模式下的，以保存数据更新的日志。当前归档日志组写满够，Oracle会切换到下一日志组，继续写入，这样循环切换；处于归档模式下，切换至原已写满的日志组，若该日志组归档完毕则则覆盖写入，若没有则只能使用日志缓冲区，等待归档完毕之后才能覆盖写入。当然，处于非归档模式下是直接覆盖写入的。</p>
+<h1 id="删除归档日志"><a href="#删除归档日志" class="headerlink" title="删除归档日志"></a>删除归档日志</h1><p>由于归档日志日积月累，占用空间很大，我们只需要保留最近一段时间的日志即可，所以我们要对之前的内容做删除处理。</p>
+<h2 id="用oracle用户登陆rman并连接数据库"><a href="#用oracle用户登陆rman并连接数据库" class="headerlink" title="用oracle用户登陆rman并连接数据库"></a>用oracle用户登陆rman并连接数据库</h2><p><code>hostname@oracle$ rman target /</code></p>
+<h2 id="列出并确认归档日志路径"><a href="#列出并确认归档日志路径" class="headerlink" title="列出并确认归档日志路径"></a>列出并确认归档日志路径</h2><p><code>RMAN&gt;list archivelog all;</code></p>
+<h2 id="删除7天以前的归档日志"><a href="#删除7天以前的归档日志" class="headerlink" title="删除7天以前的归档日志"></a>删除7天以前的归档日志</h2><p><code>RMAN&gt;DELETE ARCHIVELOG ALL COMPLETED BEFORE &#39;SYSDATE-7&#39;;</code>  表明删除当前的系统时间7天前的日志</p>
+<h1 id="Windows下自动删除归档日志"><a href="#Windows下自动删除归档日志" class="headerlink" title="Windows下自动删除归档日志"></a>Windows下自动删除归档日志</h1><h2 id="新建E-database-backup-rm-archivelog-txt文件"><a href="#新建E-database-backup-rm-archivelog-txt文件" class="headerlink" title="新建E:\database_backup\rm_archivelog.txt文件"></a>新建E:\database_backup\rm_archivelog.txt文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">connect target  /</div><div class="line">run&#123;</div><div class="line">    crosscheck archivelog all;</div><div class="line">    DELETE ARCHIVELOG ALL COMPLETED BEFORE &apos;SYSDATE-7&apos;;</div><div class="line">    delete expired archivelog all;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="新建E-database-backup-rm-archivelog-bat文件"><a href="#新建E-database-backup-rm-archivelog-bat文件" class="headerlink" title="新建E:\database_backup\rm_archivelog.bat文件"></a>新建E:\database_backup\rm_archivelog.bat文件</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">@echo off</div><div class="line">set &quot;filename=rm_archivelog_task_log_%date:~0,4%%date:~5,2%%date:~8,2%.txt&quot;</div><div class="line">(</div><div class="line">echo.</div><div class="line">echo =========================  正在清除过期归档文件，请稍等...... %date% %time%  =========================</div><div class="line">echo.</div><div class="line">rman cmdfile=E:\database_backup\rm_archivelog.txt</div><div class="line">echo.</div><div class="line">echo =========================              【结束清理 %date% %time%】                  =========================</div><div class="line">echo.</div><div class="line">)&gt;&gt;E:\database_backup\%filename% 2&gt;&amp;1&lt;nul</div><div class="line">pause</div></pre></td></tr></table></figure>
+<h2 id="设置计划任务"><a href="#设置计划任务" class="headerlink" title="设置计划任务"></a>设置计划任务</h2><p>每日凌晨执行E:\database_backup\rm_archivelog.bat脚本</p>
+<h1 id="Linux下自动删除归档日志"><a href="#Linux下自动删除归档日志" class="headerlink" title="Linux下自动删除归档日志"></a>Linux下自动删除归档日志</h1><h2 id="编写脚本"><a href="#编写脚本" class="headerlink" title="编写脚本"></a>编写脚本</h2><p><code>vim /home/oracle/.rm_archivelog.sh</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">#!/bin/bash</div><div class="line">ORACLE_SID=orcl</div><div class="line">ORACLE_HOME=/u01/app/oracle/product/11.2.0/db_1/</div><div class="line">$ORACLE_HOME/bin/rman target /  log=/var/logs/rman.log &lt;&lt;EOF       </div><div class="line">run&#123;</div><div class="line">crosscheck archivelog all;    </div><div class="line">delete noprompt expired archivelog all;    </div><div class="line">delete noprompt archivelog all completed before &apos;sysdate - 7&apos;;    </div><div class="line">&#125;  </div><div class="line">exit;</div><div class="line">EOF</div></pre></td></tr></table></figure></p>
+<h2 id="给脚本赋予可执行权限"><a href="#给脚本赋予可执行权限" class="headerlink" title="给脚本赋予可执行权限"></a>给脚本赋予可执行权限</h2><p><code>chmod +x /home/oracle/.rm_archivelog.sh</code></p>
+<h2 id="设置计划任务-1"><a href="#设置计划任务-1" class="headerlink" title="设置计划任务"></a>设置计划任务</h2><p><code>crontab -l</code><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">00 3 * * * /home/oracle/.rm_archivelog.sh</div></pre></td></tr></table></figure></p>
+<p>参考链接：<br><a href="https://www.jianshu.com/p/3bc8f372fe16" target="_blank" rel="external">https://www.jianshu.com/p/3bc8f372fe16</a><br><a href="https://www.cnblogs.com/kerrycode/p/9046372.html" target="_blank" rel="external">https://www.cnblogs.com/kerrycode/p/9046372.html</a></p>
+<hr>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>独学无友，孤陋寡闻；学习记录，欢迎拍砖！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/01/alipay.jpg" alt="南山小樵 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Oracle/" rel="tag"># Oracle</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/arlo/fba0cc3c/" rel="next" title="没有PE的情况下，如何强行修改Windows Server 2012密码？">
+                <i class="fa fa-chevron-left"></i> 没有PE的情况下，如何强行修改Windows Server 2012密码？
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/arlo/85bf3410/" rel="prev" title="工具|利用GoAccess分析Nginx访问日志">
+                工具|利用GoAccess分析Nginx访问日志 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars1.githubusercontent.com/u/32269?v=3&s=460"
+                alt="南山小樵" />
+            
+              <p class="site-author-name" itemprop="name">南山小樵</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">114</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">86</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://music.163.com/playlist?id=17812772&userid=20000278" title="http://music.163.com/playlist?id=17812772&userid=20000278" rel="noopener" target="_blank">网易云音乐</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://jimv.iit.im/login" title="http://jimv.iit.im/login" rel="noopener" target="_blank">Jimv虚拟机管理平台</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://man.linuxde.net/" title="http://man.linuxde.net/" rel="noopener" target="_blank">Linux命令大全</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://blog.codecp.org/" title="http://blog.codecp.org/" rel="noopener" target="_blank">勇敢的心</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.ruanyifeng.com/blog/" title="http://www.ruanyifeng.com/blog/" rel="noopener" target="_blank">阮一峰的网络日志</a>
+                  </li>
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://msdn.itellyou.cn/" title="http://msdn.itellyou.cn/" rel="noopener" target="_blank">Msdn下载站</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Oracle日志的分类"><span class="nav-number">1.</span> <span class="nav-text">Oracle日志的分类</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#重做日志"><span class="nav-number">1.1.</span> <span class="nav-text">重做日志</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#归档重做日志"><span class="nav-number">1.2.</span> <span class="nav-text">归档重做日志</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#查看数据库当前是否为归档模式"><span class="nav-number">1.2.0.1.</span> <span class="nav-text">查看数据库当前是否为归档模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#切换数据库为归档模式"><span class="nav-number">1.2.0.2.</span> <span class="nav-text">切换数据库为归档模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#查找归档日志目录"><span class="nav-number">1.2.0.3.</span> <span class="nav-text">查找归档日志目录</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#在线重做日志的原理"><span class="nav-number">1.2.1.</span> <span class="nav-text">在线重做日志的原理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#删除归档日志"><span class="nav-number">2.</span> <span class="nav-text">删除归档日志</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#用oracle用户登陆rman并连接数据库"><span class="nav-number">2.1.</span> <span class="nav-text">用oracle用户登陆rman并连接数据库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#列出并确认归档日志路径"><span class="nav-number">2.2.</span> <span class="nav-text">列出并确认归档日志路径</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除7天以前的归档日志"><span class="nav-number">2.3.</span> <span class="nav-text">删除7天以前的归档日志</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows下自动删除归档日志"><span class="nav-number">3.</span> <span class="nav-text">Windows下自动删除归档日志</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#新建E-database-backup-rm-archivelog-txt文件"><span class="nav-number">3.1.</span> <span class="nav-text">新建E:\database_backup\rm_archivelog.txt文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建E-database-backup-rm-archivelog-bat文件"><span class="nav-number">3.2.</span> <span class="nav-text">新建E:\database_backup\rm_archivelog.bat文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置计划任务"><span class="nav-number">3.3.</span> <span class="nav-text">设置计划任务</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux下自动删除归档日志"><span class="nav-number">4.</span> <span class="nav-text">Linux下自动删除归档日志</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#编写脚本"><span class="nav-number">4.1.</span> <span class="nav-text">编写脚本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#给脚本赋予可执行权限"><span class="nav-number">4.2.</span> <span class="nav-text">给脚本赋予可执行权限</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置计划任务-1"><span class="nav-number">4.3.</span> <span class="nav-text">设置计划任务</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">南山小樵</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v3.2.2</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> v6.5.0</div>
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.5.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.5.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.5.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

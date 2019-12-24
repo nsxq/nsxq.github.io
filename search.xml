@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[工具|利用GoAccess分析Nginx访问日志]]></title>
+    <url>%2Farlo%2F85bf3410%2F</url>
+    <content type="text"><![CDATA[项目上线之后，访问量逐渐增多，最近发现一些异常，从服务器监控zabbix没有发现比较有用的信息，链路监控pinpoint上发现访问量比之前增加了很多，所以想从入口方面分析一下来源，看看是不是被人抓取数据了。 Nginx日志格式我这里使用的是阿里开源的tengine，和nginx是一样的，默认的日志格式 1234567log_format main &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos; &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos; &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;; access_log logs/access.log main; error_log logs/error.log warn; access_log &quot;pipe:rollback logs/access_log interval=1d baknum=7 maxsize=2G&quot; main; 1113.200.77.134 - - [19/Dec/2019:10:45:39 +0800] &quot;GET /air/home/code/regions HTTP/1.1&quot; 200 1391 &quot;http://localhost:8080/app/tabs/home&quot; &quot;Mozilla/5.0 (Linux; Android 9; COL-AL10 Build/HUAWEICOL-AL10; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/72.0.3626.121 Mobile Safari/537.36&quot; &quot;-&quot; 参数 说明 实例 $remote_addr 客户端地址 113.200.77.134 $remote_user 客户端用户名称 - - $time_local 访问时间和时区 19/Dec/2019:10:45:39 +0800] $request 请求的URI和HTTP协议 GET /air/home/code/regions HTTP/1.1 $http_host 请求地址，即浏览器中你输入的地址（IP或域名） $status HTTP请求状态 200 $upstream_status upstream状态 $body_bytes_sent 发送给客户端文件内容大小 1391 $http_referer url跳转来源 http://localhost:8080/app/tabs/home $http_user_agent 用户终端浏览器等信息 Mozilla/5.0 (Linux; Android 9; COL-AL10 Build/HUAWEICOL-AL10; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/72.0.3626.121 Mobile Safari/537.36 $ssl_protocol SSL协议版本 $ssl_cipher 交换数据中的算法 $request_time 整个请求的总时间 $http_x_forwarded_for HTTP 扩展头部 $upstream_addr 后台upstream的地址，即真正提供服务的主机地址 $request_time Nginx处理请求所用总时间 $upstream_connect_time Nginx与upstream server建立连接所用时间 $upstream_header_time 从建立连接成功到接收第一个字节之间的时间 $upstream_response_time 从建立连接成功到接收第一个字节之间的时间 GoAccessGoAccess是一个开源的实时 Web日志分析器和交互式查看器，可在 nix系统的终端中或通过*浏览器运行。 它为需要实时可视服务器报告的系统管理员提供了快速而有价值的HTTP统计信息。 官网地址：https://goaccess.io/ github地址：https://github.com/allinurl/goaccess GoAccess日志规范：https://goaccess.io/man#custom-log 安装GoAccess1234567yum install geoip-devel ncurses-devel glib2 glib2-devel ncurses-devel zlib zlib-devel wget https://tar.goaccess.io/goaccess-1.3.tar.gztar -xzvf goaccess-1.3.tar.gzcd goaccess-1.3/./configure --prefix=/usr/local/goaccess --enable-utf8 --enable-geoip=legacymakemake install 1vim /usr/local/goaccess/etc/goaccess/goaccess.conf 配置日志格式，和nginx里的日志格式匹配起来，日志规范参考上述链接 123time-format %H:%M:%Sdate-format %d/%b/%Ylog-format %h %^[%d:%t %^] &quot;%r&quot; %s %b &quot;%R&quot; &quot;%u&quot; 1234567891011121314%t 匹配time-format格式的时间字段%d 匹配date-format格式的日期字段%h host(客户端ip地址，包括ipv4和ipv6)%r 来自客户端的请求行%m 请求的方法%U URL路径%H 请求协议%s 服务器响应的状态码%b 服务器返回的内容大小%R HTTP请求头的referer字段%u 用户代理的HTTP请求报头%D 请求所花费的时间，单位微秒%T 请求所花费的时间，单位秒%^ 忽略这一字段 终端查看日志1/usr/local/goaccess/bin/goaccess -a -d -f /usr/local/tengine/logs/access.log -p /usr/local/goaccess/etc/goaccess/goaccess.conf F1或h：帮助 F5 ：刷新主界面 q：退出程序/当前窗口/折叠当前模块 o或Enter：展开选中的模块或窗口 0-9以及Shift + 0：将选中的模块或窗口激活 k和j：模块内部移动 c：修改配色 ^f和^b：模块中上下滚屏 tab shift+tab：前后切换模块 s：模块内部排序选择 /：在所有模块中搜索(支持正则) n：找到下个匹配 g和G：跳到第一项/最后一项 生成html格式1usr/local/goaccess/bin/goaccess -a -d -f /usr/local/tengine/logs/access_log.1 -p /usr/local/goaccess/etc/goaccess/goaccess.conf -o ~/sx.html]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[Oracle自动删除归档日志]]></title>
+    <url>%2Farlo%2F272be08f%2F</url>
+    <content type="text"><![CDATA[Oracle日志的分类Alter log files：警报日志Trace files：跟踪日志（用户和进程）redo log ：重做日志（记录数据库的更改） 重做日志分为在线重做日志和归档重做日志在线重做日志：又称联机重做日志，指Oracle以SQL脚本的形式记录数据库的数据更新，换句话说，实时保存已执行的SQL脚本到在线日志文件中归档重做日志：简称归档日志，是指当条件满足时，Oracle将在线重做日志以文件形式保存到硬盘（持久化）重做日志的简单原理：在数据更新操作commit前，将更改的SQL脚本写入重做日志。主要用于数据库的增量备份和增量恢复。重做日志直接对应于硬盘的重做日志文件（有在线和归档俩种），重做日志文件以组的形式组织，一个重做日志组包括一个或多个日志文件。 归档重做日志其实，所谓的归档，就是指，将在线日志进行归档，持久化成固定的文件到硬盘，便于以后的恢复和查询。当然，前提条件是数据库要处于归档模式。在线重做日志大小毕竟是有限的，当都写满了的时候，就面临着俩个选择，第一个就是把以前在线重做日志从头擦除开始继续写，第二种就是把以前的在线重做日志先进行备份，然后对被备份的日志擦除开始写新的在线Redo File。这种备份的在线重做日志就是归档日志。而数据库如果采用这种生成归档日志的模式的话，就是归档日志模式（ARCHIVELOG模式），反之如果不生成归档日志，就是非归档日志模式（NOARCHIVELOG模式）。有了归档日志有什么好处？比如在这个月1号的时候备份了一次数据，然后过了10天，这个10天生成了很多在线重做日志，突然发现其中有一个数据磁盘出问题了，不能用了，那我该如何是好呢？如果没有采用归档日志，那么实际上磁盘中只会有几个最新的在线重做日志。那么我只能把出问题的数据磁盘上所占据的表空间都删除掉。但是如果是SYSTEM表空间所设计的磁盘出错了，就没办法这么做了，只能用第二种方法。第二种方法就是把1号备份的数据拿出来恢复。那么1号到10号之间的10天的数据都丢了，如果是关键系统，比如证券金融什么的系统，就要让你赔钱赔死掉。但是如果有了归档日志，那么你这10天的重做日志都会存放起来，那么DBA首先会把1号的备份数据恢复，然后再拿这10天的Redo日志来进行一次数据操作重放，那么就可以完全恢复最新的数据库，不会有什么后果了。在软件开发的时候，由于测试服务器的配置有限，特别是磁盘空间有限，所以可能要限制Redo文件的大小，有可能把系统设置为NOARCHIVELOG模式了。但是在实际的生产环境下，基本上一定要使用ARCHIVELOG模式，否则万一出了问题，真是苦都来不及。有人可能会怕归档日志造成性能损失。其实这个完全是杞人忧天的，归档日志只是做一个备份，其实也就是多耗一些磁盘空间而已。在当前的软件系统中，硬盘的存储容量成本已经属于低到可以忽略的地步，而最重要的是数据库的安全。DBA的任务本来就是确保数据的安全，如果连安全都保证不了，那点微乎其微的性能提高又有什么用呢。归档日志（Archive Log）是非活动的重做日志备份。通过使用归档日志，可以保留所有重做历史记录，当数据库处于Archive Log模式并进行日志切换时，后台进程ARCH会将重做日志的内容保存到归档日志中，当数据库出现介质失败时，使用数据文件备份，归档日志和重做日志可以完全恢复数据库。 查看数据库当前是否为归档模式SELECT LOG_MODE FROM V$DATABASE;ARCHIVELOG（归档模式）、NOARCHIVELOG（非归档模式） 切换数据库为归档模式shutdown immediate #关闭数据库startup mount #开启数据库到挂载状态alter database archivelog; #改变模式为ARCHIVELOGarchive log start; #开启归档日志alter datebase open; #打开数据库 查找归档日志目录SELECT destination FROM V$archive_dest; 在线重做日志的原理对于在线重做日志，Oracle 11g默认对于每个数据库实例，建立3个在线日志组，每组一个日志文件，文件名称为REDO01.LOG,REDO02.LOG,REDO03.LOG。（用户可以通过视图操作添加/修改/删除日志组合日志文件来自定义在线重做日志）每组内的日志文件的内容完全相同，且保存在不同的位置，用于磁盘日志镜像，以做多次备份提高安全性。默认情况这3组通常只有一组处于活动状态，不断地同步写入已操作的脚本，当日志文件写满时（达到指定的空间配额），如果当前数据库处于归档模式，则将在线日志归档到硬盘，成为归档日志；若当前数据库处于非归档模式，则不进行归档操作，而当前在线日志的内容会被下一次重新写入覆盖而无法保存。因此，通常数据库在运行时，是处于归档模式下的，以保存数据更新的日志。当前归档日志组写满够，Oracle会切换到下一日志组，继续写入，这样循环切换；处于归档模式下，切换至原已写满的日志组，若该日志组归档完毕则则覆盖写入，若没有则只能使用日志缓冲区，等待归档完毕之后才能覆盖写入。当然，处于非归档模式下是直接覆盖写入的。 删除归档日志由于归档日志日积月累，占用空间很大，我们只需要保留最近一段时间的日志即可，所以我们要对之前的内容做删除处理。 用oracle用户登陆rman并连接数据库hostname@oracle$ rman target / 列出并确认归档日志路径RMAN&gt;list archivelog all; 删除7天以前的归档日志RMAN&gt;DELETE ARCHIVELOG ALL COMPLETED BEFORE &#39;SYSDATE-7&#39;; 表明删除当前的系统时间7天前的日志 Windows下自动删除归档日志新建E:\database_backup\rm_archivelog.txt文件123456connect target /run&#123; crosscheck archivelog all; DELETE ARCHIVELOG ALL COMPLETED BEFORE &apos;SYSDATE-7&apos;; delete expired archivelog all;&#125; 新建E:\database_backup\rm_archivelog.bat文件123456789101112@echo offset &quot;filename=rm_archivelog_task_log_%date:~0,4%%date:~5,2%%date:~8,2%.txt&quot;(echo.echo ========================= 正在清除过期归档文件，请稍等...... %date% %time% =========================echo.rman cmdfile=E:\database_backup\rm_archivelog.txtecho.echo ========================= 【结束清理 %date% %time%】 =========================echo.)&gt;&gt;E:\database_backup\%filename% 2&gt;&amp;1&lt;nulpause 设置计划任务每日凌晨执行E:\database_backup\rm_archivelog.bat脚本 Linux下自动删除归档日志编写脚本vim /home/oracle/.rm_archivelog.sh1234567891011#!/bin/bashORACLE_SID=orclORACLE_HOME=/u01/app/oracle/product/11.2.0/db_1/$ORACLE_HOME/bin/rman target / log=/var/logs/rman.log &lt;&lt;EOF run&#123;crosscheck archivelog all; delete noprompt expired archivelog all; delete noprompt archivelog all completed before &apos;sysdate - 7&apos;; &#125; exit;EOF 给脚本赋予可执行权限chmod +x /home/oracle/.rm_archivelog.sh 设置计划任务crontab -l100 3 * * * /home/oracle/.rm_archivelog.sh 参考链接：https://www.jianshu.com/p/3bc8f372fe16https://www.cnblogs.com/kerrycode/p/9046372.html]]></content>
+      <categories>
+        <category>数据库</category>
+      </categories>
+      <tags>
+        <tag>Oracle</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[没有PE的情况下，如何强行修改Windows Server 2012密码？]]></title>
     <url>%2Farlo%2Ffba0cc3c%2F</url>
     <content type="text"><![CDATA[对windows环境比较熟悉的朋友都知道，windows下修改密码最常用的就是PE工具了，一键修改；最近服务器上有台Windows Server 2012的虚拟机密码忘记了，无奈又不能直接挂载PE上去，在网上看到这个方法，感觉很方便，在此记录一下！（服务器是Xen Server环境虚拟机，本教程是vmware workstations，方法差不多） 挂载iso镜像到虚拟机重启虚拟机，从cd/dvd-rom启动 引导至安装操作系统界面，点击下一步 进入安装界面，点击左下角开始修复 选择一个选项界面-“疑难杂症” 高级选项界面-命令提示符 在弹出的命令提示符窗口操作12345d:cd Windows\System32move Utilman.exe Utilman.exe.bakcopy cmd.exe Utilman.exeshutdown /r /t 0 重启虚拟机点击左下角，弹出命令行提示框 将administrator密码修改为111.com？ 1net user administrator 111.com? 成功登录操作系统。]]></content>
@@ -41,8 +57,8 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>监控</tag>
         <tag>zabbix</tag>
+        <tag>监控</tag>
       </tags>
   </entry>
   <entry>
@@ -153,9 +169,9 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>PSU</tag>
         <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>PSU</tag>
       </tags>
   </entry>
   <entry>
@@ -251,8 +267,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -418,9 +434,9 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
-        <tag>运维</tag>
         <tag>zabbix</tag>
+        <tag>运维</tag>
+        <tag>自动化</tag>
       </tags>
   </entry>
   <entry>
@@ -431,10 +447,10 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
-        <tag>运维</tag>
-        <tag>Ansible</tag>
         <tag>zabbix</tag>
+        <tag>运维</tag>
+        <tag>自动化</tag>
+        <tag>Ansible</tag>
       </tags>
   </entry>
   <entry>
@@ -445,8 +461,8 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>监控</tag>
         <tag>zabbix</tag>
+        <tag>监控</tag>
       </tags>
   </entry>
   <entry>
@@ -505,9 +521,9 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -518,8 +534,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Sonar</tag>
       </tags>
   </entry>
@@ -557,8 +573,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>Scp</tag>
         <tag>MTU</tag>
       </tags>
@@ -630,7 +646,7 @@
   <entry>
     <title><![CDATA[Windows组策略几个问题小计]]></title>
     <url>%2Farlo%2F9bdfcc8c%2F</url>
-    <content type="text"><![CDATA[注册表编辑被管理员禁用第一步：打开组策略窗口，开始-运行-gptdit.msc第二步：选择用户配置-管理模板-系统，双击系统选项找到【阻止访问注册表编辑工具】第三步：双击【阻止访问注册表编辑工具】选择已禁用，点击确定。第四步：在开始-运行输入regedit，打开注册表。 说明注册表已经可以访问了。 服务灰色，无法正常使用MMC 在该文档中引用的管理单元受到策略限制第一步：开始-运行-regedit，启动注册表编辑器第二步：HKEY_CURRENT_USER\Software\Policies\Microsoft\MMC{58221C66-EA27-11CF-ADCF-00AA00A80033}\Restrict_Run，将值设为0 任务管理器无法正常使用第一步：打开组策略窗口，开始-运行-gptdit.msc第二步：选择用户配置-管理模板-系统-Ctrl+Alt+Del选项第三步：在该列表中打开 删除“任务管理器” 的属性，在 删除“任务管理器” 属性中的“设置”选项卡中点选“已禁用”，确定。 要远程登录，你需要具有通过远程桌面服务进行的登录权限要远程登录，你需要具有通过远程桌面服务进行的登录权限。默认情况下，远程桌面用户组的成员有这项权限。如果你所属的组没有这项权限，或者远程桌面用户组已经删除了这项权限，那么需要手动为你授予这一权限第一步：gpedit进入策略组:计算机配置-&gt;Windows设置-&gt;安全设置-&gt;本地策略-&gt;用户权限分配第二步：找到拒绝通过远程桌面服务登录,把里面的账号去了即可 修改远程登录3389端口第一步: 打开“开始→运行”，输入“regedit”，打开注册表，第二步: 进入[HKEY_LOCAL_MACHINE/SYSTEM/CurrentControlSet/Control/Terminal Server/Wds/rdpwd/Tds/tcp]，将PortNamber值(默认值是3389)，修改为新的端口，例如12389，注意使用十进制。第三部：进入[HKEY_LOCAL_MACHINE/SYSTEM/CurrentControlSet/Control/Terminal Server/WinStations/RDP-Tcp]，将PortNumber值(默认是3389)修改为新的端口，如12389，注意使用十进制。 修改远程桌面最大连接数打开组策略设置gptdit.msc–&gt;计算机配置–&gt;管理模板Windows 组件–&gt;远程桌面服务–&gt;远程桌面会话主机–&gt;连接–&gt;将远程桌面服务用户限制到单独的远程桌面服务会话 Win10家庭版找不到gpedit.msc组策略复制一下内容，新建一个.bat文件，然后使用管理员身份运行1234567891011@echo offpushd &quot;%~dp0&quot;dir /b C:\Windows\servicing\Packages\Microsoft-Windows-GroupPolicy-ClientExtensions-Package~3*.mum &gt;List.txtdir /b C:\Windows\servicing\Packages\Microsoft-Windows-GroupPolicy-ClientTools-Package~3*.mum &gt;&gt;List.txtfor /f %%i in (&apos;findstr /i . List.txt 2^&gt;nul&apos;) do dism /online /norestart /add-package:&quot;C:\Windows\servicing\Packages\%%i&quot;pause 出现身份验证错误，要求的函数不受支持在本地计算机上操作，非远程计算机！！！ 修改组策略解决此错误原因是检查更新了KB4103718的补丁造成的。 使用微软官方建议修改本地组策略： 开始运行输入gpedit.msc 计算机配置&gt;管理模板&gt;系统&gt;凭据分配&gt;加密Oracle修正 选择启用并选择易受攻击。 易受攻击– 使用 CredSSP 的客户端应用程序将通过支持回退到不安全的版本使远程服务器遭受攻击，但使用 CredSSP 的服务将接受未修补的客户端。 PS:该操作仅用于专业版，如果是家庭版请考虑升级(本人是家庭版，在X宝上买的key升级为专业版了);或者卸载KB4103718补丁重启。 修改注册表解决Windows10家庭版的用户，因为系统中没有组策略编辑器，需要修改注册表来实现。 开始-运行-输入 “regedit” 找到注册表路径：HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters 一般系统下，大概到了System后面再没有后面的路径，需要自行手动新建\CredSSP\Parameters 先新建项“CredSSP”，然后在CredSSP下新建项“Parameters” 然后在“Parameters”下新建DWORD(32位)，名称为“AllowEncryptionOracle”，设置值为“2”。 然后进行尝试，如果不行，请重启一下自己的计算机。 Windows远程桌面密码不能保存 打开组策略设置gpedit.msc 计算机配置 &gt;&gt; 管理模板 &gt;&gt; 系统 &gt;&gt; 凭据分配 下面的 “允许分配保存的凭据用于仅NTLM服务器身份验证” 选择已启用，点击显示将TERMSRV/*添加到列表中 修复图片查看器复制以下内容，新建.reg文件 12345678910111213141516171819202122232425262728293031323334353637383940414243Windows Registry Editor Version 5.00 ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.jpg] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.jpeg] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.gif] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.png] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.bmp] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.tiff] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.ico] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; 参考地址：http://ytweb.blog.51cto.com/5865824/1177266https://jingyan.baidu.com/article/3a2f7c2e6ab84626afd61114.htmlhttp://blog.sina.com.cn/s/blog_4298a2c80102vii4.htmlhttp://www.cnblogs.com/q149072205/p/6097433.htmlhttp://blog.csdn.net/flyingdream123/article/details/50724107http://www.soncs.com/NewsShow/144.html]]></content>
+    <content type="text"><![CDATA[桌面没有“计算机”开始-运行-输入以下内容1rundll32.exe shell32.dll,Control_RunDLL desk.cpl,,0 注册表编辑被管理员禁用第一步：打开组策略窗口，开始-运行-gptdit.msc第二步：选择用户配置-管理模板-系统，双击系统选项找到【阻止访问注册表编辑工具】第三步：双击【阻止访问注册表编辑工具】选择已禁用，点击确定。第四步：在开始-运行输入regedit，打开注册表。 说明注册表已经可以访问了。 服务灰色，无法正常使用MMC 在该文档中引用的管理单元受到策略限制第一步：开始-运行-regedit，启动注册表编辑器第二步：HKEY_CURRENT_USER\Software\Policies\Microsoft\MMC{58221C66-EA27-11CF-ADCF-00AA00A80033}\Restrict_Run，将值设为0 任务管理器无法正常使用第一步：打开组策略窗口，开始-运行-gptdit.msc第二步：选择用户配置-管理模板-系统-Ctrl+Alt+Del选项第三步：在该列表中打开 删除“任务管理器” 的属性，在 删除“任务管理器” 属性中的“设置”选项卡中点选“已禁用”，确定。 要远程登录，你需要具有通过远程桌面服务进行的登录权限要远程登录，你需要具有通过远程桌面服务进行的登录权限。默认情况下，远程桌面用户组的成员有这项权限。如果你所属的组没有这项权限，或者远程桌面用户组已经删除了这项权限，那么需要手动为你授予这一权限第一步：gpedit进入策略组:计算机配置-&gt;Windows设置-&gt;安全设置-&gt;本地策略-&gt;用户权限分配第二步：找到拒绝通过远程桌面服务登录,把里面的账号去了即可 修改远程登录3389端口第一步: 打开“开始→运行”，输入“regedit”，打开注册表，第二步: 进入[HKEY_LOCAL_MACHINE/SYSTEM/CurrentControlSet/Control/Terminal Server/Wds/rdpwd/Tds/tcp]，将PortNamber值(默认值是3389)，修改为新的端口，例如12389，注意使用十进制。第三部：进入[HKEY_LOCAL_MACHINE/SYSTEM/CurrentControlSet/Control/Terminal Server/WinStations/RDP-Tcp]，将PortNumber值(默认是3389)修改为新的端口，如12389，注意使用十进制。 修改远程桌面最大连接数打开组策略设置gptdit.msc–&gt;计算机配置–&gt;管理模板Windows 组件–&gt;远程桌面服务–&gt;远程桌面会话主机–&gt;连接–&gt;将远程桌面服务用户限制到单独的远程桌面服务会话 Win10家庭版找不到gpedit.msc组策略复制一下内容，新建一个.bat文件，然后使用管理员身份运行1234567891011@echo offpushd &quot;%~dp0&quot;dir /b C:\Windows\servicing\Packages\Microsoft-Windows-GroupPolicy-ClientExtensions-Package~3*.mum &gt;List.txtdir /b C:\Windows\servicing\Packages\Microsoft-Windows-GroupPolicy-ClientTools-Package~3*.mum &gt;&gt;List.txtfor /f %%i in (&apos;findstr /i . List.txt 2^&gt;nul&apos;) do dism /online /norestart /add-package:&quot;C:\Windows\servicing\Packages\%%i&quot;pause 出现身份验证错误，要求的函数不受支持在本地计算机上操作，非远程计算机！！！ 修改组策略解决此错误原因是检查更新了KB4103718的补丁造成的。 使用微软官方建议修改本地组策略： 开始运行输入gpedit.msc 计算机配置&gt;管理模板&gt;系统&gt;凭据分配&gt;加密Oracle修正 选择启用并选择易受攻击。 易受攻击– 使用 CredSSP 的客户端应用程序将通过支持回退到不安全的版本使远程服务器遭受攻击，但使用 CredSSP 的服务将接受未修补的客户端。 PS:该操作仅用于专业版，如果是家庭版请考虑升级(本人是家庭版，在X宝上买的key升级为专业版了);或者卸载KB4103718补丁重启。 修改注册表解决Windows10家庭版的用户，因为系统中没有组策略编辑器，需要修改注册表来实现。 开始-运行-输入 “regedit” 找到注册表路径：HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters 一般系统下，大概到了System后面再没有后面的路径，需要自行手动新建\CredSSP\Parameters 先新建项“CredSSP”，然后在CredSSP下新建项“Parameters” 然后在“Parameters”下新建DWORD(32位)，名称为“AllowEncryptionOracle”，设置值为“2”。 然后进行尝试，如果不行，请重启一下自己的计算机。 Windows远程桌面密码不能保存 打开组策略设置gpedit.msc 计算机配置 &gt;&gt; 管理模板 &gt;&gt; 系统 &gt;&gt; 凭据分配 下面的 “允许分配保存的凭据用于仅NTLM服务器身份验证” 选择已启用，点击显示将TERMSRV/*添加到列表中 修复图片查看器复制以下内容，新建.reg文件 12345678910111213141516171819202122232425262728293031323334353637383940414243Windows Registry Editor Version 5.00 ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.jpg] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.jpeg] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.gif] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.png] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.bmp] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.tiff] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.ico] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; 参考地址：http://ytweb.blog.51cto.com/5865824/1177266https://jingyan.baidu.com/article/3a2f7c2e6ab84626afd61114.htmlhttp://blog.sina.com.cn/s/blog_4298a2c80102vii4.htmlhttp://www.cnblogs.com/q149072205/p/6097433.htmlhttp://blog.csdn.net/flyingdream123/article/details/50724107http://www.soncs.com/NewsShow/144.html]]></content>
       <categories>
         <category>Troubleshooting</category>
       </categories>
@@ -660,8 +676,8 @@
       </categories>
       <tags>
         <tag>Jenkins</tag>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
       </tags>
   </entry>
   <entry>
@@ -672,8 +688,8 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>监控</tag>
         <tag>zabbix</tag>
+        <tag>监控</tag>
         <tag>MSSQL</tag>
       </tags>
   </entry>
@@ -685,8 +701,8 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>监控</tag>
         <tag>zabbix</tag>
+        <tag>监控</tag>
         <tag>tomcat</tag>
       </tags>
   </entry>
@@ -725,8 +741,8 @@
       </categories>
       <tags>
         <tag>Oracle</tag>
-        <tag>监控</tag>
         <tag>zabbix</tag>
+        <tag>监控</tag>
       </tags>
   </entry>
   <entry>
@@ -737,8 +753,8 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>监控</tag>
         <tag>zabbix</tag>
+        <tag>监控</tag>
       </tags>
   </entry>
   <entry>
@@ -749,8 +765,8 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>监控</tag>
         <tag>zabbix</tag>
+        <tag>监控</tag>
       </tags>
   </entry>
   <entry>
@@ -761,8 +777,8 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>监控</tag>
         <tag>zabbix</tag>
+        <tag>监控</tag>
       </tags>
   </entry>
   <entry>
@@ -773,9 +789,9 @@
         <category>常识</category>
       </categories>
       <tags>
+        <tag>常识</tag>
         <tag>Windows</tag>
         <tag>Linux</tag>
-        <tag>常识</tag>
         <tag>jdk</tag>
       </tags>
   </entry>
@@ -800,8 +816,8 @@
       </categories>
       <tags>
         <tag>Jenkins</tag>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>tomcat</tag>
       </tags>
   </entry>
@@ -813,8 +829,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>vpn</tag>
       </tags>
   </entry>
@@ -827,8 +843,8 @@
       </categories>
       <tags>
         <tag>Jenkins</tag>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
       </tags>
   </entry>
   <entry>
@@ -840,8 +856,8 @@
       </categories>
       <tags>
         <tag>Jenkins</tag>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
       </tags>
   </entry>
   <entry>
@@ -890,8 +906,8 @@
       <tags>
         <tag>集群</tag>
         <tag>数据库</tag>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
       </tags>
   </entry>
   <entry>
@@ -903,8 +919,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
       </tags>
   </entry>
   <entry>
@@ -916,8 +932,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
       </tags>
   </entry>
   <entry>
@@ -928,8 +944,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>下载</tag>
         <tag>axel</tag>
       </tags>
@@ -966,8 +982,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -979,8 +995,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -992,8 +1008,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1005,8 +1021,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1018,8 +1034,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>expect</tag>
         <tag>脚本</tag>
       </tags>
@@ -1032,9 +1048,9 @@
         <category>数据库</category>
       </categories>
       <tags>
+        <tag>Windows</tag>
         <tag>Oracle</tag>
         <tag>数据库</tag>
-        <tag>Windows</tag>
       </tags>
   </entry>
   <entry>
@@ -1145,8 +1161,8 @@
       </categories>
       <tags>
         <tag>Jenkins</tag>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
       </tags>
   </entry>
   <entry>
@@ -1157,8 +1173,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Cobbler</tag>
       </tags>
   </entry>
@@ -1181,8 +1197,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>epel</tag>
       </tags>
   </entry>
@@ -1278,9 +1294,9 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
         <tag>xshell</tag>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -1291,8 +1307,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>linux</tag>
+        <tag>常识</tag>
       </tags>
   </entry>
   <entry>
