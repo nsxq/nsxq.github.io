@@ -1,9 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Docker|3.文件、数据共享]]></title>
+    <url>%2Farlo%2Fa27711a4%2F</url>
+    <content type="text"><![CDATA[文件拷贝docker cp 容器ID:/文件路径/文件名称 本地文件路径 docker cp 本地文件路径 容器ID:/文件路径/文件名称 123456#从容器内拷贝文件到本地[root@localhost ~]# docker cp cd7a272e8786:/etc/passwd /tmp[root@localhost ~]# head -3 /tmp/passwd root:x:0:0:root:/root:/bin/bashbin:x:1:1:bin:/bin:/sbin/nologindaemon:x:2:2:daemon:/sbin:/sbin/nologin 12345#将本地文件拷贝到容器内[root@localhost ~]# echo &quot;123&quot; &gt; file1[root@localhost ~]# docker cp file1 cd7a272e8786:/tmp[root@localhost ~]# docker exec -it cd7a272e8786 cat /tmp/file1123 数据卷-v命令实现docker run -it -v /宿主机的绝对路径目录:/容器内目录 镜像名 #如果不能写，需要添加–privileged=true docker run -it -v /宿主机的绝对路径目录:/容器内目录:ro 镜像名 #容器内文件只读 12345678[root@localhost ~]# docker run --name centos0211 -it -v /HostDataVolume:/ContainerDataVolume centos[root@cde93366c404 /]# cd /ContainerDataVolume/[root@cde93366c404 ContainerDataVolume]# ls[root@cde93366c404 ContainerDataVolume]# echo &quot;123&quot; &gt; file1[root@cde93366c404 ContainerDataVolume]# exitexit[root@localhost ~]# cat /HostDataVolume/file1 123 dockerfile方式数据卷123456vim /root/mydocker/Dockerfile#volume testFROM centosVOLUME [&quot;/DataVolumeContainer1&quot;,&quot;/DataVolumeContainer2&quot;]CMD echo &quot;finished, ------success!&quot;CMD /bin/bash 123456789101112131415161718[root@localhost mydocker]# docker build -f /root/mydocker/Dockerfile -t test/centos .Sending build context to Docker daemon 2.048kBStep 1/4 : FROM centos ---&gt; 470671670cacStep 2/4 : VOLUME [&quot;/DataVolumeContainer1&quot;,&quot;/DataVolumeContainer2&quot;] ---&gt; Running in ad5cdf37264aRemoving intermediate container ad5cdf37264a ---&gt; 3e834cfa3923Step 3/4 : CMD echo &quot;finished, ------success!&quot; ---&gt; Running in 033f927a7220Removing intermediate container 033f927a7220 ---&gt; d1b3cc53d482Step 4/4 : CMD /bin/bash ---&gt; Running in 47ebcfb99158Removing intermediate container 47ebcfb99158 ---&gt; c8ed8caf62e2Successfully built c8ed8caf62e2Successfully tagged test/centos:latest 123[root@localhost mydocker]# docker imagesREPOSITORY TAG IMAGE ID CREATED SIZEtest/centos latest c8ed8caf62e2 10 seconds ago 237MB 123456[root@localhost mydocker]# docker run -it test/centos[root@7f54ea649e73 /]# ls -ltotal 16drwxr-xr-x 2 root root 6 Feb 11 23:18 DataVolumeContainer1drwxr-xr-x 2 root root 6 Feb 11 23:18 DataVolumeContainer2…… 1234567891011121314151617181920212223242526[root@localhost ~]# docker inspect 7f54ea649e73…………&quot;Mounts&quot;: [ &#123; &quot;Type&quot;: &quot;volume&quot;, &quot;Name&quot;: &quot;db383db0ed0f634dca3b88ac7b1b5eb7aaf1eb45aa5e198c1dbb672717cbadc4&quot;, &quot;Source&quot;: &quot;/var/lib/docker/volumes/db383db0ed0f634dca3b88ac7b1b5eb7aaf1eb45aa5e198c1dbb672717cbadc4/_data&quot;, &quot;Destination&quot;: &quot;/DataVolumeContainer1&quot;, &quot;Driver&quot;: &quot;local&quot;, &quot;Mode&quot;: &quot;&quot;, &quot;RW&quot;: true, &quot;Propagation&quot;: &quot;&quot; &#125;, &#123; &quot;Type&quot;: &quot;volume&quot;, &quot;Name&quot;: &quot;ed238e4c4a3bf80274f6bd6dd5d4a1aa00020e081a38d9ae668567d9a9301344&quot;, &quot;Source&quot;: &quot;/var/lib/docker/volumes/ed238e4c4a3bf80274f6bd6dd5d4a1aa00020e081a38d9ae668567d9a9301344/_data&quot;, &quot;Destination&quot;: &quot;/DataVolumeContainer2&quot;, &quot;Driver&quot;: &quot;local&quot;, &quot;Mode&quot;: &quot;&quot;, &quot;RW&quot;: true, &quot;Propagation&quot;: &quot;&quot; &#125;………… 123[root@7f54ea649e73 /]# echo &quot;123&quot; &gt; /DataVolumeContainer1/file1[root@localhost ~]# cat /var/lib/docker/volumes/db383db0ed0f634dca3b88ac7b1b5eb7aaf1eb45aa5e198c1dbb672717cbadc4/_data/file1 123 数据卷容器命名的容器挂载数据卷，其他容器通过挂载这个（父容器）实现数据共享，挂载数据卷的容器，称之为数据卷容器。 先启动一个父容器12345[root@localhost ~]# docker run -it --name dc01 test/centos[root@fe649066e76e /]# cd DataVolumeContainer1/[root@fe649066e76e DataVolumeContainer1]# touch add_dc01.txt 新建dc02/dc03容器，继承dc01123456789101112131415#新建dc02[root@localhost ~]# docker run -it --name dc02 --volumes-from dc01 test/centos[root@c14197144fe7 /]# cd /DataVolumeContainer1/[root@c14197144fe7 DataVolumeContainer1]# touch add_dc02.txt#新建dc03[root@localhost ~]# docker run -it --name dc03 --volumes-from dc01 test/centos[root@c409dacf9084 /]# cd /DataVolumeContainer1/[root@c409dacf9084 DataVolumeContainer1]# touch add_dc03.txt 在dc01上查看数据1234567891011[root@localhost ~]# docker psCONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMESc409dacf9084 test/centos &quot;/bin/sh -c /bin/bash&quot; 4 minutes ago Up 4 minutes dc03c14197144fe7 test/centos &quot;/bin/sh -c /bin/bash&quot; 4 minutes ago Up 4 minutes dc02fe649066e76e test/centos &quot;/bin/sh -c /bin/bash&quot; 9 minutes ago Up 9 minutes dc01[root@localhost ~]# docker attach fe649066e76e[root@fe649066e76e DataVolumeContainer1]# ls -ltotal 0-rw-r--r-- 1 root root 0 Feb 12 00:02 add_dc01.txt-rw-r--r-- 1 root root 0 Feb 12 00:09 add_dc02.txt-rw-r--r-- 1 root root 0 Feb 12 00:10 add_dc03.txt 删除dc01,在dc02上添加数据，在dc03上查看12345678910111213141516171819202122[root@localhost ~]# docker psCONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMESc409dacf9084 test/centos &quot;/bin/sh -c /bin/bash&quot; 5 minutes ago Up 5 minutes dc03c14197144fe7 test/centos &quot;/bin/sh -c /bin/bash&quot; 5 minutes ago Up 5 minutes dc02fe649066e76e test/centos &quot;/bin/sh -c /bin/bash&quot; 10 minutes ago Up 10 minutes dc01[root@localhost ~]# docker rm -f fe649066e76efe649066e76e[root@localhost ~]# docker attach c14197144fe7[root@c14197144fe7 DataVolumeContainer1]# ls -ltotal 0-rw-r--r-- 1 root root 0 Feb 12 00:02 add_dc01.txt-rw-r--r-- 1 root root 0 Feb 12 00:09 add_dc02.txt-rw-r--r-- 1 root root 0 Feb 12 00:10 add_dc03.txt[root@c14197144fe7 DataVolumeContainer1]# touch update_dc02.txt[root@localhost ~]# docker attach dc03[root@c409dacf9084 DataVolumeContainer1]# ls -ltotal 0-rw-r--r-- 1 root root 0 Feb 12 00:02 add_dc01.txt-rw-r--r-- 1 root root 0 Feb 12 00:09 add_dc02.txt-rw-r--r-- 1 root root 0 Feb 12 00:10 add_dc03.txt-rw-r--r-- 1 root root 0 Feb 12 00:13 update_dc02.txt 删除dc02，测试dc03数据是否可以访问123456789101112[root@localhost ~]# docker rm -f dc02dc02[root@localhost ~]# docker psCONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMESc409dacf9084 test/centos &quot;/bin/sh -c /bin/bash&quot; 10 minutes ago Up 10 minutes dc03[root@localhost ~]# docker attach dc03[root@c409dacf9084 DataVolumeContainer1]# ls -ltotal 0-rw-r--r-- 1 root root 0 Feb 12 00:02 add_dc01.txt-rw-r--r-- 1 root root 0 Feb 12 00:09 add_dc02.txt-rw-r--r-- 1 root root 0 Feb 12 00:10 add_dc03.txt-rw-r--r-- 1 root root 0 Feb 12 00:13 update_dc02.txt 新建dc04继承dc03，然后删除dc031234567891011121314[root@localhost ~]# docker run -it --name dc04 --volumes-from dc03 test/centos[root@localhost ~]# docker rm -f dc03dc03[root@localhost ~]# docker ps CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES5156e4538e53 test/centos &quot;/bin/sh -c /bin/bash&quot; 59 seconds ago Up 58 seconds dc04[root@localhost ~]# docker attach dc04[root@5156e4538e53 DataVolumeContainer1]# cd /DataVolumeContainer1/[root@5156e4538e53 DataVolumeContainer1]# ls -ltotal 0-rw-r--r-- 1 root root 0 Feb 12 00:02 add_dc01.txt-rw-r--r-- 1 root root 0 Feb 12 00:09 add_dc02.txt-rw-r--r-- 1 root root 0 Feb 12 00:10 add_dc03.txt-rw-r--r-- 1 root root 0 Feb 12 00:13 update_dc02.txt 结论：容器之间配置信息的传递，数据卷的生命周期一直持续到没有容器使用它为止]]></content>
+  </entry>
+  <entry>
+    <title><![CDATA[Docker|2.常用操作命令]]></title>
+    <url>%2Farlo%2F4846dd1c%2F</url>
+    <content type="text"><![CDATA[查看版本信息123docker versiondocker info 获取帮助1docker --help 镜像命令列出本地镜像docker images-a: 列出本地所有镜像（包含中间层镜像） -q：只显示镜像ID –digests: 显示镜像的摘要信息 –no-trunc: 显示完整的镜像信息 12345678910111213[root@localhost ~]# docker imagesREPOSITORY TAG IMAGE ID CREATED SIZEtomcat latest b56d8850aed5 4 days ago 529MBcentos latest 470671670cac 3 weeks ago 237MBhello-world latest fce289e99eb9 13 months ago 1.84kBREPOSITORY: 镜像仓库源TAG：镜像标签IMAGE ID ：镜像IDCREATED：镜像创建时间SIZE: 镜像大小同一仓库源可以有多个TAG，代表这个仓库源的不同个版本，我们使用REPOSITORY:TAG来定义不同的镜像。如果不指定一个镜像的标签版本，docker将默认使用REPOSITORY:lastest镜像 查找镜像docker search虽然本地已经修改为阿里云加速镜像站，但是查询还是从https://hub.docker.com/上查找镜像。 –no-trunc: 显示完整的镜像描述 -s: 列出收藏数不小于指定的镜像 –automated: 只列出automated build类型的镜像 123456789101112[root@localhost ~]# docker search tomcat -s 50Flag --stars has been deprecated, use --filter=stars=3 insteadNAME DESCRIPTION STARS OFFICIAL AUTOMATEDtomcat Apache Tomcat is an open source implementati… 2637 [OK] tomee Apache TomEE is an all-Apache Java EE certif… 74 [OK] dordoka/tomcat Ubuntu 14.04, Oracle JDK 8 and Tomcat 8 base… 53 [OK] NAME：镜像名称DESCRIPTION：镜像描述STARS：点赞数OFFICIAL：官方镜像AUTOMATED：自动更新 拉取镜像dockerpull下载镜像 docker pull 镜像名称[:TAG]，如果不指定TAG，默认为lastest 删除镜像docker rmi删除镜像： docker rmi 镜像名称/镜像ID 删除单个镜像： docker rmi -f 镜像名称/镜像ID 删除多个镜像： docker rmi -f 镜像名称1:TAG/镜像ID1[空格]镜像名称2:TAG/镜像ID2 删除全部镜像： docker rmi -f $(docker images -qa) 12345678910111213141516171819删除镜像[root@localhost ~]# docker rmi hello-worldError response from daemon: conflict: unable to remove repository reference &quot;hello-world&quot; (must force) - container c0c56d69276d is using its referenced image fce289e99eb9强行删除镜像[root@localhost ~]# docker rmi -f fce289e99eb9Untagged: hello-world:latestUntagged: hello-world@sha256:9572f7cdcee8591948c2963463447a53466950b3fc15a247fcad1917ca215a2fDeleted: sha256:fce289e99eb9bca977dae136fbe2a82b6b7d4c372474c9235adc1741675f587e删除多个镜像[root@localhost ~]# docker rmi -f hello-world nginxUntagged: hello-world:latestUntagged: hello-world@sha256:9572f7cdcee8591948c2963463447a53466950b3fc15a247fcad1917ca215a2fDeleted: sha256:fce289e99eb9bca977dae136fbe2a82b6b7d4c372474c9235adc1741675f587eUntagged: nginx:latestUntagged: nginx@sha256:ad5552c786f128e389a0263104ae39f3d3c7895579d45ae716f528185b36bc6fDeleted: sha256:2073e0bcb60ee98548d313ead5eacbfe16d9054f8800a32bedd859922a99a6e1Deleted: sha256:a3136fbf38691346715cac8360bcdfca0fff812cede416469653670f04e2cab0Deleted: sha256:99360ffcb2da18fd9ede194efaf5d4b90e7aee99f45737e918113e6833dcf278Deleted: sha256:488dfecc21b1bc607e09368d2791cb784cf8c4ec5c05d2952b045b3e0f8cc01e 容器命令新建并启动容器启动容器必须有一个镜像，如果本地有镜像就从本地启动，如果本地没有则先去镜像站点拉取镜像然后启动，并保存镜像到本地； docker run 镜像名称 –name=”容器新名字”：为容器指定一个名称； -d：后台运行容器，并返回容器ID，即启动守护式容器； -i：已交互模式运行容器，通常与-t同时使用； -t：为容器重新分配一个伪输入终端，通常与-i同时使用； -P：随机端口映射； -p：指定端口映射，有以下四种格式 ip:hostPort:containerPort / ip::containerPort / hostPort:containerPort / containerPort 12345678910111213[root@localhost ~]# docker imagesREPOSITORY TAG IMAGE ID CREATED SIZEtomcat latest b56d8850aed5 4 days ago 529MBcentos latest 470671670cac 3 weeks ago 237MB# 启动交互式容器[root@localhost ~]# docker run -it --name centos20200211 470671670cac[root@8ec89289309a /]# pwd/[root@8ec89289309a /]# lsbin dev etc home lib lib64 lost+found media mnt opt proc root run sbin srv sys tmp usr var[root@8ec89289309a /]## 启动守护式容器docker run -d 列出的容器docker ps -a： 列出所有的容器，包含已经停止的容器 -l： 显示最新创建的容器 -n： 显示最近n次创建的容器 -q： 静默模式，只显示容器编号 –no-trunc ：不截断输出 1234[root@localhost ~]# docker psCONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES8ec89289309a 470671670cac &quot;/bin/bash&quot; 3 minutes ago Up 3 minutes centos202002118a5da2a84c74 centos &quot;/bin/bash&quot; 3 hours ago Up 3 hours centos0211 退出容器 exit 容器停止退出 Ctrl+P+Q 容器不停止退出 开两个终端做个操作 1234[root@localhost ~]# docker ps CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES8ec89289309a 470671670cac &quot;/bin/bash&quot; 6 minutes ago Up 6 minutes centos202002118a5da2a84c74 centos &quot;/bin/bash&quot; 3 hours ago Up 3 hours centos0211 123[root@8ec89289309a /]# exitexit[root@localhost ~]# 123[root@localhost ~]# docker ps CONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES8a5da2a84c74 centos &quot;/bin/bash&quot; 3 hours ago Up 3 hours centos0211 启动容器docker start 容器id/容器名称 12345678[root@localhost ~]# docker ps -aCONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMESba4a8278426e 470671670cac &quot;/bin/bash&quot; 12 minutes ago Up 12 minutes centos20200211f34465900de2 centos &quot;/bin/bash&quot; 28 minutes ago Exited (127) 27 minutes ago stoic_ride8a5da2a84c74 centos &quot;/bin/bash&quot; 3 hours ago Up 3 hours centos0211899f21d7be4f 470671670cac &quot;/bin/bash&quot; 4 hours ago Exited (0) 3 hours ago dazzling_hypatia8821a07e9822 470671670cac &quot;/bin/bash&quot; 4 hours ago Exited (130) 4 hours ago infallible_jonesc0c56d69276d fce289e99eb9 &quot;/hello&quot; 31 hours ago Exited (0) 31 hours ago interesting_dirac 1234567[root@localhost ~]# docker start 899f21d7be4f899f21d7be4f[root@localhost ~]# docker psCONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMESba4a8278426e 470671670cac &quot;/bin/bash&quot; 12 minutes ago Up 12 minutes centos202002118a5da2a84c74 centos &quot;/bin/bash&quot; 3 hours ago Up 3 hours centos0211899f21d7be4f 470671670cac &quot;/bin/bash&quot; 4 hours ago Up 5 seconds dazzling_hypatia 重启容器docker restart 容器id/容器名称 1234567[root@localhost ~]# docker restart 899f21d7be4f899f21d7be4f[root@localhost ~]# docker psCONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMESba4a8278426e 470671670cac &quot;/bin/bash&quot; 14 minutes ago Up 14 minutes centos202002118a5da2a84c74 centos &quot;/bin/bash&quot; 4 hours ago Up 4 hours centos0211899f21d7be4f 470671670cac &quot;/bin/bash&quot; 4 hours ago Up 1 second dazzling_hypatia 停止容器docker stop 容器id/容器名称 1234567891011[root@localhost ~]# docker psCONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMESba4a8278426e 470671670cac &quot;/bin/bash&quot; 16 minutes ago Up 16 minutes centos202002118a5da2a84c74 centos &quot;/bin/bash&quot; 4 hours ago Up 4 hours centos0211899f21d7be4f 470671670cac &quot;/bin/bash&quot; 4 hours ago Up About a minute dazzling_hypatia[root@localhost ~]# docker stop 899f21d7be4f899f21d7be4f[root@localhost ~]# docker psCONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMESba4a8278426e 470671670cac &quot;/bin/bash&quot; 16 minutes ago Up 16 minutes centos202002118a5da2a84c74 centos &quot;/bin/bash&quot; 4 hours ago Up 4 hours centos0211 强行停止容器docker kill 容器id/容器名称 123456789[root@localhost ~]# docker psCONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMESba4a8278426e 470671670cac &quot;/bin/bash&quot; 16 minutes ago Up 16 minutes centos202002118a5da2a84c74 centos &quot;/bin/bash&quot; 4 hours ago Up 4 hours centos0211[root@localhost ~]# docker kill 8a5da2a84c748a5da2a84c74[root@localhost ~]# docker psCONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMESba4a8278426e 470671670cac &quot;/bin/bash&quot; 18 minutes ago Up 18 minutes centos20200211 删除容器删除已经停止的单个容器 docker rm 容器id/容器名称 删除正在运行的单个容器 docker rm -f 容器id/容器名称 一次性删除多个容器 docker rm -f $(docker ps -a -q) / docker ps -a -q |xargs docker rm 12345678[root@localhost ~]# docker ps -aCONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMESba4a8278426e 470671670cac &quot;/bin/bash&quot; 43 minutes ago Up 43 minutes centos20200211# 不加-f，只会删除已经停止退出的容器[root@localhost ~]# docker rm -f $(docker ps -a -q)ba4a8278426e[root@localhost ~]# docker ps -aCONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMES 查看容器日志docker logs 容器id -t 加入时间戳 -t 跟随最新的日志打印 –tail 数字显示最后的多少条 12345678910111213141516171819202122[root@localhost ~]# docker logs -t -f --tail 20 4f30ee04eac72020-02-11T17:00:51.830836896Z bash: ll: command not found2020-02-11T17:01:56.146309331Z [root@4f30ee04eac7 /]# ss2020-02-11T17:01:56.279428980Z Netid State Recv-Q Send-Q Local Address:Port Peer Address:Port 2020-02-11T17:02:08.128296224Z [root@4f30ee04eac7 /]# ps2020-02-11T17:02:08.134374708Z bash: $&apos;\345\271ps&apos;: command not found2020-02-11T17:02:13.669104746Z [root@4f30ee04eac7 /]ps -ef2020-02-11T17:02:13.685931632Z UID PID PPID C STIME TTY TIME CMD2020-02-11T17:02:13.687150066Z root 1 0 0 16:59 pts/0 00:00:00 /bin/bash2020-02-11T17:02:13.687185878Z root 18 1 0 17:02 pts/0 00:00:00 ps -ef[root@4f30ee04eac7 /]# [root@4f30ee04eac7 /]# ps -ef2020-02-11T17:05:14.601317299Z UID PID PPID C STIME TTY TIME CMD2020-02-11T17:05:14.601362985Z root 1 0 0 16:59 pts/0 00:00:00 /bin/bash2020-02-11T17:05:14.601375403Z root 19 1 0 17:05 pts/0 00:00:00 ps -ef2020-02-11T17:05:15.511402720Z [root@4f30ee04eac7 /]# pwd2020-02-11T17:05:15.511432928Z /2020-02-11T17:05:16.155997418Z [root@4f30ee04eac7 /]# ls2020-02-11T17:05:16.160923769Z bin dev etc home lib lib64 lost+found media mnt opt proc root run sbin srv sys tmp usr var2020-02-11T17:05:18.225781961Z [root@4f30ee04eac7 /]# cd 2020-02-11T17:05:20.175387626Z [root@4f30ee04eac7 ~]# id2020-02-11T17:05:20.180529056Z uid=0(root) gid=0(root) groups=0(root) 查看容器内进程docker top 容器id 123[root@localhost ~]# docker top 4f30ee04eac7UID PID PPID C STIME TTY TIME CMDroot 4648 4631 0 00:59 pts/0 00:00:00 /bin/bash 进入容器docker exec -it 容器ID bashshell docker attach 容器ID attach 直接进入容器启动命令的终端，不会启动新的进程 exec 是在容器中打开新的终端，并且可以启动新的进程 123456789[root@localhost ~]# docker run -it centos[root@cd7a272e8786 /]# # 按Ctrl+P+Q退出容器[root@localhost ~]# [root@localhost ~]# docker psCONTAINER ID IMAGE COMMAND CREATED STATUS PORTS NAMEScd7a272e8786 centos &quot;/bin/bash&quot; 12 seconds ago Up 11 seconds heuristic_perlman[root@localhost ~]# docker attach cd7a272e8786[root@cd7a272e8786 /]# 1234[root@localhost ~]# docker exec -it -t cd7a272e8786 ls -l /tmptotal 8-rwx------ 1 root root 671 Jan 13 21:49 ks-script-_srt3u3c-rwx------ 1 root root 1379 Jan 13 21:49 ks-script-gpqu_kuo 查看容器内部细节docker inspect 容器id 123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126127128129130131132133134135136137138139140141142143144145146147148149150151152153154155156157158159160161162163164165166167168169170171172173174175176177178179180181182183184185186187188189190191192193194195196197198199200201202203204205206[root@localhost ~]# docker inspect 4f30ee04eac7[ &#123; &quot;Id&quot;: &quot;4f30ee04eac790df1edc4d1ae87df1096cb4aac78f8b5a741602068f5a3ad1ba&quot;, &quot;Created&quot;: &quot;2020-02-11T16:59:07.103035515Z&quot;, &quot;Path&quot;: &quot;/bin/bash&quot;, &quot;Args&quot;: [], &quot;State&quot;: &#123; &quot;Status&quot;: &quot;running&quot;, &quot;Running&quot;: true, &quot;Paused&quot;: false, &quot;Restarting&quot;: false, &quot;OOMKilled&quot;: false, &quot;Dead&quot;: false, &quot;Pid&quot;: 4648, &quot;ExitCode&quot;: 0, &quot;Error&quot;: &quot;&quot;, &quot;StartedAt&quot;: &quot;2020-02-11T16:59:07.625242514Z&quot;, &quot;FinishedAt&quot;: &quot;0001-01-01T00:00:00Z&quot; &#125;, &quot;Image&quot;: &quot;sha256:470671670cac686c7cf0081e0b37da2e9f4f768ddc5f6a26102ccd1c6954c1ee&quot;, &quot;ResolvConfPath&quot;: &quot;/var/lib/docker/containers/4f30ee04eac790df1edc4d1ae87df1096cb4aac78f8b5a741602068f5a3ad1ba/resolv.conf&quot;, &quot;HostnamePath&quot;: &quot;/var/lib/docker/containers/4f30ee04eac790df1edc4d1ae87df1096cb4aac78f8b5a741602068f5a3ad1ba/hostname&quot;, &quot;HostsPath&quot;: &quot;/var/lib/docker/containers/4f30ee04eac790df1edc4d1ae87df1096cb4aac78f8b5a741602068f5a3ad1ba/hosts&quot;, &quot;LogPath&quot;: &quot;/var/lib/docker/containers/4f30ee04eac790df1edc4d1ae87df1096cb4aac78f8b5a741602068f5a3ad1ba/4f30ee04eac790df1edc4d1ae87df1096cb4aac78f8b5a741602068f5a3ad1ba-json.log&quot;, &quot;Name&quot;: &quot;/centos20200211&quot;, &quot;RestartCount&quot;: 0, &quot;Driver&quot;: &quot;devicemapper&quot;, &quot;Platform&quot;: &quot;linux&quot;, &quot;MountLabel&quot;: &quot;&quot;, &quot;ProcessLabel&quot;: &quot;&quot;, &quot;AppArmorProfile&quot;: &quot;&quot;, &quot;ExecIDs&quot;: null, &quot;HostConfig&quot;: &#123; &quot;Binds&quot;: null, &quot;ContainerIDFile&quot;: &quot;&quot;, &quot;LogConfig&quot;: &#123; &quot;Type&quot;: &quot;json-file&quot;, &quot;Config&quot;: &#123;&#125; &#125;, &quot;NetworkMode&quot;: &quot;default&quot;, &quot;PortBindings&quot;: &#123;&#125;, &quot;RestartPolicy&quot;: &#123; &quot;Name&quot;: &quot;no&quot;, &quot;MaximumRetryCount&quot;: 0 &#125;, &quot;AutoRemove&quot;: false, &quot;VolumeDriver&quot;: &quot;&quot;, &quot;VolumesFrom&quot;: null, &quot;CapAdd&quot;: null, &quot;CapDrop&quot;: null, &quot;Capabilities&quot;: null, &quot;Dns&quot;: [], &quot;DnsOptions&quot;: [], &quot;DnsSearch&quot;: [], &quot;ExtraHosts&quot;: null, &quot;GroupAdd&quot;: null, &quot;IpcMode&quot;: &quot;private&quot;, &quot;Cgroup&quot;: &quot;&quot;, &quot;Links&quot;: null, &quot;OomScoreAdj&quot;: 0, &quot;PidMode&quot;: &quot;&quot;, &quot;Privileged&quot;: false, &quot;PublishAllPorts&quot;: false, &quot;ReadonlyRootfs&quot;: false, &quot;SecurityOpt&quot;: null, &quot;UTSMode&quot;: &quot;&quot;, &quot;UsernsMode&quot;: &quot;&quot;, &quot;ShmSize&quot;: 67108864, &quot;Runtime&quot;: &quot;runc&quot;, &quot;ConsoleSize&quot;: [ 0, 0 ], &quot;Isolation&quot;: &quot;&quot;, &quot;CpuShares&quot;: 0, &quot;Memory&quot;: 0, &quot;NanoCpus&quot;: 0, &quot;CgroupParent&quot;: &quot;&quot;, &quot;BlkioWeight&quot;: 0, &quot;BlkioWeightDevice&quot;: [], &quot;BlkioDeviceReadBps&quot;: null, &quot;BlkioDeviceWriteBps&quot;: null, &quot;BlkioDeviceReadIOps&quot;: null, &quot;BlkioDeviceWriteIOps&quot;: null, &quot;CpuPeriod&quot;: 0, &quot;CpuQuota&quot;: 0, &quot;CpuRealtimePeriod&quot;: 0, &quot;CpuRealtimeRuntime&quot;: 0, &quot;CpusetCpus&quot;: &quot;&quot;, &quot;CpusetMems&quot;: &quot;&quot;, &quot;Devices&quot;: [], &quot;DeviceCgroupRules&quot;: null, &quot;DeviceRequests&quot;: null, &quot;KernelMemory&quot;: 0, &quot;KernelMemoryTCP&quot;: 0, &quot;MemoryReservation&quot;: 0, &quot;MemorySwap&quot;: 0, &quot;MemorySwappiness&quot;: null, &quot;OomKillDisable&quot;: false, &quot;PidsLimit&quot;: null, &quot;Ulimits&quot;: null, &quot;CpuCount&quot;: 0, &quot;CpuPercent&quot;: 0, &quot;IOMaximumIOps&quot;: 0, &quot;IOMaximumBandwidth&quot;: 0, &quot;MaskedPaths&quot;: [ &quot;/proc/asound&quot;, &quot;/proc/acpi&quot;, &quot;/proc/kcore&quot;, &quot;/proc/keys&quot;, &quot;/proc/latency_stats&quot;, &quot;/proc/timer_list&quot;, &quot;/proc/timer_stats&quot;, &quot;/proc/sched_debug&quot;, &quot;/proc/scsi&quot;, &quot;/sys/firmware&quot; ], &quot;ReadonlyPaths&quot;: [ &quot;/proc/bus&quot;, &quot;/proc/fs&quot;, &quot;/proc/irq&quot;, &quot;/proc/sys&quot;, &quot;/proc/sysrq-trigger&quot; ] &#125;, &quot;GraphDriver&quot;: &#123; &quot;Data&quot;: &#123; &quot;DeviceId&quot;: &quot;32&quot;, &quot;DeviceName&quot;: &quot;docker-253:0-102243954-b0ecd426ae759df49cab32c752911e1dcd35a84afc31955ba49a4699db11092d&quot;, &quot;DeviceSize&quot;: &quot;10737418240&quot; &#125;, &quot;Name&quot;: &quot;devicemapper&quot; &#125;, &quot;Mounts&quot;: [], &quot;Config&quot;: &#123; &quot;Hostname&quot;: &quot;4f30ee04eac7&quot;, &quot;Domainname&quot;: &quot;&quot;, &quot;User&quot;: &quot;&quot;, &quot;AttachStdin&quot;: true, &quot;AttachStdout&quot;: true, &quot;AttachStderr&quot;: true, &quot;Tty&quot;: true, &quot;OpenStdin&quot;: true, &quot;StdinOnce&quot;: true, &quot;Env&quot;: [ &quot;PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin&quot; ], &quot;Cmd&quot;: [ &quot;/bin/bash&quot; ], &quot;Image&quot;: &quot;470671670cac&quot;, &quot;Volumes&quot;: null, &quot;WorkingDir&quot;: &quot;&quot;, &quot;Entrypoint&quot;: null, &quot;OnBuild&quot;: null, &quot;Labels&quot;: &#123; &quot;org.label-schema.build-date&quot;: &quot;20200114&quot;, &quot;org.label-schema.license&quot;: &quot;GPLv2&quot;, &quot;org.label-schema.name&quot;: &quot;CentOS Base Image&quot;, &quot;org.label-schema.schema-version&quot;: &quot;1.0&quot;, &quot;org.label-schema.vendor&quot;: &quot;CentOS&quot;, &quot;org.opencontainers.image.created&quot;: &quot;2020-01-14 00:00:00-08:00&quot;, &quot;org.opencontainers.image.licenses&quot;: &quot;GPL-2.0-only&quot;, &quot;org.opencontainers.image.title&quot;: &quot;CentOS Base Image&quot;, &quot;org.opencontainers.image.vendor&quot;: &quot;CentOS&quot; &#125; &#125;, &quot;NetworkSettings&quot;: &#123; &quot;Bridge&quot;: &quot;&quot;, &quot;SandboxID&quot;: &quot;6b6ff8333ff7e94732a09dddc37744728b0febc6c1bf06bfaaf54bf791e576d3&quot;, &quot;HairpinMode&quot;: false, &quot;LinkLocalIPv6Address&quot;: &quot;&quot;, &quot;LinkLocalIPv6PrefixLen&quot;: 0, &quot;Ports&quot;: &#123;&#125;, &quot;SandboxKey&quot;: &quot;/var/run/docker/netns/6b6ff8333ff7&quot;, &quot;SecondaryIPAddresses&quot;: null, &quot;SecondaryIPv6Addresses&quot;: null, &quot;EndpointID&quot;: &quot;66edac9cd524223f0a57e4c58d5080114826f6a90db64f1e734f6f6f5371627e&quot;, &quot;Gateway&quot;: &quot;172.17.0.1&quot;, &quot;GlobalIPv6Address&quot;: &quot;&quot;, &quot;GlobalIPv6PrefixLen&quot;: 0, &quot;IPAddress&quot;: &quot;172.17.0.2&quot;, &quot;IPPrefixLen&quot;: 16, &quot;IPv6Gateway&quot;: &quot;&quot;, &quot;MacAddress&quot;: &quot;02:42:ac:11:00:02&quot;, &quot;Networks&quot;: &#123; &quot;bridge&quot;: &#123; &quot;IPAMConfig&quot;: null, &quot;Links&quot;: null, &quot;Aliases&quot;: null, &quot;NetworkID&quot;: &quot;cd648ca5b88f8ec9e946884ed18c21fe1f2bbf214a5e3bd0094bdd61cc36f41c&quot;, &quot;EndpointID&quot;: &quot;66edac9cd524223f0a57e4c58d5080114826f6a90db64f1e734f6f6f5371627e&quot;, &quot;Gateway&quot;: &quot;172.17.0.1&quot;, &quot;IPAddress&quot;: &quot;172.17.0.2&quot;, &quot;IPPrefixLen&quot;: 16, &quot;IPv6Gateway&quot;: &quot;&quot;, &quot;GlobalIPv6Address&quot;: &quot;&quot;, &quot;GlobalIPv6PrefixLen&quot;: 0, &quot;MacAddress&quot;: &quot;02:42:ac:11:00:02&quot;, &quot;DriverOpts&quot;: null &#125; &#125; &#125; &#125;]]]></content>
+      <categories>
+        <category>DevOps</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Docker|1.安装部署]]></title>
+    <url>%2Farlo%2F4470a347%2F</url>
+    <content type="text"><![CDATA[CentOS7 安装Docker删掉之前的docker版本1yum remove docker docker-common docker-selinux docker-engine 安装相关依赖1yum install -y yum-utils device-mapper-persistent-data lvm2 添加软件源信息1yum-config-manager --add-repo https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo 更新并安装Docker-CE12yum makecache fastsudo yum -y install docker-ce 开启Docker服务1systemctl start docker 查看安装信息12345678910111213141516171819202122232425262728[root@localhost ~]# docker versionClient: Docker Engine - Community Version: 19.03.5 API version: 1.40 Go version: go1.12.12 Git commit: 633a0ea Built: Wed Nov 13 07:25:41 2019 OS/Arch: linux/amd64 Experimental: falseServer: Docker Engine - Community Engine: Version: 19.03.5 API version: 1.40 (minimum version 1.12) Go version: go1.12.12 Git commit: 633a0ea Built: Wed Nov 13 07:24:18 2019 OS/Arch: linux/amd64 Experimental: false containerd: Version: 1.2.10 GitCommit: b34a5c8af56e510852c35414db4c1f4fa6172339 runc: Version: 1.0.0-rc8+dev GitCommit: 3e425f80a8c931f88e6d94a8c831b9d5aa481657 docker-init: Version: 0.18.0 GitCommit: fec3683 配置阿里云镜像加速推荐安装1.10.0以上版本的Docker客户端 使用阿里云账号登录1https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors 配置镜像加速器12345678mkdir -p /etc/dockertee /etc/docker/daemon.json &lt;&lt;-&apos;EOF&apos;&#123; &quot;registry-mirrors&quot;: [&quot;https://yk5r9j0f.mirror.aliyuncs.com&quot;]&#125;EOFsystemctl daemon-reloadsystemctl restart docker]]></content>
+      <categories>
+        <category>DevOps</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[工具|利用GoAccess分析Nginx访问日志]]></title>
     <url>%2Farlo%2F85bf3410%2F</url>
-    <content type="text"><![CDATA[项目上线之后，访问量逐渐增多，最近发现一些异常，从服务器监控zabbix没有发现比较有用的信息，链路监控pinpoint上发现访问量比之前增加了很多，所以想从入口方面分析一下来源，看看是不是被人抓取数据了。 Nginx日志格式我这里使用的是阿里开源的tengine，和nginx是一样的，默认的日志格式 1234567log_format main &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos; &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos; &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;; access_log logs/access.log main; error_log logs/error.log warn; access_log &quot;pipe:rollback logs/access_log interval=1d baknum=7 maxsize=2G&quot; main; 1113.200.77.134 - - [19/Dec/2019:10:45:39 +0800] &quot;GET /air/home/code/regions HTTP/1.1&quot; 200 1391 &quot;http://localhost:8080/app/tabs/home&quot; &quot;Mozilla/5.0 (Linux; Android 9; COL-AL10 Build/HUAWEICOL-AL10; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/72.0.3626.121 Mobile Safari/537.36&quot; &quot;-&quot; 参数 说明 实例 $remote_addr 客户端地址 113.200.77.134 $remote_user 客户端用户名称 - - $time_local 访问时间和时区 19/Dec/2019:10:45:39 +0800] $request 请求的URI和HTTP协议 GET /air/home/code/regions HTTP/1.1 $http_host 请求地址，即浏览器中你输入的地址（IP或域名） $status HTTP请求状态 200 $upstream_status upstream状态 $body_bytes_sent 发送给客户端文件内容大小 1391 $http_referer url跳转来源 http://localhost:8080/app/tabs/home $http_user_agent 用户终端浏览器等信息 Mozilla/5.0 (Linux; Android 9; COL-AL10 Build/HUAWEICOL-AL10; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/72.0.3626.121 Mobile Safari/537.36 $ssl_protocol SSL协议版本 $ssl_cipher 交换数据中的算法 $request_time 整个请求的总时间 $http_x_forwarded_for HTTP 扩展头部 $upstream_addr 后台upstream的地址，即真正提供服务的主机地址 $request_time Nginx处理请求所用总时间 $upstream_connect_time Nginx与upstream server建立连接所用时间 $upstream_header_time 从建立连接成功到接收第一个字节之间的时间 $upstream_response_time 从建立连接成功到接收第一个字节之间的时间 GoAccessGoAccess是一个开源的实时 Web日志分析器和交互式查看器，可在 nix系统的终端中或通过*浏览器运行。 它为需要实时可视服务器报告的系统管理员提供了快速而有价值的HTTP统计信息。 官网地址：https://goaccess.io/ github地址：https://github.com/allinurl/goaccess GoAccess日志规范：https://goaccess.io/man#custom-log 安装GoAccess1234567yum install geoip-devel ncurses-devel glib2 glib2-devel ncurses-devel zlib zlib-devel wget https://tar.goaccess.io/goaccess-1.3.tar.gztar -xzvf goaccess-1.3.tar.gzcd goaccess-1.3/./configure --prefix=/usr/local/goaccess --enable-utf8 --enable-geoip=legacymakemake install 1vim /usr/local/goaccess/etc/goaccess/goaccess.conf 配置日志格式，和nginx里的日志格式匹配起来，日志规范参考上述链接 123time-format %H:%M:%Sdate-format %d/%b/%Ylog-format %h %^[%d:%t %^] &quot;%r&quot; %s %b &quot;%R&quot; &quot;%u&quot; 1234567891011121314%t 匹配time-format格式的时间字段%d 匹配date-format格式的日期字段%h host(客户端ip地址，包括ipv4和ipv6)%r 来自客户端的请求行%m 请求的方法%U URL路径%H 请求协议%s 服务器响应的状态码%b 服务器返回的内容大小%R HTTP请求头的referer字段%u 用户代理的HTTP请求报头%D 请求所花费的时间，单位微秒%T 请求所花费的时间，单位秒%^ 忽略这一字段 终端查看日志1/usr/local/goaccess/bin/goaccess -a -d -f /usr/local/tengine/logs/access.log -p /usr/local/goaccess/etc/goaccess/goaccess.conf F1或h：帮助 F5 ：刷新主界面 q：退出程序/当前窗口/折叠当前模块 o或Enter：展开选中的模块或窗口 0-9以及Shift + 0：将选中的模块或窗口激活 k和j：模块内部移动 c：修改配色 ^f和^b：模块中上下滚屏 tab shift+tab：前后切换模块 s：模块内部排序选择 /：在所有模块中搜索(支持正则) n：找到下个匹配 g和G：跳到第一项/最后一项 生成html格式1usr/local/goaccess/bin/goaccess -a -d -f /usr/local/tengine/logs/access_log.1 -p /usr/local/goaccess/etc/goaccess/goaccess.conf -o ~/sx.html]]></content>
+    <content type="text"><![CDATA[项目上线之后，访问量逐渐增多，最近发现一些异常，从服务器监控zabbix没有发现比较有用的信息，链路监控pinpoint上发现访问量比之前增加了很多，所以想从入口方面分析一下来源，看看是不是被人抓取数据了。 Nginx日志格式我这里使用的是阿里开源的tengine，和nginx是一样的，默认的日志格式 1234567log_format main &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos; &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos; &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;; access_log logs/access.log main; error_log logs/error.log warn; access_log &quot;pipe:rollback logs/access_log interval=1d baknum=7 maxsize=2G&quot; main; 1113.200.77.134 - - [19/Dec/2019:10:45:39 +0800] &quot;GET /air/home/code/regions HTTP/1.1&quot; 200 1391 &quot;http://localhost:8080/app/tabs/home&quot; &quot;Mozilla/5.0 (Linux; Android 9; COL-AL10 Build/HUAWEICOL-AL10; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/72.0.3626.121 Mobile Safari/537.36&quot; &quot;-&quot; 参数 说明 实例 $remote_addr 客户端地址 113.200.77.134 $remote_user 客户端用户名称 - - $time_local 访问时间和时区 19/Dec/2019:10:45:39 +0800] $request 请求的URI和HTTP协议 GET /air/home/code/regions HTTP/1.1 $http_host 请求地址，即浏览器中你输入的地址（IP或域名） $status HTTP请求状态 200 $upstream_status upstream状态 $body_bytes_sent 发送给客户端文件内容大小 1391 $http_referer url跳转来源 http://localhost:8080/app/tabs/home $http_user_agent 用户终端浏览器等信息 Mozilla/5.0 (Linux; Android 9; COL-AL10 Build/HUAWEICOL-AL10; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/72.0.3626.121 Mobile Safari/537.36 $ssl_protocol SSL协议版本 $ssl_cipher 交换数据中的算法 $http_x_forwarded_for HTTP 扩展头部 $upstream_addr 后台upstream的地址，即真正提供服务的主机地址 $request_time Nginx处理整个请求所用总时间 $upstream_connect_time Nginx与upstream server建立连接所用时间 $upstream_header_time 从建立连接成功到接收第一个字节之间的时间 $upstream_response_time 从建立连接成功到接收第一个字节之间的时间 GoAccessGoAccess是一个开源的实时 Web日志分析器和交互式查看器，可在 nix系统的终端中或通过*浏览器运行。 它为需要实时可视服务器报告的系统管理员提供了快速而有价值的HTTP统计信息。 官网地址：https://goaccess.io/ github地址：https://github.com/allinurl/goaccess GoAccess日志规范：https://goaccess.io/man#custom-log 安装GoAccess1234567yum install geoip-devel ncurses-devel glib2 glib2-devel ncurses-devel zlib zlib-devel wget https://tar.goaccess.io/goaccess-1.3.tar.gztar -xzvf goaccess-1.3.tar.gzcd goaccess-1.3/./configure --prefix=/usr/local/goaccess --enable-utf8 --enable-geoip=legacymakemake install 1vim /usr/local/goaccess/etc/goaccess/goaccess.conf 配置日志格式，和nginx里的日志格式匹配起来，日志规范参考上述链接 123time-format %H:%M:%Sdate-format %d/%b/%Ylog-format %h %^[%d:%t %^] &quot;%r&quot; %s %b &quot;%R&quot; &quot;%u&quot; 1234567891011121314%t 匹配time-format格式的时间字段%d 匹配date-format格式的日期字段%h host(客户端ip地址，包括ipv4和ipv6)%r 来自客户端的请求行%m 请求的方法%U URL路径%H 请求协议%s 服务器响应的状态码%b 服务器返回的内容大小%R HTTP请求头的referer字段%u 用户代理的HTTP请求报头%D 请求所花费的时间，单位微秒%T 请求所花费的时间，单位秒%^ 忽略这一字段 终端查看日志1/usr/local/goaccess/bin/goaccess -a -d -f /usr/local/tengine/logs/access.log -p /usr/local/goaccess/etc/goaccess/goaccess.conf F1或h：帮助 F5 ：刷新主界面 q：退出程序/当前窗口/折叠当前模块 o或Enter：展开选中的模块或窗口 0-9以及Shift + 0：将选中的模块或窗口激活 k和j：模块内部移动 c：修改配色 ^f和^b：模块中上下滚屏 tab shift+tab：前后切换模块 s：模块内部排序选择 /：在所有模块中搜索(支持正则) n：找到下个匹配 g和G：跳到第一项/最后一项 生成html格式1usr/local/goaccess/bin/goaccess -a -d -f /usr/local/tengine/logs/access_log.1 -p /usr/local/goaccess/etc/goaccess/goaccess.conf -o ~/sx.html]]></content>
   </entry>
   <entry>
     <title><![CDATA[Oracle自动删除归档日志]]></title>
@@ -145,8 +172,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -169,8 +196,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
         <tag>PSU</tag>
       </tags>
   </entry>
@@ -267,8 +294,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -291,8 +318,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -303,8 +330,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -327,8 +354,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -387,8 +414,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -410,8 +437,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -434,9 +461,9 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>zabbix</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
+        <tag>zabbix</tag>
       </tags>
   </entry>
   <entry>
@@ -447,10 +474,10 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>zabbix</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
+        <tag>zabbix</tag>
       </tags>
   </entry>
   <entry>
@@ -484,8 +511,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -496,8 +523,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -521,8 +548,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>Oracle</tag>
       </tags>
   </entry>
@@ -534,8 +561,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Sonar</tag>
       </tags>
   </entry>
@@ -573,8 +600,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>Scp</tag>
         <tag>MTU</tag>
       </tags>
@@ -587,8 +614,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -599,8 +626,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -638,8 +665,8 @@
       </categories>
       <tags>
         <tag>集群</tag>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
         <tag>RAC</tag>
       </tags>
   </entry>
@@ -675,9 +702,9 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>Jenkins</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
+        <tag>Jenkins</tag>
       </tags>
   </entry>
   <entry>
@@ -701,9 +728,9 @@
         <category>监控</category>
       </categories>
       <tags>
+        <tag>tomcat</tag>
         <tag>zabbix</tag>
         <tag>监控</tag>
-        <tag>tomcat</tag>
       </tags>
   </entry>
   <entry>
@@ -714,8 +741,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -727,8 +754,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -789,9 +816,9 @@
         <category>常识</category>
       </categories>
       <tags>
+        <tag>Linux</tag>
         <tag>常识</tag>
         <tag>Windows</tag>
-        <tag>Linux</tag>
         <tag>jdk</tag>
       </tags>
   </entry>
@@ -815,9 +842,9 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Jenkins</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
+        <tag>Jenkins</tag>
         <tag>tomcat</tag>
       </tags>
   </entry>
@@ -829,8 +856,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>vpn</tag>
       </tags>
   </entry>
@@ -842,9 +869,9 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>Jenkins</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
+        <tag>Jenkins</tag>
       </tags>
   </entry>
   <entry>
@@ -855,9 +882,9 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>Jenkins</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
+        <tag>Jenkins</tag>
       </tags>
   </entry>
   <entry>
@@ -906,8 +933,8 @@
       <tags>
         <tag>集群</tag>
         <tag>数据库</tag>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -919,8 +946,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -932,8 +959,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -944,8 +971,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>下载</tag>
         <tag>axel</tag>
       </tags>
@@ -982,8 +1009,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -995,8 +1022,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1008,8 +1035,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1021,8 +1048,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1034,8 +1061,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>expect</tag>
         <tag>脚本</tag>
       </tags>
@@ -1049,8 +1076,8 @@
       </categories>
       <tags>
         <tag>Windows</tag>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -1077,8 +1104,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -1089,8 +1116,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>shell</tag>
         <tag>脚本</tag>
+        <tag>shell</tag>
         <tag>linux常识</tag>
       </tags>
   </entry>
@@ -1102,8 +1129,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -1114,8 +1141,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -1160,9 +1187,9 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>Jenkins</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
+        <tag>Jenkins</tag>
       </tags>
   </entry>
   <entry>
@@ -1173,8 +1200,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Cobbler</tag>
       </tags>
   </entry>
@@ -1197,8 +1224,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>epel</tag>
       </tags>
   </entry>
@@ -1294,9 +1321,9 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>xshell</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
       </tags>
   </entry>
   <entry>
@@ -1307,8 +1334,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>常识</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
