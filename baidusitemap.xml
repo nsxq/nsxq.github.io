@@ -4,15 +4,40 @@
 
     
   <url>
+    <loc>http://islocal.cc/arlo/d9e6ac98/</loc>
+    <lastmod>2020-02-12T07:25:00.454Z</lastmod>
+    <data>
+        <display>
+        <title>Docker|4.Dockerfile编写</title>
+        <pubTime>2020-02-12T02:03:15.000Z</pubTime>
+        
+        <tag>Docker</tag>
+         
+         
+           
+             
+              <breadCrumb title="DevOps" url="http://islocal.cc/categories/DevOps/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/arlo/a27711a4/</loc>
-    <lastmod>2020-02-11T14:33:42.828Z</lastmod>
+    <lastmod>2020-02-12T02:04:15.278Z</lastmod>
     <data>
         <display>
         <title>Docker|3.文件、数据共享</title>
         <pubTime>2020-02-11T09:05:23.000Z</pubTime>
         
+        <tag>Docker</tag>
+         
          
            
+             
+              <breadCrumb title="DevOps" url="http://islocal.cc/categories/DevOps/"/>
+          
         </display>
     </data>
     </url>
