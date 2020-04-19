@@ -113,7 +113,7 @@
 <meta property="og:site_name" content="南山居">
 <meta property="og:description" content="MHA（Master High Availability）目前在MySQL高可用方面是一个相对成熟的解决方案，它由日本DeNA公司youshimaton（现就职于Facebook公司）开发，是一套优秀的作为MySQL高可用性环境下故障切换和主从提升的高可用软件。在MySQL故障切换过程中，MHA能做到在0~30秒之内自动完成数据库的故障切换操作，并且在进行故障切换的过程中，MHA能在最大程度上保证">
 <meta property="og:image" content="http://islocal.cc/images/2017/0807/01.png">
-<meta property="og:updated_time" content="2018-03-15T07:17:45.912Z">
+<meta property="og:updated_time" content="2020-03-06T10:53:20.536Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mariadb(MHA)高可用集群搭建">
 <meta name="twitter:description" content="MHA（Master High Availability）目前在MySQL高可用方面是一个相对成熟的解决方案，它由日本DeNA公司youshimaton（现就职于Facebook公司）开发，是一套优秀的作为MySQL高可用性环境下故障切换和主从提升的高可用软件。在MySQL故障切换过程中，MHA能做到在0~30秒之内自动完成数据库的故障切换操作，并且在进行故障切换的过程中，MHA能在最大程度上保证">
@@ -440,7 +440,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-03-15 15:17:45" itemprop="dateModified" datetime="2018-03-15T15:17:45+08:00">2018-03-15</time>
+                <time title="修改时间：2020-03-06 18:53:20" itemprop="dateModified" datetime="2020-03-06T18:53:20+08:00">2020-03-06</time>
               
             
           </span>
@@ -502,7 +502,7 @@
 <li>提升一个slave为新master;</li>
 <li>使用其他的slave连接新的master进行复制。</li>
 </ul>
-<h1 id="配置基础环境"><a href="#配置基础环境" class="headerlink" title="配置基础环境"></a>配置基础环境</h1><h2 id="mysql主充复制集群搭建"><a href="#mysql主充复制集群搭建" class="headerlink" title="mysql主充复制集群搭建"></a>mysql主充复制集群搭建</h2><p>mha的环境是基于mysql主从复制环境上搭建的，主从复制请参考<strong><a href="http://islocal.cc/2017/07/26/Mariadb主从复制集群/">http://islocal.cc/2017/07/26/Mariadb主从复制集群/</a></strong> ，本文搭建的为一主三从环境</p>
+<h1 id="配置基础环境"><a href="#配置基础环境" class="headerlink" title="配置基础环境"></a>配置基础环境</h1><h2 id="mysql主充复制集群搭建"><a href="#mysql主充复制集群搭建" class="headerlink" title="mysql主充复制集群搭建"></a>mysql主充复制集群搭建</h2><p>mha的环境是基于mysql主从复制环境上搭建的，主从复制请参考<strong><a href="http://islocal.cc/arlo/b48c6366/">http://islocal.cc/arlo/b48c6366/</a></strong> ，本文搭建的为一主三从环境</p>
 <h1 id="配置互相无密码验证"><a href="#配置互相无密码验证" class="headerlink" title="配置互相无密码验证"></a>配置互相无密码验证</h1><h2 id="配置hosts"><a href="#配置hosts" class="headerlink" title="配置hosts"></a>配置hosts</h2><p>复制到到其他几台机器<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">cat /etc/hosts</div><div class="line">192.168.6.126	mysql_a		#从库		#node</div><div class="line">192.168.6.127	mysql_b		#主库		#node</div><div class="line">192.168.6.128	mysql_c		#备用主库	#node</div><div class="line">192.168.6.102	vm02		#从库		#manager</div></pre></td></tr></table></figure></p>
 <h2 id="mysql-a"><a href="#mysql-a" class="headerlink" title="mysql_a"></a>mysql_a</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ssh-keygen </div><div class="line">ssh-copy-id mysql_b</div><div class="line">ssh-copy-id mysql_c</div><div class="line">sssh-copy-id vm02</div></pre></td></tr></table></figure>
 <h2 id="mysql-b"><a href="#mysql-b" class="headerlink" title="mysql_b"></a>mysql_b</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ssh-keygen </div><div class="line">ssh-copy-id mysql_a</div><div class="line">ssh-copy-id mysql_c</div><div class="line">sssh-copy-id vm02</div></pre></td></tr></table></figure>
@@ -570,9 +570,9 @@
           
             <a href="/tags/数据库/" rel="tag"># 数据库</a>
           
-            <a href="/tags/Mariadb/" rel="tag"># Mariadb</a>
-          
             <a href="/tags/Mysql/" rel="tag"># Mysql</a>
+          
+            <a href="/tags/Mariadb/" rel="tag"># Mariadb</a>
           
         </div>
       
@@ -671,7 +671,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">118</span>
+                    <span class="site-state-item-count">119</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -897,7 +897,7 @@
                     
                       
                     
-                    <span class="site-state-item-count">86</span>
+                    <span class="site-state-item-count">85</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
