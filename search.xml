@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Zabbix-12-升级php版本]]></title>
+    <url>%2Farlo%2Faf5322c5%2F</url>
+    <content type="text"><![CDATA[漏扫设备扫描处理zabbix服务器有很多漏洞，看了一眼基本上都是openssh和php相关的漏洞，决定升级一下版本。 zabbix4.4.8默认安装的php是5.4.16 查看php版本 升级php版本rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm rpm -Uvh https://rpms.remirepo.net/enterprise/remi-release-7.rpm 1234567891011121314151617181920cat &lt;&lt;EOF&gt; /etc/yum.repos.d/remi.repo[remi]name=Remi&apos;s RPM repository for Enterprise Linux 7 - $basearch#baseurl=http://rpms.remirepo.net/enterprise/7/remi/$basearch/#mirrorlist=https://rpms.remirepo.net/enterprise/7/remi/httpsmirrormirrorlist=http://cdn.remirepo.net/enterprise/7/remi/mirrorenabled=0gpgcheck=1gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-remiEOFcat &lt;&lt;EOF&gt; /etc/yum.repos.d/remi-php73.repo[remi-php73]name=Remi&apos;s PHP 7.3 RPM repository for Enterprise Linux 7 - $basearch#baseurl=http://rpms.remirepo.net/enterprise/7/php73/$basearch/mirrorlist=https://rpms.remirepo.net/enterprise/7/php73/httpsmirrormirrorlist=http://cdn.remirepo.net/enterprise/7/php73/mirrorenabled=1gpgcheck=1gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-remiEOF yum -y upgrade php* 验证php版本]]></content>
+      <categories>
+        <category>监控</category>
+      </categories>
+      <tags>
+        <tag>监控</tag>
+        <tag>Zabbix</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Thread 1 cannot allocate new log 故障处理]]></title>
+    <url>%2Farlo%2F2cd5eb70%2F</url>
+    <content type="text"><![CDATA[开发反馈业务系统无法登录，排查了到数据库部分时候，发现日志里有“ Thread 1 cannot allocate new log ”错误，该错误是redo日志组无法切换，初步查看了日志情况，没有可切换空余的日志组。 各种状态含义CURRENT：指当前的日志文件,在进行实例恢复时是必须的； ACTIVE：是指活动的非当前日志,在进行实例恢复时会被用到。Active状态意味着,Checkpoint尚未完成,因此该日志文件不能被覆盖。这时也不能drop掉,应该执行alter system checkpoint; –强制执行检查点;然后在操作。 INACTIVE：是非活动日志,在实例恢复时不再需要,但在介质恢复时可能需要。 UNUSED：表示该日志从未被写入,可能是刚添加的,或RESETLOGS后被重置。 查看日志状态12--查看日志组状态select group#,sequence#,bytes,members,status from v$log; 123--查看当前日志组成员select * from v$logfile;select * from v$log; 增加日志组12345SQL&gt; alter database add logfile group 4 (&apos;/u01/app/oracle/oradata/orcl/redo04.log&apos;) size 1024m;SQL&gt; alter database add logfile group 5 (&apos;/u01/app/oracle/oradata/orcl/redo05.log&apos;) size 1024m;SQL&gt; alter database add logfile group 6 (&apos;/u01/app/oracle/oradata/orcl/redo06.log&apos;) size 1024m; 切换到新增的日志组上1SQL&gt; alter system switch logfile; --可多次执行,直到CURRENT指向新建的日志组 删除日志组1234-- 只能删除INACTIVE状态日志， 只能从数据库中删除日志，并不删除物理文件，需要手动rm删除系统中的物理文件。alter database drop logfile group 1;alter database drop logfile group 2;alter database drop logfile group 3; ps： 查看占用资源较多的进程，根据进程系统进程id查看sql语句； 123SELECT addr FROM v$process WHERE spid=&apos;418736&apos;;SELECT sql_id FROM v$session WHERE paddr=&apos;0000000978F9B0E0&apos;SELECT sql_text FROM v$sql WHERE sql_id =&apos;0uy9j8b502c4r&apos;; 如果遇到复杂的性能问题，还是建议生成awr报告，更加详细的反馈数据库的性能，瓶颈，根据具体项去做优化。 1SYS@orcl&gt; @?/rdbms/admin/awrrpt.sql 参考链接： https://www.cnblogs.com/xqzt/p/5034826.html https://blog.51cto.com/4709096/1741983]]></content>
+  </entry>
+  <entry>
     <title><![CDATA[Zabbix(11)使用zabbix监控VMware虚拟化]]></title>
     <url>%2Farlo%2F1faeef66%2F</url>
     <content type="text"><![CDATA[zabbix也可以监控VMware虚拟化，支持VMware vCenter或vSphere版本最低为4.1。 以下配置文件参数可用于调整虚拟机监控： StartVMwareCollectors - 预先启动Vmware collector收集器实例的数量。 此值取决于要监控的VMware服务的数量。在大多数情况下，这应该是： servicenum &lt; StartVMwareCollectors &lt; (servicenum * 2)其中 servicenum 是 VMware 服务的数量。例如：如果您有1个VMware服务，请将 StartVMwareCollectors 设置为 2，那么果您有 3 个 VMware 服务，请将其设置为 5。请注意，在大多数情况下，此值不应小于 2，不应大于 VMware 数量的 2 倍服务。还要记住，此值还取决于 VMware 环境大小和 VMwareFrequency 和 VMwarePerfFrequency 配置参数。 VMwareCacheSize - 用于存储VMware数据的缓存容量，默认为8M，取值范围：256K-2G。 VMwareFrequency - 接到VMware服务收集一个新数据的频率，默认为60秒，取值范围：10-86400。 VMwarePerfFrequency - 连接到VMware服务收集性能数据的频率，默认为60秒，取值范围：10-86400。 VMwareTimeout - VMware collector等待VMware服务响应的时间，默认为10秒，取值范围：1-300。 配置zabbix服务器egrep -v &quot;^#|^$&quot; /etc/zabbix/zabbix_server.conf |grep -i vmware 1234StartVMwareCollectors=5VMwareFrequency=60VMwarePerfFrequency=60VMwareTimeout=60 systemctl restart zabbix-server systemctl status zabbix-server 添加vCenter 关联模板 点击宏，添加以下内容 123&#123;$USERNAME&#125;：vcenter超管&#123;$PASSWORD&#125;：vcenter超管密码&#123;$URL&#125;：https://vcenterip/sdk 自动发现点击vcenter主机-自动发现规则-勾选自动发现规则-点击现在检查 至此，已经实现了对vmware虚拟化平台的监控，但是默认的模板里没有图形和触发器，我还需要继续研究一下。 可以参考： https://www.mr-mao.cn/archives/zabbix-monitor-vcenter-esxi-vm.html https://www.zabbix.com/documentation/4.0/zh/manual/config/items/itemtypes/simple_checks/vmware_keys]]></content>
@@ -109,7 +126,7 @@
   <entry>
     <title><![CDATA[Oracle解锁用户和表]]></title>
     <url>%2Farlo%2F5b695efc%2F</url>
-    <content type="text"><![CDATA[解锁用户1alter user arlo account unlock; 数据级别解锁表锁表查询的代码有以下的形式12select count(*) from v$locked_object;select * from v$locked_object; 查看哪个表被锁123select b.owner,b.object_name,a.session_id,a.locked_mode from v$locked_object a,dba_objects b where b.object_id = a.object_id;--select b.owner TABLEOWNER, b.object_name TABLENAME, c.OSUSER LOCKBY,c.USERNAME LOGINID, c.sid SID, c.SERIAL# SERIAL from v$locked_object a,dba_objects b, v$session c where b.object_id = a.object_id AND a.SESSION_ID =c.sid; 查看是哪个session引起的1select b.username,b.sid,b.serial#,logon_time from v$locked_object a,v$session b where a.session_id = b.sid order by b.logon_time; 查看是哪个sql引起的1select b.username,b.sid,b.serial#,c.* from v$locked_object a,v$session b,v$sql c where a.session_id = b.sid and b.SQL_ID = c.sql_id and c.sql_id = &apos;&apos; order by b.logon_time; 杀掉对应进程1alter system kill session&apos;1025,41&apos;; --其中1025为sid,41为serial# 系统界别解锁表今天在使用上述方法解锁用户的时候报错 1234alter system kill session &apos;2293,85&apos;*ERROR at line 1:ORA-00031: session marked for kill 查找进程id如果利用上面的命令杀死一个进程后，进程状态被置为”killed”，但是锁定的资源很长时间没有被释放，那么可以在os一级再杀死相应的进程（线程），首先执行下面的语句获得进程（线程）号：2293 1234SYS@orcl&gt; select spid, osuser, s.program from v$session s,v$process p where s.paddr=p.addr and s.sid=2293;SPID OSUSER PROGRAM-------- ----------------------- ---------------------------------------------384159 Administrator SQL Developer 在Linux中结束进程在Linux操作系统中执行命令杀掉进程 1kill -9 384159 在Windows中结束进程在windows（unix也适用）用orakill杀死线程，orakill是oracle提供的一个可执行命令，语法为：orakill sid thread – sid：表示要杀死的进程属于的实例名 thread：是要杀掉的线程号1C:&gt; orakill orcl 384159 查看Oracle链接客户端的IP等信息查看每个oracle帐户的连接总数1select username,count(username) from v$session where username is not null group by username; 缺省从 v$session 中不能直接获得客户端 IP，可以在数据库中创建一个追踪客户端IP地址的触发器1234create or replace trigger on_logon_trigger after logon on database begin dbms_application_info.set_client_info(sys_context(&apos;userenv&apos;, &apos;ip_address&apos;)); end; 比较常用的显示客户端信息的sql1234select sid,serial#,username,program,machine,client_info from v$session where username is not null order by username,program,machine;]]></content>
+    <content type="text"><![CDATA[解锁用户1alter user arlo account unlock; 数据级别解锁表锁表查询的代码有以下的形式12select count(*) from v$locked_object;select * from v$locked_object; 查看哪个表被锁123select b.owner,b.object_name,a.session_id,a.locked_mode from v$locked_object a,dba_objects b where b.object_id = a.object_id;--select b.owner TABLEOWNER, b.object_name TABLENAME, c.OSUSER LOCKBY,c.USERNAME LOGINID, c.sid SID, c.SERIAL# SERIAL from v$locked_object a,dba_objects b, v$session c where b.object_id = a.object_id AND a.SESSION_ID =c.sid; 查看是哪个session引起的1select b.username,b.sid,b.serial#,logon_time from v$locked_object a,v$session b where a.session_id = b.sid order by b.logon_time; 查看是哪个sql引起的1select b.username,b.sid,b.serial#,c.* from v$locked_object a,v$session b,v$sql c where a.session_id = b.sid and b.SQL_ID = c.sql_id and c.sql_id = &apos;&apos; order by b.logon_time; 杀掉对应进程1alter system kill session&apos;1025,41&apos;; --其中1025为sid,41为serial# 系统界别解锁表今天在使用上述方法解锁用户的时候报错 1234alter system kill session &apos;2293,85&apos;*ERROR at line 1:ORA-00031: session marked for kill 查找进程id如果利用上面的命令杀死一个进程后，进程状态被置为”killed”，但是锁定的资源很长时间没有被释放，那么可以在os一级再杀死相应的进程（线程），首先执行下面的语句获得进程（线程）号：2293 1234SYS@orcl&gt; select spid, osuser, s.program from v$session s,v$process p where s.paddr=p.addr and s.sid=2293;SPID OSUSER PROGRAM-------- ----------------------- ---------------------------------------------384159 Administrator SQL Developer 在Linux中结束进程在Linux操作系统中执行命令杀掉进程 1kill -9 384159 在Windows中结束进程在windows（unix也适用）用orakill杀死线程，orakill是oracle提供的一个可执行命令，语法为：orakill sid thread – sid：表示要杀死的进程属于的实例名 thread：是要杀掉的线程号1C:&gt; orakill orcl 384159 查看Oracle链接客户端的IP等信息查看每个oracle帐户的连接总数1234567891011121314151617181920212223242526--查看当前连接数select count(*) from v$process;--查看会话session：select * from v$session where username is not null;select username,count(username) from v$session where username is not null group by username;--查看最大连接数select value from v$parameter where name =&apos;processes&apos;;--查看并发连接数Select count(*) from v$session where status=&apos;ACTIVE&apos;;--查询：客户端设备标识、客户端程序、oracle用户名、消耗的连接数量SELECT B.MACHINE 机器名, B.PROGRAM 程序名, B.USERNAME 用户名, COUNT(*) 连接数 FROM V$PROCESS A, V$SESSION B WHERE A.ADDR = B.PADDR AND B.USERNAME IS NOT NULL GROUP BY B.MACHINE, B.PROGRAM, B.USERNAME ORDER BY COUNT(*) DESC;--杀死指定的进程alter system kill session &apos;sid,serial#&apos; immediate; 缺省从 v$session 中不能直接获得客户端 IP，可以在数据库中创建一个追踪客户端IP地址的触发器1234create or replace trigger on_logon_trigger after logon on database begin dbms_application_info.set_client_info(sys_context(&apos;userenv&apos;, &apos;ip_address&apos;)); end; 比较常用的显示客户端信息的sql1234select sid,serial#,username,program,machine,client_info from v$session where username is not null order by username,program,machine; connection、process和session的基本知识每个sql login称为一个连接（connection)，而每个连接，可以产生一个或多个会话，如果数据库运行在专用服务器方式，一个会话对应一个服务器进程（process)，如果数据库运行在共享服务器方式，一个服务器进程可以为多个会话服务。 Connection并不是直接建立在用户进程和数据库实例之间的。而是在用户进程和Server Process（服务器进程）之间的，因此有一个Connection就一定会有一个用户进程和一个服务器进程，但不一定会存在Session。比如，如果需要将东西从A运到B，Connection可以看成是一座“桥”，而卡车把东西从A运到B后并返回A，这就是Session。所以，只要不断开连接，随时都可以在这个连接上创建出会话。]]></content>
       <categories>
         <category>数据库</category>
       </categories>
@@ -148,8 +165,8 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>监控</tag>
         <tag>shell</tag>
+        <tag>监控</tag>
       </tags>
   </entry>
   <entry>
@@ -171,7 +188,7 @@
   <entry>
     <title><![CDATA[Centos7下OpenVpn服务器搭建]]></title>
     <url>%2Farlo%2Ffd972502%2F</url>
-    <content type="text"><![CDATA[背景项目实施过程中，远程访问服务器方式有windows远程桌面、VNC、盗版teamviewer，向日葵、anydesk，甚至还有qq远程桌面的，错综复杂，杂乱无章，项目上没有购置硬件vpn的预算，为了结束这一尴尬的局面，决定使用开源软件openvpn自建vpn环境。 系统环境OS：CentOS Linux release 7.4.1708 (Core)SELinux：disabledfirewalld：activeopenvpn：2.4.7easy-rsa：3.0.3 部署openvpn软件安装openvpn &amp; easy-rsa 软件yum install epel-releaseyum install openvpn easy-rsacp -r /usr/share/easy-rsa/ /etc/openvpn/easy-rsacd /etc/openvpn/easy-rsa/3.0.3cp /usr/share/doc/easy-rsa-3.0.3/vars.example vars 创建证书创建ca证书编辑vars文件，根据自己的环境配置ps:这一步不是必须滴，不填写也可以123456set_var EASYRSA_REQ_COUNTRY &quot;CN&quot;set_var EASYRSA_REQ_PROVINCE &quot;ShaanXi&quot;set_var EASYRSA_REQ_CITY &quot;Xi&apos;an&quot;set_var EASYRSA_REQ_ORG &quot;islocal.cc&quot;set_var EASYRSA_REQ_EMAIL &quot;xx@islocal.cc&quot;set_var EASYRSA_REQ_OU &quot;My OpenVPN&quot; source /vars进入/etc/openvpn/easy-rsa/3.0.3目录目录初始化./easyra init-pki创建ca证书./easyra build-ca nopass 创建服务器证书和key./easyrsa gen-req server nopass #生成下列两个文件12req: /etc/openvpn/easy-rsa/3.0.3/pki/reqs/server.reqkey: /etc/openvpn/easy-rsa/3.0.3/pki/private/server.key 签约服务端证书生成服务器证书文件./easyrsa sign server server1/etc/openvpn/easy-rsa/3.0.3/pki/issued/server.crt 生成vpn密钥协议交换文件./easyrsa gen-dh #可以看到我们生成的是2048位的加密文件1/etc/openvpn/easy-rsa/3.0.3/pki/dh.pem 创建客户端证书拷贝easy-rsa到client目录下cp -r /usr/share/easy-rsa/ /etc/openvpn/client/初始化目录./easyrsa init-pki1/etc/openvpn/client/easy-rsa/3.0.3/pki 新建用户，创建客户端证书./easyrsa gen-req ths nopass12req: /etc/openvpn/client/easy-rsa/3.0.3/pki/reqs/ths.reqkey: /etc/openvpn/client/easy-rsa/3.0.3/pki/private/ths.key 签约客户端证书注意：返回到服务器目录下操作！！！cd /etc/openvpn/easy-rsa/3.0.3./easyrsa import-req /etc/openvpn/client/easy-rsa/3.0.3/pki/reqs/ths.req ths1/etc/openvpn/easy-rsa/3.0.3/pki/issued/ths.crt 整理一下所有证书服务器端证书mkdir /etc/openvpn/certscd /etc/openvpn/certscp /etc/openvpn/easy-rsa/3.0.3/pki/ca.crt .cp /etc/openvpn/easy-rsa/3.0.3/pki/dh.pem .cp /etc/openvpn/easy-rsa/3.0.3/pki/issued/server.crt .cp /etc/openvpn/easy-rsa/3.0.3/pki/private/server.key . 客户端证书mkdir /etc/openvpn/client/thscd /etc/openvpn/client/thscp /etc/openvpn/easy-rsa/3.0.3/pki/ca.crt .cp /etc/openvpn/easy-rsa/3.0.3/pki/issued/ths.crt .cp /etc/openvpn/client/easy-rsa/3.0.3/pki/private/ths.key . 服务器端配置文件1234567891011121314151617181920212223242526272829303132333435local 192.168.6.23 #填写自己的openvpn服务器ip地址，默认侦听服务器上所有的ipport 11094 #侦听端口，默认为1194，据说网上会过滤1194端口流量，我这里修改为11094proto tcp #端口协议，默认udp，开启tcp方便映射转发dev tun #创建一个路由ip隧道,路由模式有tun/tapca /etc/openvpn/certs/ca.crt #根证书路径cert /etc/openvpn/certs/server.crt #证书key /etc/openvpn/certs/server.key #私钥文件（保密）dh /etc/openvpn/certs/dh.pem #协议交换文件ifconfig-pool-persist /etc/openvpn/ipp.txt #记录客户端和虚拟ip的对应关系。当重启OpenVPN时，再次连接的客户端将分配到与上一次分配相同的虚拟IP地址server 10.66.66.0 255.255.255.0 #设置服务器端模式，并提供一个VPN子网，以便于从中为客户端分配IP地址。服务器会获取10.66.66.1 push &quot;route 192.168.6.0 255.255.255.0&quot; #推送路由信息到客户端，以允许客户端能够连接到服务器背后的其他私有子网。#push &quot;redirect-gateway def1 bypass-dhcp&quot; # 启用该指令，所有客户端的默认网关都将重定向到VPN，这将导致诸如web浏览器、DNS查询等所有客户端流量都经过VPN。push &quot;dhcp-option DNS 223.5.5.5&quot; push &quot;dhcp-option DNS 223.6.6.6&quot;client-to-client #允许拨号连接vpn的客户端之间相互通信keepalive 10 120 # 默认每10秒钟ping一次，如果120秒内都没有收到对方的回复，则表示远程连接已经关闭comp-lzo # 在VPN连接上启用压缩。如果你在此处启用了该指令，那么也应该在每个客户端配置文件中启用它。#duplicate-cn #打开后允许多个客户端使用同一个帐号连接user openvpngroup openvpnmax-clients 100persist-key persist-tun #通过keepalive检测vpn超时后，当重新启动vpn后，保持tun或者tap设备自动连接状态status openvpn-status.log # 状态日志log-append openvpn.logverb 1 #指定日志文件冗余# 为日志文件设置适当的冗余级别(0~9)。冗余级别越高，输出的信息越详细。# 0 表示静默运行，只记录致命错误。# 4 表示合理的常规用法。# 5 和 6 可以帮助调试连接错误。# 9 表示极度冗余，输出非常详细的日志信息。mute 20 #相同类别的信息只有前20条会输出到日志文件中。 启动openvpn服务systemctl start openvpn@server启动服务器后，我们可以监控/etc/openvpn/openvpn.log日志，如果有异常，可根据日志排查。我们查看一下ip地址，可以看到tun0获取到的是10.66.66.1 设置开机自启动服务systemctl enable openvpn@server 防火墙策略开启内核路由转发echo &quot;net.ipv4.ip_forward = 1&quot; &gt;&gt; /etc/sysctl.confsysctl -p 开放vpn监听端口firewall-cmd --zone=public --add-port=11094/tcp --permanentfirewall-cmd --permanent --zone=public --add-masqueradefirewall-cmd --permanent --zone=public --add-rich-rule=&#39;rule family=ipv4 source address=10.66.66.0/24 masquerade&#39;firewall-cmd --reload 客户端测试安装Windows客户端https://build.openvpn.net/downloads/releases/openvpn-install-2.4.7-I607-Win7.exehttps://build.openvpn.net/downloads/releases/openvpn-install-2.4.7-I607-Win10.exe将/etc/openvpn/client/ths目录下的ca.crt、ths.crt、ths.key复制到“C:\Program Files\OpenVPN\config”目录下在此目录下新建一个client.ovpn文件1234567891011121314151617181920client proto tcp dev tun remote 192.168.6.23 11094ca ca.crt cert ths.crtkey ths.key resolv-retry infinitenobindmute-replay-warningskeepalive 20 120comp-lzo#user openvpn#group openvpnpersist-keypersist-tunstatus openvpn-status.loglog-append openvpn.logverb 3mute 20 使用管理员权限启动“OpenVPN GUI” 参考链接:https://build.openvpn.net/downloads/releases/https://www.cnblogs.com/irockcode/p/7587421.htmlhttps://www.cnblogs.com/tielemao/p/9603696.html]]></content>
+    <content type="text"><![CDATA[背景项目实施过程中，远程访问服务器方式有windows远程桌面、VNC、盗版teamviewer，向日葵、anydesk，甚至还有qq远程桌面的，错综复杂，杂乱无章，项目上没有购置硬件vpn的预算，为了结束这一尴尬的局面，决定使用开源软件openvpn自建vpn环境。 系统环境OS：CentOS Linux release 7.4.1708 (Core)SELinux：disabledfirewalld：activeopenvpn：2.4.7easy-rsa：3.0.3 部署openvpn软件安装openvpn &amp; easy-rsa 软件yum install epel-releaseyum install openvpn easy-rsacp -r /usr/share/easy-rsa/ /etc/openvpn/easy-rsacd /etc/openvpn/easy-rsa/3.0.3cp /usr/share/doc/easy-rsa-3.0.3/vars.example vars 创建证书创建ca证书编辑vars文件，根据自己的环境配置ps:这一步不是必须滴，不填写也可以123456set_var EASYRSA_REQ_COUNTRY &quot;CN&quot;set_var EASYRSA_REQ_PROVINCE &quot;ShaanXi&quot;set_var EASYRSA_REQ_CITY &quot;Xi&apos;an&quot;set_var EASYRSA_REQ_ORG &quot;islocal.cc&quot;set_var EASYRSA_REQ_EMAIL &quot;xx@islocal.cc&quot;set_var EASYRSA_REQ_OU &quot;My OpenVPN&quot; source /vars进入/etc/openvpn/easy-rsa/3.0.3目录目录初始化./easyra init-pki创建ca证书./easyra build-ca nopass 创建服务器证书和key./easyrsa gen-req server nopass #生成下列两个文件12req: /etc/openvpn/easy-rsa/3.0.3/pki/reqs/server.reqkey: /etc/openvpn/easy-rsa/3.0.3/pki/private/server.key 签约服务端证书生成服务器证书文件./easyrsa sign server server1/etc/openvpn/easy-rsa/3.0.3/pki/issued/server.crt 生成vpn密钥协议交换文件./easyrsa gen-dh #可以看到我们生成的是2048位的加密文件1/etc/openvpn/easy-rsa/3.0.3/pki/dh.pem 创建客户端证书拷贝easy-rsa到client目录下cp -r /usr/share/easy-rsa/ /etc/openvpn/client/初始化目录./easyrsa init-pki1/etc/openvpn/client/easy-rsa/3.0.3/pki 新建用户，创建客户端证书./easyrsa gen-req ths nopass12req: /etc/openvpn/client/easy-rsa/3.0.3/pki/reqs/ths.reqkey: /etc/openvpn/client/easy-rsa/3.0.3/pki/private/ths.key 签约客户端证书注意：返回到服务器目录下操作！！！cd /etc/openvpn/easy-rsa/3.0.3./easyrsa import-req /etc/openvpn/client/easy-rsa/3.0.3/pki/reqs/ths.req ths1/etc/openvpn/easy-rsa/3.0.3/pki/issued/ths.crt 整理一下所有证书服务器端证书mkdir /etc/openvpn/certscd /etc/openvpn/certscp /etc/openvpn/easy-rsa/3.0.3/pki/ca.crt .cp /etc/openvpn/easy-rsa/3.0.3/pki/dh.pem .cp /etc/openvpn/easy-rsa/3.0.3/pki/issued/server.crt .cp /etc/openvpn/easy-rsa/3.0.3/pki/private/server.key . 客户端证书mkdir /etc/openvpn/client/thscd /etc/openvpn/client/thscp /etc/openvpn/easy-rsa/3.0.3/pki/ca.crt .cp /etc/openvpn/easy-rsa/3.0.3/pki/issued/ths.crt .cp /etc/openvpn/client/easy-rsa/3.0.3/pki/private/ths.key . 服务器端配置文件cat /etc/openvpn/server.conf1234567891011121314151617181920212223242526272829303132333435local 192.168.6.23 #填写自己的openvpn服务器ip地址，默认侦听服务器上所有的ipport 11094 #侦听端口，默认为1194，据说网上会过滤1194端口流量，我这里修改为11094proto tcp #端口协议，默认udp，开启tcp方便映射转发dev tun #创建一个路由ip隧道,路由模式有tun/tapca /etc/openvpn/certs/ca.crt #根证书路径cert /etc/openvpn/certs/server.crt #证书key /etc/openvpn/certs/server.key #私钥文件（保密）dh /etc/openvpn/certs/dh.pem #协议交换文件ifconfig-pool-persist /etc/openvpn/ipp.txt #记录客户端和虚拟ip的对应关系。当重启OpenVPN时，再次连接的客户端将分配到与上一次分配相同的虚拟IP地址server 10.66.66.0 255.255.255.0 #设置服务器端模式，并提供一个VPN子网，以便于从中为客户端分配IP地址。服务器会获取10.66.66.1 push &quot;route 192.168.6.0 255.255.255.0&quot; #推送路由信息到客户端，以允许客户端能够连接到服务器背后的其他私有子网。#push &quot;redirect-gateway def1 bypass-dhcp&quot; # 启用该指令，所有客户端的默认网关都将重定向到VPN，这将导致诸如web浏览器、DNS查询等所有客户端流量都经过VPN。push &quot;dhcp-option DNS 223.5.5.5&quot; push &quot;dhcp-option DNS 223.6.6.6&quot;client-to-client #允许拨号连接vpn的客户端之间相互通信keepalive 10 120 # 默认每10秒钟ping一次，如果120秒内都没有收到对方的回复，则表示远程连接已经关闭comp-lzo # 在VPN连接上启用压缩。如果你在此处启用了该指令，那么也应该在每个客户端配置文件中启用它。#duplicate-cn #打开后允许多个客户端使用同一个帐号连接user openvpngroup openvpnmax-clients 100persist-key persist-tun #通过keepalive检测vpn超时后，当重新启动vpn后，保持tun或者tap设备自动连接状态status openvpn-status.log # 状态日志log-append openvpn.logverb 1 #指定日志文件冗余# 为日志文件设置适当的冗余级别(0~9)。冗余级别越高，输出的信息越详细。# 0 表示静默运行，只记录致命错误。# 4 表示合理的常规用法。# 5 和 6 可以帮助调试连接错误。# 9 表示极度冗余，输出非常详细的日志信息。mute 20 #相同类别的信息只有前20条会输出到日志文件中。 启动openvpn服务systemctl start openvpn@server启动服务器后，我们可以监控/etc/openvpn/openvpn.log日志，如果有异常，可根据日志排查。我们查看一下ip地址，可以看到tun0获取到的是10.66.66.1 设置开机自启动服务systemctl enable openvpn@server 防火墙策略开启内核路由转发echo &quot;net.ipv4.ip_forward = 1&quot; &gt;&gt; /etc/sysctl.confsysctl -p 开放vpn监听端口firewall-cmd --zone=public --add-port=11094/tcp --permanentfirewall-cmd --permanent --zone=public --add-masqueradefirewall-cmd --permanent --zone=public --add-rich-rule=&#39;rule family=ipv4 source address=10.66.66.0/24 masquerade&#39;firewall-cmd --reload 客户端测试安装Windows客户端https://build.openvpn.net/downloads/releases/openvpn-install-2.4.7-I607-Win7.exehttps://build.openvpn.net/downloads/releases/openvpn-install-2.4.7-I607-Win10.exe将/etc/openvpn/client/ths目录下的ca.crt、ths.crt、ths.key复制到“C:\Program Files\OpenVPN\config”目录下在此目录下新建一个client.ovpn文件1234567891011121314151617181920client proto tcp dev tun remote 192.168.6.23 11094ca ca.crt cert ths.crtkey ths.key resolv-retry infinitenobindmute-replay-warningskeepalive 20 120comp-lzo#user openvpn#group openvpnpersist-keypersist-tunstatus openvpn-status.loglog-append openvpn.logverb 3mute 20 使用管理员权限启动“OpenVPN GUI” 参考链接:https://build.openvpn.net/downloads/releases/https://www.cnblogs.com/irockcode/p/7587421.htmlhttps://www.cnblogs.com/tielemao/p/9603696.html]]></content>
   </entry>
   <entry>
     <title><![CDATA[fio 存储性能测试]]></title>
@@ -335,8 +352,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -502,8 +519,8 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>zabbix</tag>
       </tags>
   </entry>
@@ -515,10 +532,10 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
-        <tag>Ansible</tag>
+        <tag>自动化</tag>
         <tag>zabbix</tag>
+        <tag>Ansible</tag>
       </tags>
   </entry>
   <entry>
@@ -590,8 +607,8 @@
       </categories>
       <tags>
         <tag>常识</tag>
-        <tag>Linux</tag>
         <tag>Oracle</tag>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
@@ -602,8 +619,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Sonar</tag>
       </tags>
   </entry>
@@ -743,8 +760,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -769,9 +786,9 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>tomcat</tag>
         <tag>zabbix</tag>
         <tag>监控</tag>
+        <tag>tomcat</tag>
       </tags>
   </entry>
   <entry>
@@ -883,8 +900,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
         <tag>tomcat</tag>
       </tags>
@@ -910,8 +927,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -923,8 +940,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -974,8 +991,8 @@
       <tags>
         <tag>集群</tag>
         <tag>数据库</tag>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
       </tags>
   </entry>
   <entry>
@@ -987,8 +1004,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
       </tags>
   </entry>
   <entry>
@@ -1000,8 +1017,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mariadb</tag>
         <tag>Mysql</tag>
+        <tag>Mariadb</tag>
       </tags>
   </entry>
   <entry>
@@ -1050,8 +1067,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1063,8 +1080,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1076,8 +1093,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1089,8 +1106,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1102,8 +1119,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>expect</tag>
         <tag>脚本</tag>
       </tags>
@@ -1116,9 +1133,9 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Windows</tag>
         <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>Windows</tag>
       </tags>
   </entry>
   <entry>
@@ -1157,8 +1174,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>脚本</tag>
         <tag>shell</tag>
+        <tag>脚本</tag>
         <tag>linux常识</tag>
       </tags>
   </entry>
@@ -1228,8 +1245,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -1241,8 +1258,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>自动化</tag>
         <tag>运维</tag>
+        <tag>自动化</tag>
         <tag>Cobbler</tag>
       </tags>
   </entry>
@@ -1363,8 +1380,8 @@
       </categories>
       <tags>
         <tag>常识</tag>
-        <tag>xshell</tag>
         <tag>Linux</tag>
+        <tag>xshell</tag>
       </tags>
   </entry>
   <entry>
