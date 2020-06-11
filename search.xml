@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[Zabbix-12-升级php版本]]></title>
+    <title><![CDATA[zabbix(13)实现短信接口告警]]></title>
+    <url>%2Farlo%2Fc254fd0e%2F</url>
+    <content type="text"><![CDATA[最近有个内网项目搭建了一套zabbix监控，由于不能访问互联网，导致告警无法使用邮件，钉钉类的方式推送告警通知；了解到之前项目上采购过一个金笛短信设备，拿来一试。 官方文档说明123456短信发送URL：http://127.0.0.1:8060/send?password=[password]&amp;text=[text]&amp;recipient=[cell-phone number]&amp;encoding=U短信接收URL：http://127.0.0.1:8060/read?password=[password]&amp;gateway=modem[id]&amp;count=[number]短信发送状态URL：http://127.0.0.1:8060/sendstatus?msgid=[msgid] 使用浏览器测试短信发送1http://10.206.2.108:8060/send?password=1&amp;text=[tes20200611]&amp;recipient=18xxxxxxxxx&amp;encoding=U 手机可以正常收到。 编写短信发送脚本grep -E AlertScriptsPath /etc/zabbix/zabbix_server.confcd /usr/lib/zabbix/alertscripts vim sendSMS.sh 123456789101112131415161718192021222324[root@zw_zabbix_server alertscripts]# vim sendSMS.sh #!/bin/bash# 脚本的日志文件LOGFILE=&quot;/tmp/SMS.log&quot;:&gt;&quot;$LOGFILE&quot;exec 1&gt;&quot;$LOGFILE&quot;exec 2&gt;&amp;1MOBILE_NUMBER=$1 # 手机号码MESSAGE_UTF8=$3 # 短信内容XXD=&quot;/usr/bin/xxd&quot;CURL=&quot;/usr/bin/curl&quot;TIMEOUT=5# 短信内容要经过URL编码处理MESSAGE_ENCODE=$(echo &quot;$MESSAGE_UTF8&quot; | $&#123;XXD&#125; -ps | sed &apos;s/\(..\)/%\1/g&apos; | tr -d &apos;\n&apos;)# SMS APIURL=&quot;http://10.206.2.108:8060/send?password=1&amp;text=$&#123;MESSAGE_ENCODE&#125;&amp;recipient=$MOBILE_NUMBER&amp;encoding=U&quot;# Send itset -x$&#123;CURL&#125; -s --connect-timeout $&#123;TIMEOUT&#125; &quot;$&#123;URL&#125;&quot; chmod +x sendSMS.sh ./sendSMS.sh 18xxxxxxxxx &quot;&quot; &quot;test zabbix sendmail&quot; 手机可以正常收到。 配置zabbix管理-报警媒介类型-创建媒体类型 脚本参数 1234567名称：sendSMS类型：脚本脚本名称：sendSMS.sh添加以下3个参数，分别对应sendSMS.sh脚本需要的3个参数收短信电话号码:&#123;ALERT.SENDTO&#125;主题:&#123;ALERT.SUBJECT&#125; #好像没什么用短信内容:&#123;ALERT.MESSAGE&#125; 设置用户报警媒介 触发告警器 1234567891011默认接收人:藏_故障&#123;TRIGGER.STATUS&#125;:服务器 &#123;HOSTNAME1&#125;:&#123;TRIGGER.NAME&#125;默认信息:告警主机:&#123;HOSTNAME1&#125;告警时间:&#123;EVENT.DATE&#125; &#123;EVENT.TIME&#125;告警等级:&#123;TRIGGER.SEVERITY&#125;告警信息: &#123;TRIGGER.NAME&#125;告警项目:&#123;TRIGGER.KEY1&#125;问题详情:&#123;ITEM.NAME&#125;:&#123;ITEM.VALUE&#125;当前状态:&#123;TRIGGER.STATUS&#125;:&#123;ITEM.VALUE1&#125;事件ID:&#123;EVENT.ID&#125;请至Montoring-Events中查看详细情况。 12345678910默认接收人:藏_故障&#123;TRIGGER.STATUS&#125;:服务器 &#123;HOSTNAME1&#125;:&#123;TRIGGER.NAME&#125;告警主机:&#123;HOSTNAME1&#125;告警时间:&#123;EVENT.DATE&#125; &#123;EVENT.TIME&#125;告警等级:&#123;TRIGGER.SEVERITY&#125;告警信息: &#123;TRIGGER.NAME&#125;告警项目:&#123;TRIGGER.KEY1&#125;问题详情:&#123;ITEM.NAME&#125;:&#123;ITEM.VALUE&#125;当前状态:&#123;TRIGGER.STATUS&#125;:&#123;ITEM.VALUE1&#125;事件ID:&#123;EVENT.ID&#125;报警已恢复，请放松心情。 测试告警关闭agent，测试告警 测试成功。 ps：第二天测试的时候发现短信平台成功发送了，但是手机收不到短信，咨询厂家，怀疑是运营商拦截了。]]></content>
+      <categories>
+        <category>监控</category>
+      </categories>
+      <tags>
+        <tag>zabbix</tag>
+        <tag>监控</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[Zabbix(12)升级php版本]]></title>
     <url>%2Farlo%2Faf5322c5%2F</url>
     <content type="text"><![CDATA[漏扫设备扫描处理zabbix服务器有很多漏洞，看了一眼基本上都是openssh和php相关的漏洞，决定升级一下版本。 zabbix4.4.8默认安装的php是5.4.16 查看php版本 升级php版本rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm rpm -Uvh https://rpms.remirepo.net/enterprise/remi-release-7.rpm 1234567891011121314151617181920cat &lt;&lt;EOF&gt; /etc/yum.repos.d/remi.repo[remi]name=Remi&apos;s RPM repository for Enterprise Linux 7 - $basearch#baseurl=http://rpms.remirepo.net/enterprise/7/remi/$basearch/#mirrorlist=https://rpms.remirepo.net/enterprise/7/remi/httpsmirrormirrorlist=http://cdn.remirepo.net/enterprise/7/remi/mirrorenabled=0gpgcheck=1gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-remiEOFcat &lt;&lt;EOF&gt; /etc/yum.repos.d/remi-php73.repo[remi-php73]name=Remi&apos;s PHP 7.3 RPM repository for Enterprise Linux 7 - $basearch#baseurl=http://rpms.remirepo.net/enterprise/7/php73/$basearch/mirrorlist=https://rpms.remirepo.net/enterprise/7/php73/httpsmirrormirrorlist=http://cdn.remirepo.net/enterprise/7/php73/mirrorenabled=1gpgcheck=1gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-remiEOF yum -y upgrade php* 验证php版本]]></content>
       <categories>
         <category>监控</category>
       </categories>
       <tags>
+        <tag>zabbix</tag>
         <tag>监控</tag>
-        <tag>Zabbix</tag>
       </tags>
   </entry>
   <entry>
@@ -165,8 +177,8 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>shell</tag>
         <tag>监控</tag>
+        <tag>shell</tag>
       </tags>
   </entry>
   <entry>
@@ -352,8 +364,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -519,8 +531,8 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>zabbix</tag>
       </tags>
   </entry>
@@ -532,10 +544,10 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
-        <tag>zabbix</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
+        <tag>zabbix</tag>
       </tags>
   </entry>
   <entry>
@@ -607,8 +619,8 @@
       </categories>
       <tags>
         <tag>常识</tag>
-        <tag>Oracle</tag>
         <tag>Linux</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -619,8 +631,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Sonar</tag>
       </tags>
   </entry>
@@ -760,8 +772,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -786,9 +798,9 @@
         <category>监控</category>
       </categories>
       <tags>
+        <tag>tomcat</tag>
         <tag>zabbix</tag>
         <tag>监控</tag>
-        <tag>tomcat</tag>
       </tags>
   </entry>
   <entry>
@@ -900,8 +912,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
         <tag>tomcat</tag>
       </tags>
@@ -927,8 +939,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -940,8 +952,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -991,8 +1003,8 @@
       <tags>
         <tag>集群</tag>
         <tag>数据库</tag>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -1004,8 +1016,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -1017,8 +1029,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -1067,8 +1079,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1080,8 +1092,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1093,8 +1105,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1106,8 +1118,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1119,8 +1131,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>expect</tag>
         <tag>脚本</tag>
       </tags>
@@ -1133,9 +1145,9 @@
         <category>数据库</category>
       </categories>
       <tags>
+        <tag>Windows</tag>
         <tag>数据库</tag>
         <tag>Oracle</tag>
-        <tag>Windows</tag>
       </tags>
   </entry>
   <entry>
@@ -1174,8 +1186,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>shell</tag>
         <tag>脚本</tag>
+        <tag>shell</tag>
         <tag>linux常识</tag>
       </tags>
   </entry>
@@ -1245,8 +1257,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -1258,8 +1270,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Cobbler</tag>
       </tags>
   </entry>
@@ -1380,8 +1392,8 @@
       </categories>
       <tags>
         <tag>常识</tag>
-        <tag>Linux</tag>
         <tag>xshell</tag>
+        <tag>Linux</tag>
       </tags>
   </entry>
   <entry>
