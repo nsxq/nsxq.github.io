@@ -166,7 +166,7 @@
 <meta property="og:image" content="http://islocal.cc/images/2017/0427/20.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/0427/21.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/0427/22.png">
-<meta property="og:updated_time" content="2018-12-18T11:35:22.606Z">
+<meta property="og:updated_time" content="2020-07-20T02:52:23.174Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="jenkins 持续集成环境搭建">
 <meta name="twitter:description" content="持续集成
@@ -509,7 +509,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-12-18 19:35:22" itemprop="dateModified" datetime="2018-12-18T19:35:22+08:00">2018-12-18</time>
+                <time title="修改时间：2020-07-20 10:52:23" itemprop="dateModified" datetime="2020-07-20T10:52:23+08:00">2020-07-20</time>
               
             
           </span>
@@ -595,7 +595,7 @@ Jenkins是一个用Java编写的开源的持续集成工具，前身是Hudson (�
 <h2 id="全局工具配置"><a href="#全局工具配置" class="headerlink" title="全局工具配置"></a>全局工具配置</h2><p>点击系统配置-Global Tool Configuration<br><img src="/images/2017/0427/04.png" alt="jenkins"><br>针对项目中使用的jdk和maven情况添加对应的版本<br><img src="/images/2017/0427/05.png" alt="jenkins"></p>
 <h2 id="插件安装配置"><a href="#插件安装配置" class="headerlink" title="插件安装配置"></a>插件安装配置</h2><p>点击系统配置-插件管理<br><img src="/images/2017/0427/06.png" alt="jenkins"></p>
 <ul>
-<li>可选插件直接安装<br>右上角的过滤功能很好用，可以直接搜索安装<br>安装以下插件<br>Hudson SCP publisher plugin<br>Deploy to container Plugin<br>Maven Integration plugin<br>Publish Over SSH<br>Publish Over CIFS<br>Backup plugin / ThinBackup<br>Email Ext Recipients Column Plugin</li>
+<li>可选插件直接安装<br>右上角的过滤功能很好用，可以直接搜索安装<br>安装以下插件<br>Hudson SCP publisher plugin<br>Deploy to container Plugin<br>Maven Integration plugin<br>Publish Over SSH<br>Publish Over CIFS<br>Backup plugin / ThinBackup<br>Email Ext Recipients Column Plugin<br>Localization: Chinese (Simplified)</li>
 <li>高级选项中上传插件安装<br><a href="http://mirrors.jenkins-ci.org/plugins/" target="_blank" rel="external">http://mirrors.jenkins-ci.org/plugins/</a><br>安装完插件之后，建议重启一下jenkins，防止插件未加载上，不生效；</li>
 </ul>
 <h1 id="发布一个静态网站"><a href="#发布一个静态网站" class="headerlink" title="发布一个静态网站"></a>发布一个静态网站</h1><h2 id="配置Hudson-SCP-publisher-plugin插件"><a href="#配置Hudson-SCP-publisher-plugin插件" class="headerlink" title="配置Hudson SCP publisher plugin插件"></a>配置Hudson SCP publisher plugin插件</h2><p>此插件用于发布静态网站，拷贝文件很方便<br><img src="/images/2017/0427/07.png" alt="jenkins"><br>配置需要发布的服务器hostname，端口，路径，用户名，密码（如果是正式环境，不建议使用root用户）</p>
