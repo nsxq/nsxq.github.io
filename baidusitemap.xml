@@ -4,8 +4,28 @@
 
     
   <url>
+    <loc>http://islocal.cc/arlo/baeb958b/</loc>
+    <lastmod>2020-08-12T06:04:51.629Z</lastmod>
+    <data>
+        <display>
+        <title>Nginx模块块stream和ngx_http_proxy_connect_module使用体验</title>
+        <pubTime>2020-08-12T01:53:44.000Z</pubTime>
+        
+        <tag>nginx</tag>
+         
+         
+           
+             
+              <breadCrumb title="服务器搭建" url="http://islocal.cc/categories/%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%90%AD%E5%BB%BA/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/arlo/9bdfcc8c/</loc>
-    <lastmod>2020-07-20T06:04:18.107Z</lastmod>
+    <lastmod>2020-07-20T06:51:48.971Z</lastmod>
     <data>
         <display>
         <title>Windows组策略几个问题小计</title>
@@ -33,9 +53,9 @@
         <title>jenkins 持续集成环境搭建</title>
         <pubTime>2017-04-27T06:04:11.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Jenkins</tag>
          
@@ -79,9 +99,9 @@
         <title>Centos7.x静默安装Oracle 12.2.0.1.0</title>
         <pubTime>2020-06-17T08:09:10.000Z</pubTime>
         
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
          
            
@@ -101,9 +121,9 @@
         <title>CentOS6.9环境静默安装Oracle11g</title>
         <pubTime>2017-12-27T03:19:50.000Z</pubTime>
         
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
          
            
@@ -167,9 +187,9 @@
         <title>关闭Oracle审计日志，解决因AUD$数据过大，导致SYSTEM表空间暴涨的问题</title>
         <pubTime>2018-07-25T03:37:53.000Z</pubTime>
         
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
          
            
@@ -261,11 +281,11 @@
         <title>Zabbix(4)通过orabbix插件监控Oracle数据库</title>
         <pubTime>2017-09-30T06:14:42.000Z</pubTime>
         
+        <tag>Oracle</tag>
+         
         <tag>zabbix</tag>
          
         <tag>监控</tag>
-         
-        <tag>Oracle</tag>
          
          
            
@@ -285,9 +305,9 @@
         <title>表空间操作常用语句</title>
         <pubTime>2019-02-21T02:45:32.000Z</pubTime>
         
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
          
            
@@ -307,9 +327,9 @@
         <title>处理Oracle故障：error=27072 txt: 'Linux-x86_64 Error: 5: Input/output error</title>
         <pubTime>2020-04-19T03:21:08.000Z</pubTime>
         
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
          
            
@@ -333,9 +353,9 @@
          
         <tag>数据库</tag>
          
-        <tag>Mysql</tag>
-         
         <tag>Mariadb</tag>
+         
+        <tag>Mysql</tag>
          
          
            
@@ -355,9 +375,9 @@
         <title>常用命令集合</title>
         <pubTime>2016-08-16T09:36:57.000Z</pubTime>
         
-        <tag>linux</tag>
-         
         <tag>常识</tag>
+         
+        <tag>linux</tag>
          
          
            
@@ -558,9 +578,9 @@
         <title>expdp/impdp数据泵工具运用</title>
         <pubTime>2018-05-28T08:49:53.000Z</pubTime>
         
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
          
            
@@ -600,9 +620,9 @@
         <title>Oracle 11.2.0.4.0打PSU24006111(11.2.0.4.161018)</title>
         <pubTime>2019-01-24T07:16:40.000Z</pubTime>
         
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
         <tag>PSU</tag>
          
@@ -624,9 +644,9 @@
         <title>Oracle 多实例启动</title>
         <pubTime>2017-05-18T07:51:16.000Z</pubTime>
         
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
          
            
@@ -666,11 +686,11 @@
         <title>JDK环境变量配置</title>
         <pubTime>2017-09-27T06:23:03.000Z</pubTime>
         
-        <tag>常识</tag>
+        <tag>Windows</tag>
          
         <tag>Linux</tag>
          
-        <tag>Windows</tag>
+        <tag>常识</tag>
          
         <tag>jdk</tag>
          
@@ -854,9 +874,9 @@
         <title>oracle开启归档日志模式</title>
         <pubTime>2019-02-21T03:57:13.000Z</pubTime>
         
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
          
            
@@ -878,9 +898,9 @@
         
         <tag>Oracle</tag>
          
-        <tag>常识</tag>
-         
         <tag>Linux</tag>
+         
+        <tag>常识</tag>
          
          
            
@@ -900,9 +920,9 @@
         <title>Oracle入门</title>
         <pubTime>2017-05-12T07:51:16.000Z</pubTime>
         
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
          
            
@@ -922,9 +942,9 @@
         <title>yum 安装epel扩展后报错</title>
         <pubTime>2017-04-06T02:09:46.000Z</pubTime>
         
-        <tag>常识</tag>
-         
         <tag>Linux</tag>
+         
+        <tag>常识</tag>
          
         <tag>epel</tag>
          
@@ -990,9 +1010,9 @@
         
         <tag>集群</tag>
          
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
         <tag>RAC</tag>
          
@@ -1177,9 +1197,9 @@
         <title>修改Mariadb数据库存储路径</title>
         <pubTime>2018-09-21T06:30:50.000Z</pubTime>
         
-        <tag>Mysql</tag>
-         
         <tag>Mariadb</tag>
+         
+        <tag>Mysql</tag>
          
         <tag>Troubleshooting</tag>
          
@@ -1221,9 +1241,9 @@
         <title>查询Oracle数据库连接和资源消耗常用语句</title>
         <pubTime>2018-09-06T02:27:32.000Z</pubTime>
         
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
          
            
@@ -1243,9 +1263,9 @@
         <title>数据库hang住，应用连接缓慢甚至无法连接</title>
         <pubTime>2018-09-06T01:23:17.000Z</pubTime>
         
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
          
            
@@ -1423,11 +1443,11 @@
         <title>Windows 下使用expdp自动备份多用户oracle脚本</title>
         <pubTime>2017-06-16T10:56:32.000Z</pubTime>
         
-        <tag>Oracle</tag>
+        <tag>Windows</tag>
          
         <tag>数据库</tag>
          
-        <tag>Windows</tag>
+        <tag>Oracle</tag>
          
          
            
@@ -1469,9 +1489,9 @@
         <title>Win10无法正常连接sslvpn</title>
         <pubTime>2017-10-25T02:36:45.000Z</pubTime>
         
-        <tag>vpn</tag>
-         
         <tag>Windows</tag>
+         
+        <tag>vpn</tag>
          
          
            
@@ -1513,9 +1533,9 @@
         <title>Oracle表空间扩容</title>
         <pubTime>2017-12-28T05:55:53.000Z</pubTime>
         
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
          
            
@@ -1555,9 +1575,9 @@
         <title>Oracle 11g静默安装官方提供的examples</title>
         <pubTime>2018-05-04T10:06:12.000Z</pubTime>
         
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
          
            
@@ -1577,11 +1597,11 @@
         <title>Zabbix(9)结合sensor监控cpu温度</title>
         <pubTime>2018-04-19T10:42:47.000Z</pubTime>
         
-        <tag>zabbix</tag>
+        <tag>自动化</tag>
          
         <tag>运维</tag>
          
-        <tag>自动化</tag>
+        <tag>zabbix</tag>
          
          
            
@@ -1601,13 +1621,13 @@
         <title>Zabbix(8)使用ansible批量部署zabbix agent</title>
         <pubTime>2018-04-17T07:04:45.000Z</pubTime>
         
-        <tag>zabbix</tag>
+        <tag>自动化</tag>
          
         <tag>运维</tag>
          
-        <tag>自动化</tag>
-         
         <tag>Ansible</tag>
+         
+        <tag>zabbix</tag>
          
          
            
@@ -1649,11 +1669,11 @@
         <title>Zabbix(5)通过JMX监控Tomcat</title>
         <pubTime>2017-10-10T08:10:05.000Z</pubTime>
         
+        <tag>tomcat</tag>
+         
         <tag>zabbix</tag>
          
         <tag>监控</tag>
-         
-        <tag>tomcat</tag>
          
          
            
@@ -1693,9 +1713,9 @@
         <title>Oracle RAC手动启动与关闭及常用命令</title>
         <pubTime>2018-04-02T07:14:26.000Z</pubTime>
         
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
          
            
@@ -1715,9 +1735,9 @@
         <title>记录一次oracle rac数据库启动故障修复过程</title>
         <pubTime>2018-04-02T02:23:25.000Z</pubTime>
         
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
          
            
@@ -1737,9 +1757,9 @@
         <title>Sonar代码质量管理工具安装</title>
         <pubTime>2018-02-02T09:54:03.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Sonar</tag>
          
@@ -1761,9 +1781,9 @@
         <title>Scp拷贝大文件出现stalled故障解决方法</title>
         <pubTime>2018-01-18T09:56:00.000Z</pubTime>
         
-        <tag>常识</tag>
-         
         <tag>Linux</tag>
+         
+        <tag>常识</tag>
          
         <tag>Scp</tag>
          
@@ -1809,9 +1829,9 @@
         <title>在已存在的目录中增加一层路径</title>
         <pubTime>2017-05-25T09:02:45.000Z</pubTime>
         
-        <tag>shell</tag>
-         
         <tag>脚本</tag>
+         
+        <tag>shell</tag>
          
         <tag>linux常识</tag>
          
@@ -1833,9 +1853,9 @@
         <title>使用 Cobbler 自动化和管理系统安装</title>
         <pubTime>2017-04-20T13:45:06.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Cobbler</tag>
          
@@ -2024,9 +2044,9 @@
         <title>Oracle数据库错误表SYS.AUD$无法通过8192(在表空间SYSTEM中)扩展</title>
         <pubTime>2017-10-09T01:45:23.000Z</pubTime>
         
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
         <tag>Troubleshooting</tag>
          
@@ -2048,9 +2068,9 @@
         <title>Oracle删除用户报错ORA-01940: cannot drop a user that is currently connected</title>
         <pubTime>2017-10-10T03:58:34.000Z</pubTime>
         
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
         <tag>Troubleshooting</tag>
          
@@ -2072,9 +2092,9 @@
         <title>Oracle TNS-12541、TNS-00511 无监听程序</title>
         <pubTime>2017-06-13T11:27:34.000Z</pubTime>
         
-        <tag>Oracle</tag>
-         
         <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
          
          
            
@@ -2130,9 +2150,9 @@
         
         <tag>数据库</tag>
          
-        <tag>Mysql</tag>
-         
         <tag>Mariadb</tag>
+         
+        <tag>Mysql</tag>
          
          
            
@@ -2154,9 +2174,9 @@
         
         <tag>数据库</tag>
          
-        <tag>Mysql</tag>
-         
         <tag>Mariadb</tag>
+         
+        <tag>Mysql</tag>
          
          
            
@@ -2202,9 +2222,9 @@
         <title>Linux下如何拨VPN</title>
         <pubTime>2017-08-23T07:57:28.000Z</pubTime>
         
-        <tag>常识</tag>
-         
         <tag>Linux</tag>
+         
+        <tag>常识</tag>
          
         <tag>vpn</tag>
          
@@ -2226,9 +2246,9 @@
         <title>Linux下多线程下载工具Axel</title>
         <pubTime>2017-07-25T07:34:17.000Z</pubTime>
         
-        <tag>常识</tag>
-         
         <tag>Linux</tag>
+         
+        <tag>常识</tag>
          
         <tag>下载</tag>
          
@@ -2269,9 +2289,9 @@
         <title>Jenkins邮件通知配置</title>
         <pubTime>2017-08-22T08:36:52.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Jenkins</tag>
          
@@ -2293,9 +2313,9 @@
         <title>Jenkins持续集成发布时tomcat不能删除目录下文件</title>
         <pubTime>2017-08-29T06:48:29.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Jenkins</tag>
          
@@ -2319,9 +2339,9 @@
         <title>Jenkins打包不能发现本地仓库包</title>
         <pubTime>2017-08-17T07:48:30.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Jenkins</tag>
          
@@ -2343,9 +2363,9 @@
         <title>Jenkins使用Publish Over CIFS插件实现静态页面部署到Windows服务器</title>
         <pubTime>2017-10-24T01:42:19.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Jenkins</tag>
          
@@ -2411,9 +2431,9 @@
         <title>Except实践之 修改主机密码&添加用户&ssh免密码验证</title>
         <pubTime>2017-06-18T08:35:04.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>expect</tag>
          
@@ -2459,9 +2479,9 @@
         <title>Ansible 模块篇</title>
         <pubTime>2017-06-21T06:22:00.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Ansible</tag>
          
@@ -2483,9 +2503,9 @@
         <title>Ansible 入门篇</title>
         <pubTime>2017-06-21T06:10:50.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Ansible</tag>
          
@@ -2507,9 +2527,9 @@
         <title>Ansible Playbook入门篇</title>
         <pubTime>2017-06-22T01:04:14.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Ansible</tag>
          
@@ -2531,9 +2551,9 @@
         <title>Aansible palybook 创建lvm并自动挂载</title>
         <pubTime>2017-06-27T10:03:12.000Z</pubTime>
         
-        <tag>运维</tag>
-         
         <tag>自动化</tag>
+         
+        <tag>运维</tag>
          
         <tag>Ansible</tag>
          
@@ -2632,11 +2652,11 @@
         <title>Xshell 使用技巧</title>
         <pubTime>2016-08-19T06:17:46.000Z</pubTime>
         
-        <tag>常识</tag>
-         
         <tag>xshell</tag>
          
         <tag>Linux</tag>
+         
+        <tag>常识</tag>
          
          
            

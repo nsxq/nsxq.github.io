@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Nginx模块块stream和ngx_http_proxy_connect_module使用体验]]></title>
+    <url>%2Farlo%2Fbaeb958b%2F</url>
+    <content type="text"><![CDATA[因项目环境限制，部署环境分为互联网环境（可访问互联网）和政务外网环境（不可访问互联网）；但是因业务需要，需要实现政务外网环境访问访问外网；（原因不究~~~） 互联网区Server1 nginx搭建ngx_http_proxy_connect_module ：https://github.com/chobits/ngx_http_proxy_connect_module 1234567891011121314yum install gcc gcc-c++ make automake autoconf libtool pcre pcre-devel zlib zlib-devel openssl openssl-devel wgetwget https://nginx.org/download/nginx-1.18.0.tar.gzwget https://github.com/chobits/ngx_http_proxy_connect_module/archive/master.ziptar xf nginx-1.18.0.tar.gz unzip master.zipcd nginx-1.18.0patch -p1 &lt; /usr/local/src/ngx_http_proxy_connect_module-master/patch/proxy_connect.patch # nginx版本高于1.9.11，可以使用--add-dynamic-module=/path加载动态模块,配置文件里需要load_module模块位置；使用--add-module=PATH编译，配置文件里不用使用load_module指定模块; ./configure --prefix=/usr/local/nginx-1.18.0 --with-stream --add-dynamic-module=/usr/local/src/ngx_http_proxy_connect_module-master/makemake install 12345678910111213141516171819202122232425262728293031323334353637worker_processes auto;error_log logs/error.log info;load_module /usr/local/nginx-1.18.0/modules/ngx_http_proxy_connect_module.so; #加载模块的配置必须必须放在这个位置events &#123; worker_connections 1024;&#125;http &#123; include mime.types; default_type application/octet-stream; log_format main &apos;$remote_addr - $remote_user [$time_local] &quot;$request&quot; &apos; &apos;$status $body_bytes_sent &quot;$http_referer&quot; &apos; &apos;&quot;$http_user_agent&quot; &quot;$http_x_forwarded_for&quot;&apos;; access_log logs/access.log main; sendfile on; keepalive_timeout 65; server &#123; listen 11001; server_name localhost; location /forecast_pic&#123; proxy_pass http://x.x.x.x:xx/forecast_pic ; root html; index index.html index.htm; &#125; error_page 500 502 503 504 /50x.html; location = /50x.html &#123; root html; &#125; &#125;include proxy.conf; #为了方便查看，我把ngx_http_proxy_connect_module代理的配置单独放在这个文件里了&#125; 12345678910111213141516171819202122232425262728293031323334353637# cat proxy.conf server &#123; listen 11003; # dns resolver used by forward proxying resolver 100.125.0.14; location / &#123; proxy_pass http://$host$request_uri; proxy_set_header HOST $http_host; proxy_buffers 256 4k; proxy_max_temp_file_size 0k; proxy_connect_timeout 30; proxy_send_timeout 60; proxy_read_timeout 60; proxy_next_upstream error timeout invalid_header http_502; &#125;&#125;server &#123; listen 11004; # dns resolver used by forward proxying resolver 100.125.0.14; #指定cns # forward proxy for CONNECT request proxy_connect; proxy_connect_allow 443; #指定https端口 proxy_connect_connect_timeout 10s; proxy_connect_read_timeout 10s; proxy_connect_send_timeout 10s; # forward proxy for non-CONNECT request location / &#123; proxy_pass http://$host; proxy_set_header Host $host; &#125;&#125; 政务外网区 Server2 Nginx搭建stream ：https://nginx.org/en/docs/stream/ngx_stream_core_module.html nginx从1.9.0开始，新增加了一个stream模块，用来实现四层协议的转发、代理或者负载均衡等。（代理oracle、mysql等也是非常好用的，推荐~） 12345yum install gcc gcc-c++ make automake autoconf libtool pcre pcre-devel zlib zlib-devel openssl openssl-devel wgetwget https://nginx.org/download/nginx-1.18.0.tar.gztar xf nginx-1.18.0.tar.gz cd nginx-1.18.0/./configure --prefix=/usr/local/nginx-1.18.0/ --with-stream &amp;&amp; make &amp;&amp; make install 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535455565758596061worker_processes 1;events &#123; worker_connections 1024;&#125;stream &#123; upstream proxy1 &#123; server 16.168.135.174:11003 weight=1 max_fails=2 fail_timeout=30s; &#125; upstream proxy2 &#123; server 16.168.135.174:11004 weight=1 max_fails=2 fail_timeout=30s; &#125; server &#123; listen 11003; proxy_connect_timeout 1s; proxy_timeout 3s; proxy_pass proxy1; &#125; server &#123; listen 11004; proxy_connect_timeout 1s; proxy_timeout 3s; proxy_pass proxy2; &#125;&#125;http &#123; include mime.types; default_type application/octet-stream; sendfile on; keepalive_timeout 65; server &#123; listen 11001; server_name localhost; location / &#123; if ($request_method = &apos;OPTIONS&apos;) &#123; add_header &apos;Access-Control-Allow-Origin&apos; *; add_header &apos;Access-Control-Allow-Credentials&apos; &apos;true&apos;; add_header &apos;Access-Control-Allow-Methods&apos; &apos;GET, POST, PUT, DELETE, OPTIONS&apos;; add_header &apos;Access-Control-Allow-Headers&apos; &apos;DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,token,timestamp&apos;; add_header &apos;Access-Control-Max-Age&apos; 1728000; add_header &apos;Content-Type&apos; &apos;text/plain charset=UTF-8&apos;; add_header &apos;Content-Length&apos; 0; return 204; &#125; &#125; location /forecast_pic &#123; proxy_pass http://x.x.x.x:xx1/forecast_pic; root html; index index.html index.htm; &#125; location /FJAtmoCompr &#123; proxy_pass http://x.x.x.x:xx2/FJAtmoCompr; &#125; location /cdwarn &#123; proxy_pass http://x.x.x.x:xx3/cdwarn; &#125; error_page 500 502 503 504 /50x.html; location = /50x.html &#123; root html; &#125; &#125;&#125; 政务外网区 Server3 代理使用测试 为了长期使用，我们将代理设置为系统环境变量 1234567vim /etc/profileexport http_proxy=&apos;16.167.5.198:11003&apos;export https_proxy=&apos;16.167.5.198:11004&apos;export ftp_proxy=&apos;16.167.5.198:11003&apos;source /etc/profile]]></content>
+      <categories>
+        <category>服务器搭建</category>
+      </categories>
+      <tags>
+        <tag>nginx</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Centos7.x静默安装Oracle 12.2.0.1.0]]></title>
     <url>%2Farlo%2Fe3c25d94%2F</url>
     <content type="text"><![CDATA[今天项目上让安装一台12c的数据库，和之前的11g静默安装过程大致差不多，在此记录一下，方便日后查看。 关闭selinux和firewalld关闭selinux123sed -i &apos;s/SELINUX=enforcing/SELINUX=disabled/&apos; /etc/selinux/configgrep SELINUX=disabled /etc/selinux/configsetenforce 0 关闭firewalld12systemctl stop firewalld.servicesystemctl disable firewalld.service 系统基础信息配置基础软件安装12345#默认是不安装32位软件包的，添加此选项echo &apos;multilib_policy=all&apos; &gt;&gt; /etc/yum.confyum -y install binutils-* compat-libstdc++-* elfutils-libelf-* elfutils-libelf-devel-* gcc-* gcc-c++-* glibc-* glibc-common-* glibc-devel-* glibc-headers-* ksh-* libaio-* libaio-devel-* libgcc-* libstdc++* libstdc++-devel* make-* sysstat-* unixODBC-* unixODBC-devel-* compat-libcap1* mksh # 非必须要安装的包，个人习惯yum -y install vim unzip lrzsz 123456789101112131415161718192021222324#监测一下软件是否安装全rpm -q \binutils \compat-libstdc++-33 \elfutils-libelf \elfutils-libelf-devel \expat \gcc \gcc-c++ \glibc \glibc-common \glibc-devel \glibc-headers \libaio \libaio-devel \libgcc \libstdc++ \libstdc++-devel \make \pdksh \sysstat \unixODBC \unixODBC-devel \compat-libcap1 | grep &quot;not installed&quot; 配置主机名1hostnamectl set-hostname db-server 添加hosts记录vim /etc/hosts 123127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4::1 localhost localhost.localdomain localhost6 localhost6.localdomain6127.0.0.1 db-server 修改PAM配置文件vim /etc/pam.d/login 12session required /lib64/security/pam_limits.sosession required pam_limits.so 修改内核参数vim /etc/sysctl.conf 123456789fs.aio-max-nr = 1048576 fs.file-max = 6815744 kernel.shmmni = 4096 kernel.sem = 250 32000 100 128 net.ipv4.ip_local_port_range = 9000 65500 net.core.rmem_default = 262144 net.core.rmem_max = 4194304 net.core.wmem_default = 262144 net.core.wmem_max = 1048586 重新加载生效sysctl -p 修改系统资源限制vim /etc/security/limits.conf 12345oracle soft nproc 2047 oracle hard nproc 16384 oracle soft nofile 1024 oracle hard nofile 65536oracle soft stack 10240 Oracle相关环境配置新建用户12345groupadd -g 1000 oinstallgroupadd -g 1001 dbauseradd -u 1000 -g oinstall -G dba oracle#设置oracle用户密码为oracle#123echo &quot;oracle:oracle#123&quot; | chpasswd 修改用户配置文件vim /etc/profile 12345678910#添加到文件末尾即可if [ $USER = &quot;oracle&quot; ]; then if [ $SHELL = &quot;/bin/ksh&quot; ]; then ulimit -p 16384 ulimit -n 65536 else ulimit -u 16384 -n 65536 fifi 新建目录并设置权限12345mkdir -p /u01/app/oracle/product/12.2.0/db_1mkdir -p /u01/app/oraInventorychown -R oracle.oinstall /u01/app/oraclechown -R oracle.oinstall /u01/app/oraInventorychmod -R 775 /u01/app 设置oracle用户环境变量su - oraclevim ~/.bash_profile 123456export ORACLE_BASE=/u01/app/oracleexport ORACLE_HOME=$ORACLE_BASE/product/12.2.0/db_1export ORACLE_SID=orclexport PATH=$PATH:$ORACLE_HOME/binexport LD_LIBRARY_PATH=$ORACLE_HOME/lib:/lib:/usr/libexport NLS_LANG=American_America.ZHS16GBK 检查环境变量是否生效source ~/.bash_profileenv |grep ORA 123ORACLE_SID=orclORACLE_BASE=/u01/app/oracleORACLE_HOME=/u01/app/oracle/product/12.2.0/db_1 安装Oracle数据库下载地址：https://www.oracle.com/database/technologies/oracle-database-software-downloads.html 12.2.0.1.0只有一个软件包，(3,453,696,911 bytes) (cksum - 4170261901)，将linuxx64_12201_database.zip传到服务器/usr/local/src/ 目录下并解压。 1234[root@db-server src]# pwd/usr/local/src[root@db-server src]# unzip linuxx64_12201_database.zip …… 安装Oracle数据库软件解压后在/usr/local/src/database/response/ 目录下有三个rsp文件，用来作为静默安装时的应答文件的模板。 123db_install.rsp 安装应答netca.rsp 建立监听、本地服务名等网络设置的应答dbca.rsp 创建数据库应答 123--备份以下两个响应文件cp db_install.rsp db_install.bakcp dbca.rsp dbca.bak 修改db_install.rsp 文件123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657[root@db-server response]# egrep -v &quot;^#|^$&quot; db_install.rsp oracle.install.responseFileVersion=/oracle/install/rspfmt_dbinstall_response_schema_v12.2.0oracle.install.option=INSTALL_DB_SWONLYUNIX_GROUP_NAME=oinstallINVENTORY_LOCATION=/u01/app/oraInventoryORACLE_HOME=/u01/app/oracle/product/12.2.0/db_1ORACLE_BASE=/u01/app/oracle oracle.install.db.InstallEdition=EEoracle.install.db.OSDBA_GROUP=dbaoracle.install.db.OSOPER_GROUP=oracle.install.db.OSBACKUPDBA_GROUP=dbaoracle.install.db.OSDGDBA_GROUP=dbaoracle.install.db.OSKMDBA_GROUP=dbaoracle.install.db.OSRACDBA_GROUP=dbaoracle.install.db.rac.configurationType=oracle.install.db.CLUSTER_NODES=oracle.install.db.isRACOneInstall=falseoracle.install.db.racOneServiceName=oracle.install.db.rac.serverpoolName=oracle.install.db.rac.serverpoolCardinality=0oracle.install.db.config.starterdb.type=GENERAL_PURPOSEoracle.install.db.config.starterdb.globalDBName=oracle.install.db.config.starterdb.SID=oracle.install.db.ConfigureAsContainerDB=falseoracle.install.db.config.PDBName=oracle.install.db.config.starterdb.characterSet=ZHS16GBKoracle.install.db.config.starterdb.memoryOption=falseoracle.install.db.config.starterdb.memoryLimit=oracle.install.db.config.starterdb.installExampleSchemas=falseoracle.install.db.config.starterdb.password.ALL=oracle.install.db.config.starterdb.password.SYS=oracle.install.db.config.starterdb.password.SYSTEM=oracle.install.db.config.starterdb.password.DBSNMP=oracle.install.db.config.starterdb.password.PDBADMIN=oracle.install.db.config.starterdb.managementOption=DEFAULToracle.install.db.config.starterdb.omsHost=oracle.install.db.config.starterdb.omsPort=0oracle.install.db.config.starterdb.emAdminUser=oracle.install.db.config.starterdb.emAdminPassword=oracle.install.db.config.starterdb.enableRecovery=falseoracle.install.db.config.starterdb.storageType=oracle.install.db.config.starterdb.fileSystemStorage.dataLocation=oracle.install.db.config.starterdb.fileSystemStorage.recoveryLocation=oracle.install.db.config.asm.diskGroup=oracle.install.db.config.asm.ASMSNMPPassword=MYORACLESUPPORT_USERNAME=MYORACLESUPPORT_PASSWORD=SECURITY_UPDATES_VIA_MYORACLESUPPORT=falseDECLINE_SECURITY_UPDATES=truePROXY_HOST=PROXY_PORT=PROXY_USER=PROXY_PWD=COLLECTOR_SUPPORTHUB_URL= 执行静默安装12345678910111213141516171819[oracle@db-server database]$ pwd/usr/local/src/database[oracle@db-server database]$ ./runInstaller -silent -ignorePrereq -ignoreSysPrereqs -responseFile /usr/local/src/database/response/db_install.rsp Starting Oracle Universal Installer...Checking Temp space: must be greater than 500 MB. Actual 29865 MB PassedChecking swap space: must be greater than 150 MB. Actual 2047 MB PassedPreparing to launch Oracle Universal Installer from /tmp/OraInstall2020-06-18_03-36-22AM. Please wait ...[oracle@db-server database]$ You can find the log of this install session at: /u01/app/oraInventory/logs/installActions2020-06-18_03-36-22AM.logThe installation of Oracle Database 12c was successful.Please check &apos;/u01/app/oraInventory/logs/silentInstall2020-06-18_03-36-22AM.log&apos; for more details.As a root user, execute the following script(s): 1. /u01/app/oraInventory/orainstRoot.sh 2. /u01/app/oracle/product/12.2.0/db_1/root.shSuccessfully Setup Software. 安装过程中，我们可以另开一个终端查看安装日志 tail -f /u01/app/oraInventory/logs/silentInstall2020-06-18_03-36-22AM.log 以root身份执行以下脚本，然后在刚才的安装界面敲回车，完成安装123456789[root@db-server response]# /u01/app/oraInventory/orainstRoot.shChanging permissions of /u01/app/oraInventory.Adding read,write permissions for group.Removing read,write,execute permissions for world.Changing groupname of /u01/app/oraInventory to oinstall.The execution of the script is complete.[root@db-server response]# /u01/app/oracle/product/12.2.0/db_1/root.shCheck /u01/app/oracle/product/12.2.0/db_1/install/root_db-server_2020-06-18_03-46-08-638987704.log for the output of root script 静默安装监听安装监听静默安装使用默认的监听响应文件即可，不用修改。 12345678910111213[oracle@db-server ~]$ $ORACLE_HOME/bin/netca /silent /responseFile /usr/local/src/database/response/netca.rsp Parsing command line arguments: Parameter &quot;silent&quot; = true Parameter &quot;responsefile&quot; = /usr/local/src/database/response/netca.rspDone parsing command line arguments.Oracle Net Services Configuration:Profile configuration complete.Oracle Net Listener Startup:The information provided for this listener is currently in use by other software on this computer. Listener start failed.Check the trace file for details: /u01/app/oracle/cfgtoollogs/netca/trace_OraDB12Home1-2006183AM4751.logOracle Net Services configuration failed. The exit code is 1 启动监听12345678910111213141516171819202122232425262728293031[oracle@db-server ~]$ lsnrctl startLSNRCTL for Linux: Version 12.2.0.1.0 - Production on 18-JUN-2020 03:48:13Copyright (c) 1991, 2016, Oracle. All rights reserved.Starting /u01/app/oracle/product/12.2.0/db_1/bin/tnslsnr: please wait...TNSLSNR for Linux: Version 12.2.0.1.0 - ProductionSystem parameter file is /u01/app/oracle/product/12.2.0/db_1/network/admin/listener.oraLog messages written to /u01/app/oracle/diag/tnslsnr/db-server/listener/alert/log.xmlListening on: (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=db-server)(PORT=1539)))Listening on: (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC1521)))Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1539)))STATUS of the LISTENER------------------------Alias LISTENERVersion TNSLSNR for Linux: Version 12.2.0.1.0 - ProductionStart Date 18-JUN-2020 03:48:14Uptime 0 days 0 hr. 0 min. 0 secTrace Level offSecurity ON: Local OS AuthenticationSNMP OFFListener Parameter File /u01/app/oracle/product/12.2.0/db_1/network/admin/listener.oraListener Log File /u01/app/oracle/diag/tnslsnr/db-server/listener/alert/log.xmlListening Endpoints Summary... (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=db-server)(PORT=1539))) (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC1521)))The listener supports no servicesThe command completed successfully ps:细心的朋友应该发现了，我这里有点问题，启动的是1539端口，不是响应文件里定义的1521端口，暂时还没找到原因，先手动修改了。 静默安装数据库修改安装数据库响应文件1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859[root@db-server ~]# egrep -v &quot;^#|^$&quot; /usr/local/src/database/response/dbca.rspresponseFileVersion=/oracle/assistants/rspfmt_dbca_response_schema_v12.2.0gdbName=orclsid=orcldatabaseConfigType=SIRACOneNodeServiceName=policyManaged=falsecreateServerPool=falseserverPoolName=cardinality=force=falsepqPoolName=pqCardinality=createAsContainerDatabase=falsenumberOfPDBs=0pdbName=useLocalUndoForPDBs=truepdbAdminPassword=nodelist=templateName=/u01/app/oracle/product/12.2.0/db_1/assistants/dbca/templates/General_Purpose.dbcsysPassword=Ths#123%systemPassword=Ths#123% serviceUserPassword=emConfiguration=emExpressPort=0runCVUChecks=falsedbsnmpPassword=omsHost=omsPort=0emUser=emPassword=dvConfiguration=falsedvUserName=dvUserPassword=dvAccountManagerName=dvAccountManagerPassword=olsConfiguration=falsedatafileJarLocation=&#123;ORACLE_HOME&#125;/assistants/dbca/templates/datafileDestination=&#123;ORACLE_BASE&#125;/oradata/&#123;DB_UNIQUE_NAME&#125;/recoveryAreaDestination=&#123;ORACLE_BASE&#125;/fast_recovery_area/&#123;DB_UNIQUE_NAME&#125;storageType=FSdiskGroupName=asmsnmpPassword=recoveryGroupName=characterSet=ZHS16GBKnationalCharacterSet=registerWithDirService=falsedirServiceUserName=dirServicePassword=walletPassword=listeners=variablesFile=variables=DB_UNIQUE_NAME=orcl,ORACLE_BASE=/u01/app/oracle,PDB_NAME=,DB_NAME=orcl,ORACLE_HOME=/u01/app/oracle/product/12.2.0/db_1,SID=orclinitParams=undo_tablespace=UNDOTBS1,memory_target=1577MB,processes=320,db_recovery_file_dest_size=8016MB,dispatchers=(PROTOCOL=TCP) (SERVICE=&#123;SID&#125;XDB),db_recovery_file_dest=&#123;ORACLE_BASE&#125;/fast_recovery_area/&#123;DB_UNIQUE_NAME&#125;,db_block_size=8KB,diagnostic_dest=&#123;ORACLE_BASE&#125;,audit_file_dest=&#123;ORACLE_BASE&#125;/admin/&#123;DB_UNIQUE_NAME&#125;/adump,db_create_file_dest=&#123;ORACLE_BASE&#125;/oradata/&#123;DB_UNIQUE_NAME&#125;/,compatible=12.2.0,db_name=orcl,audit_trail=db,remote_login_passwordfile=EXCLUSIVE,open_cursors=300sampleSchema=falsememoryPercentage=40databaseType=MULTIPURPOSEautomaticMemoryManagement=truetotalMemory=0 执行静默建库12c和11不同的地方就是在这里要加一个-createDatabase的参数。 12345678910111213141516171819202122232425[oracle@db-server ~]$ $ORACLE_HOME/bin/dbca -silent -createDatabase -responseFile /home/oracle/dbca.rsp Copying database files1% complete2% complete18% complete33% completeCreating and starting Oracle instance35% complete40% complete44% complete49% complete50% complete53% complete55% completeCompleting Database Creation56% complete57% complete58% complete62% complete65% complete66% completeExecuting Post Configuration Actions100% completeLook at the log file &quot;/u01/app/oracle/cfgtoollogs/dbca/orcl/orcl.log&quot; for further details. 1234567891011121314151617181920212223242526[oracle@db-server ~]$ lsnrctl statusLSNRCTL for Linux: Version 12.2.0.1.0 - Production on 17-JUN-2020 19:09:02Copyright (c) 1991, 2016, Oracle. All rights reserved.Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=localhost)(PORT=1521)))STATUS of the LISTENER------------------------Alias LISTENERVersion TNSLSNR for Linux: Version 12.2.0.1.0 - ProductionStart Date 17-JUN-2020 19:08:16Uptime 0 days 0 hr. 0 min. 46 secTrace Level offSecurity ON: Local OS AuthenticationSNMP OFFListener Parameter File /u01/app/oracle/product/12.2.0/db_1/network/admin/listener.oraListener Log File /u01/app/oracle/diag/tnslsnr/db-server/listener/alert/log.xmlListening Endpoints Summary... (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=db-server)(PORT=1521)))Services Summary...Service &quot;orcl&quot; has 1 instance(s). Instance &quot;orcl&quot;, status READY, has 1 handler(s) for this service...Service &quot;orclXDB&quot; has 1 instance(s). Instance &quot;orcl&quot;, status READY, has 1 handler(s) for this service...The command completed successfully 配置开机启动修改oratabvim /etc/oratab 1orcl:/u01/app/oracle/product/12.2.0/db_1:Y 修改dbstart文件vim /u01/app/oracle/product/12.2.0/db_1/bin/dbstart 修改第80行: ORACLE_HOME_LISTNER=$1为ORACLE_HOME_LISTNER=$ORACLE_HOME 修改dbshut文件vim /u01/app/oracle/product/12.2.0/db_1/bin/dbshut 修改第50行: ORACLE_HOME_LISTNER=$1为ORACLE_HOME_LISTNER=$ORACLE_HOME 修改开机启动文件vim /etc/rc.d/rc.local 12su - oracle -lc &quot;/u01/app/oracle/product/12.2.0/db_1/bin/lsnrctl start&quot;su - oracle -lc &quot;/u01/app/oracle/product/12.2.0/db_1/bin/dbstart&quot; 添加可执行权限 chmod +x /etc/rc.d/rc.local 关闭审计日志1234567由于默认审计日志默认是开启状态，长时间使用后会早上SYSTEM表空间撑爆，磁盘占用率高，建议关闭sqlplus / as sysdbaSQL&gt; show parameter audit_trailSQL&gt; alter system set audit_trail=none scope=spfile;SQL&gt; shutdown immediate;SQL&gt; startup 使SqlPlus工具支持上下左右键安装rlwrap： http://islocal.cc/arlo/d9547628/]]></content>
@@ -8,8 +19,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -61,8 +72,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -254,8 +265,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -266,8 +277,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -278,8 +289,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
         <tag>PSU</tag>
       </tags>
   </entry>
@@ -376,8 +387,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -400,8 +411,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -412,8 +423,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -436,8 +447,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -496,8 +507,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -519,8 +530,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -543,9 +554,9 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>zabbix</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
+        <tag>zabbix</tag>
       </tags>
   </entry>
   <entry>
@@ -556,10 +567,10 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>zabbix</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
+        <tag>zabbix</tag>
       </tags>
   </entry>
   <entry>
@@ -593,8 +604,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -605,8 +616,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -631,8 +642,8 @@
       </categories>
       <tags>
         <tag>Oracle</tag>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
       </tags>
   </entry>
   <entry>
@@ -643,8 +654,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Sonar</tag>
       </tags>
   </entry>
@@ -682,8 +693,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>Scp</tag>
         <tag>MTU</tag>
       </tags>
@@ -696,8 +707,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -708,8 +719,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -747,15 +758,15 @@
       </categories>
       <tags>
         <tag>集群</tag>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
         <tag>RAC</tag>
       </tags>
   </entry>
   <entry>
     <title><![CDATA[Windows组策略几个问题小计]]></title>
     <url>%2Farlo%2F9bdfcc8c%2F</url>
-    <content type="text"><![CDATA[桌面没有“计算机”开始-运行-输入以下内容1rundll32.exe shell32.dll,Control_RunDLL desk.cpl,,0 注册表编辑被管理员禁用第一步：打开组策略窗口，开始-运行-gptdit.msc第二步：选择用户配置-管理模板-系统，双击系统选项找到【阻止访问注册表编辑工具】第三步：双击【阻止访问注册表编辑工具】选择已禁用，点击确定。第四步：在开始-运行输入regedit，打开注册表。 说明注册表已经可以访问了。 服务灰色，无法正常使用MMC 在该文档中引用的管理单元受到策略限制第一步：开始-运行-regedit，启动注册表编辑器第二步：HKEY_CURRENT_USER\Software\Policies\Microsoft\MMC{58221C66-EA27-11CF-ADCF-00AA00A80033}\Restrict_Run，将值设为0 任务管理器无法正常使用第一步：打开组策略窗口，开始-运行-gptdit.msc第二步：选择用户配置-管理模板-系统-Ctrl+Alt+Del选项第三步：在该列表中打开 删除“任务管理器” 的属性，在 删除“任务管理器” 属性中的“设置”选项卡中点选“已禁用”，确定。 要远程登录，你需要具有通过远程桌面服务进行的登录权限要远程登录，你需要具有通过远程桌面服务进行的登录权限。默认情况下，远程桌面用户组的成员有这项权限。如果你所属的组没有这项权限，或者远程桌面用户组已经删除了这项权限，那么需要手动为你授予这一权限第一步：gpedit进入策略组:计算机配置-&gt;Windows设置-&gt;安全设置-&gt;本地策略-&gt;用户权限分配第二步：找到拒绝通过远程桌面服务登录,把里面的账号去了即可 修改远程登录3389端口第一步: 打开“开始→运行”，输入“regedit”，打开注册表，第二步: 进入[HKEY_LOCAL_MACHINE/SYSTEM/CurrentControlSet/Control/Terminal Server/Wds/rdpwd/Tds/tcp]，将PortNamber值(默认值是3389)，修改为新的端口，例如12389，注意使用十进制。第三部：进入[HKEY_LOCAL_MACHINE/SYSTEM/CurrentControlSet/Control/Terminal Server/WinStations/RDP-Tcp]，将PortNumber值(默认是3389)修改为新的端口，如12389，注意使用十进制。 修改远程桌面最大连接数 打开组策略设置gpedit.msc–&gt;计算机配置–&gt;管理模板–&gt;Windows 组件–&gt;远程桌面服务–&gt;远程桌面会话主机–&gt;连接–&gt;限制连接数量 打开组策略设置gpedit.msc–&gt;计算机配置–&gt;管理模板–&gt;Windows 组件–&gt;远程桌面服务–&gt;远程桌面会话主机–&gt;连接–&gt;将远程桌面服务用户限制到单独的远程桌面服务会话(已禁用)Win10家庭版找不到gpedit.msc组策略复制一下内容，新建一个.bat文件，然后使用管理员身份运行1234567891011@echo offpushd &quot;%~dp0&quot;dir /b C:\Windows\servicing\Packages\Microsoft-Windows-GroupPolicy-ClientExtensions-Package~3*.mum &gt;List.txtdir /b C:\Windows\servicing\Packages\Microsoft-Windows-GroupPolicy-ClientTools-Package~3*.mum &gt;&gt;List.txtfor /f %%i in (&apos;findstr /i . List.txt 2^&gt;nul&apos;) do dism /online /norestart /add-package:&quot;C:\Windows\servicing\Packages\%%i&quot;pause 出现身份验证错误，要求的函数不受支持在本地计算机上操作，非远程计算机！！！ 修改组策略解决此错误原因是检查更新了KB4103718的补丁造成的。 使用微软官方建议修改本地组策略： 开始运行输入gpedit.msc 计算机配置&gt;管理模板&gt;系统&gt;凭据分配&gt;加密Oracle修正 选择启用并选择易受攻击。 易受攻击– 使用 CredSSP 的客户端应用程序将通过支持回退到不安全的版本使远程服务器遭受攻击，但使用 CredSSP 的服务将接受未修补的客户端。 PS:该操作仅用于专业版，如果是家庭版请考虑升级(本人是家庭版，在X宝上买的key升级为专业版了);或者卸载KB4103718补丁重启。 修改注册表解决Windows10家庭版的用户，因为系统中没有组策略编辑器，需要修改注册表来实现。 开始-运行-输入 “regedit” 找到注册表路径：HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters 一般系统下，大概到了System后面再没有后面的路径，需要自行手动新建\CredSSP\Parameters 先新建项“CredSSP”，然后在CredSSP下新建项“Parameters” 然后在“Parameters”下新建DWORD(32位)，名称为“AllowEncryptionOracle”，设置值为“2”。 然后进行尝试，如果不行，请重启一下自己的计算机。 Windows远程桌面密码不能保存 打开组策略设置gpedit.msc 计算机配置 &gt;&gt; 管理模板 &gt;&gt; 系统 &gt;&gt; 凭据分配 下面的 “允许分配保存的凭据用于仅NTLM服务器身份验证” 选择已启用，点击显示将TERMSRV/*添加到列表中 修复图片查看器复制以下内容，新建.reg文件 12345678910111213141516171819202122232425262728293031323334353637383940414243Windows Registry Editor Version 5.00 ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.jpg] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.jpeg] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.gif] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.png] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.bmp] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.tiff] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.ico] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; 参考地址：http://ytweb.blog.51cto.com/5865824/1177266https://jingyan.baidu.com/article/3a2f7c2e6ab84626afd61114.htmlhttp://blog.sina.com.cn/s/blog_4298a2c80102vii4.htmlhttp://www.cnblogs.com/q149072205/p/6097433.htmlhttp://blog.csdn.net/flyingdream123/article/details/50724107http://www.soncs.com/NewsShow/144.html]]></content>
+    <content type="text"><![CDATA[桌面没有“计算机”开始-运行-输入以下内容1rundll32.exe shell32.dll,Control_RunDLL desk.cpl,,0 注册表编辑被管理员禁用第一步：打开组策略窗口，开始-运行-gptdit.msc第二步：选择用户配置-管理模板-系统，双击系统选项找到【阻止访问注册表编辑工具】第三步：双击【阻止访问注册表编辑工具】选择已禁用，点击确定。第四步：在开始-运行输入regedit，打开注册表。 说明注册表已经可以访问了。 服务灰色，无法正常使用MMC 在该文档中引用的管理单元受到策略限制第一步：开始-运行-regedit，启动注册表编辑器第二步：HKEY_CURRENT_USER\Software\Policies\Microsoft\MMC{58221C66-EA27-11CF-ADCF-00AA00A80033}\Restrict_Run，将值设为0 任务管理器无法正常使用第一步：打开组策略窗口，开始-运行-gptdit.msc第二步：选择用户配置-管理模板-系统-Ctrl+Alt+Del选项第三步：在该列表中打开 删除“任务管理器” 的属性，在 删除“任务管理器” 属性中的“设置”选项卡中点选“已禁用”，确定。 要远程登录，你需要具有通过远程桌面服务进行的登录权限要远程登录，你需要具有通过远程桌面服务进行的登录权限。默认情况下，远程桌面用户组的成员有这项权限。如果你所属的组没有这项权限，或者远程桌面用户组已经删除了这项权限，那么需要手动为你授予这一权限第一步：gpedit进入策略组:计算机配置-&gt;Windows设置-&gt;安全设置-&gt;本地策略-&gt;用户权限分配第二步：找到拒绝通过远程桌面服务登录,把里面的账号去了即可 修改远程登录3389端口第一步: 打开“开始→运行”，输入“regedit”，打开注册表，第二步: 进入[HKEY_LOCAL_MACHINE/SYSTEM/CurrentControlSet/Control/Terminal Server/Wds/rdpwd/Tds/tcp]，将PortNamber值(默认值是3389)，修改为新的端口，例如12389，注意使用十进制。第三部：进入[HKEY_LOCAL_MACHINE/SYSTEM/CurrentControlSet/Control/Terminal Server/WinStations/RDP-Tcp]，将PortNumber值(默认是3389)修改为新的端口，如12389，注意使用十进制。 修改远程桌面最大连接数第一步: 打开组策略设置gpedit.msc–&gt;计算机配置–&gt;管理模板–&gt;Windows 组件–&gt;远程桌面服务–&gt;远程桌面会话主机–&gt;连接–&gt;限制连接数量第二步: 打开组策略设置gpedit.msc–&gt;计算机配置–&gt;管理模板–&gt;Windows 组件–&gt;远程桌面服务–&gt;远程桌面会话主机–&gt;连接–&gt;将远程桌面服务用户限制到单独的远程桌面服务会话(已禁用) Win10家庭版找不到gpedit.msc组策略复制一下内容，新建一个.bat文件，然后使用管理员身份运行1234567891011@echo offpushd &quot;%~dp0&quot;dir /b C:\Windows\servicing\Packages\Microsoft-Windows-GroupPolicy-ClientExtensions-Package~3*.mum &gt;List.txtdir /b C:\Windows\servicing\Packages\Microsoft-Windows-GroupPolicy-ClientTools-Package~3*.mum &gt;&gt;List.txtfor /f %%i in (&apos;findstr /i . List.txt 2^&gt;nul&apos;) do dism /online /norestart /add-package:&quot;C:\Windows\servicing\Packages\%%i&quot;pause 出现身份验证错误，要求的函数不受支持在本地计算机上操作，非远程计算机！！！ 修改组策略解决此错误原因是检查更新了KB4103718的补丁造成的。 使用微软官方建议修改本地组策略： 开始运行输入gpedit.msc 计算机配置&gt;管理模板&gt;系统&gt;凭据分配&gt;加密Oracle修正 选择启用并选择易受攻击。 易受攻击– 使用 CredSSP 的客户端应用程序将通过支持回退到不安全的版本使远程服务器遭受攻击，但使用 CredSSP 的服务将接受未修补的客户端。 PS:该操作仅用于专业版，如果是家庭版请考虑升级(本人是家庭版，在X宝上买的key升级为专业版了);或者卸载KB4103718补丁重启。 修改注册表解决Windows10家庭版的用户，因为系统中没有组策略编辑器，需要修改注册表来实现。 开始-运行-输入 “regedit” 找到注册表路径：HKLM\Software\Microsoft\Windows\CurrentVersion\Policies\System\CredSSP\Parameters 一般系统下，大概到了System后面再没有后面的路径，需要自行手动新建\CredSSP\Parameters 先新建项“CredSSP”，然后在CredSSP下新建项“Parameters” 然后在“Parameters”下新建DWORD(32位)，名称为“AllowEncryptionOracle”，设置值为“2”。 然后进行尝试，如果不行，请重启一下自己的计算机。 Windows远程桌面密码不能保存 打开组策略设置gpedit.msc 计算机配置 &gt;&gt; 管理模板 &gt;&gt; 系统 &gt;&gt; 凭据分配 下面的 “允许分配保存的凭据用于仅NTLM服务器身份验证” 选择已启用，点击显示将TERMSRV/*添加到列表中 修复图片查看器复制以下内容，新建.reg文件 12345678910111213141516171819202122232425262728293031323334353637383940414243Windows Registry Editor Version 5.00 ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.jpg] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.jpeg] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.gif] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.png] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.bmp] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.tiff] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; ; Change Extension&apos;s File Type [HKEY_CURRENT_USER\Software\Classes\.ico] @=&quot;PhotoViewer.FileAssoc.Tiff&quot; 参考地址：http://ytweb.blog.51cto.com/5865824/1177266https://jingyan.baidu.com/article/3a2f7c2e6ab84626afd61114.htmlhttp://blog.sina.com.cn/s/blog_4298a2c80102vii4.htmlhttp://www.cnblogs.com/q149072205/p/6097433.htmlhttp://blog.csdn.net/flyingdream123/article/details/50724107http://www.soncs.com/NewsShow/144.html]]></content>
       <categories>
         <category>Troubleshooting</category>
       </categories>
@@ -772,8 +783,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>vpn</tag>
         <tag>Windows</tag>
+        <tag>vpn</tag>
       </tags>
   </entry>
   <entry>
@@ -784,8 +795,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -810,9 +821,9 @@
         <category>监控</category>
       </categories>
       <tags>
+        <tag>tomcat</tag>
         <tag>zabbix</tag>
         <tag>监控</tag>
-        <tag>tomcat</tag>
       </tags>
   </entry>
   <entry>
@@ -823,8 +834,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -836,8 +847,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -849,9 +860,9 @@
         <category>监控</category>
       </categories>
       <tags>
+        <tag>Oracle</tag>
         <tag>zabbix</tag>
         <tag>监控</tag>
-        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -898,9 +909,9 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
-        <tag>Linux</tag>
         <tag>Windows</tag>
+        <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>jdk</tag>
       </tags>
   </entry>
@@ -924,8 +935,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
         <tag>tomcat</tag>
       </tags>
@@ -938,8 +949,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>vpn</tag>
       </tags>
   </entry>
@@ -951,8 +962,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -964,8 +975,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -1015,8 +1026,8 @@
       <tags>
         <tag>集群</tag>
         <tag>数据库</tag>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -1028,8 +1039,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -1041,8 +1052,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -1053,8 +1064,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>下载</tag>
         <tag>axel</tag>
       </tags>
@@ -1091,8 +1102,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1104,8 +1115,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1117,8 +1128,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1130,8 +1141,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1143,8 +1154,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>expect</tag>
         <tag>脚本</tag>
       </tags>
@@ -1157,9 +1168,9 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
-        <tag>数据库</tag>
         <tag>Windows</tag>
+        <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -1186,8 +1197,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -1198,8 +1209,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>shell</tag>
         <tag>脚本</tag>
+        <tag>shell</tag>
         <tag>linux常识</tag>
       </tags>
   </entry>
@@ -1211,8 +1222,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -1223,8 +1234,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -1269,8 +1280,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Jenkins</tag>
       </tags>
   </entry>
@@ -1282,8 +1293,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Cobbler</tag>
       </tags>
   </entry>
@@ -1306,8 +1317,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>epel</tag>
       </tags>
   </entry>
@@ -1403,9 +1414,9 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>xshell</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
       </tags>
   </entry>
   <entry>
@@ -1416,8 +1427,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>常识</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>
