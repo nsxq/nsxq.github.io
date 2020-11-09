@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[jenkins权限管理插件'Role-based Authorization Strategy'使用]]></title>
+    <url>%2Farlo%2Fbf292362%2F</url>
+    <content type="text"><![CDATA[由于项目组人员比较多，为了更加方便，安全的使用jenkins；我们使用“Role-based Authorization Strategy”细化jenkins的权限。 目标分配一个用户，仅能操作以下图中所示项目 安装插件系统管理–&gt;插件管理–&gt;可选插件–&gt;Role-based Authorization Strategy–&gt;直接安装然后重启jenkins 新建用户系统管理–&gt;安全–&gt;管理用户–&gt;新建用户 配置jenkins系统管理–&gt;安全–&gt;全局安全配置–&gt;授权策略–&gt;选择“Role-Based Strategy” 为角色分配权限系统管理–&gt;安全–&gt;Manage and Assign Roles–&gt;Manage Roles Ps：如果需要使用通配符匹配多个，需使用 .* 为jenkins分配角色系统管理–&gt;安全–&gt;Manage and Assign Roles–&gt;Assign Roles 验证]]></content>
+      <categories>
+        <category>Jenkins</category>
+      </categories>
+      <tags>
+        <tag>Jenkins</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[The valid characters are defined in RFC 7230 and RFC 3986]]></title>
     <url>%2Farlo%2Fa534b34d%2F</url>
     <content type="text"><![CDATA[当项目升级到tomcat高版本（tomcat7+）请求时报“The valid characters are defined in RFC 7230 and RFC 3986”的400错误该怎么解决在tomcat的server.xml 标签中添加属性relaxedQueryChars，属性配置为： 1relaxedQueryChars=&quot;[,],|,&#123;,&#125;,^,&amp;#x5c;,&amp;#x60;,&amp;quot;,&amp;lt;,&amp;gt;&quot; 解释如下： “The valid characters are defined in RFC 7230 and RFC 3986”错误提示，说明访问地址中出现特殊不符合规范的特殊字符。根据rfc规范（RFC 3986规范定义了Url中只允许包含英文字母（a-zA-Z）、数字（0-9）、-_.~4个特殊字符以及所有保留字符(RFC3986中指定了以下字符为保留字符：! * ’ ( ) ; : @ &amp; = + $ , / ? # [ ])）,当在URL中使用保留字符时，需要对保留字符进行转义。【详见https://ningyu1.github.io/blog/20190626/117-tomcat-RFC3986.html】 tomcat从特定版本开始进行了特殊字符校验，Tomcat 7.0.73+，Tomcat 8.0.39+，Tomcat 8.5.7+，Tomcat 9.0.0.M12 (markt)+,因为大多数浏览器并不会对这些保留字符进行转义，所以tomcat会拒绝这些请求，为此tomcat提供了属性配置：relaxedQueryChars,可以支持” &lt; &gt; [ \ ] ^ ` { | }这11个字符的访问 Tomcat 7 ‘javax.el.ELException’ 的解决方式（failed to parse the expression [${xxx}]）Tomcat 7 ‘javax.el.ELException’ 的解决方式tomcat 7对EL表达式的语法要求比较严格，例如”${owner.new}”因包含关键字new就会导致解析出错。问题是出来了，怎么解决呢？有三种，如下：第一种：严格遵守java规范，修改对象的属性名称，要求不包含java关键字;第二种：修改EL表达式，例如”${owner.new}”可以修改为”${owner[‘new’]}”;第三种：修改tomcat属性，忽略对EL表达式的关键字检查。修改$CATALINA_BASE/conf/catalina.properties文件，添加org.apache.el.parser.SKIP_IDENTIFIER_CHECK=true选项。 Tomcat启动时出现乱码找到Tomcat目录下conf文件夹中的logging.properties文件，打开logging.properties文件，找到文件中的java.util.logging.ConsoleHandler.encoding = UTF-8, 修改为java.util.logging.ConsoleHandler.encoding = GBK]]></content>
@@ -795,8 +806,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Windows</tag>
         <tag>vpn</tag>
+        <tag>Windows</tag>
       </tags>
   </entry>
   <entry>
@@ -1426,9 +1437,9 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>xshell</tag>
         <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>xshell</tag>
       </tags>
   </entry>
   <entry>

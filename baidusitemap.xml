@@ -4,8 +4,28 @@
 
     
   <url>
+    <loc>http://islocal.cc/arlo/bf292362/</loc>
+    <lastmod>2020-11-09T06:53:33.244Z</lastmod>
+    <data>
+        <display>
+        <title>jenkins权限管理插件'Role-based Authorization Strategy'使用</title>
+        <pubTime>2020-11-09T03:27:50.000Z</pubTime>
+        
+        <tag>Jenkins</tag>
+         
+         
+           
+             
+              <breadCrumb title="Jenkins" url="http://islocal.cc/categories/Jenkins/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/arlo/a534b34d/</loc>
-    <lastmod>2020-10-26T02:26:39.934Z</lastmod>
+    <lastmod>2020-11-09T03:30:36.365Z</lastmod>
     <data>
         <display>
         <title>The valid characters are defined in RFC 7230 and RFC 3986</title>
@@ -1512,9 +1532,9 @@
         <title>Win10无法正常连接sslvpn</title>
         <pubTime>2017-10-25T02:36:45.000Z</pubTime>
         
-        <tag>Windows</tag>
-         
         <tag>vpn</tag>
+         
+        <tag>Windows</tag>
          
          
            
@@ -2675,11 +2695,11 @@
         <title>Xshell 使用技巧</title>
         <pubTime>2016-08-19T06:17:46.000Z</pubTime>
         
-        <tag>xshell</tag>
-         
         <tag>Linux</tag>
          
         <tag>常识</tag>
+         
+        <tag>xshell</tag>
          
          
            
