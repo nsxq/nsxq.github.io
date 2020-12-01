@@ -4,6 +4,48 @@
 
     
   <url>
+    <loc>http://islocal.cc/arlo/63543e5/</loc>
+    <lastmod>2020-12-01T09:30:45.017Z</lastmod>
+    <data>
+        <display>
+        <title>恢复/boot 分区和/etc/fstab 文件</title>
+        <pubTime>2020-12-01T08:51:00.000Z</pubTime>
+        
+        <tag>Troubleshooting</tag>
+         
+        <tag>磁盘</tag>
+         
+         
+           
+             
+              <breadCrumb title="常识" url="http://islocal.cc/categories/%E5%B8%B8%E8%AF%86/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://islocal.cc/arlo/741cda82/</loc>
+    <lastmod>2020-12-01T08:48:36.260Z</lastmod>
+    <data>
+        <display>
+        <title>CentOS GRUB损坏怎么办?</title>
+        <pubTime>2020-12-01T08:23:09.000Z</pubTime>
+        
+        <tag>Troubleshooting</tag>
+         
+         
+           
+             
+              <breadCrumb title="常识" url="http://islocal.cc/categories/%E5%B8%B8%E8%AF%86/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/arlo/f8526eea/</loc>
     <lastmod>2020-12-01T08:16:05.373Z</lastmod>
     <data>
@@ -55,9 +97,9 @@
         <title>The valid characters are defined in RFC 7230 and RFC 3986</title>
         <pubTime>2020-10-26T02:08:21.000Z</pubTime>
         
-        <tag>Tomcat</tag>
-         
         <tag>Troubleshooting</tag>
+         
+        <tag>Tomcat</tag>
          
          
            
@@ -812,11 +854,11 @@
         <title>JDK环境变量配置</title>
         <pubTime>2017-09-27T06:23:03.000Z</pubTime>
         
-        <tag>Windows</tag>
-         
         <tag>Linux</tag>
          
         <tag>常识</tag>
+         
+        <tag>Windows</tag>
          
         <tag>jdk</tag>
          
