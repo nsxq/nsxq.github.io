@@ -4,6 +4,26 @@
 
     
   <url>
+    <loc>http://islocal.cc/arlo/c158283/</loc>
+    <lastmod>2021-02-24T06:56:23.845Z</lastmod>
+    <data>
+        <display>
+        <title>记录一次意外断电导致的Oracle数据库故障</title>
+        <pubTime>2021-02-24T02:11:29.000Z</pubTime>
+        
+        <tag>Oracle</tag>
+         
+         
+           
+             
+              <breadCrumb title="Troubleshooting" url="http://islocal.cc/categories/Troubleshooting/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/arlo/9bdfcc8c/</loc>
     <lastmod>2021-02-06T09:52:18.712Z</lastmod>
     <data>
@@ -879,9 +899,9 @@
         
         <tag>常识</tag>
          
-        <tag>Windows</tag>
-         
         <tag>Linux</tag>
+         
+        <tag>Windows</tag>
          
         <tag>jdk</tag>
          
@@ -1593,11 +1613,11 @@
         <title>Windows 下使用expdp自动备份多用户oracle脚本</title>
         <pubTime>2017-06-16T10:56:32.000Z</pubTime>
         
-        <tag>Windows</tag>
-         
         <tag>数据库</tag>
          
         <tag>Oracle</tag>
+         
+        <tag>Windows</tag>
          
          
            
