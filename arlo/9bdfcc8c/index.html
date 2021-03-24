@@ -124,7 +124,7 @@
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/08.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/09.png">
 <meta property="og:image" content="http://islocal.cc/images/2017/1031/10.png">
-<meta property="og:updated_time" content="2021-02-06T09:52:18.712Z">
+<meta property="og:updated_time" content="2021-03-24T08:47:47.411Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Windows组策略几个问题小计">
 <meta name="twitter:description" content="桌面没有“计算机”开始-运行-输入以下内容1rundll32.exe shell32.dll,Control_RunDLL desk.cpl,,0
@@ -452,7 +452,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2021-02-06 17:52:18" itemprop="dateModified" datetime="2021-02-06T17:52:18+08:00">2021-02-06</time>
+                <time title="修改时间：2021-03-24 16:47:47" itemprop="dateModified" datetime="2021-03-24T16:47:47+08:00">2021-03-24</time>
               
             
           </span>
@@ -529,6 +529,11 @@
 <li>然后在“Parameters”下新建DWORD(32位)，名称为“AllowEncryptionOracle”，设置值为“2”。 </li>
 <li>然后进行尝试，如果不行，请重启一下自己的计算机。 </li>
 </ol>
+<h1 id="发生身份验证错误。给函数提供的标志无效"><a href="#发生身份验证错误。给函数提供的标志无效" class="headerlink" title="发生身份验证错误。给函数提供的标志无效"></a>发生身份验证错误。给函数提供的标志无效</h1><p>由于微软于2018年3月发布了一个安全更新，此更新通过更正凭据安全支持提供程序协议（CredSSP），以及在身份验证过程中验证请求的方式，修复 CredSSP 存在的远程执行代码漏洞。客户端和服务器都需要安装此更新，否则可能出现问题描述中的情况</p>
+<p><strong>解决方法</strong></p>
+<p>安装安全更新，可更新未修补的客户端/服务器端。不同系统对应的更新情况可参见 <a href="https://portal.msrc.microsoft.com/zh-cn/security-guidance/advisory/CVE-2018-0886" target="_blank" rel="external">CVE-2018-0886 |CredSSP 远程执行代码漏洞</a>。</p>
+<p>如果服务器可以连接互联网，直接升级安装更新补丁即可，如不能连接互联网，以windows 2016为例，下载该补丁，安装后重启即可。（ps：ipmi真是个好东西~）</p>
+<p><a href="http://download.windowsupdate.com/d/msdownload/update/software/secu/2018/05/windows10.0-kb4103723-x64_2adf2ea2d09b3052d241c40ba55e89741121e07e.msu" target="_blank" rel="external">http://download.windowsupdate.com/d/msdownload/update/software/secu/2018/05/windows10.0-kb4103723-x64_2adf2ea2d09b3052d241c40ba55e89741121e07e.msu</a></p>
 <h1 id="Windows远程桌面密码不能保存"><a href="#Windows远程桌面密码不能保存" class="headerlink" title="Windows远程桌面密码不能保存"></a>Windows远程桌面密码不能保存</h1><ol>
 <li>打开组策略设置gpedit.msc </li>
 <li>计算机配置 &gt;&gt; 管理模板 &gt;&gt; 系统 &gt;&gt; 凭据分配 下面的 “允许分配保存的凭据用于仅NTLM服务器身份验证”</li>
@@ -994,7 +999,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#桌面没有“计算机”"><span class="nav-number">1.</span> <span class="nav-text">桌面没有“计算机”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注册表编辑被管理员禁用"><span class="nav-number">2.</span> <span class="nav-text">注册表编辑被管理员禁用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#服务灰色，无法正常使用"><span class="nav-number">3.</span> <span class="nav-text">服务灰色，无法正常使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任务管理器无法正常使用"><span class="nav-number">4.</span> <span class="nav-text">任务管理器无法正常使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#要远程登录，你需要具有通过远程桌面服务进行的登录权限"><span class="nav-number">5.</span> <span class="nav-text">要远程登录，你需要具有通过远程桌面服务进行的登录权限</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改远程登录3389端口"><span class="nav-number">6.</span> <span class="nav-text">修改远程登录3389端口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改远程桌面最大连接数"><span class="nav-number">7.</span> <span class="nav-text">修改远程桌面最大连接数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Win10家庭版找不到gpedit-msc组策略"><span class="nav-number">8.</span> <span class="nav-text">Win10家庭版找不到gpedit.msc组策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#出现身份验证错误，要求的函数不受支持"><span class="nav-number">9.</span> <span class="nav-text">出现身份验证错误，要求的函数不受支持</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#修改组策略解决"><span class="nav-number">9.1.</span> <span class="nav-text">修改组策略解决</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改注册表解决"><span class="nav-number">9.2.</span> <span class="nav-text">修改注册表解决</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows远程桌面密码不能保存"><span class="nav-number">10.</span> <span class="nav-text">Windows远程桌面密码不能保存</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#没有远程桌面授权服务器可以提供许可证，远程会话被中断"><span class="nav-number">11.</span> <span class="nav-text">没有远程桌面授权服务器可以提供许可证，远程会话被中断</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修复图片查看器"><span class="nav-number">12.</span> <span class="nav-text">修复图片查看器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Win10新建文件不自动刷新"><span class="nav-number">13.</span> <span class="nav-text">Win10新建文件不自动刷新</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#桌面没有“计算机”"><span class="nav-number">1.</span> <span class="nav-text">桌面没有“计算机”</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注册表编辑被管理员禁用"><span class="nav-number">2.</span> <span class="nav-text">注册表编辑被管理员禁用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#服务灰色，无法正常使用"><span class="nav-number">3.</span> <span class="nav-text">服务灰色，无法正常使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#任务管理器无法正常使用"><span class="nav-number">4.</span> <span class="nav-text">任务管理器无法正常使用</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#要远程登录，你需要具有通过远程桌面服务进行的登录权限"><span class="nav-number">5.</span> <span class="nav-text">要远程登录，你需要具有通过远程桌面服务进行的登录权限</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改远程登录3389端口"><span class="nav-number">6.</span> <span class="nav-text">修改远程登录3389端口</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修改远程桌面最大连接数"><span class="nav-number">7.</span> <span class="nav-text">修改远程桌面最大连接数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Win10家庭版找不到gpedit-msc组策略"><span class="nav-number">8.</span> <span class="nav-text">Win10家庭版找不到gpedit.msc组策略</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#出现身份验证错误，要求的函数不受支持"><span class="nav-number">9.</span> <span class="nav-text">出现身份验证错误，要求的函数不受支持</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#修改组策略解决"><span class="nav-number">9.1.</span> <span class="nav-text">修改组策略解决</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#修改注册表解决"><span class="nav-number">9.2.</span> <span class="nav-text">修改注册表解决</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#发生身份验证错误。给函数提供的标志无效"><span class="nav-number">10.</span> <span class="nav-text">发生身份验证错误。给函数提供的标志无效</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Windows远程桌面密码不能保存"><span class="nav-number">11.</span> <span class="nav-text">Windows远程桌面密码不能保存</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#没有远程桌面授权服务器可以提供许可证，远程会话被中断"><span class="nav-number">12.</span> <span class="nav-text">没有远程桌面授权服务器可以提供许可证，远程会话被中断</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#修复图片查看器"><span class="nav-number">13.</span> <span class="nav-text">修复图片查看器</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Win10新建文件不自动刷新"><span class="nav-number">14.</span> <span class="nav-text">Win10新建文件不自动刷新</span></a></li></ol></div>
             
 
           </div>
