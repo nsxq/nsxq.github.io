@@ -4,6 +4,50 @@
 
     
   <url>
+    <loc>http://islocal.cc/arlo/b9880cb2/</loc>
+    <lastmod>2021-05-11T09:53:05.484Z</lastmod>
+    <data>
+        <display>
+        <title>Oracle报错_无法从套接字获取更多的数据</title>
+        <pubTime>2021-05-11T09:41:10.000Z</pubTime>
+        
+        <tag>Oracle</tag>
+         
+        <tag>Troubleshooting</tag>
+         
+         
+           
+             
+              <breadCrumb title="数据库" url="http://islocal.cc/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://islocal.cc/arlo/6dacbf16/</loc>
+    <lastmod>2021-04-28T03:25:06.002Z</lastmod>
+    <data>
+        <display>
+        <title>CentOS6.9环境静默安装Oracle11g</title>
+        <pubTime>2017-12-27T03:19:50.000Z</pubTime>
+        
+        <tag>数据库</tag>
+         
+        <tag>Oracle</tag>
+         
+         
+           
+             
+              <breadCrumb title="数据库" url="http://islocal.cc/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://islocal.cc/arlo/9bdfcc8c/</loc>
     <lastmod>2021-03-24T08:47:47.411Z</lastmod>
     <data>
@@ -353,28 +397,6 @@
         <display>
         <title>Centos7.x静默安装Oracle 12.2.0.1.0</title>
         <pubTime>2020-06-17T08:09:10.000Z</pubTime>
-        
-        <tag>数据库</tag>
-         
-        <tag>Oracle</tag>
-         
-         
-           
-             
-              <breadCrumb title="数据库" url="http://islocal.cc/categories/%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
-          
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://islocal.cc/arlo/6dacbf16/</loc>
-    <lastmod>2020-06-12T07:21:28.624Z</lastmod>
-    <data>
-        <display>
-        <title>CentOS6.9环境静默安装Oracle11g</title>
-        <pubTime>2017-12-27T03:19:50.000Z</pubTime>
         
         <tag>数据库</tag>
          
@@ -899,9 +921,9 @@
         
         <tag>常识</tag>
          
-        <tag>Linux</tag>
-         
         <tag>Windows</tag>
+         
+        <tag>Linux</tag>
          
         <tag>jdk</tag>
          
@@ -1613,11 +1635,11 @@
         <title>Windows 下使用expdp自动备份多用户oracle脚本</title>
         <pubTime>2017-06-16T10:56:32.000Z</pubTime>
         
+        <tag>Windows</tag>
+         
         <tag>数据库</tag>
          
         <tag>Oracle</tag>
-         
-        <tag>Windows</tag>
          
          
            
