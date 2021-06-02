@@ -5,7 +5,7 @@
     <url>%2Farlo%2F9d49b2c0%2F</url>
     <content type="text"><![CDATA[为体现系统运营情况，了解数据库中数据增长量，公司需每月统计一次数据总量和数据增长量。以下是简单的语句记录 Oracle数据量统计查看表空间及表空间大小1SELECT TABLESPACE_NAME,SUM(BYTES) / 1024 / 1024 AS MB FROM DBA_DATA_FILES GROUP BY TABLESPACE_NAME ORDER BY MB DESC; 查看表空间及对应的表空间文件1SELECT TABLESPACE_NAME, FILE_NAME FROM DBA_DATA_FILES; 统计占用空间1SELECT SUM(BYTES) / 1024 / 1024 AS MB FROM DBA_SEGMENTS; 统计数据总行数1SELECT SUM(SAMPLE_SIZE) FROM USER_TABLES; SQL Server 数据量统计查询数据库所有表的数据的行数12345678910111213141516171819202122--方法1：SELECT A.NAME, B.ROWS FROM SYSOBJECTS AS A INNER JOIN SYSINDEXES AS B ON A.ID = B.ID WHERE (A.TYPE = &apos;u&apos;) AND (B.INDID IN (0, 1)) ORDER BY B.ROWS DESC--方法2：SELECT SCHEMA_NAME(T.SCHEMA_ID) AS [ SCHEMA ], T.NAME AS TABLENAME, I.ROWS AS [ ROWCOUNT ] FROM SYS.TABLES AS T, SYSINDEXES AS I WHERE T.OBJECT_ID = I.ID AND I.INDID &lt;= 1--如果只看总量，使用以下语句SELECT SUM(ROWS) FROM SYS.TABLES AS T, SYSINDEXES AS I WHERE T.OBJECT_ID = I.ID AND I.INDID &lt;= 1 统计数据库占用空间大小1EXEC sp_spaceused PS: 以上语句均来自网络，暂未找到可以直接统计一个月的数据增量，因每个月统计一次，可以使用本月的数据量减去上月统计的数据量来获取数据增量。]]></content>
       <categories>
-        <category>-数据库</category>
+        <category>数据库</category>
       </categories>
       <tags>
         <tag>数据库</tag>
