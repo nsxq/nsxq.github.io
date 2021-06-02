@@ -118,7 +118,7 @@ ansible 命令格式1ansible 主机或组-">
 查看模块1[root@vm00 ~]# ansible-doc -l
 查看模块参数用法12[root@vm00 ~]# ansible-doc -s module[root@vm00 ~]# ansible-doc help module
 ansible 命令格式1ansible 主机或组-">
-<meta property="og:updated_time" content="2018-03-15T07:17:45.878Z">
+<meta property="og:updated_time" content="2021-06-02T02:23:59.343Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ansible 模块篇">
 <meta name="twitter:description" content="Ansible 之所以能自动化完成这么多操作，都是依赖于丰富的模块；类似Jenkins软件的强大的插件支持
@@ -447,7 +447,7 @@ ansible 命令格式1ansible 主机或组-">
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-03-15 15:17:45" itemprop="dateModified" datetime="2018-03-15T15:17:45+08:00">2018-03-15</time>
+                <time title="修改时间：2021-06-02 10:23:59" itemprop="dateModified" datetime="2021-06-02T10:23:59+08:00">2021-06-02</time>
               
             
           </span>
@@ -525,7 +525,7 @@ ansible 命令格式1ansible 主机或组-">
 <h1 id="copy模块"><a href="#copy模块" class="headerlink" title="copy模块"></a>copy模块</h1><p>复制文件到远程主机，copy模块包含如下选项：<br>backup：在覆盖之前将原文件备份，备份文件包含时间信息。有两个选项：yes|no<br>content：用于替代”src”,可以直接设定指定文件的值<br>dest：必选项。要将源文件复制到的远程主机的绝对路径，如果源文件是一个目录，那么该路径也必须是个目录<br>directory_mode：递归的设定目录的权限，默认为系统默认权限<br>force：如果目标主机包含该文件，但内容不同，如果设置为yes，则强制覆盖，如果为no，则只有当目标主机的目标位置不存在该文件时，才复制。默认为yes<br>others：所有的file模块里的选项都可以在这里使用<br>src：要复制到远程主机的文件在本地的地址，可以是绝对路径，也可以是相对路径。如果路径是一个目录，它将递归复制。在这种情况下，如果路径使用”/“来结尾，则只复制目录里的内容，如果没有使用”/“来结尾，则包含目录在内的整个内容全部复制，类似于rsync。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@vm00 ~]# ansible nsxq -m copy -a &quot;src=/etc/hosts dest=/tmp/hosts&quot;</div><div class="line">[root@vm00 ~]# ansible test -m copy -a &apos;src=/etc/fstab dest=/tmp/fstab owner=airmodel group=airmodel mode=644 backup=yes&apos;</div></pre></td></tr></table></figure></p>
 <h1 id="service-模块"><a href="#service-模块" class="headerlink" title="service 模块"></a>service 模块</h1><p>管理服务，该模块包含如下选项：<br>arguments：给命令行提供一些选项<br>enabled：是否开机启动 yes|no<br>name：必选项，服务名称<br>pattern：定义一个模式，如果通过status指令来查看服务的状态时，没有响应，就会通过ps指令在进程中根据该模式进行查找，如果匹配到，则认为该服务依然在运行<br>runlevel：运行级别<br>sleep：如果执行了restarted，在则stop和start之间沉睡几秒钟<br>state：对当前服务执行启动，停止、重启、重新加载等操作（started,stopped,restarted,reloaded）<br>ansible nsxq -m service -a ‘name=nginx state=started enabled=yes’<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@vm00 ~]# ansible test -m service -a &apos;name=httpd state=started enabled=yes&apos;</div></pre></td></tr></table></figure></p>
 <h1 id="cron-模块"><a href="#cron-模块" class="headerlink" title="cron 模块"></a>cron 模块</h1><p>用于管理计划任务包含如下选项：<br>backup：对远程主机上的原任务计划内容修改之前做备份<br>cron_file：如果指定该选项，则用该文件替换远程主机上的cron.d目录下的用户的任务计划<br>day：日（1-31，<em>，</em>/2,……）<br>hour：小时（0-23，<em>，</em>/2，……）<br>minute：分钟（0-59，<em>，</em>/2，……）<br>month：月（1-12，<em>，</em>/2，……）<br>weekday：周（0-7，<em>，……）<br>job：要执行的任务，依赖于state=present<br>name：该任务的描述<br>special_time：指定什么时候执行，参数：reboot,yearly,annually,monthly,weekly,daily,hourly<br>state：确认该任务计划是创建还是删除<br>user：以哪个用户的身份执行<br>时间不特意指定的话，默认是 </em> <em> </em> <em> </em><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@vm00 ~]# ansible nsxq -m cron -a &apos;name=&quot;update ntp time&quot; hour=2 user=root job=&quot;/usr/sbin/ntpdate cn.ntp.org.cn&quot;&apos;</div><div class="line">[root@vm00 ~]# ansible nsxq -m cron -a &apos;name=&quot;update ntp time&quot; state=absent&apos;</div><div class="line">[root@vm00 ~]# ansible test -m cron -a &quot;name=&apos;show date&apos; job=&apos;/root/test.sh&apos; backup=&apos;True&apos; hour=2 minute=*/5&quot;</div></pre></td></tr></table></figure></p>
-<h1 id="yum-模块"><a href="#yum-模块" class="headerlink" title="yum 模块"></a>yum 模块</h1><p>使用yum包管理器来管理软件包，其选项有：<br>config_file：yum的配置文件<br>disable_gpg_check：关闭gpg_check<br>disablerepo：不启用某个源<br>enablerepo：启用某个源<br>name：要进行操作的软件包的名字，也可以传递一个url或者一个本地的rpm包的路径<br>state：状态（present，absent，latest，installed）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@vm00 ~]# ansible nsxq -m yum a &apos;name=httpd state=latest&apos;</div><div class="line">[root@vm00 ~]# ansible nsxq -m yum a &apos;name=&quot;@Development Tools&quot; state=present&apos;</div><div class="line">卸载操作</div><div class="line">[root@vm00 ~]# ansible test -m yum -a &quot;name=httpd state=absent&quot;</div></pre></td></tr></table></figure></p>
+<h1 id="yum-模块"><a href="#yum-模块" class="headerlink" title="yum 模块"></a>yum 模块</h1><p>使用yum包管理器来管理软件包，其选项有：<br>config_file：yum的配置文件<br>disable_gpg_check：关闭gpg_check<br>disablerepo：不启用某个源<br>enablerepo：启用某个源<br>name：要进行操作的软件包的名字，也可以传递一个url或者一个本地的rpm包的路径<br>state：状态（present，absent，latest，installed）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@vm00 ~]# ansible nsxq -m yum -a &apos;name=httpd state=latest&apos;</div><div class="line">[root@vm00 ~]# ansible nsxq -m yum -a &apos;name=&quot;@Development Tools&quot; state=present&apos;</div><div class="line">卸载操作</div><div class="line">[root@vm00 ~]# ansible test -m yum -a &quot;name=httpd state=absent&quot;</div></pre></td></tr></table></figure></p>
 <h1 id="user模块"><a href="#user模块" class="headerlink" title="user模块"></a>user模块</h1><p>user模块是请求的是useradd, userdel, usermod三个指令。</p>
 <p>home：指定用户的家目录，需要与createhome配合使用<br>groups：指定用户的属组<br>uid：指定用的uid<br>password：指定用户的密码<br>name：指定用户名<br>createhome：是否创建家目录 yes|no<br>system：是否为系统用户<br>remove：当state=absent时，remove=yes则表示连同家目录一起删除，等价于userdel -r<br>state：是创建还是删除<br>shell：指定用户的shell环境<br>指定password的时候，需要指定加密后的密码，明文会直接写到/etc/shadow文件中，用户无法登陆<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@vm00 ~]# echo &quot;ffffff&quot; | openssl passwd -1 -salt $(&lt; /dev/urandom tr -dc &apos;[:alnum:]&apos; | head -c 32) -stdin</div><div class="line">[root@vm00 ~]# ansible test -m user -a &apos;createhome=yes home=/home/user1 password=&quot;$1$01a9gEpb$nlv.OmSa1c4jDaGgeoDKi0&quot; name=user1 state=present shell=/bin/bash&apos;</div><div class="line">[root@vm00 ~]# ansible test -m user -a &apos;name=user1 state=absent remove=yes&apos;</div></pre></td></tr></table></figure></p>
 <h1 id="group-模块"><a href="#group-模块" class="headerlink" title="group 模块"></a>group 模块</h1><p>goup模块请求的是groupadd, groupdel, groupmod 三个指令。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[root@vm00 ~]# ansible test -m group -a &apos;name=group1 gid=700 state=present&apos;</div></pre></td></tr></table></figure></p>
@@ -690,7 +690,7 @@ ansible 命令格式1ansible 主机或组-">
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">133</span>
+                    <span class="site-state-item-count">134</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -733,7 +733,9 @@ ansible 命令格式1ansible 主机或组-">
                     
                       
                     
-                    <span class="site-state-item-count">15</span>
+                      
+                    
+                    <span class="site-state-item-count">16</span>
                     <span class="site-state-item-name">分类</span>
                   </a>
                 </div>
