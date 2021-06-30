@@ -376,6 +376,178 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://islocal.cc/arlo/f828840b/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="南山小樵">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/32269?v=3&s=460">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="南山居">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/arlo/f828840b/" class="post-title-link" itemprop="http://islocal.cc/index.html">nfs服务器常用维护命令</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2021-06-30 14:31:44 / 修改时间：16:34:30" itemprop="dateCreated datePublished" datetime="2021-06-30T14:31:44+08:00">2021-06-30</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/服务器搭建/" itemprop="url" rel="index"><span itemprop="name">服务器搭建</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <p>NFS 是Network File System的缩写，即网络文件系统。NFS在文件传送或信息传送过程中依赖于RPC协议。我说nfs服务器是搭建过程最简单的服务，应该没有人反对吧……</p>
+<h1 id="服务端安装"><a href="#服务端安装" class="headerlink" title="服务端安装"></a>服务端安装</h1><p>安装NFS服务端</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install nfs-utils rpcbind</div></pre></td></tr></table></figure>
+<p>设置 NFS 服务开机启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">systemctl enable rpcbind</div><div class="line">systemctl enable nfs</div><div class="line">systemctl start rpcbind</div><div class="line">systemctl start nfs</div></pre></td></tr></table></figure>
+<p>开放防火墙策略</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">firewall-cmd --zone=public --permanent --add-service=&#123;rpc-bind,mountd,nfs&#125;</div><div class="line">firewall-cmd --reload</div></pre></td></tr></table></figure>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/arlo/f828840b/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+         
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://islocal.cc/arlo/62028275/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1883,185 +2055,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://islocal.cc/arlo/a534b34d/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="南山小樵">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/32269?v=3&s=460">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="南山居">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                
-                <a href="/arlo/a534b34d/" class="post-title-link" itemprop="http://islocal.cc/index.html">The valid characters are defined in RFC 7230 and RFC 3986</a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-
-              
-                
-              
-
-              <time title="创建时间：2020-10-26 10:08:21" itemprop="dateCreated datePublished" datetime="2020-10-26T10:08:21+08:00">2020-10-26</time>
-            
-
-            
-              
-
-              
-                
-                <span class="post-meta-divider">|</span>
-                
-
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-calendar-check-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">更新于</span>
-                
-                <time title="修改时间：2020-11-09 15:00:12" itemprop="dateModified" datetime="2020-11-09T15:00:12+08:00">2020-11-09</time>
-              
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Troubleshooting/" itemprop="url" rel="index"><span itemprop="name">Troubleshooting</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="当项目升级到tomcat高版本（tomcat7-）请求时报“The-valid-characters-are-defined-in-RFC-7230-and-RFC-3986”的400错误该怎么解决"><a href="#当项目升级到tomcat高版本（tomcat7-）请求时报“The-valid-characters-are-defined-in-RFC-7230-and-RFC-3986”的400错误该怎么解决" class="headerlink" title="当项目升级到tomcat高版本（tomcat7+）请求时报“The valid characters are defined in RFC 7230 and RFC 3986”的400错误该怎么解决"></a>当项目升级到tomcat高版本（tomcat7+）请求时报“The valid characters are defined in RFC 7230 and RFC 3986”的400错误该怎么解决</h1><p>在tomcat的server.xml<Connector port="8080" protocol="HTTP/1.1" /> 标签中添加属性relaxedQueryChars，属性配置为：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">relaxedQueryChars=&quot;[,],|,&#123;,&#125;,^,&amp;#x5c;,&amp;#x60;,&amp;quot;,&amp;lt;,&amp;gt;&quot;</div></pre></td></tr></table></figure>
-          <!--noindex-->
-          
-            <div class="post-button text-center">
-              <a class="btn" href="/arlo/a534b34d/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-         
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-       
-    
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2113,7 +2106,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">135</span>
+                    <span class="site-state-item-count">136</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
@@ -2353,7 +2346,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">91</span>
+                      
+                    
+                    <span class="site-state-item-count">92</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>

@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[nfs服务器常用维护命令]]></title>
+    <url>%2Farlo%2Ff828840b%2F</url>
+    <content type="text"><![CDATA[NFS 是Network File System的缩写，即网络文件系统。NFS在文件传送或信息传送过程中依赖于RPC协议。我说nfs服务器是搭建过程最简单的服务，应该没有人反对吧…… 服务端安装安装NFS服务端 1yum install nfs-utils rpcbind 设置 NFS 服务开机启动 1234systemctl enable rpcbindsystemctl enable nfssystemctl start rpcbindsystemctl start nfs 开放防火墙策略 12firewall-cmd --zone=public --permanent --add-service=&#123;rpc-bind,mountd,nfs&#125;firewall-cmd --reload 配置共享目录1234567mkdir /data/nfs_sharechmod 755 /data/nfs_sharevim /etc/exports格式： 共享目录 客户端IP访问(权限)/data/nfs_share 192.168.100.0/24(rw,sync,no_root_squash) 12345678910111213141516171819202122232425262728293031323334客户端IP范围常见写法：指定ip地址的主机：192.168.100.100指定子网中的所有主机：192.168.100.0/24 192.168.200.0/255.255.255.0指定域名的主机：david.bsmart.cn指定域中的所有主机：*.bsmart.cn所有主机：*NFS权限主要有3类选项：访问权限选项：设置输出目录只读：ro设置输出目录读写：rw用户映射选项：all_squash：将远程访问的所有普通用户及所属组都映射为匿名用户或用户组（nfsnobody）；no_all_squash：与all_squash取反（默认设置）；root_squash：将root用户及所属组都映射为匿名用户或用户组（默认设置）；no_root_squash：与rootsquash取反；anonuid=xxx：将远程访问的所有用户都映射为匿名用户，并指定该用户为本地用户（UID=xxx）；anongid=xxx：将远程访问的所有用户组都映射为匿名用户组账户，并指定该匿名用户组账户为本地用户组账户（GID=xxx）；其它选项：secure：限制客户端只能从小于1024的tcp/ip端口连接nfs服务器（默认设置）；insecure：允许客户端从大于1024的tcp/ip端口连接服务器；sync：将数据同步写入内存缓冲区与磁盘中，效率低，但可以保证数据的一致性；async：将数据先保存在内存缓冲区中，必要时才写入磁盘；wdelay：检查是否有相关的写操作，如果有则将这些写操作一起执行，这样可以提高效率（默认设置）；no_wdelay：若有写操作则立即执行，应与sync配合使用；subtree：若输出目录是一个子目录，则nfs服务器将检查其父目录的权限(默认设置)；no_subtree：即使输出目录是一个子目录，nfs服务器也不检查其父目录的权限，这样可以提高效率； exportfs 命令12345678-a 全部挂载或卸载 /etc/exports中的内容-r 重新读取/etc/exports 中的信息 ，并同步更新/etc/exports、/var/lib/nfs/xtab-u 卸载单一目录（和-a一起使用为卸载所有/etc/exports文件中的目录）-v 在export的时候，将详细的信息输出到屏幕上。例：# exportfs -au 卸载所有共享目录# exportfs -rv 重新共享所有目录并输出详细信息（不用重启nfs服务即可加载配置文件生效） showmount123-a 显示已经于客户端连接上的目录信息(谁连了我的NFS目录)-e IP或者hostname 显示此IP地址分享出来的目录–d 显示被client挂载的目录 客户端挂载Linux123456789101112安装客户端工具yum -y install nfs-utils查看nfs服务共享资源showmount -e 192.168.100.132挂载nfs共享目录到本地格式： mount NFS服务器IP:共享目录 本地挂载点目录mount.nfs 192.168.100.132:/data/nfs_share /mnt卸载nfs挂载umount /mnt添加开机自动挂载，可以按以下格式写入/etc/fstab 文件192.168.100.132:/data/nfs_share /mnt nfs defaults 0 0 Windows 以Windows Server 2012为例，添加功能角色 - 添加文件打印服务 - NFS 客户端 参考链接： https://www.cnblogs.com/mchina/archive/2013/01/03/2840040.html https://bean-li.github.io/nfs-showmount/]]></content>
+      <categories>
+        <category>服务器搭建</category>
+      </categories>
+      <tags>
+        <tag>nfs</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[HCIA VRRP远程管理试验]]></title>
     <url>%2Farlo%2F62028275%2F</url>
     <content type="text"><![CDATA[实验环境eNSP 1.3.00.100 VirtualBox 5.2.38 r136252 AR2220 x2 S5700 Cloud 实验需求 通过本地环回地址模拟远程管理 配置password认证，实现telnet远程连接 配置三个用户，分别分配监控、配置和管理级别权限，实现telnet远程连接 基础知识 用户界面 编号 Console 0 VTY 0-4 (最大可配置为0-14) 认证模式 描述 Password 登录时只需要输入密码 AAA 登录时需要输入用户和密码，更加安全（推荐） 用户等级 命令级别 权限 说明 0 0 访问级 网络诊断工具命令（ping，tracert），从本设备出发访问外部设备的命令（telnet客户端）、部分display命令等 1 0,1 监控级 用于系统维护，包含display等命令。并不是所有的display命令都是监控机的，比如display current-configuration和display saved-configuration命令是3级管理级 2 0,1,2 配置级 业务配置命令，包括路由、各个网络层级的命令，向用户提供直接网络服务 3-15 0,1,2,3（高级别的包含低级别的命令） 管理级 用于系统基本运行的命令，对业务提供支撑作用，包括文件系统，FTP,TFTP下载，命令级别设置命令以及用于业务故障诊断的debugging命令等。 实验过程建立本地环回网卡 打开设备管理器，操作，添加过时硬件 手动从列表中选择硬件 添加网络使配置 选择Microsoft-环回适配器（win10之前的系统可能显示为loopback） 按规划配置换回网卡ip地址 配置Cloud 绑定信息选择UDP,点击增加 绑定信息选择环回网卡，点击增加（不建议绑定本地物理网卡， 可能会出现不通的情况；如果没有发现环回网卡，需要重启电脑） 端口映射设置，出入口分别为1,2，勾选“双向通道”，点击增加 配置 命令 说明 telnet server enable 开启telnet server服务 display telnet server status 查看telnet server 服务状态 user-interface vty 0 4 authentication-mode password set authentication password cipher 111.com user privilege level 15user-interface maximum-vty 15 进入VTY配置模式 配置认证模式 配置认证密码 配置用户级别配置最大vty会话数量 user-interface vty 0 4 authentication-mode aaa aaa local-user jack password cipher 111.com local-user jack privilege level 1 local-user jack service-type telnet 进入VTY配置模式 配置认证模式进入AAA配置模式 创建用户名和密码 配置用户级别 配置用户可用服务 123456789101112131415161718192021222324252627282930313233343536373839#R1配置syssys R1int g0/0/0ip addr 1.1.1.1 24telnet server enableuser-interface vty 0 4authentication-mode password # 这里要手动输入一下密码set authentication password cipher 111.comuser privilege level 15quser-interface maximum-vty 15#R2配置syssys R2int g0/0/0ip addr 1.1.1.2 24telnet server enableuser-interface vty 0 4authentication-mode aaaaaa local-user jack password cipher 111.com local-user jack privilege level 1 local-user jack service-type telnet local-user rose password cipher 222.com local-user rose privilege level 2 local-user rose service-type telnet local-user james password cipher 333.com local-user james privilege level 15 local-user james service-type telnet 远程连接测试 学习视频：https://www.bilibili.com/video/BV1Dg4y187bZ?p=25]]></content>
@@ -20,9 +31,9 @@
         <category>数据库</category>
       </categories>
       <tags>
+        <tag>数据库</tag>
         <tag>Oracle</tag>
         <tag>MSSQL</tag>
-        <tag>数据库</tag>
       </tags>
   </entry>
   <entry>
@@ -136,8 +147,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -189,8 +200,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -382,8 +393,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -394,8 +405,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -406,8 +417,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
         <tag>PSU</tag>
       </tags>
   </entry>
@@ -504,9 +515,9 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Troubleshooting</tag>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
+        <tag>Troubleshooting</tag>
       </tags>
   </entry>
   <entry>
@@ -528,8 +539,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -540,8 +551,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -564,8 +575,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -624,8 +635,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -647,8 +658,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -671,9 +682,9 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>zabbix</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
+        <tag>zabbix</tag>
       </tags>
   </entry>
   <entry>
@@ -684,10 +695,10 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>zabbix</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
+        <tag>zabbix</tag>
       </tags>
   </entry>
   <entry>
@@ -721,8 +732,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -733,8 +744,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -771,8 +782,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Sonar</tag>
       </tags>
   </entry>
@@ -824,8 +835,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -836,8 +847,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -875,8 +886,8 @@
       </categories>
       <tags>
         <tag>集群</tag>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
         <tag>RAC</tag>
       </tags>
   </entry>
@@ -912,9 +923,9 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>Jenkins</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
+        <tag>Jenkins</tag>
       </tags>
   </entry>
   <entry>
@@ -925,9 +936,9 @@
         <category>监控</category>
       </categories>
       <tags>
-        <tag>MSSQL</tag>
         <tag>zabbix</tag>
         <tag>监控</tag>
+        <tag>MSSQL</tag>
       </tags>
   </entry>
   <entry>
@@ -938,9 +949,9 @@
         <category>监控</category>
       </categories>
       <tags>
+        <tag>tomcat</tag>
         <tag>zabbix</tag>
         <tag>监控</tag>
-        <tag>tomcat</tag>
       </tags>
   </entry>
   <entry>
@@ -951,8 +962,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -964,8 +975,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
         <tag>Troubleshooting</tag>
       </tags>
   </entry>
@@ -1052,9 +1063,9 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Jenkins</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
+        <tag>Jenkins</tag>
         <tag>tomcat</tag>
       </tags>
   </entry>
@@ -1079,9 +1090,9 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>Jenkins</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
+        <tag>Jenkins</tag>
       </tags>
   </entry>
   <entry>
@@ -1092,9 +1103,9 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>Jenkins</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
+        <tag>Jenkins</tag>
       </tags>
   </entry>
   <entry>
@@ -1143,8 +1154,8 @@
       <tags>
         <tag>集群</tag>
         <tag>数据库</tag>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -1156,8 +1167,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -1169,8 +1180,8 @@
       </categories>
       <tags>
         <tag>数据库</tag>
-        <tag>Mysql</tag>
         <tag>Mariadb</tag>
+        <tag>Mysql</tag>
       </tags>
   </entry>
   <entry>
@@ -1219,8 +1230,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1232,8 +1243,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1245,8 +1256,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1258,8 +1269,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Ansible</tag>
       </tags>
   </entry>
@@ -1271,8 +1282,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>expect</tag>
         <tag>脚本</tag>
       </tags>
@@ -1285,9 +1296,9 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
-        <tag>数据库</tag>
         <tag>Windows</tag>
+        <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -1314,8 +1325,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -1326,8 +1337,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>shell</tag>
         <tag>脚本</tag>
+        <tag>shell</tag>
         <tag>linux常识</tag>
       </tags>
   </entry>
@@ -1339,8 +1350,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -1351,8 +1362,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Oracle</tag>
         <tag>数据库</tag>
+        <tag>Oracle</tag>
       </tags>
   </entry>
   <entry>
@@ -1397,9 +1408,9 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>Jenkins</tag>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
+        <tag>Jenkins</tag>
       </tags>
   </entry>
   <entry>
@@ -1410,8 +1421,8 @@
         <category>自动化运维</category>
       </categories>
       <tags>
-        <tag>运维</tag>
         <tag>自动化</tag>
+        <tag>运维</tag>
         <tag>Cobbler</tag>
       </tags>
   </entry>
