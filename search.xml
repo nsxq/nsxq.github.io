@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[CentOS7.x 升级OpenSSH_8.6p1]]></title>
+    <url>%2Farlo%2Fcd9ac657%2F</url>
+    <content type="text"><![CDATA[数据下载地址Openssl 下载地址：https://ftp.openssl.org/source/ Openssh 下载地址：https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/ 安装基础环境包注：受perl版本限制，最新版的openssl1.1.1需要perl5.10+版本， 1yum -y install ntpdate wget gcc gcc-c++ glibc make krb5-libs krb5-devel zlib-devel pam-devel perl 同步服务器时间1ntpdate ntp.aliyun.com 升级openssl12openssl versionssh -V 下载编译安装openssl12345wget https://www.openssl.org/source/openssl-1.1.1k.tar.gz --no-check-certificatetar xf openssl-1.1.1k.tar.gz cd openssl-1.1.1k./config --prefix=/usr/local/opensslmake &amp;&amp; make install 备份openssl12mv /usr/bin/openssl&#123;,.bak&#125;mv /usr/include/openssl&#123;,.bak&#125; 创建软连接12345ln -s /usr/local/openssl/lib/libssl.so.1.1 /usr/lib64/ln -s /usr/local/openssl/lib/libcrypto.so.1.1 /usr/lib64/ln -s /usr/local/openssl/bin/openssl /usr/bin/openssl ln -s /usr/local/openssl/include/openssl /usr/include/openssl 升级openssh安装、配置telnet服务1yum install xinetd telnet-server -y 12345678910111213vim /etc/xinetd.d/telnetservice telnet&#123;​ flags = REUSE​ socket_type = stream​ wait = no​ user = root​ server = /usr/sbin/in.telnetd​ log_on_failure += USERID​ disable = no #修改yes为no&#125; 允许root远程telnet登录主机 1234567vim /etc/securetty#在最后添加如下内容pts/0pts/1pts/2pts/3 配置开机自启动 1234systemctl enable xinetdsystemctl start xinetdsystemctl enable telnet.socketsystemctl start telnet.socket 放行防火墙 12firewall-cmd --add-service=telnet --zone=public --permanentfirewall-cmd --reload 以下操作使用telnet远程登录主机进行操作 备份openssh配置12mv /etc/ssh&#123;,.bak&#125;cp /etc/pam.d/sshd&#123;,.bak&#125; 卸载旧版本openssh1rpm -e --nodeps `rpm -qa | grep openssh` 编译安装openssh12345wget https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-8.6p1.tar.gztar xf openssh-8.6p1.tar.gzcd openssh-8.6p1./configure --prefix=/usr -sysconfdir=/etc/ssh -with-ssl-dir=/usr/local/openssl -with-zlib -with-pam -with-md5-passwords -with-kerberos5 --without-zlib-version-checkmake &amp;&amp; make install 修改配置文件123cp contrib/redhat/sshd.init /etc/init.d/sshdsed -i &apos;s/^#\(PermitRootLogin \).*/\1yes/&apos; /etc/ssh/sshd_configsed -i &apos;/UseDNS/c\UseDNS no&apos; /etc/ssh/sshd_config 配置开机自启动升级后不能使用systemctl 方式启动，感觉有点怪…… 12/etc/init.d/sshd startchkconfig --level 35 sshd on 你可能遇到的问题问题1：make: * [configdata.pm] Error 1 解决方案：服务器时间不对，手动调整服务器时间即可 1ntpdate ntp.aliyun.com 问题2：Failed to listen on Telnet Server Activation Socket. 解决方案：由于已经启动了一个xinetd进程，杀掉，重新启动telnet即可 问题3：configure: error: PAM headers not found解决方案： yum -y install pam-devel 问题4：error: Could not get shadow information for root 解决方案：由于开启了selinux导致，关闭即可 123456#临时解决方案：setenforce 0#永久解决方案sed -i &apos;s/SELINUX=enforcing/SELINUX=disabled/&apos; /etc/selinux/configgrep SELINUX=disabled /etc/selinux/configreboot]]></content>
+      <categories>
+        <category>安全</category>
+      </categories>
+      <tags>
+        <tag>SSH</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[HCIA 静态路由实验]]></title>
     <url>%2Farlo%2Fd4aba23c%2F</url>
     <content type="text"><![CDATA[静态路由配置原则： 分析目标网络，除了直连路由，缺少几个网络配置几条路由即可。 路由是双向的，有去有回网络才通 路由表字段 说明 Destination 目标，用来标识IP包的目标地址或目标网络 Mask 掩码，选择最佳路由的重要判断依据（最长匹配原则） NextHop 下一跳，指明IP包所经由的下一个路由器的接口地址 Interface 出接口，指明IP包将从该路由的哪个接口转发出去 Protocol 协议，路由的来源、学习方式 Preference 优先级，比较不同路由来源到达相同目标网络的优先级，越低越优先 Cost 度量值，比较相同路由来源到达相同目标网络的不同路径的优先级，越低越优先 路由类型 Direct OSPF STATIC RIP 管理距离 0 10 60 100 静态路由配置实验要求： PC1：1.0.0.0/24 PC2：2.0.0.0/24 PC3：3.0.0.0/4 配置静态路由，3台PC相互连通。 123456789101112131415161718192021222324#AR1syssys R1int g0/0/0ip add 1.0.0.1 24int g0/0/1ip add 2.0.0.1 24int g0/0/2ip add 12.0.0.2 24ip route-s 3.0.0.0 24 12.0.0.1#AR2syssys R2int g0/0/0ip add 12.0.0.1 24int g0/0/1ip add 3.0.0.1 24ip route-s 1.0.0.0 24 12.0.0.2ip route-s 2.0.0.0 24 12.0.0.2 负载分担静态路由支持到达统一目标网络的等价负载分担 1234567891011121314151617181920212223242526272829#AR1syssys R1int g0/0/0ip add 1.0.0.1 24int g0/0/1ip add 34.0.0.2 24int g0/0/2ip add 12.0.0.2 24ip route-s 3.0.0.0 24 12.0.0.1ip route-s 3.0.0.0 24 34.0.0.1#AR2syssys R2int g0/0/1ip add 3.0.0.1 24int g0/0/0ip add 12.0.0.1 24int g0/0/2ip addr 34.0.0.1 24ip route-s 1.0.0.0 24 12.0.0.2ip route-s 1.0.0.0 24 34.0.0.2 负载路由ping测试 负载路由tracert测试 路由备份-浮动静态路由 利用优先级的特性，配置浮动路由 在主路由失效的情况下，浮动路由会加入到路由表并承担数据转发业务 123456789101112131415161718192021222324252627- #AR1syssys R1int g0/0/0ip add 1.0.0.1 24int g0/0/1ip add 34.0.0.2 24int g0/0/2ip add 12.0.0.2 24ip route-s 3.0.0.0 24 12.0.0.1ip route-s 3.0.0.0 24 34.0.0.1 preference 100#AR2syssys R2int g0/0/1ip add 3.0.0.1 24int g0/0/0ip add 12.0.0.1 24int g0/0/2ip addr 34.0.0.1 24ip route-s 1.0.0.0 24 12.0.0.2 ip route-s 1.0.0.0 24 34.0.0.2 preference 100 回环口Loopback回环口作用 模拟直连网段，可用于测试 设备管理（稳定） 供其他协议使用（OSPF、BGP、MPLS等） SNMP Traps消息的源地址 其他用途（用途十分广泛） 12345678910111213141516171819#AR1syssys R1int g0/0/0ip add 1.0.0.1 24int lo 1ip add 3.0.0.1 24ip route-static 4.0.0.0 24 1.0.0.2#AR2syssys R2int g0/0/0ip add 1.0.0.2 24int lo 1ip add 4.0.0.1 24ip route-s 3.0.0.0 24 1.0.0.1 实现4.0.0.1 和3.0.0.1可以互相ping通。]]></content>
@@ -781,8 +792,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>Oracle</tag>
       </tags>
   </entry>
@@ -833,8 +844,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>Scp</tag>
         <tag>MTU</tag>
       </tags>
@@ -1049,8 +1060,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>Windows</tag>
         <tag>jdk</tag>
       </tags>
@@ -1089,8 +1100,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>vpn</tag>
       </tags>
   </entry>
@@ -1204,8 +1215,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>下载</tag>
         <tag>axel</tag>
       </tags>
@@ -1457,8 +1468,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Linux</tag>
         <tag>常识</tag>
+        <tag>Linux</tag>
         <tag>epel</tag>
       </tags>
   </entry>
@@ -1554,9 +1565,9 @@
         <category>常识</category>
       </categories>
       <tags>
+        <tag>常识</tag>
         <tag>xshell</tag>
         <tag>Linux</tag>
-        <tag>常识</tag>
       </tags>
   </entry>
   <entry>
@@ -1567,8 +1578,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>linux</tag>
+        <tag>常识</tag>
       </tags>
   </entry>
   <entry>
