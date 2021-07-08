@@ -124,7 +124,7 @@ Op">
 <meta property="og:image" content="http://islocal.cc/\images\2021\0707\06.png">
 <meta property="og:image" content="http://islocal.cc/\images\2021\0707\07.png">
 <meta property="og:image" content="http://islocal.cc/\images\2021\0707\08.png">
-<meta property="og:updated_time" content="2021-07-08T03:46:27.912Z">
+<meta property="og:updated_time" content="2021-07-08T03:50:33.511Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CentOS7.x 升级OpenSSH_8.6p1">
 <meta name="twitter:description" content="CentOS7.x操作系统自带的OpenSSH版本默认为7.4p1,使用yum update最高也只能升级到7.4p1的补丁版本，漏扫会发现很多OpenSSH相关的漏洞，根据等保安全测评的要求，需要将OpenSSH升级到更新的版本，本篇文档记录了我本次升级的过程以及遇到的问题，供大家参考。
@@ -453,7 +453,7 @@ Op">
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2021-07-08 11:46:27" itemprop="dateModified" datetime="2021-07-08T11:46:27+08:00">2021-07-08</time>
+                <time title="修改时间：2021-07-08 11:50:33" itemprop="dateModified" datetime="2021-07-08T11:50:33+08:00">2021-07-08</time>
               
             
           </span>
@@ -518,7 +518,7 @@ Op">
 <h2 id="创建软连接"><a href="#创建软连接" class="headerlink" title="创建软连接"></a>创建软连接</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">ln -s /usr/local/openssl/lib/libssl.so.1.1 /usr/lib64/</div><div class="line">ln -s /usr/local/openssl/lib/libcrypto.so.1.1 /usr/lib64/</div><div class="line"></div><div class="line">ln -s /usr/local/openssl/bin/openssl /usr/bin/openssl </div><div class="line">ln -s /usr/local/openssl/include/openssl /usr/include/openssl</div></pre></td></tr></table></figure>
 <p><img src="\images\2021\0707\02.png" alt="01"></p>
 <h1 id="升级openssh"><a href="#升级openssh" class="headerlink" title="升级openssh"></a>升级openssh</h1><h2 id="安装、配置telnet服务"><a href="#安装、配置telnet服务" class="headerlink" title="安装、配置telnet服务"></a>安装、配置telnet服务</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install xinetd telnet-server -y</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">vim /etc/xinetd.d/telnet</div><div class="line"></div><div class="line">service telnet</div><div class="line"></div><div class="line">&#123;</div><div class="line">​    flags      = REUSE</div><div class="line">​     socket_type   = stream</div><div class="line">​    wait      = no</div><div class="line">​    user      = root</div><div class="line">​    server     = /usr/sbin/in.telnetd</div><div class="line">​    log_on_failure += USERID</div><div class="line">​    disable     = no  #修改yes为no</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">cat &gt; /etc/xinetd.d/telnet &lt;&lt;EOF </div><div class="line">service telnet</div><div class="line">&#123;</div><div class="line">        flags           = REUSE</div><div class="line">        socket_type     = stream</div><div class="line">        wait            = no</div><div class="line">        user            = root</div><div class="line">        server          = /usr/sbin/in.telnetd</div><div class="line">        log_on_failure  += USERID</div><div class="line">        disable         = no    #修改yes为no</div><div class="line">&#125;</div><div class="line">EOF</div></pre></td></tr></table></figure>
 <p>允许root远程telnet登录主机</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">vim /etc/securetty</div><div class="line"></div><div class="line">#在最后添加如下内容</div><div class="line">pts/0</div><div class="line">pts/1</div><div class="line">pts/2</div><div class="line">pts/3</div></pre></td></tr></table></figure>
 <p>配置开机自启动</p>
