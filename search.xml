@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[Ansible批量升级ssh版本至OpenSSH8.6p1]]></title>
+    <url>%2Farlo%2Fe5610d8d%2F</url>
+    <content type="text"><![CDATA[准备工作 本文参考（抄）自：https://blog.csdn.net/rookie23rook/article/details/111691267 需要准备好yum源，最好是服务器可以直接连接互联网 本次是基于openssl 1.0.2k，OpenSSH_7.4.1p1的升级，其他版本可能会有问题 配置ansible免密或者在/etc/ansible/hosts配置文件中写入密码，关于ansible的基础配置，可以看参考http://islocal.cc/arlo/40fad05f/ 我这里测试使用了一台机器 123# egrep -v &quot;^#|^$&quot; /etc/ansible/hosts [server]192.168.100.133 ansible_ssh_pass=f ansible_ssh_user=root Playbook文件结构这里是升级openssh的目录结构及所需文件。 1234567891011121314151617[root@c71 roles]# pwd/etc/ansible/roles[root@c71 roles]# tree update_openssh/update_openssh/├── files│ ├── openssh-8.6p1.tar.gz│ └── openssl-1.1.1k.tar.gz├── handlers│ └── main.yaml├── tasks│ ├── install.yaml│ └── main.yaml├── update_openssh.yaml└── vars └── main.yaml4 directories, 8 files 下载openssl-1.1.1k.tar.gz，openssh-8.6p1.tar.gz两个文件到files目录下 Openssl 下载地址：https://ftp.openssl.org/source/ Openssh 下载地址：https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/ update_openssh.yaml12345678[root@c71 update_openssh]# cat update_openssh.yaml ---- name: 升级openssh版本到openssh8.6p1 hosts: server user: root gather_facts: false roles: - update_openssh vars/main.yaml123[root@c71 update_openssh]# cat vars/main.yaml open_ssh_package: openssh-8.6p1.tar.gzopen_ssl_package: openssl-1.1.1k.tar.gz tasks/main.yaml123[root@c71 update_openssh]# cat tasks/main.yaml ---- import_tasks: install.yaml tasks/install.yaml123456789101112131415161718192021222324252627[root@c71 update_openssh]# cat tasks/install.yaml---- name: 安装telnet、xinetd yum: name: [&apos;telnet&apos;,&apos;telnet-server&apos;,&apos;xinetd&apos;] state: present- name: 启动telnet、xinetd,并设置开机启动 service: name: &quot;&#123;&#123; item &#125;&#125;&quot; state: started enabled: yes loop: - xinetd - telnet.socket- name: 备份/etc/securetty文件 shell: cmd: cp -rf /etc/securetty /etc/securetty.bak$(date +%Y%m%d)- name: 在/etc/securetty文件添加其他终端设备 blockinfile: dest: /etc/securetty block: &quot;pts/0\npts/1\npts/2\npts/3\npts/4&quot;- name: 重启xinetd服务 service: name: xinetd state: restarted notify: #要确保telnet成功启动后才能进行升级，否则如果升级失败，telnet又没启动，就无法远程连接服务器了 - telnet已经启动成功，可以进行升级 handlers/main.yaml1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162636465666768697071727374757677787980818283848586878889909192[root@c71 update_openssh]# cat handlers/main.yaml ---- name: 安装编译环境及基础依赖包 yum: name: [&apos;ntpdate&apos;,&apos;gcc&apos;,&apos;gcc-c++&apos;,&apos;glibc&apos;,&apos;make&apos;,&apos;krb5-libs&apos;,&apos;krb5-devel&apos;,&apos;autoconf&apos;,&apos;openssl&apos;,&apos;openssl-devel&apos;,&apos;pcre-devel&apos;,&apos;zlib-devel&apos;,&apos;pam-devel&apos;,&apos;perl&apos;] state: present listen: telnet已经启动成功，可以进行升级- name: 将openssh、openssl的压缩包解压到//usr/local/src/目录 unarchive: src: &quot;&#123;&#123; item &#125;&#125;&quot; dest: /usr/local/src/ loop: - &quot;&#123;&#123; open_ssh_package &#125;&#125;&quot; - &quot;&#123;&#123; open_ssl_package &#125;&#125;&quot; listen: telnet已经启动成功，可以进行升级- name: 备份openssl文件 shell: cmd: mv /usr/bin/openssl&#123;,.bak&#125;;mv /usr/include/openssl&#123;,.bak&#125; listen: telnet已经启动成功，可以进行升级- name: 编译安装openssl shell: cmd: ./config shared --prefix=/usr/local/openssl &amp;&amp; make &amp;&amp; make install chdir: /usr/local/src/openssl-1.1.1k listen: telnet已经启动成功，可以进行升级- name: 设置openssl指令的软链接 shell: cmd: &apos;ln -s /usr/local/openssl/lib/libssl.so.1.1 /usr/lib64/; ln -s /usr/local/openssl/lib/libcrypto.so.1.1 /usr/lib64/; ln -s /usr/local/openssl/bin/openssl /usr/bin/openssl; ln -s /usr/local/openssl/include/openssl /usr/include/openssl&apos; listen: telnet已经启动成功，可以进行升级- name: 加载openssl模块 shell: cmd: echo &quot;/usr/local/openssl/lib&quot; &gt;&gt; /etc/ld.so.conf;/sbin/ldconfig listen: telnet已经启动成功，可以进行升级- name: 备份/etc/ssh、/etc/pam.d/sshd.pam shell: cmd: mv /etc/ssh /etc/ssh.$(date +%Y%m%d);cp -rf /etc/pam.d/sshd.pam /etc/pam.d/sshd.pam.$(date +%Y%m%d) || echo &quot;ansible_ens33[&apos;ipv4&apos;][&apos;address&apos;]上暂无这个文件。&quot; listen: telnet已经启动成功，可以进行升级- name: 编译安装openssh shell: cmd: ./configure --prefix=/usr --sysconfdir=/etc/ssh --with-ssl-dir=/usr/local/openssl --with-zlib --with-md5-passwords --with-pam --with-kerberos5 &amp;&amp; make &amp;&amp; make install chdir: /usr/local/src/openssh-8.6p1 listen: telnet已经启动成功，可以进行升级- name: 替换新的sshd_config shell: cmd: cp -rf /usr/local/src/openssh-8.6p1/sshd_config /etc/ssh/sshd_config listen: telnet已经启动成功，可以进行升级- name: override default of no subsystems lineinfile: dest: /etc/ssh/sshd_config regexp: .*Subsystem.*sftp-server line: Subsystem sftp /usr/libexec/openssh/sftp-server listen: telnet已经启动成功，可以进行升级- name: 关闭DNS解析 lineinfile: dest: /etc/ssh/sshd_config regexp: .*UseDNS line: UseDNS no listen: telnet已经启动成功，可以进行升级- name: 允许root远程登录 lineinfile: dest: /etc/ssh/sshd_config regexp: .*PermitRootLogin line: PermitRootLogin yes listen: telnet已经启动成功，可以进行升级- name: 添加banner路径 lineinfile: dest: /etc/ssh/sshd_config insertafter: ^#Banner none line: Banner /etc/sshbanner listen: telnet已经启动成功，可以进行升级- name: 拷贝sshd.init和sshd.pam shell: cmd: cp -a contrib/redhat/sshd.init /etc/init.d/sshd;cp -a contrib/redhat/sshd.pam /etc/pam.d/sshd.pam chdir: /usr/local/src/openssh-8.6p1 listen: telnet已经启动成功，可以进行升级- name: 将sshd交给chkconfig管理 shell: cmd: chmod +x /etc/init.d/sshd;chkconfig --add sshd;chkconfig sshd on;systemctl enable sshd listen: telnet已经启动成功，可以进行升级- name: 备份sshd.service并重启sshd服务 shell: cmd: mv /usr/lib/systemd/system/sshd.service /usr/local/src/;mv /usr/lib/systemd/system/sshd.socket /usr/local/src/;systemctl daemon-reload;service sshd restart listen: telnet已经启动成功，可以进行升级- name: 检查版本，确认是否升级成功 shell: cmd: ssh -V;openssl version register: check listen: telnet已经启动成功，可以进行升级- name: 更新后版本信息 debug: var: check verbosity: 0 listen: telnet已经启动成功，可以进行升级 语法检查123[root@c71 update_openssh]# ansible-playbook --syntax-check update_openssh.yamlplaybook: update_openssh.yaml 开始升级openssh123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101[root@c71 update_openssh]# pwd/etc/ansible/roles/update_openssh[root@c71 update_openssh]# ansible-playbook update_openssh.yaml PLAY [升级openssh版本到openssh8.6p1] *****************************************************************************************************************TASK [update_openssh : 安装telnet、xinetd] *********************************************************************************************************changed: [192.168.100.133]TASK [update_openssh : 启动telnet、xinetd,并设置开机启动] *************************************************************************************************changed: [192.168.100.133] =&gt; (item=xinetd)changed: [192.168.100.133] =&gt; (item=telnet.socket)TASK [update_openssh : 备份/etc/securetty文件] ******************************************************************************************************changed: [192.168.100.133]TASK [update_openssh : 在/etc/securetty文件添加其他终端设备] ***********************************************************************************************changed: [192.168.100.133]TASK [update_openssh : 重启xinetd服务] **************************************************************************************************************changed: [192.168.100.133]RUNNING HANDLER [update_openssh : 安装编译环境] *******************************************************************************************************changed: [192.168.100.133]RUNNING HANDLER [update_openssh : 将openssh、openssl的压缩包解压到//usr/local/src/目录] ********************************************************************changed: [192.168.100.133] =&gt; (item=openssh-8.6p1.tar.gz)changed: [192.168.100.133] =&gt; (item=openssl-1.1.1k.tar.gz)RUNNING HANDLER [update_openssh : 备份openssl文件] **************************************************************************************************changed: [192.168.100.133]RUNNING HANDLER [update_openssh : 编译安装openssl] **************************************************************************************************changed: [192.168.100.133]RUNNING HANDLER [update_openssh : 设置openssl指令的软链接] **********************************************************************************************[WARNING]: Consider using the file module with state=link rather than running &apos;ln&apos;. If you need to use command because file is insufficient youcan add &apos;warn: false&apos; to this command task or set &apos;command_warnings=False&apos; in ansible.cfg to get rid of this message.changed: [192.168.100.133]RUNNING HANDLER [update_openssh : 加载openssl模块] **************************************************************************************************changed: [192.168.100.133]RUNNING HANDLER [update_openssh : 备份/etc/ssh、/etc/pam.d/sshd.pam] *******************************************************************************changed: [192.168.100.133]RUNNING HANDLER [update_openssh : 编译安装openssh] **************************************************************************************************changed: [192.168.100.133]RUNNING HANDLER [update_openssh : 替换新的sshd_config] **********************************************************************************************changed: [192.168.100.133]RUNNING HANDLER [update_openssh : override default of no subsystems] ****************************************************************************changed: [192.168.100.133]RUNNING HANDLER [update_openssh : 关闭DNS解析] ******************************************************************************************************changed: [192.168.100.133]RUNNING HANDLER [update_openssh : 允许root远程登录] ***************************************************************************************************changed: [192.168.100.133]RUNNING HANDLER [update_openssh : 添加banner路径] ***************************************************************************************************changed: [192.168.100.133]RUNNING HANDLER [update_openssh : 拷贝sshd.init和sshd.pam] *****************************************************************************************changed: [192.168.100.133]RUNNING HANDLER [update_openssh : 将sshd交给chkconfig管理] *******************************************************************************************[WARNING]: Consider using the file module with mode rather than running &apos;chmod&apos;. If you need to use command because file is insufficient youcan add &apos;warn: false&apos; to this command task or set &apos;command_warnings=False&apos; in ansible.cfg to get rid of this message.changed: [192.168.100.133]RUNNING HANDLER [update_openssh : 备份sshd.service并重启sshd服务] **************************************************************************************changed: [192.168.100.133]RUNNING HANDLER [update_openssh : 检查版本，确认是否升级成功] ************************************************************************************************changed: [192.168.100.133]RUNNING HANDLER [update_openssh : 更新后版本信息] ******************************************************************************************************ok: [192.168.100.133] =&gt; &#123; &quot;check&quot;: &#123; &quot;changed&quot;: true, &quot;cmd&quot;: &quot;ssh -V;openssl version&quot;, &quot;delta&quot;: &quot;0:00:00.014358&quot;, &quot;end&quot;: &quot;2021-07-13 21:57:42.407139&quot;, &quot;failed&quot;: false, &quot;rc&quot;: 0, &quot;start&quot;: &quot;2021-07-13 21:57:42.392781&quot;, &quot;stderr&quot;: &quot;OpenSSH_8.6p1, OpenSSL 1.1.1k 25 Mar 2021&quot;, &quot;stderr_lines&quot;: [ &quot;OpenSSH_8.6p1, OpenSSL 1.1.1k 25 Mar 2021&quot; ], &quot;stdout&quot;: &quot;OpenSSL 1.1.1k 25 Mar 2021&quot;, &quot;stdout_lines&quot;: [ &quot;OpenSSL 1.1.1k 25 Mar 2021&quot; ] &#125;&#125;PLAY RECAP **************************************************************************************************************************************192.168.100.133 : ok=23 changed=22 unreachable=0 failed=0 skipped=0 rescued=0 ignored=0 可以看到，已经成功升级，原来配置的免密登录如果无法正常登录，把/root/.ssh/konwn_hosts文件里面的记录删掉就能连接了。 参考：https://blog.csdn.net/rookie23rook/article/details/111691267]]></content>
+      <categories>
+        <category>自动化运维</category>
+      </categories>
+      <tags>
+        <tag>Ansible</tag>
+        <tag>SSH</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[CentOS7.x 升级OpenSSH_8.6p1]]></title>
     <url>%2Farlo%2Fcd9ac657%2F</url>
     <content type="text"><![CDATA[CentOS7.x操作系统自带的OpenSSH版本默认为7.4p1,使用yum update最高也只能升级到7.4p1的补丁版本，漏扫会发现很多OpenSSH相关的漏洞，根据等保安全测评的要求，需要将OpenSSH升级到更新的版本，本篇文档记录了我本次升级的过程以及遇到的问题，供大家参考。 安装包下载地址Openssl 下载地址：https://ftp.openssl.org/source/ Openssh 下载地址：https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/ 安装基础环境包注：受perl版本限制，最新版的openssl1.1.1需要perl5.10+版本， 1yum -y install ntpdate wget gcc gcc-c++ glibc make krb5-libs krb5-devel zlib-devel pam-devel perl 同步服务器时间1ntpdate ntp.aliyun.com 升级openssl12openssl versionssh -V 下载编译安装openssl12345wget https://www.openssl.org/source/openssl-1.1.1k.tar.gz --no-check-certificatetar xf openssl-1.1.1k.tar.gz cd openssl-1.1.1k./config --prefix=/usr/local/opensslmake &amp;&amp; make install 备份openssl12mv /usr/bin/openssl&#123;,.bak&#125;mv /usr/include/openssl&#123;,.bak&#125; 创建软连接12345ln -s /usr/local/openssl/lib/libssl.so.1.1 /usr/lib64/ln -s /usr/local/openssl/lib/libcrypto.so.1.1 /usr/lib64/ln -s /usr/local/openssl/bin/openssl /usr/bin/openssl ln -s /usr/local/openssl/include/openssl /usr/include/openssl 升级openssh安装、配置telnet服务1yum install xinetd telnet-server -y 123456789101112cat &gt; /etc/xinetd.d/telnet &lt;&lt;EOF service telnet&#123; flags = REUSE socket_type = stream wait = no user = root server = /usr/sbin/in.telnetd log_on_failure += USERID disable = no #修改yes为no&#125;EOF 允许root远程telnet登录主机 1234567vim /etc/securetty#在最后添加如下内容pts/0pts/1pts/2pts/3 配置开机自启动 1234systemctl enable telnet.socketsystemctl start telnet.socketsystemctl enable xinetdsystemctl start xinetd 放行防火墙 12firewall-cmd --add-service=telnet --zone=public --permanentfirewall-cmd --reload 以下操作使用telnet远程登录主机进行操作 备份openssh配置12mv /etc/ssh&#123;,.bak&#125;cp /etc/pam.d/sshd&#123;,.bak&#125; 卸载旧版本openssh1rpm -e --nodeps `rpm -qa | grep openssh` 编译安装openssh12345wget https://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-8.6p1.tar.gztar xf openssh-8.6p1.tar.gzcd openssh-8.6p1./configure --prefix=/usr -sysconfdir=/etc/ssh -with-ssl-dir=/usr/local/openssl -with-zlib -with-pam -with-md5-passwords -with-kerberos5 --without-zlib-version-checkmake &amp;&amp; make install 修改配置文件123cp contrib/redhat/sshd.init /etc/init.d/sshdsed -i &apos;s/^#\(PermitRootLogin \).*/\1yes/&apos; /etc/ssh/sshd_configsed -i &apos;/UseDNS/c\UseDNS no&apos; /etc/ssh/sshd_config 配置开机自启动升级后不能使用systemctl 方式启动，感觉有点怪…… 12/etc/init.d/sshd startchkconfig --level 35 sshd on 测试通过后，关闭telnet（telnet是明文传输，不安全）1234systemctl disable xinetdsystemctl stop xinetdsystemctl disable telnet.socketsystemctl stop telnet.socket 您可能遇到的问题？问题1：make: * [configdata.pm] Error 1 解决方案：服务器时间不对，手动调整服务器时间即可 1ntpdate ntp.aliyun.com 问题2：Failed to listen on Telnet Server Activation Socket. 解决方案：由于已经启动了一个xinetd进程，杀掉，重新启动telnet即可 问题3：configure: error: PAM headers not found解决方案： yum -y install pam-devel 问题4：error: Could not get shadow information for root 解决方案：由于开启了selinux导致，关闭即可 123456#临时解决方案：setenforce 0#永久解决方案sed -i &apos;s/SELINUX=enforcing/SELINUX=disabled/&apos; /etc/selinux/configgrep SELINUX=disabled /etc/selinux/configreboot 问题5：sshd.service start operation timed out. Terminating 解决方案：sshd不兼容systemd造成的，sshd启动方式修改为sysv即可。 1234567mv /usr/lib/systemd/system/sshd.service&#123;,.bak&#125;systemctl stop ssh.service rm /lib/systemd/system/ssh.service systemctl daemon-reloadcd /usr/local/src/openssh-8.6p1/cp contrib/redhat/sshd.init /etc/init.d systemctl start ssh.service 问题6：服务器发送了一个意外的数据包。received:3,expected:20在/etc/ssh/sshd_config最后添加以下内容，重启sshd服务 1KexAlgorithms curve25519-sha256@libssh.org,ecdh-sha2-nistp256,ecdh-sha2-nistp384,ecdh-sha2-nistp521,diffie-hellman-group-exchange-sha256,diffie-hellman-group14-sha1,diffie-hellman-group-exchange-sha1,diffie-hellman-group1-sha1]]></content>
@@ -147,8 +159,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>Troubleshooting</tag>
         <tag>Tomcat</tag>
+        <tag>Troubleshooting</tag>
       </tags>
   </entry>
   <entry>
@@ -792,8 +804,8 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>Oracle</tag>
       </tags>
   </entry>
@@ -844,8 +856,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>Scp</tag>
         <tag>MTU</tag>
       </tags>
@@ -1060,8 +1072,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>Windows</tag>
         <tag>jdk</tag>
       </tags>
@@ -1100,8 +1112,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>vpn</tag>
       </tags>
   </entry>
@@ -1215,8 +1227,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>下载</tag>
         <tag>axel</tag>
       </tags>
@@ -1287,7 +1299,7 @@
   <entry>
     <title><![CDATA[Ansible 入门篇]]></title>
     <url>%2Farlo%2F40fad05f%2F</url>
-    <content type="text"><![CDATA[Ansible (is Simple IT Automation) ,是一款自动化运维工具，基于强大的模块功能通过SSH协议推送到被管理端，可以实现的批量系统部署，批量程序部署，批量执行命令等 特性 不需要安装客户端，基于ssh连接管理 不需要配置服务，安装Ansible工具，可以执行命令就可以 拥有大量的模块 支持YAML语法 安装配置简单(门槛低) 被管理机器支持Windows 组成部分 Ansible 核心 Inventory Ansible管理主机的清单 Modules 包括Ansible自带的核心模块和自定义模块 Plugins 完成模块功能的补充，包括连接插件、邮件插件等 Playbooks 编排文件，定义Ansible多任务配置文件，实现Ansible自动执行 安装ansible软件需要主机有python环境，这个安装没啥说的，一键搞定，so easy！1yum -y install ansible 配置管理主机清单默认的主机清单文件是/etc/ansible/hosts 可以修改/etc/ansible/ansible.cfg文件中[defaults]下的#inventory参数来修改， 可以在执行命令时候使用-i参数来指定hosts文件 最简单的配置主机和组配置成主机名的时候，要确保主机名可以被解析(hosts或dns)123456[web]vm01vm02[db]192.168.6.100192.168.6.101 自定义参数ansible_ssh_user 用于指定管理远程主机的账号ansible_ssh_pass 用于指定管理远程主机的密码ansible_ssh_host 用于指定被管理的主机ansible_ssh_port 用于指定ssh的端口ansible_sudo_pass 用于sudo连接用户时的密码ansible_sudo_exec 如果sudo命令不在默认路径，需要指定sudo命令路径ansible_shell_type 目标系统的shell的类型，默认shansible_ssh_private_key_file 指定key文件1234[webservers]192.168.10.12 ansible_ssh_pass=123456 ansible_ssh_user=root192.168.10.13 ansible_ssh_pass=123456 ansible_ssh_user=root ansible_ssh_port=3055vm03 ansible_ssh_pass=123567 ansible_ssh_user=root 指定主机范围01:20 表示192.168.6.1到192.168.6.20共20台主机a:f 表示dba.islocal.cc 到dbf.islocal.cc共6台主机123[db]192.168.6.[01:20]db[a:f].islocal.cc 主机组嵌套，使用children关键字12345678910[mfs:children]mfs_amfs_bmfs_c[mfs_a]vm01[mfs_b]vm02[mfs_c]vm03 测试一下12ansible mfs -m pingansible mfs_c -m ping 调用匹配主机或主机组匹配所有all 或者 *1ansible all -m ping 匹配组直接写组名就ok1ansible test -m ping 逻辑非目标主机在nsxq组不在test组中，逻辑非使用！1ansible nsxq:!test -m ping 逻辑与目标主机在nsxq组并在test中，逻辑与使用&amp;1ansible nsxq:&amp;test -m ping 支持正则匹配匹配一web或者db开头.islocal.cc 的主机1ansible ~(web|db).*\.islocal\.cc -m ping 设置主机互信，配置SSH免密码登录由于ansible是基于ssh来远程管理，执行操作命令的，每次输入密码的话会很繁琐，配置ssh免密码就显得很方便 -k 命令会提示输入密码 修改配置文件/etc/ansible/ansible.cfghost_key_checking=False #当第一次连接远程主机时，会提示输入yes/no,跳过此环节 配置ssh免密码登录，可以参考我之前的另一篇文章SSH免密码验证 模块查看模块ansible-doc -l查看模块参数用法ansible-doc -s moduleansible-doc help module setup 模块查看主机参数配置ansible all -m setup ping 模块测试主机连通性ansible all -m ping file 模块[root@vm00 ~]# ansible nsxq -m file -a ‘src=/etc/hosts dest=/tmp/hosts’[root@vm00 ~]# ansible nsxq -a ‘ls -lh /tmp/hosts’[root@vm00 ~]# ansible nsxq -m file -“path=/tmp/file1 state=touch”[root@vm00 ~]# ansible nsxq -m file -a “dest=/tmp/hosts mode=600 owner=airmodel group=airmodel”[root@vm00 ~]# ansible nsxq -m file -a “dest=/opt/test mode=755 owner=airmodel group=airmodel state=directory” copy模块ansible nsxq -m copy -a “src=/etc/hosts dest=/tmp/hosts” command 模块【默认模块】ansible all -m command -a “/bin/echo ‘hello,sir.’”ansible all -a ‘chdir=/usr/local/src/ tar -cvzf test.tgz file’ shell 模块和command一样；支持管道 raw 模块和command一样 service 模块ansible nsxq -m service -a ‘name=nginx state=started enabled=yes’ cron 模块ansible nsxq -m cron -a ‘name=”update ntp time” hour=2 user=root job=”/usr/sbin/ntpdate cn.ntp.org.cn”‘ansible nsxq -m cron -a ‘name=”update ntp time” state=absent’ filesystem 模块yum 模块ansible nsxq -m yum a ‘name=httpd state=installed’ansible nsxq -m yum a ‘name=”@Development Tools” state=present’ user 模块ansible nsxq -m user -a ‘createhome=yes home=/home/user1 password=”ffffff” name=user1 state=present shell=/bin/bash’ synchronize 模块目录后边跟/表示同步目录下内容，不加/把目录同步过去ansible nsxq -m synchronize -a ‘src=/etc/hosts dest=/opt/‘ filesystem 模块ansible test -m filesystem -a ‘dev=/disk.img fstype=ext4 opts=-F’ mount 模块ansible test -m mount -a ‘fstype=ext4 name=/aaa src=/dev/loop0 state=mounted’]]></content>
+    <content type="text"><![CDATA[Ansible (is Simple IT Automation) ,是一款自动化运维工具，基于强大的模块功能通过SSH协议推送到被管理端，可以实现的批量系统部署，批量程序部署，批量执行命令等 特性 不需要安装客户端，基于ssh连接管理 不需要配置服务，安装Ansible工具，可以执行命令就可以 拥有大量的模块 支持YAML语法 安装配置简单(门槛低) 被管理机器支持Windows 组成部分 Ansible 核心 Inventory Ansible管理主机的清单 Modules 包括Ansible自带的核心模块和自定义模块 Plugins 完成模块功能的补充，包括连接插件、邮件插件等 Playbooks 编排文件，定义Ansible多任务配置文件，实现Ansible自动执行 安装ansible软件需要主机有python环境，这个安装没啥说的，一键搞定，so easy！1yum -y install ansible 配置管理主机清单默认的主机清单文件是/etc/ansible/hosts 可以修改/etc/ansible/ansible.cfg文件中[defaults]下的#inventory参数来修改， 可以在执行命令时候使用-i参数来指定hosts文件 最简单的配置主机和组配置成主机名的时候，要确保主机名可以被解析(hosts或dns)123456[web]vm01vm02[db]192.168.6.100192.168.6.101 自定义参数ansible_ssh_user 用于指定管理远程主机的账号ansible_ssh_pass 用于指定管理远程主机的密码ansible_ssh_host 用于指定被管理的主机ansible_ssh_port 用于指定ssh的端口ansible_sudo_pass 用于sudo连接用户时的密码ansible_sudo_exec 如果sudo命令不在默认路径，需要指定sudo命令路径ansible_shell_type 目标系统的shell的类型，默认shansible_ssh_private_key_file 指定key文件1234[webservers]192.168.10.12 ansible_ssh_pass=123456 ansible_ssh_user=root192.168.10.13 ansible_ssh_pass=123456 ansible_ssh_user=root ansible_ssh_port=3055vm03 ansible_ssh_pass=123567 ansible_ssh_user=root 指定主机范围01:20 表示192.168.6.1到192.168.6.20共20台主机a:f 表示dba.islocal.cc 到dbf.islocal.cc共6台主机123[db]192.168.6.[01:20]db[a:f].islocal.cc 主机组嵌套，使用children关键字12345678910[mfs:children]mfs_amfs_bmfs_c[mfs_a]vm01[mfs_b]vm02[mfs_c]vm03 测试一下12ansible mfs -m pingansible mfs_c -m ping 调用匹配主机或主机组匹配所有all 或者 *1ansible all -m ping 匹配组直接写组名就ok1ansible test -m ping 逻辑非目标主机在nsxq组不在test组中，逻辑非使用！1ansible nsxq:!test -m ping 逻辑与目标主机在nsxq组并在test中，逻辑与使用&amp;1ansible nsxq:&amp;test -m ping 支持正则匹配匹配一web或者db开头.islocal.cc 的主机1ansible ~(web|db).*\.islocal\.cc -m ping 设置主机互信，配置SSH免密码登录由于ansible是基于ssh来远程管理，执行操作命令的，每次输入密码的话会很繁琐，配置ssh免密码就显得很方便 -k 命令会提示输入密码 修改配置文件/etc/ansible/ansible.cfghost_key_checking=False #当第一次连接远程主机时，会提示输入yes/no,跳过此环节 配置ssh免密码登录，可以参考我之前的另一篇文章SSH免密码验证 模块查看模块1ansible-doc -l 查看模块参数用法12ansible-doc -s moduleansible-doc help module setup 模块查看主机参数配置1ansible all -m setup ping 模块测试主机连通性1ansible all -m ping file 模块12345[root@vm00 ~]# ansible nsxq -m file -a &apos;src=/etc/hosts dest=/tmp/hosts&apos;[root@vm00 ~]# ansible nsxq -a &apos;ls -lh /tmp/hosts&apos;[root@vm00 ~]# ansible nsxq -m file -&quot;path=/tmp/file1 state=touch&quot;[root@vm00 ~]# ansible nsxq -m file -a &quot;dest=/tmp/hosts mode=600 owner=airmodel group=airmodel&quot;[root@vm00 ~]# ansible nsxq -m file -a &quot;dest=/opt/test mode=755 owner=airmodel group=airmodel state=directory&quot; copy模块1ansible nsxq -m copy -a &quot;src=/etc/hosts dest=/tmp/hosts&quot; command 模块【默认模块】12ansible all -m command -a &quot;/bin/echo &apos;hello,sir.&apos;&quot;ansible all -a &apos;chdir=/usr/local/src/ tar -cvzf test.tgz file&apos; shell 模块和command一样；支持管道 raw 模块和command一样 service 模块1ansible nsxq -m service -a &apos;name=nginx state=started enabled=yes&apos; cron 模块12ansible nsxq -m cron -a &apos;name=&quot;update ntp time&quot; hour=2 user=root job=&quot;/usr/sbin/ntpdate cn.ntp.org.cn&quot;&apos;ansible nsxq -m cron -a &apos;name=&quot;update ntp time&quot; state=absent&apos; filesystem 模块yum 模块12ansible nsxq -m yum a &apos;name=httpd state=installed&apos;ansible nsxq -m yum a &apos;name=&quot;@Development Tools&quot; state=present&apos; user 模块1ansible nsxq -m user -a &apos;createhome=yes home=/home/user1 password=&quot;ffffff&quot; name=user1 state=present shell=/bin/bash&apos; synchronize 模块目录后边跟/表示同步目录下内容，不加/把目录同步过去1ansible nsxq -m synchronize -a &apos;src=/etc/hosts dest=/opt/&apos; filesystem 模块1ansible test -m filesystem -a &apos;dev=/disk.img fstype=ext4 opts=-F&apos; mount 模块1ansible test -m mount -a &apos;fstype=ext4 name=/aaa src=/dev/loop0 state=mounted&apos;]]></content>
       <categories>
         <category>自动化运维</category>
       </categories>
@@ -1319,9 +1331,9 @@
         <category>数据库</category>
       </categories>
       <tags>
-        <tag>Windows</tag>
         <tag>数据库</tag>
         <tag>Oracle</tag>
+        <tag>Windows</tag>
       </tags>
   </entry>
   <entry>
@@ -1468,8 +1480,8 @@
         <category>Troubleshooting</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
         <tag>epel</tag>
       </tags>
   </entry>
@@ -1565,9 +1577,9 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>常识</tag>
         <tag>xshell</tag>
         <tag>Linux</tag>
+        <tag>常识</tag>
       </tags>
   </entry>
   <entry>
@@ -1578,8 +1590,8 @@
         <category>常识</category>
       </categories>
       <tags>
-        <tag>linux</tag>
         <tag>常识</tag>
+        <tag>linux</tag>
       </tags>
   </entry>
   <entry>

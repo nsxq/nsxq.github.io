@@ -132,7 +132,7 @@
 被管理机器支持Windows
 
 组成部分">
-<meta property="og:updated_time" content="2018-03-15T07:17:45.876Z">
+<meta property="og:updated_time" content="2021-07-13T06:27:26.948Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ansible 入门篇">
 <meta name="twitter:description" content="Ansible (is Simple IT Automation) ,是一款自动化运维工具，基于强大的模块功能通过SSH协议推送到被管理端，可以实现的批量系统部署，批量程序部署，批量执行命令等
@@ -468,7 +468,7 @@
                 
                   <span class="post-meta-item-text">更新于</span>
                 
-                <time title="修改时间：2018-03-15 15:17:45" itemprop="dateModified" datetime="2018-03-15T15:17:45+08:00">2018-03-15</time>
+                <time title="修改时间：2021-07-13 14:27:26" itemprop="dateModified" datetime="2021-07-13T14:27:26+08:00">2021-07-13</time>
               
             
           </span>
@@ -560,21 +560,22 @@
 <li>修改配置文件/etc/ansible/ansible.cfg<br>host_key_checking=False   #当第一次连接远程主机时，会提示输入yes/no,跳过此环节</li>
 </ol>
 <p>配置ssh免密码登录，可以参考我之前的另一篇文章<strong><a href="http://islocal.cc/2017/06/18/批量修改主机密码-批量ssh免密码验证/">SSH免密码验证</a></strong></p>
-<h1 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h1><p>查看模块<br>ansible-doc -l<br>查看模块参数用法<br>ansible-doc -s module<br>ansible-doc help module</p>
-<h2 id="setup-模块"><a href="#setup-模块" class="headerlink" title="setup 模块"></a>setup 模块</h2><p>查看主机参数配置<br>ansible all -m setup</p>
-<h2 id="ping-模块"><a href="#ping-模块" class="headerlink" title="ping 模块"></a>ping 模块</h2><p>测试主机连通性<br>ansible all -m ping</p>
-<h2 id="file-模块"><a href="#file-模块" class="headerlink" title="file 模块"></a>file 模块</h2><p>[root@vm00 ~]# ansible nsxq -m file -a ‘src=/etc/hosts dest=/tmp/hosts’<br>[root@vm00 ~]# ansible nsxq -a ‘ls -lh /tmp/hosts’<br>[root@vm00 ~]# ansible nsxq -m file -“path=/tmp/file1 state=touch”<br>[root@vm00 ~]# ansible nsxq -m file -a “dest=/tmp/hosts mode=600 owner=airmodel group=airmodel”<br>[root@vm00 ~]# ansible nsxq -m file -a “dest=/opt/test mode=755 owner=airmodel group=airmodel state=directory”</p>
-<h2 id="copy模块"><a href="#copy模块" class="headerlink" title="copy模块"></a>copy模块</h2><p>ansible nsxq -m copy -a “src=/etc/hosts dest=/tmp/hosts” </p>
-<h2 id="command-模块【默认模块】"><a href="#command-模块【默认模块】" class="headerlink" title="command 模块【默认模块】"></a>command 模块【默认模块】</h2><p>ansible all -m command -a “/bin/echo ‘hello,sir.’”<br>ansible all -a ‘chdir=/usr/local/src/ tar -cvzf test.tgz file’</p>
+<h1 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h1><p>查看模块<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible-doc -l</div></pre></td></tr></table></figure></p>
+<p>查看模块参数用法<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ansible-doc -s module</div><div class="line">ansible-doc help module</div></pre></td></tr></table></figure></p>
+<h2 id="setup-模块"><a href="#setup-模块" class="headerlink" title="setup 模块"></a>setup 模块</h2><p>查看主机参数配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible all -m setup</div></pre></td></tr></table></figure></p>
+<h2 id="ping-模块"><a href="#ping-模块" class="headerlink" title="ping 模块"></a>ping 模块</h2><p>测试主机连通性<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible all -m ping</div></pre></td></tr></table></figure></p>
+<h2 id="file-模块"><a href="#file-模块" class="headerlink" title="file 模块"></a>file 模块</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@vm00 ~]# ansible nsxq -m file -a &apos;src=/etc/hosts dest=/tmp/hosts&apos;</div><div class="line">[root@vm00 ~]# ansible nsxq -a &apos;ls -lh /tmp/hosts&apos;</div><div class="line">[root@vm00 ~]# ansible nsxq -m file -&quot;path=/tmp/file1 state=touch&quot;</div><div class="line">[root@vm00 ~]# ansible nsxq -m file -a &quot;dest=/tmp/hosts mode=600 owner=airmodel group=airmodel&quot;</div><div class="line">[root@vm00 ~]# ansible nsxq -m file -a &quot;dest=/opt/test mode=755 owner=airmodel group=airmodel state=directory&quot;</div></pre></td></tr></table></figure>
+<h2 id="copy模块"><a href="#copy模块" class="headerlink" title="copy模块"></a>copy模块</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible nsxq -m copy -a &quot;src=/etc/hosts dest=/tmp/hosts&quot;</div></pre></td></tr></table></figure>
+<h2 id="command-模块【默认模块】"><a href="#command-模块【默认模块】" class="headerlink" title="command 模块【默认模块】"></a>command 模块【默认模块】</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ansible all -m command -a &quot;/bin/echo &apos;hello,sir.&apos;&quot;</div><div class="line">ansible all -a &apos;chdir=/usr/local/src/ tar -cvzf test.tgz file&apos;</div></pre></td></tr></table></figure>
 <h2 id="shell-模块"><a href="#shell-模块" class="headerlink" title="shell 模块"></a>shell 模块</h2><p>和command一样；支持管道</p>
 <h2 id="raw-模块"><a href="#raw-模块" class="headerlink" title="raw 模块"></a>raw 模块</h2><p>和command一样</p>
-<h2 id="service-模块"><a href="#service-模块" class="headerlink" title="service 模块"></a>service 模块</h2><p>ansible nsxq -m service -a ‘name=nginx state=started enabled=yes’</p>
-<h2 id="cron-模块"><a href="#cron-模块" class="headerlink" title="cron 模块"></a>cron 模块</h2><p>ansible nsxq -m cron -a ‘name=”update ntp time” hour=2 user=root job=”/usr/sbin/ntpdate cn.ntp.org.cn”‘<br>ansible nsxq -m cron -a ‘name=”update ntp time” state=absent’</p>
-<h2 id="filesystem-模块"><a href="#filesystem-模块" class="headerlink" title="filesystem 模块"></a>filesystem 模块</h2><h2 id="yum-模块"><a href="#yum-模块" class="headerlink" title="yum 模块"></a>yum 模块</h2><p>ansible nsxq -m yum a ‘name=httpd state=installed’<br>ansible nsxq -m yum a ‘name=”@Development Tools” state=present’</p>
-<h2 id="user-模块"><a href="#user-模块" class="headerlink" title="user 模块"></a>user 模块</h2><p>ansible nsxq -m user -a ‘createhome=yes home=/home/user1 password=”ffffff” name=user1 state=present shell=/bin/bash’</p>
-<h2 id="synchronize-模块"><a href="#synchronize-模块" class="headerlink" title="synchronize 模块"></a>synchronize 模块</h2><p>目录后边跟/表示同步目录下内容，不加/把目录同步过去<br>ansible nsxq -m synchronize -a ‘src=/etc/hosts dest=/opt/‘</p>
-<h2 id="filesystem-模块-1"><a href="#filesystem-模块-1" class="headerlink" title="filesystem 模块"></a>filesystem 模块</h2><p>ansible test -m filesystem -a ‘dev=/disk.img fstype=ext4 opts=-F’</p>
-<h2 id="mount-模块"><a href="#mount-模块" class="headerlink" title="mount 模块"></a>mount 模块</h2><p>ansible test -m mount -a ‘fstype=ext4 name=/aaa src=/dev/loop0 state=mounted’</p>
+<h2 id="service-模块"><a href="#service-模块" class="headerlink" title="service 模块"></a>service 模块</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible nsxq -m service -a &apos;name=nginx state=started enabled=yes&apos;</div></pre></td></tr></table></figure>
+<h2 id="cron-模块"><a href="#cron-模块" class="headerlink" title="cron 模块"></a>cron 模块</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ansible nsxq -m cron -a &apos;name=&quot;update ntp time&quot; hour=2 user=root job=&quot;/usr/sbin/ntpdate cn.ntp.org.cn&quot;&apos;</div><div class="line">ansible nsxq -m cron -a &apos;name=&quot;update ntp time&quot; state=absent&apos;</div></pre></td></tr></table></figure>
+<h2 id="filesystem-模块"><a href="#filesystem-模块" class="headerlink" title="filesystem 模块"></a>filesystem 模块</h2><h2 id="yum-模块"><a href="#yum-模块" class="headerlink" title="yum 模块"></a>yum 模块</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ansible nsxq -m yum a &apos;name=httpd state=installed&apos;</div><div class="line">ansible nsxq -m yum a &apos;name=&quot;@Development Tools&quot; state=present&apos;</div></pre></td></tr></table></figure>
+<h2 id="user-模块"><a href="#user-模块" class="headerlink" title="user 模块"></a>user 模块</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible nsxq -m user -a &apos;createhome=yes home=/home/user1 password=&quot;ffffff&quot; name=user1 state=present shell=/bin/bash&apos;</div></pre></td></tr></table></figure>
+<h2 id="synchronize-模块"><a href="#synchronize-模块" class="headerlink" title="synchronize 模块"></a>synchronize 模块</h2><p>目录后边跟/表示同步目录下内容，不加/把目录同步过去<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible nsxq -m synchronize -a &apos;src=/etc/hosts dest=/opt/&apos;</div></pre></td></tr></table></figure></p>
+<h2 id="filesystem-模块-1"><a href="#filesystem-模块-1" class="headerlink" title="filesystem 模块"></a>filesystem 模块</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible test -m filesystem -a &apos;dev=/disk.img fstype=ext4 opts=-F&apos;</div></pre></td></tr></table></figure>
+<h2 id="mount-模块"><a href="#mount-模块" class="headerlink" title="mount 模块"></a>mount 模块</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ansible test -m mount -a &apos;fstype=ext4 name=/aaa src=/dev/loop0 state=mounted&apos;</div></pre></td></tr></table></figure>
 <hr>
 
       
@@ -726,7 +727,7 @@
                 
                   <a href="/archives/">
                 
-                    <span class="site-state-item-count">138</span>
+                    <span class="site-state-item-count">139</span>
                     <span class="site-state-item-name">日志</span>
                   </a>
                 </div>
